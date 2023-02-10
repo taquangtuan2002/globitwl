@@ -1,0 +1,123 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>Báo cáo theo tháng không áp dụng với động vật sinh trưởng</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-3">
+                        <ui-select ng-model="vm.paramDto.animalParentId" sortable="true" close-on-select="true" on-select="vm.clickTest()">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="animal.id as animal in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3">
+                        <!-- <label class="bold" ng-bind-html="'report.fromMonth' | translate"></label> -->
+                        <ui-select ng-model="vm.paramDto.month" ng-change="vm.clickTest()"
+                            on-select="" sortable="true" close-on-select="true">
+                            <ui-select-match allow-clear="false"
+                                placeholder="{{'report.month' | translate}}...">{{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                repeat="month.value as month in vm.months | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="month.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3">
+                        <!-- <label class="bold" ng-bind-html="'report.inYear' | translate"></label> -->
+                        <select class="form-control" name="" ng-change="vm.clickTest()"
+                            ng-model="vm.paramDto.currentYear" required>
+                            <!-- <option value="">{{'report.year' | translate}}...</option> -->
+                            <option ng-selected="year==vm.paramDto.currentYear" ng-repeat="year in years"
+                                value="{{year}}">{{year}}</option>
+
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="row margin-top-10 margin-bottom-10" ng-if="false">
+                    <div class="col-md-12">
+                        <!-- <button ng-click="vm.getQuantityReport()" class="btn btn-primary" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>{{'report.viewReport' | translate}}
+                        </button>
+                        <button ng-click="vm.showCalcaulation()" class="btn btn-primary margin-left-10" type="submit">{{'report.calculation' | translate}}</button> -->
+                        <button ng-click="vm.clickTest()" class="btn btn-primary margin-left-10" type="submit"><i class="glyphicon glyphicon-search"></i>{{'report.view' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-hover table-bordered" id="searchTextResults">
+                    <tr>
+                        <th class="text-center" style="padding-top: 20px;" rowspan="2">Ngày</th>
+                        <th colspan="4" style="padding-top: 20px;" class="text-center">{{'report.totalAnimalRaising' | translate}}</th>
+                        <th colspan="2" class="text-center">{{'report.animalParent' | translate}}</th>
+                        <th colspan="2" class="text-center">{{'report.fluctuationHerd' | translate}}</th>
+                        <th rowspan="2" style="padding-top: 20px;width: 75px;" class="text-center ">{{'report.childLessThan1YearOld' | translate}}</th>
+                        <th colspan="3" class="text-center">{{'report.childGranter1YearOld' | translate}}</th>
+                        <th colspan="3" class="text-center">Nhập cơ sở(Mua, sinh sản...)</th>
+                        <th colspan="3" class="text-center">Xuất cơ sở(Bán, cho, tặng, chết...)</th>
+                        <th rowspan="2" class="text-center">Ghi chú</th>
+                        <th rowspan="2" class="text-center" style="width:113px;">Xác nhận của cơ quan Kiểm lâm/Cơ quan thủy sản</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">{{'report.total' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.childUnknown' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.childUnknown' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.childUnknown' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.childUnknown' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="item in vm.listData | filter:searchText">
+                      <!-- <td class="text-center">{{$index + 1}}</td> -->
+                      <td class="text-center">{{item.date}}</td>
+                      <td class="text-center">{{item.total}}</td>
+                      <td class="text-center">{{item.totalMale}}</td>
+                      <td class="text-center">{{item.totalFeMale}}</td>
+                      <td class="text-center">{{item.totalUnknown}}</td>
+                      <td class="text-center">{{item.totalParentMale}}</td>
+                      <td class="text-center">{{item.totalParentFeMale}}</td>
+                      <td class="text-center">{{item.totalGiltsMale}}</td>
+                      <td class="text-center">{{item.totalGiltsFemale}}</td>
+                      <td class="text-center">{{item.totalChildLessThan1Year}}</td>
+                      <td class="text-center">{{item.totalChildMale}}</td>
+                      <td class="text-center">{{item.totalChildFemale}}</td>
+                      <td class="text-center">{{item.totalChildUnknown}}</td>
+                      <td class="text-center">{{item.totalImportFarmMale}}</td>
+                      <td class="text-center">{{item.totalImportFarmFemale}}</td>
+                      <td class="text-center">{{item.totalImportFarmUnknown}}</td>
+                      <td class="text-center">{{item.totalExportFarmMale}}</td>
+                      <td class="text-center">{{item.totalExportFarmFemale}}</td>
+                      <td class="text-center">{{item.totalExportFarmUnknown}}</td>
+                      <td class="text-center"></td>
+                      <td class="text-center"></td>
+                    </tr>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+
+        .glb-text{
+            text-align: center;
+        }
+    </style>

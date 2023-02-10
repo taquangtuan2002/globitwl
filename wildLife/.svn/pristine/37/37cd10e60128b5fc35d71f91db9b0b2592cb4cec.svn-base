@@ -1,0 +1,90 @@
+<div class="row margin-top-10">
+  <div class="col-md-12">
+    <div class="portlet light bordered">
+      <div class="portlet-body" ng-show="vm.yearA && vm.yearB">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th colspan="1" class="text-center" colspan="1">Họ và Tên</th>
+              <th colspan="1" class="text-center" colspan="1">Xã</th>
+              <th colspan="1" class="text-center" colspan="1">Huyện</th>
+              <th colspan="1" class="text-center" colspan="1">Tỉnh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.listData">
+              <td class="text-center">{{$index+1}}</td>
+              <td class="text-center">
+                <a
+                  class="green-dark margin-right-5"
+                  ng-click="vm.showPopupMerge(item)"
+                  target="_blank"
+                  >{{item.name}}</a
+                >
+              </td>
+              <td class="text-center">
+                <a
+                  class="green-dark margin-right-5"
+                  ng-click="vm.showPopupMerge(item)"
+                  target="_blank"
+                  >{{item.commune}}</a
+                >
+              </td>
+              <td class="text-center">
+                <a
+                  class="green-dark margin-right-5"
+                  ng-click="vm.showPopupMerge(item)"
+                  target="_blank"
+                  >{{item.district}}</a
+                >
+              </td>
+              <td class="text-center">
+                <a
+                  class="green-dark margin-right-5"
+                  ng-click="vm.showPopupMerge(item)"
+                  target="_blank"
+                  >{{item.provincial}}</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+				<div class="row"> 
+					<div class="col-md-12">
+						<ul uib-pagination total-items="vm.totalItems" max-size="5" items-per-page="vm.pageSize" 
+								ng-model="vm.pageIndex" ng-change="vm.searchByPage()"
+								class="pagination-sm pull-right" boundary-links="true"></ul>
+
+						<!-- <span class="page-list pull-right" style="margin: 8px 8px 0 0;"> 
+							Số hàng mỗi trang
+							<span class="btn-group dropup">
+								<button type="button" class="btn btn-default dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="page-size">{{vm.pageSize}}</span> <span
+										class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#" ng-click="vm.pageSize=5;vm.searchByPage()">5</a></li>
+									<li><a href="#" ng-click="vm.pageSize=10;vm.searchByPage()">10</a></li>
+									<li><a href="#" ng-click="vm.pageSize=25;vm.searchByPage()">25</a></li>
+									<li><a href="#" ng-click="vm.pageSize=50;vm.searchByPage()">50</a></li>
+									<li><a href="#" ng-click="vm.pageSize=100;vm.searchByPage()">100</a></li>
+								</ul>
+							</span>
+						</span> -->
+
+					</div>
+					<div>
+						
+					</div>
+				</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/ng-template" id="modal_merge_farm.html">
+  <div modal-movable ng-include="'farm/views/child/modal_merge_farm.html?v={{version}}'"></div>
+</script>

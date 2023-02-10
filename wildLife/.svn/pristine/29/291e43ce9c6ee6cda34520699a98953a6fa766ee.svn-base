@@ -1,0 +1,35 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.bran.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'bran.create' | translate}}</h4>
+        <h4 ng-if="vm.bran.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'bran.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'bran.code' | translate}}</label>
+                <input ng-if="vm.bran.isNew == true" data-ng-model="vm.bran.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.bran.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			<div class="col-md-1 margin-top-10">
+				<button ng-if="vm.bran.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				<button ng-if="vm.bran.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			</div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'bran.name' | translate}}</label>
+                <input data-ng-model="vm.bran.name" type="text" class="form-control" />
+            </div>
+           <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'bran.description' | translate}}</label>
+                <input data-ng-model="vm.bran.description" type="text" class="form-control" />
+            </div>
+            
+         
+          
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'bran.cancel' | translate}}</button>
+		<button ng-if="vm.bran.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'bran.save' | translate}}</button>
+		<button ng-if="vm.bran.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'bran.save' | translate}}</button>
+    </div>

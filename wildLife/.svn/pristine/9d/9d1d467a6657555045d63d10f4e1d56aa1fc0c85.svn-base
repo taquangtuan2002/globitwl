@@ -1,0 +1,429 @@
+
+<style>
+/* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+/* #map {
+    height:500px;
+  } */
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+;
+</style>
+<style>
+html, body, #map {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: 'Open Sans', Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 12px !important;
+}
+
+.table tr td {
+	font-size: 12px;
+}
+
+#form-container {
+	top: 10;
+	right: 10;
+	position: fixed;
+	width: 250px;
+	z-index: 999;
+}
+
+.table-legend {
+	font-size: 12px;
+	width: 100%;
+}
+
+.legend-icon {
+	width: 24px;
+}
+
+#form-container {
+	z-index: 999 !important;
+}
+</style>
+
+<div class="row ">
+	<div class="col-md-12">
+		
+		<div ng-show="vm.viewPosition" class="card card-body bg-light" id="form-container">
+			<a ng-show="vm.showMenu" ng-click="vm.showMenu=!vm.showMenu" class="pull-right"><i class="fa fa-fw fa-close"></i>Ẩn Menu</a>
+			<a ng-show="!vm.showMenu" ng-click="vm.showMenu=!vm.showMenu" class="pull-right"><i class="fa fa-fw fa-toggle-down"></i>Hiện Menu</a>
+			
+			<form ng-show="vm.showMenu"  action="/" id="filter-form">
+				<div class="form-group">
+					<label for="q">Tìm kiếm</label> <select class="form-control"
+						name="q" id="q"></select>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label for="year">Năm dữ liệu</label> <select class="form-control"
+						name="year" id="year"></select>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label for="ani_group">Nhóm loài</label> <select
+						class="form-control" name="ani_group" id="ani_group"></select>
+				</div>
+				<hr>
+				<div class="form-group">
+					<label for="province_id">Tỉnh/Thành phố</label> <select
+						class="form-control" name="province_id" id="province_id"></select>
+				</div>
+				<div class="form-group">
+					<label for="district_id">Quận/Huyện</label> <select
+						class="form-control" name="district_id" id="district_id"></select>
+				</div>
+				<div class="form-group">
+					<label for="commune_id">Phường/Xã</label> <select
+						class="form-control" name="commune_id" id="commune_id"></select>
+				</div>
+				<hr />
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" name="is_cluster"
+						id="is_cluster" checked> <label class="form-check-label"
+						for="is_cluster"> Nhóm tổng theo tỉnh/huyện </label>
+				</div>
+				<hr />
+				<button type="button" id="filter" class="btn btn-primary">Lọc
+					cơ sở</button>
+				<button type="button" id="reset" class="btn btn-danger">Làm
+					mới bản đồ</button>
+			</form>
+		</div>
+		<div id="map" class="min-height-700 portlet light bordered"></div>
+
+	</div>
+
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="latlng-modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Cập nhật tọa độ</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="/" id="latlng-form">
+					<input type="hidden" name="farmCode" id="farmCode">
+					<div class="form-group">
+						<label for="q">Kinh độ</label> <input type="text"
+							class="form-control" name="lng" id="lng" />
+					</div>
+					<hr>
+					<div class="form-group">
+						<label for="year">Vĩ độ</label> <input type="text"
+							class="form-control" name="lat" id="lat" />
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+					ng-click="vm.updateFarm()" data-dismiss="modal">Cập nhật</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="iconSize-modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Cập nhật tọa độ</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="/" id="iconSize-form">
+					<div class="form-group">
+						<label for="iconSize0"> Kích cỡ mặc định </label> <input
+							type="number" class="form-control" name="iconSize0" />
+					</div>
+					<div class="form-group">
+						<label for="iconSize1"> Kích cỡ >= 51 && <= 200 </label> <input
+							type="number" class="form-control" name="iconSize1" />
+					</div>
+					<div class="form-group">
+						<label for="iconSize2"> Kích cỡ >= 201 & <= 500 </label> <input
+							type="number" class="form-control" name="iconSize2" />
+					</div>
+					<div class="form-group">
+						<label for="iconSize3"> Kích cỡ > 500 </label> <input
+							type="number" class="form-control" name="iconSize3" />
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btnUpdateIconSize">Cập
+					nhật</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  
+<script type="text/html" id="legend-template">
+        <table class="table-legend">
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/mix.svg" alt="">
+                </td>
+                <td>Gộp</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/aves.svg" alt="">
+                </td>
+                <td>Lớp chim</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/Arachnida.png" alt="">
+                </td>
+                <td>Lớp hình nhện</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/Amphibians.png" alt="">
+                </td>
+                <td>Lớp lưỡng cư</td>
+            </tr>
+             <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/reptile.svg" alt="">
+                </td>
+                <td>Lớp bò sát</td>
+            </tr>
+             <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/mammalia.svg" alt="">
+                </td>
+                <td>Lớp thú</td>
+            </tr>
+        </table>
+        <hr />
+        <center>
+            <a data-toggle="modal" data-target="#iconSize-modal">Thiết lập kích cỡ</a>
+        </center>
+    </script>-->
+<script type="text/html" id="popup-template">
+        <table class="table table-bordered table-hovered table-striped">
+            <tbody>
+				<tr>
+                    <td>Mã hệ thống:</td>
+                    <td>{{code}}</td>
+                </tr>
+                <tr>
+                    <td>Chủ sở hữu:</td>
+                    <td>{{name}}</td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ:</td>
+                    <td>{{address_detail}}</td>
+                </tr>
+                <tr>
+                    <td>Loài:</td>
+                    <td>{{animal_name}}</td>
+                </tr>
+                <tr>
+                    <td>Tổng số:</td>
+                    <td>{{animal_total}}</td>
+                </tr>
+				<tr>
+				<td colspan='2'>
+				<a target="_blank" href="https://www.google.com/maps/search/?api=1&query={{latitude}},{{longitude}}">
+                	<span>Chỉ đường đến cơ sở</span>
+            	</a>
+            	<!-- ng-click="vm.openGoogleMaps(, )" -->
+				</td>
+			</tr>
+            </tbody>
+        </table>
+    </script>
+<script type="text/ng-template" id="detail_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"> Thông tin cơ sở nuôi động vật - {{vm.farm.name}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+				<div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.name' | translate}}</label>
+                        <input data-ng-model="vm.farm.name" type="text" class="form-control" />
+                    </div>
+					<div ng-if="$state.params.id"  class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.farmCode' | translate}}</label>
+                        <input readonly data-ng-model="vm.farm.code" type="text" class="form-control" />
+                    </div>
+					<div ng-if="!$state.params.id"  class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.farmCode' | translate}}</label>
+                        <input data-ng-model="vm.farm.code" type="text" class="form-control" />
+                    </div>
+					
+                    
+					<div class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.businessRegNumber' | translate}}</label>
+                        <input data-ng-model="vm.farm.businessRegistrationNumber" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.businessRegDate' | translate}}</label>
+                        <input ng-model="vm.farm.businessRegistrationDate" type="text" class="form-control" my-date-picker/>
+                    </div>	
+
+					<div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.phoneNumber' | translate}}</label>
+                        <input data-ng-model="vm.farm.phoneNumber" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold">Fax</label>
+                        <input ng-model="vm.farm.fax" type="text" class="form-control"/>
+                    </div>	
+					
+				</div>
+				
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			
+		</div>
+	</div>
+</script>
+<!-- END MAIN CONTENT -->
+
+<script type="text/html" id="popup-template">
+	<table class="table table-bordered table-hovered table-striped">
+		<tbody>
+			<tr>
+				<td>Chủ sở hữu:</td>
+				<td>{{name}}</td>
+			</tr>
+			<tr>
+				<td>Địa chỉ:</td>
+				<td>{{address_detail}}</td>
+			</tr>
+			<tr>
+				<td>Loài:</td>
+				<td>{{animal_name}}</td>
+			</tr>
+			<tr>
+				<td>Tổng số:</td>
+				<td>{{animal_total}}</td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+				<a href="javascript:;" onclick="openGoogleMaps(11.0025343584324, 107.174377441406)">
+                	<span>Chỉ đường đến cơ sở</span>
+            	</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+
+<script type="text/html" id="legend-template">
+        <table class="table-legend">
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/mix.svg" alt="">
+                </td>
+                <td>Gộp</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/aves.svg" alt="">
+                </td>
+                <td>Lớp chim</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/Arachnida.png" alt="">
+                </td>
+                <td>Lớp hình nhện</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/Amphibians.png" alt="">
+                </td>
+                <td>Lớp lưỡng cư</td>
+            </tr>
+             <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/reptile.svg" alt="">
+                </td>
+                <td>Lớp bò sát</td>
+            </tr>
+             <tr>
+                <td>
+                    <img class="legend-icon" src="http://fao.gisgo.vn/samples/images/mammalia.svg" alt="">
+                </td>
+                <td>Lớp thú</td>
+            </tr>
+        </table>
+        <hr />
+        <center>
+            <a id="linkShowIconSize">Thiết lập kích cỡ</a>
+        </center>
+    </script>
+
+<script>
+	
+</script>
+<style>
+/* html,
+    body, */
+#map {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: 'Open Sans', Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 12px !important;
+}
+
+.table tr td {
+	font-size: 12px;
+}
+
+#form-container {
+	right: 10px !important;
+	position: absolute;
+	width: 250px;
+	z-index: 99999;
+	background-color: white;
+	padding: 10px;
+	border-radius: 5px;
+}
+</style>
+<style>
+#viewAnimalProductTargetExist>ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#viewAnimalProductTargetExist>ul>li {
+	padding-left: 16px;
+}
+
+#viewAnimalProductTargetExist>ul>li::before {
+	content: "+";
+	padding-right: 8px;
+	color: blue;
+}
+</style>

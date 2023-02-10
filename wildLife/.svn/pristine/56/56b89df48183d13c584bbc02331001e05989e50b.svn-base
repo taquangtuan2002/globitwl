@@ -1,0 +1,14 @@
+package com.globits.wl.service;
+
+import java.util.List;
+
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+import com.globits.wl.dto.FmsAdministrativeUnitDto;
+
+public interface AdministrativeOrganizationService {
+ AdministrativeOrganizationDto save (AdministrativeOrganizationDto dto);
+ AdministrativeOrganizationDto update(AdministrativeOrganizationDto dto,Long id);
+ AdministrativeOrganizationDto delete(AdministrativeOrganizationDto dto,Long id);
+ List<AdministrativeOrganizationDto> getAllByParentId(Long parentId);
+ List<AdministrativeOrganizationDto> getChildrenByParentId(Long parentId);
+}

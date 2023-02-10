@@ -1,0 +1,314 @@
+<div class="portlet-farm-detail portlet-header">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-10">
+        <h3><strong>{{'importAnimal.titleDetail' | translate}}</strong></h3>
+
+        <!-- <button type="button" class="btn btn-default btn-primary" ng-click="vm.goBack()" class="btn btn-default"><i class="fa fa-mail-reply-all"></i>{{"importAnimal.goBack" | translate}}</button>
+        <button type="button" class="btn btn-default btn-primary" ng-click="vm.saveImportAnimal()">{{"importAnimal.save"| translate}}</button> -->
+
+    </div>
+</div>
+<div class="row margin-top-20 portlet-farm-detail">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 ng-if="$state.params.id">{{"importAnimal.status" | translate}}:
+                            <strong>{{"importAnimal.create" | translate}}</strong></h3>
+                        <!-- <h3 ng-if="$state.params.id">{{"importAnimal.status" | translate}}: <strong>{{"importAnimal.update" | translate}}</strong></h3> -->
+                    </div>
+                    <!-- <div ng-if="$state.params.id" class="col-md-6">
+                        <label class="bold">{{"importAnimal.batchCode" | translate}}</label>
+                        <input  readonly data-ng-model="vm.importAnimal.batchCode" type="text" class="form-control" />
+                    </div> -->
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.CSCN" | translate}}:</label>
+                        <!--<ui-select ng-model="vm.farmSelected" sortable="true" close-on-select="true" aria-multiselectable="true" on-select="vm.onFarmSelected($item)" on-remove="vm.onRemovedFarm()">
+                           <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectFarm'|translate}}...">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="farm  in vm.farms | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="farm.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>-->
+                        <div class="input-group col-md-12">
+                            <input readonly data-ng-model="vm.importAnimal.farm.name"
+                                placeholder="{{'exportAnimal.searchFarm' | translate}}" type="text" class="form-control"
+                                title="vm.code" />
+                            <!-- <div class="input-group-btn">
+								<button ng-click="vm.showPopupFarm()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>{{"exportAnimal.choose" | translate}}</button>
+							</div> -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.dateImport" | translate}}:</label>
+                        <input data-ng-model="vm.importAnimal.dateImport" type="text" my-date-picker readonly
+                            class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.parentAnimal" | translate}}:</label>
+                        <ui-select ng-model="vm.animalSelected" sortable="true" close-on-select="true"
+                            aria-multiselectable="true" on-select="vm.onSelectedAnimal($item)"
+                            on-remove="vm.onRemovedAnimal()">
+                            <ui-select-match allow-clear="true"
+                                placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                repeat="animal  in vm.parentAnimals | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.quantity"|translate}}:</label>
+                        <input type="text" number-input ng-model="vm.importAnimal.quantity" name="quantity"
+                            class="form-control" />
+                        <!--<input data-ng-model="vm.importAnimal.quantity" type="number" min="0" class="form-control" />-->
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <div class="col-md-6">
+                        <label class="bold">{{"importAnimal.amount"|translate}}:</label>
+                        <input data-ng-model="vm.importAnimal.amount" type="number" min="0" class="form-control" />
+                    </div> -->
+                    <!--<div class="col-md-6">
+                        <label class="bold">{{"original.information"|translate}}:</label>
+                        <ui-select ng-model="vm.importAnimal.original" sortable="true" close-on-select="true" aria-multiselectable="true" on-select="vm.onAnimalSelected($item)" on-remove="vm.onRemovedAnimal()">
+                            <ui-select-match allow-clear="true" placeholder="{{'original.chooseOriginal'|translate}}...">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="ori  in vm.originals | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="ori.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>-->
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.animal.name"|translate}}:</label>
+                        <ui-select ng-model="vm.importAnimal.animal" sortable="true" close-on-select="true"
+                            on-select="vm.onSelectedAnimalByParent($item)">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseAnimal'|translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="animal in vm.animalByParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.dayOld"|translate}}:</label>
+                        <input type="text" number-input ng-model="vm.importAnimal.dayOld" name="dayOld"
+                            class="form-control" />
+                        <!--<input data-ng-model="vm.importAnimal.dayOld" type="number" min="0" class="form-control" />-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"product.information"|translate}}:</label>
+                        <ui-select ng-model="vm.importAnimal.productTarget" sortable="true" close-on-select="true"
+                            aria-multiselectable="true">
+                            <ui-select-match allow-clear="true" placeholder="{{'product.chooseProduct'|translate}}...">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                repeat="productTarget  in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="productTarget.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{"importAnimal.lifeCycle"|translate}}:</label>
+                        <input type="text" number-input ng-model="vm.importAnimal.lifeCycle" name="dayOld"
+                            class="form-control" />
+                        <!--<input data-ng-model="vm.importAnimal.lifeCycle" type="number" class="form-control" />-->
+                    </div>
+                </div>
+                <div class="row">
+                    <!--<div class="col-md-6">
+                        <label class="bold">{{"importAnimal.remainQuantity"|translate}}:</label>
+                        <input data-ng-model="vm.importAnimal.remainQuantity" type="number"  class="form-control" />
+                    </div>-->
+                    <div class="col-md-6">
+                        <label class="bold">{{"importAnimal.supplierName"|translate}}:</label>
+                        <input data-ng-model="vm.importAnimal.supplierName" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="bold">{{"importAnimal.supplierAdress"|translate}}:</label>
+                        <input data-ng-model="vm.importAnimal.supplierAdress" type="text" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="bold">{{"importAnimal.description"|translate}}:</label>
+                        <input data-ng-model="vm.importAnimal.description" type="text" class="form-control" />
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10">
+                    <!-- <div class="col-md-3 input-group">
+                        <input autofocus="autofocus" type="text"
+                            ng-keydown="$event.keyCode === 13 && vm.searchChairPerson()" class="form-control"
+                            placeholder="Tìm kiếm theo tên" ng-model="vm.chairPersonSearch.keyword">
+                        <div class="input-group-addon" style="cursor: pointer;" ng-click="vm.searchChairPerson()"><i
+                                class="fa fa-search"></i></div>
+                    </div> -->
+                    <div class="portlet-header">
+                        <h3>{{"importAnimal.planVaccin"|translate}}</h3>
+
+
+                    </div>
+                    <div class="row margin-top-10">
+                        <button ng-click="vm.addInjectionPlant()"
+                            class="btn btn-primary margin-left-10 margin-bottom-10">{{"importAnimal.create" | translate}}</button>
+
+                    </div>
+                    <div>
+
+                        <div class="col-md-12">
+                            <table class="table table-bordered" margin-left-10>
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>{{'importAnimal.injectionDate' | translate}} </th>
+                                        <th>{{'importAnimal.drug' | translate}} </th>
+                                        <th>{{'importAnimal.injectionRound' | translate}} </th>
+                                        <th>{{'importAnimal.operating' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="!(vm.injectionPlants.length > 0)">
+                                        <td colspan="5">
+                                            <p class="text-primary text-center font-weight-bold bg-secondary">
+                                                {{"importAnimal.noData" | translate}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="vm.injectionPlants.length > 0"
+                                        ng-repeat="injectionPlant in vm.injectionPlants track by $index">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{injectionPlant.injectionDate | date: 'dd/MM/yyyy'}}</td>
+                                        <td>{{injectionPlant.drug}}</td>
+                                        <td>{{injectionPlant.injectionTime.name}}</td>
+                                        <td><a class="green-dark margin-right-5" href="#"
+                                                data-ng-click="vm.editInjectionPlants($index)"><i
+                                                    class="icon-pencil margin-right-5"></i>{{"importAnimal.edit" | translate}}</a>
+                                            <a class="green-dark margin-right-5" href="#"
+                                                data-ng-click="vm.deleteInjectionPlants($index)"><i
+                                                    class="fa fa-trash"></i>{{"importAnimal.delete" | translate}}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="portlet-fotter pull-right margin-top-10">
+
+                            <button type="button" ng-click="$dismiss()" class="btn btn-default"
+                                data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+                            <button type="button" ng-click="vm.saveImportAnimal()" class="btn btn-primary">
+
+                                <i class="icon-check"></i> {{'importAnimal.save' | translate}}
+                            </button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- store -->
+</div>
+
+</div>
+</div>
+<style>
+    .margin-left-15 {
+        margin-left: 15px;
+    }
+</style>
+<!-- <div class="col-md-12 margin-top-10">
+    <label class="bold">Loại hình chăn nuôi:</label>
+    <ui-select multiple ng-model="vm.husbandryTypesSelected" sortable="true"
+        close-on-select="true" aria-multiselectable="true"
+        on-select="vm.onHusbandryTypeSelected($item)" on-remove="vm.onRemovedHusbandry()">
+        <ui-select-match allow-clear="true" placeholder="Chọn loại hình chăn nuôi...">
+            {{$item.name}}
+        </ui-select-match>
+        <ui-select-choices
+            repeat="husbandryType  in vm.husbandryTypes | propsFilter: {name: $select.search, code: $select.search}">
+            <div class="bold" ng-bind-html="husbandryType.name | highlight: $select.search">
+            </div>
+        </ui-select-choices>
+    </ui-select>
+</div> -->
+<!-- main js -->
+<script type="text/ng-template" id="injection_plant_detail.html">
+    <div modal-movable ng-include="'import_animal/views/child/injection_plant_detail.html?v={{version}}'"></div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_injection_plant.html">
+    <div modal-movable ng-include="'import_animal/views/child/confirm_delete_injection_plant.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="choose_farm_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i> {{"exportAnimal.chooseFarm" | translate}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text"  ng-if="vm.isFamer == false"  data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<input type="text"  ng-if="vm.isFamer == true" readonly data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByFarm()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+					<!--</div>-->
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlFarm" bs-table-control="vm.bsTableControlFarm"></table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agreeFarm()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>

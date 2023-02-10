@@ -1,0 +1,85 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+    
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="btn-group pull-left margin-top-10 margin-bottom-10">
+                    <button ng-show="vm.isRole==true" class="btn btn-default" data-ng-click="vm.newArticleType()"><i class="fa fa-plus-circle"></i>{{'cmsArticleType.create' | translate}}</button>
+                </div>
+				<div ng-if="vm.isRole==true">
+					<table   id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+				</div>
+                
+				<div ng-if="vm.isRole==false">
+					<table   id="bsTableControlNotAdmin" bs-table-control="vm.bsTableControlNotAdmin"></table>
+				</div>
+				
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_article_type_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title" data-ng-if="vm.articleType.isNew == true"><i class="icon-plus"></i>{{'cmsArticleType.create' | translate}}</h4>
+            <h4 class="modal-title" data-ng-if="vm.articleType.isNew == false"><i class="fa fa-pencil-square-o"></i>{{'cmsArticleType.update' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-10">
+                    <label class="bold">{{'cmsArticleType.code' | translate}}:</label>
+                    
+					<input ng-if="vm.articleType.isNew == true" data-ng-model="vm.articleType.code" type="text" autofocus="autofocus" class="form-control" />
+					<input ng-if="vm.articleType.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+				<div class="col-md-1 margin-top-10">
+					<button ng-if="vm.articleType.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+					<button ng-if="vm.articleType.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				</div>
+                <div class="col-xs-12">
+                    <label class="bold">{{'cmsArticleType.name' | translate}}:</label>
+                    <input class="form-control" ng-model="vm.articleType.name"/>
+                </div>
+                <div class="col-xs-12">
+                    <label class="bold">{{'cmsArticleType.description' | translate}}:</label>
+                    <input class="form-control" ng-model="vm.articleType.description"/>
+                </div>
+                <div class="col-xs-12">
+                    <label class="bold">{{'cmsArticleType.priority' | translate}}:</label>
+                    <input class="form-control" type="number"  ng-model="vm.articleType.priority"/>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'cmsArticleType.cancel' | translate}}</button>
+            <!-- <button type="button" ng-click="$close('yes');" class="btn btn-primary" data-dismiss="modal">{{'cmsArticleType.save' | translate}}</button> -->
+            <button ng-if="vm.articleType.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'cmsArticleType.save' | translate}}</button>
+			<button ng-if="vm.articleType.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'cmsArticleType.save' | translate}}</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i>{{'cmsArticleType.delete' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{'cmsArticleType.confirmDelete' | translate}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'cmsArticleType.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'cmsArticleType.accept' | translate}}</button>
+        </div>
+    </div>
+</script>
+
+<!-- BEGIN MAIN JS -->

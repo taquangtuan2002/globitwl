@@ -1,0 +1,187 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-3">
+        <h3>{{'cmsArticle.theme' | translate}}</h3>
+        <p ng-repeat="cmsCategory in vm.cmsCategories"></p>
+        <ul class="list-group">
+            <!-- <li class="list-group-item active">active</li> -->
+            <li class="list-group-item" ng-click="vm.selectCategory()" ng-class="vm.getStyle(0)">Tất cả</li>
+            <li class="list-group-item" ng-click="vm.selectCategory(cmsCategory)" ng-class="vm.getStyle(cmsCategory)"
+                ng-repeat="cmsCategory in vm.cmsCategories">{{cmsCategory.title}}</li>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <div class="portlet light bordered">
+            <div class="row margin-top-10">
+                <div class="col-sm-6 col-xs-12 margin-bottom-10">
+                    <button ng-show="vm.isRole==true" class="btn btn-default" data-ng-click="vm.newArticle()"><i
+                            class="fa fa-plus-circle"></i>{{'cmsArticle.create' | translate}}</button>
+                </div>
+                <div class="col-sm-6 col-xs-12 margin-bottom-10" style="text-align: right;">
+                    <div class="input-group" style="float: right;">
+                        <input type="text" data-ng-model="vm.title" dl-enter-key="vm.search()" class="form-control"
+                            placeholder="{{'cmsArticle.findTitle' | translate}}" name="search">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <!-- <div ng-if="vm.isRole==true">
+					<table   id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+				</div>
+                
+				<div ng-if="vm.isRole==false">
+					<table   id="bsTableControlNotAdmin" bs-table-control="vm.bsTableControlNotAdmin"></table>
+				</div> -->
+				
+				<div class="attachment-block clearfix" ng-repeat="e in vm.articles">
+					<a target="_blank" href="#/news/entry/{{e.id}}">
+					<img class="attachment-img" ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{e.titleImageUrl}}"	alt="{{e.title}}"/>
+					</a>
+					<div class="attachment-pushed">
+						<div ng-if="vm.isRole==true" class="attachment-text text-right pull-right text-red">
+							<a class="text-yellow" href="#" data-ng-click="$parent.editArticle(e.id)"><i class="icon-pencil margin-right-5"></i>{{"cmsArticle.edit" | translate}}</a>
+							<a class="text-red" href="#" data-ng-click="$parent.deleteArticle(e.id)"><i class="fa fa-trash margin-right-5"></i>{{"cmsArticle.delete" | translate}}</a>
+						</div>
+						<h4 class="attachment-heading">
+							<a target="_blank" href="#/news/entry/{{e.id}}">{{e.title}}</a>
+						</h4>
+						
+						<div class="attachment-text">
+							{{e.summary}}
+							<br/>
+							<a class="pull-right" target="_blank" href="#/news/entry/{{e.id}}"><i class="fa fa-fw fa-hand-o-right"></i></a>							
+						</div>
+						
+						<!-- /.attachment-text -->
+					</div>
+					<!-- /.attachment-pushed -->
+				</div>
+				<div>
+					<span class="page-list pull-left"> <span class="btn-group dropup">
+							<button type="button" class="btn btn-default  dropdown-toggle"
+								data-toggle="dropdown">
+								<span class="page-size">{{vm.pageSize}}</span> <span
+									class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="javascript:void(0)" ng-click="vm.pageSize=5;vm.getSearchArticleByDto()">5</a></li>
+								<li><a href="javascript:void(0)" ng-click="vm.pageSize=10;vm.getSearchArticleByDto()">10</a></li>
+								<li><a href="javascript:void(0)" ng-click="vm.pageSize=25;vm.getSearchArticleByDto()">25</a></li>
+								<li><a href="javascript:void(0)" ng-click="vm.pageSize=50;vm.getSearchArticleByDto()">50</a></li>
+								<li><a href="javascript:void(0)" ng-click="vm.pageSize=100;vm.getSearchArticleByDto()">100</a></li>
+							</ul>
+					</span></span>
+					<ul uib-pagination total-items="vm.totalItem" max-size="vm.maxSize"
+						items-per-page="vm.pageSize" ng-model="vm.pageIndex"
+						ng-change="vm.getSearchArticleByDto()" class="pagination-sm pull-right"
+						boundary-links="true" previous-text="&lsaquo;"
+						next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>					
+				</div>
+			</div>
+            <!-- <div class="portlet-body">
+                <div class="btn-group pull-left margin-top-10 margin-bottom-10">
+                    <button class="btn btn-default" data-ng-click="vm.newArticle()"><i
+                        class="fa fa-plus-circle"></i>Thêm mới</button>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_article_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title" data-ng-if="vm.article.isNew == true"><i class="icon-plus"></i>Thêm mới bài báo</h4>
+            <h4 class="modal-title" data-ng-if="vm.article.isNew == false"><i class="fa fa-pencil-square-o"></i>Cập nhật bài báo</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-12">
+                    <label class="bold">Tiêu đề:</label>
+                    <input class="form-control" ng-model="vm.article.title"/>
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <label class="bold">Tóm tắt nội dung:</label>
+                    <input class="form-control" ng-model="vm.article.summary"/>
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <label class="bold">Nội dung:</label>
+                    <!-- <input class="form-control" ng-model="vm.article.content"/> -->
+                    <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.article.content"></textarea>
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <label class="bold">Ảnh tiêu đề:</label>
+                    <div class="left-profile image-profile text-center" ng-model="vm.file" 
+                        ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="100MB">
+                        <p ng-if="vm.file.length <= 0">Chọn ảnh tiêu đề</p>
+                        <div ng-if="vm.article.titleImageUrl">
+                            <img ng-src="assets/images/articles/{{vm.article.titleImageUrl}}" ngf-accept="'image/*'" style="width: 100%; height:100%;">
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <label class="bold">Loại bài báo:</label>
+                    <ui-select ng-model="vm.article.articleType" sortable="true" close-on-select="true" style="width: 100% !important;">
+                        <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="so in vm.cmsArticleTypes  | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <label class="bold">Chủ đề:</label>
+                    <ui-select multiple theme="bootstrap" on-select="onSelected($item)"  data-ng-model="vm.article.listCategory" sortable="true" close-on-select="true" style="width: 100% !important;">
+                        <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$item.title}}</ui-select-match>
+                        <ui-select-choices repeat="category in vm.cmsCategories | propsFilter: {title: $select.search}">
+                            <div class="bold" ng-bind-html="category.title | highlight: $select.search"></div>
+                        </ui-select-choices>
+                        
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+            <button type="button" ng-click="$close('yes');" class="btn btn-primary" data-dismiss="modal">Lưu</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i>{{'cmsArticle.delete' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{'cmsArticle.confirmDelete' | translate}}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'cmsArticle.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'cmsArticle.accept' | translate}}</button>
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->
+
+<style>
+    #mce_fullscreen_container {
+    z-index: 999999 !important;
+}
+</style>
+<!-- 
+<script>
+    $('div.modal').on('show.bs.modal', function (event) {
+        let modal = $(this);
+        modal.addClass('d-block'); // Boostrap class for display-block
+    });
+    $('div.modal').on('hide.bs.modal', function (event) {
+        let modal = $(this);        
+        modal.removeClass('d-block');
+    });
+</script> -->

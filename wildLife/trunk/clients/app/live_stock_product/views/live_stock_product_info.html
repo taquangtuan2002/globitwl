@@ -1,0 +1,65 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.liveStockProduct.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'liveStockProduct.create' | translate}}</h4>
+        <h4 ng-if="vm.liveStockProduct.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'liveStockProduct.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'liveStockProduct.code' | translate}}</label>
+                <input ng-if="vm.liveStockProduct.isNew == true" data-ng-model="vm.liveStockProduct.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.liveStockProduct.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			<div class="col-md-1 margin-top-10">
+				<button ng-if="vm.liveStockProduct.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				<button ng-if="vm.liveStockProduct.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			</div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'liveStockProduct.name' | translate}}</label>
+                <input data-ng-model="vm.liveStockProduct.name" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+               <label class="bold">{{"importAnimal.parentAnimal" | translate}}:</label>
+				<ui-select ng-model="vm.liveStockProduct.animal" sortable="true" close-on-select="true" aria-multiselectable="true" on-select="vm.onSelectedAnimal($item)" on-remove="vm.onRemovedAnimal()">
+					<ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+						{{$select.selected.name}}
+					</ui-select-match>
+					<ui-select-choices repeat="animal  in vm.parentAnimals | propsFilter: {name: $select.search, code: $select.search}">
+						<div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+						</div>
+					</ui-select-choices>
+				</ui-select>
+            </div>
+			<div class="col-md-12 margin-top-10">
+               <label class="bold">{{"liveStockProduct.unitQuantity" | translate}}:</label>
+				<ui-select ng-model="vm.liveStockProduct.unitQuantity" sortable="true" close-on-select="true" aria-multiselectable="true" on-remove="vm.onRemovedAnimal()">
+					<ui-select-match allow-clear="true" placeholder="{{'liveStockProduct.chooseUnit'|translate}}...">
+						{{$select.selected.name}}
+					</ui-select-match>
+					<ui-select-choices repeat="animal  in vm.units | propsFilter: {name: $select.search, code: $select.search}">
+						<div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+						</div>
+					</ui-select-choices>
+				</ui-select>
+            </div>
+			<div class="col-md-12 margin-top-10">
+               <label class="bold">{{"liveStockProduct.unitAmount" | translate}}:</label>
+				<ui-select ng-model="vm.liveStockProduct.unitAmount" sortable="true" close-on-select="true" aria-multiselectable="true" on-remove="vm.onRemovedAnimal()">
+					<ui-select-match allow-clear="true" placeholder="{{'liveStockProduct.chooseUnit'|translate}}...">
+						{{$select.selected.name}}
+					</ui-select-match>
+					<ui-select-choices repeat="animal  in vm.units | propsFilter: {name: $select.search, code: $select.search}">
+						<div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+						</div>
+					</ui-select-choices>
+				</ui-select>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'liveStockProduct.cancel' | translate}}</button>
+        <!--<button type="button" ng-click="vm.saveOriginal()" class="btn btn-primary"><i class="icon-check"></i> {{'liveStockProduct.save' | translate}}</button>-->
+		<button ng-if="vm.liveStockProduct.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'liveStockProduct.save' | translate}}</button>
+		<button ng-if="vm.liveStockProduct.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'liveStockProduct.save' | translate}}</button>
+    </div>

@@ -1,0 +1,80 @@
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="page-bar">-->
+<!--<h3 class="page-title pull-left"><i class="icon-layers"></i> Quản lý người dùng</h3>-->
+<!--<ul class="page-breadcrumb pull-right hidden-xs">-->
+<!--<li>-->
+<!--<a href="#">Hệ thống</a>-->
+<!--<i class="fa fa-circle"></i>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="#/dashboard">Tài khoản người dùng</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{'waterSource.information' | translate}}</strong></h3>
+            </div>
+			<div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10">
+							<button class="btn btn-default" ng-click="vm.newWaterSource()"><i class="icon-plus"></i>{{'waterSource.create' | translate}}</button>
+							<!--<button class="btn btn-default"><i class="fa fa-search"></i> Tìm kiếm</button>-->
+							<!-- <button class="btn btn-danger margin-left-10" data-ng-disabled="vm.selectedWaterSources.length <= 0"><i class="icon-trash"></i> Xóa</button> -->
+
+						</div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'waterSource.searchNameCode' | translate}}" name="search">
+                            <div class="input-group-btn">
+                                <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_modal.html">
+    <div modal-movable>
+        <div ng-include="'water_source/views/water_source_info.html'"></div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->
+<script type="text/ng-template" id="delete_modal.html">
+	<div class="modal-header alert alert-danger">
+			<h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+			
+			<a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+						
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<h2>
+					
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'waterSource.confirmDelete' | translate}}</p>
+				</h2>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'waterSource.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.confirmDelete()" class="btn btn-danger"><i class="icon-check"></i> {{'waterSource.accept' | translate}}</button>
+	</div>
+   
+</script>

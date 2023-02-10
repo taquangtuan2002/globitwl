@@ -1,0 +1,216 @@
+package com.globits.wl.domain;
+
+import java.util.Set;
+
+import javax.jdo.annotations.Column;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.globits.core.domain.BaseObject;
+
+@Entity
+@Table(name="tbl_administrative_organization")
+@XmlRootElement
+public class AdministrativeOrganization extends BaseObject{
+	@Column(name="organization_level")
+	private Integer organizationLevel; // Cấp tổ chức
+	@Column(name="name")
+	private String name; // Tên đơn vị
+	@Column(name="abbreviations")
+	private String abbreviations; // Tên viết tắt
+	@Column(name="address")
+	private String address; // địa chỉ
+	@Column(name="government_level")
+	private Integer governmentLevel; // Cấp chính quyền: 1: Tỉnh, 2: Huyện, 3: Xã 4: Trung ương
+	@Column(name="organizational_form")
+	private Integer organizationalForm; // Hình thức tổ chức: 1: Chi cục kiểm lâm, 2: Hạt kiểm lâm, 3: Phòng ban, 4: Nhóm
+	@Column(name="email")
+	private String email; // email
+	@Column(name="phone_number")
+	private String phoneNumber; // số điện thoại
+	@Column(name="fax")
+	private String fax; // số fax
+	@Column(name="website")
+	private String website; // website
+	@Column(name="numberical_order")
+	private Integer numbericalOrder;
+	@Column(name = "description")
+	private String description;
+//	Thông tin về đại diện cơ quan
+	@Column(name="displayName")
+	private String displayName; // Họ và tên
+	@Column(name="positionName")
+	private String positionName; // Chức vụ
+	@Column(name="phoneNumberAgencyRepresentative")
+	private String phoneNumberAgencyRepresentative; // Điện thoại liên hệ
+	@Column(name="emailAgencyRepresentative")
+	private String emailAgencyRepresentative; // Email liên hệ
+	
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private AdministrativeOrganization parent;//Đơn vị cha
+	
+	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+	private Set<AdministrativeOrganization> children;//Đơn vị con
+
+	@OneToMany(mappedBy = "administrativeOrganization", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<FmsOrganizationAdministrative> fmsOrganization; // Bảng trung gian FmsOrganizationAdministrative & AdministrativeOrganization
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getOrganizationLevel() {
+		return organizationLevel;
+	}
+
+	public void setOrganizationLevel(Integer organizationLevel) {
+		this.organizationLevel = organizationLevel;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAbbreviations() {
+		return abbreviations;
+	}
+
+	public void setAbbreviations(String abbreviations) {
+		this.abbreviations = abbreviations;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Integer getGovernmentLevel() {
+		return governmentLevel;
+	}
+
+	public void setGovernmentLevel(Integer governmentLevel) {
+		this.governmentLevel = governmentLevel;
+	}
+
+	public Integer getOrganizationalForm() {
+		return organizationalForm;
+	}
+
+	public void setOrganizationalForm(Integer organizationalForm) {
+		this.organizationalForm = organizationalForm;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public Integer getNumbericalOrder() {
+		return numbericalOrder;
+	}
+
+	public void setNumbericalOrder(Integer numbericalOrder) {
+		this.numbericalOrder = numbericalOrder;
+	}
+
+	public AdministrativeOrganization getParent() {
+		return parent;
+	}
+
+	public void setParent(AdministrativeOrganization parent) {
+		this.parent = parent;
+	}
+
+	public Set<AdministrativeOrganization> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<AdministrativeOrganization> children) {
+		this.children = children;
+	}
+
+	public Set<FmsOrganizationAdministrative> getFmsOrganization() {
+		return fmsOrganization;
+	}
+
+	public void setFmsOrganization(Set<FmsOrganizationAdministrative> fmsOrganization) {
+		this.fmsOrganization = fmsOrganization;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+
+	public String getPhoneNumberAgencyRepresentative() {
+		return phoneNumberAgencyRepresentative;
+	}
+
+	public void setPhoneNumberAgencyRepresentative(String phoneNumberAgencyRepresentative) {
+		this.phoneNumberAgencyRepresentative = phoneNumberAgencyRepresentative;
+	}
+
+	public String getEmailAgencyRepresentative() {
+		return emailAgencyRepresentative;
+	}
+
+	public void setEmailAgencyRepresentative(String emailAgencyRepresentative) {
+		this.emailAgencyRepresentative = emailAgencyRepresentative;
+	}
+}

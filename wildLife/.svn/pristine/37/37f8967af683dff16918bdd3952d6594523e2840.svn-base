@@ -1,0 +1,51 @@
+<div class="page-quick-sidebar">
+    <div class="nav-justified">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active">
+                <a href="#" data-target="#quick_sidebar_tab_1" data-toggle="tab" dropdown-menu-hover data-close-others="true"> Users
+                    <span class="badge badge-danger">2</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-target="#quick_sidebar_tab_2" data-toggle="tab" dropdown-menu-hover data-close-others="true"> Alerts
+                    <span class="badge badge-success">7</span>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true"> More
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="#" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                            <i class="icon-bell"></i> Alerts </a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                            <i class="icon-info"></i> Notifications </a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                            <i class="icon-speech"></i> Activities </a>
+                    </li>
+                    <li class="divider"> </li>
+                    <li>
+                        <a href="#" data-target="#quick_sidebar_tab_3" data-toggle="tab">
+                            <i class="icon-settings"></i> Settings </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
+                Sample 1.
+            </div>
+            <div class="tab-pane page-quick-sidebar-alerts" id="quick_sidebar_tab_2">
+               Sample 2.
+            </div>
+            <div class="tab-pane page-quick-sidebar-settings" id="quick_sidebar_tab_3">
+                Sample 3.
+            </div>
+        </div>
+    </div>
+</div>

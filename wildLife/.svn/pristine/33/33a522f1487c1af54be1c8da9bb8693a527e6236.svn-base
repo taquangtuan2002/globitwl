@@ -1,0 +1,368 @@
+<!-- BEGIN HEADER TOP -->
+<div class="page-header-top">
+    <div class="container">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo">
+            <a ui-sref="dashboard">
+                <img src="{{settings.assetsPath}}/images/logo-small.png" alt="logo" class="logo-default" /> </a>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="menu-toggler"></a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+                <!-- BEGIN USER LOGIN DROPDOWN -->
+                <li class="dropdown dropdown-user dropdown-dark">
+                    <a href="#" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
+                        <img ng-if="!currentUser.hasPhoto" alt="" class="img-circle" ng-src="{{settings.assetsPath}}/images/no-profile-photo-small.png" />
+                        <img id="_user_profile_photo_small" ng-if="currentUser.hasPhoto" alt="" class="img-circle" ng-src="{{settings.api.baseUrl}}public/users/photo/{{currentUser.username}}" />
+                        <span class="username username-hide-on-mobile" data-ng-cloak="">{{currentUser.displayName}}</span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li class="user-photo" ng-if="!currentUser.hasPhoto">
+                            <a href="#" ng-click="profilePhoto.showUploadModal()"><img class="img-circle" alt="User" ng-src="{{settings.assetsPath}}/images/no-profile-photo.png" /><span>cập nhật ảnh</span></a>
+                        </li>
+                        <li class="user-photo" ng-if="currentUser.hasPhoto">
+                            <a href="#" ng-click="profilePhoto.showUploadModal()"><img id="_user_profile_photo_big" class="img-circle" alt="User" ng-src="{{settings.api.baseUrl}}public/users/photo/{{currentUser.username}}" /><span>cập nhật ảnh</span></a>
+                        </li>
+                        <li style="padding-top: 10px">
+                            <a href="#/user/profile"><i class="icon-user"></i> Thông tin tài khoản </a>
+                        </li>
+                        <li style="padding-top: 10px">
+                            <a href="#" ng-click="changePassword()"><i class="icon-shield"></i> Đổi mật khẩu </a>
+                        </li>
+                        <li class="divider"> </li>
+                        <li>
+                            <a href="#" data-ng-click="logout()"><i class="icon-power"></i> Đóng phiên làm việc </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- END USER LOGIN DROPDOWN -->
+            </ul>
+        </div>
+        <!-- END TOP NAVIGATION MENU -->
+    </div>
+</div>
+<!-- END HEADER TOP -->
+<!-- BEGIN HEADER MENU -->
+<div class="page-header-menu">
+    <div class="container">
+        <!-- BEGIN HEADER SEARCH BOX -->
+        <!--<form class="search-form" method="GET">-->
+            <!--<div class="input-group">-->
+                <!--<input type="text" class="form-control" placeholder="Tìm kiếm" name="query">-->
+                <!--<span class="input-group-btn">-->
+                    <!--<a href="javascript:;" class="btn submit">-->
+                        <!--<i class="icon-magnifier"></i>-->
+                    <!--</a>-->
+                <!--</span>-->
+            <!--</div>-->
+        <!--</form>-->
+        <!-- END HEADER SEARCH BOX -->
+        <!-- BEGIN MEGA MENU -->
+        <!-- DOC: Apply "hor-menu-light" class after the "hor-menu" class below to have a horizontal menu with white background -->
+        <!-- DOC: Remove dropdown-menu-hover and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
+        <div class="hor-menu">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#/dashboard">Trang chủ</a>
+                </li>
+
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="javascript:;"> Đăng ký	 học
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu" style="min-width: 500px;">
+                        <li>
+                            <div class="mega-menu-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <ul class="mega-menu-submenu">
+                                            <!--<li style="border-bottom: 1px dashed #627182">-->
+                                                <!--<h3><i class="icon-book-open"></i> QUẢN LÝ ĐÀO TẠO</h3>-->
+                                            <!--</li>-->
+                                            <li class="nav-item">
+									            <a href="#/student_account/enrollment_new">
+									                <i class="fa fa-opencart"></i>
+									                Đăng ký học form 1
+									            </a>
+									        </li>
+
+									        <li class="nav-item">
+									        	<a href="#/student_account/enrollment">
+									                <i class="fa fa-opencart"></i>
+									                Đăng ký học form 2
+									            </a>
+									        </li>
+                                            <li class="nav-item">
+                                                <a href="#/student_account/profile">
+                                                    <i class="fa fa-opencart"></i>
+                                                    Kết quả đăng ký học
+                                                </a>
+                                            </li>
+                                            <!-- <li>
+                                                <a href="#/course_hours/listing">
+                                                    <i class="fa fa-caret-right"></i> Giờ học
+                                                </a>
+                                            </li> -->
+                                            <!-- <li>
+                                                <a href="#/education_levels/listing">
+                                                    <i class="fa fa-caret-right"></i> Bậc đào tạo
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/education_types/listing">
+                                                    <i class="fa fa-caret-right"></i> Loại hình đào tạo
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/education_programs/listing">
+                                                    <i class="fa fa-caret-right"></i> Chương trình đào tạo
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/knowledge_block/listing">
+                                                    <i class="fa fa-caret-right"></i> Khối kiến thức
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/subjects/listing">
+                                                    <i class="fa fa-caret-right"></i> Môn học
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/specialties/listing">
+                                                    <i class="fa fa-caret-right"></i> Ngành/chuyên ngành
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/school_years/listing">
+                                                    <i class="fa fa-caret-right"></i> Năm học
+                                                </a>
+                                            </li> -->
+                                            
+                                        </ul>
+                                    </div>
+                                    <!-- <div class="col-md-6">
+                                        <ul class="mega-menu-submenu">
+                                            <li style="border-bottom: 1px dashed #627182">
+                                                <h3>&nbsp;</h3>
+                                            </li>
+                                            <li>
+                                                <a href="#/course_years/listing">
+                                                    <i class="fa fa-caret-right"></i> Khóa học
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/semesters/listing">
+                                                    <i class="fa fa-caret-right"></i> Học kỳ
+                                                </a>
+                                            </li>
+                                            
+                                            <li>
+                                                <a href="#/semester_subjects/listing">
+                                                    <i class="fa fa-caret-right"></i> Học phần - học kỳ
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/course_subjects/listing">
+                                                    <i class="fa fa-caret-right"></i> Lớp học phần
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/timetables">
+                                                    <i class="fa fa-caret-right"></i> Thời khóa biểu
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/student_coursesubjects/listing">
+                                                    <i class="fa fa-caret-right"></i> Thời khóa biểu s/viên
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/coursesubjectconfig/tree">
+                                                    <i class="fa fa-caret-right"></i> Cấu hình đăng ký học
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/specialities_course_year/listing">
+                                                    <i class="fa fa-caret-right"></i> Ngành - Khóa học
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/expectation_register/listing">
+                                                    <i class="fa fa-caret-right"></i> Nguyện vọng đăng ký
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#/enrollment_static/listing">
+                                                    <i class="fa fa-caret-right"></i> Báo cáo đăng ký học
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/studentmarks/private/studentId">Tra cứu điểm tổng hợp</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_behavior_mark/listing">Rèn luyện, học vụ, tốt nghiệp</a>
+                </li>
+                <!--<li class="menu-dropdown mega-menu-dropdown">-->
+                    <!--<a href="#/view_student_summary_mark/listing/:studentId">Tra cứu điểm học tập</a>-->
+                <!--</li>-->
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_voucher_receive_pay/listing">Tra cứu học phí</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_tution_fee_calculate/listing">Tính học phí</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_education_program/listing">Chương trình đào tạo</a>
+                </li>
+                <!--<li class="menu-dropdown mega-menu-dropdown">-->
+                    <!--<a href="#">Đổi mật khẩu</a>-->
+                <!--</li>-->
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_exam_room_search/listing">Xem lịch thi</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_reward/listing">Khen thưởng</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_discipline/listing">Kỷ luật</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_research/listing">Nghiên cứu khoa học</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown">
+                    <a href="#/student_account_profile/listing">Thông tin sinh viên</a>
+                </li>
+            </ul>
+        </div>
+        <!-- END MEGA MENU -->
+    </div>
+</div>
+<!-- END HEADER MENU -->
+<script type="text/ng-template" id="upload_photo_modal.html">
+    <div modal-movable min-width="350px">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="icon-cloud-upload"></i> Cập nhật ảnh đại diện</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="no-content1 display-block link" ngf-select="profilePhoto.triggerUpload($file, $invalidFiles)"
+                       accept="image/*" ngf-pattern="image/*, .jpg, .png" ngf-accept="'image/*'" ngf-multiple="false" ngf-max-size="1MB"
+                       ngf-min-height="300" ngf-max-height="1000" ngf-min-width="300" ngf-max-width="1000"><i class="fa fa-cloud-upload"></i> Chọn ảnh để tải lên</a>
+                </div>
+
+                <div class="col-md-12 margin-top-20" ng-if="profilePhoto.uploadedFile != null">
+                    <div class="row">
+                        <div class="col-xs-5 align-right">
+                            <label>Tệp tin đã chọn:</label>
+                        </div>
+                        <div class="col-xs-7">
+                            <span class="bold">{{profilePhoto.uploadedFile.name}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 margin-top-20" ng-if="profilePhoto.errorFile != null && profilePhoto.errorFile.$error != ''">
+                    Error: <span class="bold" ng-if="profilePhoto.errorFile.$error == 'maxSize'">Kích thước tệp tin không được vượt quá {{profilePhoto.errorFile.$errorParam}}</span>
+                    <span class="bold" ng-if="profilePhoto.errorFile.$error == 'maxWidth' || profilePhoto.errorFile.$error == 'maxHeight' || profilePhoto.errorFile.$error == 'minWidth' || profilePhoto.errorFile.$error == 'minHeight'">Kích thước ngang và dọc của ảnh phải từ 300 đến 1000 điểm ảnh.</span>
+                    <span class="bold" ng-if="profilePhoto.errorFile.$error != null && profilePhoto.errorFile.$error != 'maxSize' && profilePhoto.errorFile.$error != 'maxWidth' && profilePhoto.errorFile.$error != 'maxHeight' && profilePhoto.errorFile.$error != 'minWidth' && profilePhoto.errorFile.$error != 'minHeight'">Tệp tin {{profilePhoto.errorFile.name}} không hợp lệ.</span>
+                </div>
+
+                <div class="col-md-12 margin-top-20" ng-if="profilePhoto.uploadedFile.progress >= 0">
+                    <div class="progress" style="height: 20px">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="profilePhoto.uploadedFile.progress + '%'" style="width:{{profilePhoto.uploadedFile.progress}}%;">
+                            {{profilePhoto.uploadedFile.progress}}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="profilePhoto.closeUploadFile()"  data-ng-disabled="profilePhoto.uploadedFile.progress > 0 && profilePhoto.uploadedFile.progress < 100" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
+            <button type="button" ng-click="profilePhoto.startUploadFile(profilePhoto.uploadedFile)" class="btn btn-primary" data-ng-disabled="profilePhoto.uploadedFile == null || (profilePhoto.errorFile != null && profilePhoto.errorFile.$error != '') || profilePhoto.uploadedFile.progress >= 100" data-dismiss="modal">Bắt đầu tải lên</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="crop_photo_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="fa fa-crop"></i> Chỉnh sửa ảnh</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="cropper-crop-area">
+                        <ui-cropper image="profilePhoto.photoUrl" area-type="square" area-init-size="{ w:cropper.cropWidth,h:cropper.cropHeight}" cropject="profilePhoto.cropper" result-image="profilePhoto.croppedImage"></ui-cropper>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Chấp nhận</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="change_password_modal.html">
+    <div modal-movable min-width="350px">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-shield"></i> Đổi mật khẩu</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span style="font-size: 170px; color: #dddddd"><i class="im im-icon-Lock-3"></i></span>
+                </div>
+                <div class="col-xs-8">
+                    <div class="row">
+                        <div class="col-xs-12 margin-top-20">
+                            <label for="_frm_change_password.current_password" class="bold">Mật khẩu hiện thời</label>
+                            <input type="password" class="form-control" id="_frm_change_password.current_password" ng-model="changePasswordObj.currentPassword" autofocus="autofocus" />
+                        </div>
+                        <div class="col-xs-12 margin-top-20">
+                            <label for="_frm_change_password.new_password" class="bold">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="_frm_change_password.new_password" ng-model="changePasswordObj.newPassword" />
+                        </div>
+                        <div class="col-xs-12 margin-top-20">
+                            <label for="_frm_change_password.new_password_rep" class="bold">Nhập lại mật khẩu mới</label>
+                            <input type="password" class="form-control" id="_frm_change_password.new_password_rep" ng-model="changePasswordObj.newPasswordRep" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" ng-click="changePasswordObj.saveNewPassword()" class="btn blue-dark" data-dismiss="modal">Cập nhật</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="password_changed_modal.html">
+    <div modal-movable min-width="350px">
+        <div class="modal-header">
+            <h4 class="modal-title"><i class="icon-shield"></i> Mật khẩu đã thay đổi</h4>
+        </div>
+        <div class="modal-body">
+            Bạn đã thay đổi mật khẩu thành công. Bạn vui lòng đóng phiên làm việc hiện tại và đăng nhập lại bằng mật khẩu mới để tiếp tục.
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$close(); logout();" class="btn blue-dark" data-dismiss="modal">Đóng phiên làm việc</button>
+        </div>
+    </div>
+</script>

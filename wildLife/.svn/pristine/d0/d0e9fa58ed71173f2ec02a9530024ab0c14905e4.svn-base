@@ -1,0 +1,133 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{"report.animalRaisingInfo" | translate }}</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-3">
+                        <ui-select ng-model="vm.paramDto.animalParentId" sortable="true" close-on-select="true" on-select="">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="animal.id as animal in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+
+                </div>
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <!-- <button ng-click="vm.getQuantityReport()" class="btn btn-primary" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>{{'report.viewReport' | translate}}
+                        </button>
+                        <button ng-click="vm.showCalcaulation()" class="btn btn-primary margin-left-10" type="submit">{{'report.calculation' | translate}}</button> -->
+                        <button ng-click="vm.clickTest()" class="btn btn-primary margin-left-10" type="submit"><i class="glyphicon glyphicon-search"></i>{{'report.view' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-hover table-bordered" id="searchTextResults">
+                    <tr>
+                        <th class="text-center" style="padding-top: 20px;" rowspan="2">STT</th>
+                        <th colspan="2" class="text-center">{{'report.animalName' | translate}}</th>
+                        <th rowspan="2" style="padding-top: 20px;" class="text-center">{{'report.totalAnimalRaising' | translate}}</th>
+                        <th colspan="3" class="text-center">{{'report.animalParent' | translate}}</th>
+                        <th colspan="4" class="text-center">{{'report.childGranter1YearOld' | translate}}</th>
+                        <th rowspan="2" style="padding-top: 20px;width: 75px;" class="text-center ">{{'report.childLessThan1YearOld' | translate}}</th>
+                        <th rowspan="2" style="padding-top: 20px;" class="text-center ">{{'report.originName' | translate}}</th>
+                        <th rowspan="2" style="padding-top: 20px;" class="text-center ">{{'report.productTarget' | translate}}</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center" style="width: 150px;">{{'report.nameVN' | translate}}</th>
+                        <th class="text-center" style="width: 150px;">{{'report.nameScienceName' | translate}}</th>
+                        <th class="text-center">{{'report.total' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.total' | translate}}</th>
+                        <th class="text-center">{{'report.male' | translate}}</th>
+                        <th class="text-center">{{'report.female' | translate}}</th>
+                        <th class="text-center">{{'report.childUnknown' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="item in vm.listData | filter:searchText">
+                      <td class="text-center">{{$index + 1}}</td>
+                      <td class="text-center">{{item.animalName}}</td>
+                      <td class="text-center">{{item.animalScienceName}}</td>
+                      <td class="text-center">{{item.total}}</td>
+                      <td class="text-center">{{item.totalParent}}</td>
+                      <td class="text-center">{{item.totalParentMale}}</td>
+                      <td class="text-center">{{item.totalParentFeMale}}</td>
+                      <td class="text-center">{{item.totalChild}}</td>
+                      <td class="text-center">{{item.totalChildMale}}</td>
+                      <td class="text-center">{{item.totalChildFemale}}</td>
+                      <td class="text-center">{{item.totalChildUnknown}}</td>
+                      <td class="text-center">{{item.totalChildLessThan1Year}}</td>
+                      <td class="text-center"><div ng-bind-html="item.originName"></div></td>
+                      <td class="text-center"><div ng-bind-html="item.productTargetName"></div></td>
+                    </tr>
+                  </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/ng-template" id="farm_size_info.html">
+        <div modal-movable>
+            <div ng-include="'farm_size/views/farm_size_info.html'"></div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="confirm_delete.html">
+        <div modal-movable>
+            <div ng-include="'farm_size/views/confirm_delete.html'"></div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="confirm_delete_record.html">
+        <div class="modal-header alert alert-danger">
+            <h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+            <a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <h2>
+                    <p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'farmSize.confirmDelete' | translate}}</p>
+                </h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farmSize.cancel' | translate}}</button>
+            <button type="button" ng-click="vm.confirmDeleteRecord()" class="btn btn-danger"><i class="icon-check"></i> {{'farmSize.accept' | translate}}</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="calculation.html">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="pull-left">{{'report.calculation' | translate}}</h4>
+
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <strong>
+                    {{'report.calculation_ratio1' | translate}}<br />
+                    {{'report.calculation_ratio2' | translate}}<br />
+
+                    <br />
+
+                </strong>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farmSize.cancel' | translate}}</button>
+
+        </div>
+
+    </script>
+
+
+    <style>
+
+        .glb-text{
+            text-align: center;
+        }
+    </style>

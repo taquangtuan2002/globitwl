@@ -1,0 +1,153 @@
+<div class="row margin-top-10 glb-display-flex">
+    <div class="col-md-6 margin-top-10">
+        <div class="portlet light bordered glb-h-100">
+            <div class="portlet-header">
+                <div class="col-md-8">
+                    <h3>
+                        <strong>{{'farm.listImport'|translate}}</strong>
+                    </h3>
+                </div>
+                <div class="col-md-4 glb-text-align-right">
+                    <a  ng-if="vm.isSdahView==false" href="#/detail/import_animal_seed/" target="_blank" class="btn btn-primary margin-top-20"><i
+                            class="icon-check"></i>Khai báo tăng động vật</a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-12 text-center glb-overflow-x-scroll">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">STT</th>
+                                    <th ng-if="vm.isSdahView==false" rowspan="2" class="glb-white-space-nowrap">{{'farm.action' | translate}}</th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'importAnimal.batchCode' | translate}} </th>
+                                    <th class="glb-white-space-nowrap" colspan="2">Tên loài </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Thuộc loại</th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'importAnimal.quantity' | translate}} </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Số con đực </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Số con cái </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Số con không xác định giới tính </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'importAnimal.remainQuantity' | translate}}</th>
+                                    <!-- <th class="glb-white-space-nowrap" rowspan="2">Số con đực còn lại</th> -->
+                                    <!-- <th class="glb-white-space-nowrap" rowspan="2">Số con cái còn lại</th> -->
+                                    <!-- <th class="glb-white-space-nowrap" rowspan="2">Số không xác định giới tính còn lại</th> -->
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'importAnimal.dateImport' | translate}} </th>
+                                </tr>
+                                <tr>
+                                    <th class="glb-white-space-nowrap">Tên tiếng việt</th>
+                                    <th class="glb-white-space-nowrap">Tên khoa học</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="vm.importAnimalsTableImport.length == 0">
+                                    <td colspan="12">
+                                        <p class="text-primary text-center font-weight-bold bg-secondary">
+                                            {{"importAnimal.noData" | translate}}</p>
+                                    </td>
+                                </tr>
+                                <tr ng-if="vm.importAnimalsTableImport.length > 0"
+                                    ng-repeat="importAnimal in vm.importAnimalsTableImport track by $index">
+                                    <td class="glb-white-space-nowrap">{{$index+1}}</td>
+                                    <td ng-if="vm.isSdahView==false" class="glb-white-space-nowrap">
+                                        <a class="green-dark margin-right-5" target="_blank" href="#/detail/import_animal_seed/{{importAnimal.id}}" target="_blank"><i class="icon-pencil margin-right-5"></i> {{"animal.edit" | translate}}</a>
+                                        <!-- <a class="green-dark margin-right-5" href="#/detailview/import/animal/{{importAnimal.id}}" target="_blank"><i class="icon-eye margin-right-5"></i> {{"application.buttons.view" | translate}}</a> -->
+                                        <!-- <a ng-if="!importAnimal.isProductTargetEgg" class="green-dark margin-right-5 invisible"><i class="icon-plus margin-right-5"></i> {{"famer.importEgg" | translate}}</a> -->
+                                        <!-- <a ng-if="importAnimal.isProductTargetEgg" class="green-dark margin-right-5" ng-click="vm.createExportEgg(importAnimal)"><i class="icon-plus margin-right-5"></i> {{"famer.importEgg" | translate}}</a> -->
+                                    </td>
+                                    <td class="text-left glb-white-space-nowrap">{{importAnimal.batchCode}}</td>
+                                    <td class="text-left glb-white-space-nowrap">{{importAnimal.animal.name}}</td>
+                                    <td class="text-left glb-white-space-nowrap">{{importAnimal.animal.scienceName}}</td>
+                                    <td class="text-left glb-white-space-nowrap">{{vm.getAnimalReportDataType(importAnimal.animalReportDataType)}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{importAnimal.quantity | number : 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{importAnimal.male | number : 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{importAnimal.female | number : 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{importAnimal.unGender | number : 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{importAnimal.remainQuantity | number : 0}}</td>
+                                    <!-- <td class="glb-white-space-nowrap">{{importAnimal.remainMale | number : 0}}</td> -->
+                                    <!-- <td class="glb-white-space-nowrap">{{importAnimal.remainFemale | number : 0}}</td> -->
+                                    <!-- <td class="glb-white-space-nowrap">{{importAnimal.remainUnGender| number : 0}}</td> -->
+                                    <td class="text-right glb-white-space-nowrap">{{importAnimal.dateImport | date : 'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <ul uib-pagination total-items="vm.totalElementsImportAnimalTableImport"
+                            ng-model="vm.pageIndexImportAnimal" ng-change="vm.getPageSearchImportAnimalTable()" max-size="7"
+                            items-per-page="vm.pageSizeImportAnimal" class="pagination-sm" boundary-links="true"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 margin-top-10">
+        <div class="portlet light bordered glb-h-100">
+            <div class="portlet-header">
+                <div class="col-md-8">
+                    <h3>
+                        <strong>{{'farm.listExport'|translate}}</strong>
+                    </h3>
+                </div>
+                <div class="col-md-4 glb-text-align-right">
+                    <a ng-if="vm.isSdahView==false" href="#/detail/exportanimal/" target="_blank" class="btn btn-primary margin-top-20"><iclass="icon-check"></i>{{'exportAnimal.information' | translate}}</a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-12 text-center glb-overflow-x-scroll">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">STT</th>
+                                    <th ng-if="vm.isSdahView==false" rowspan="2"  class="glb-white-space-nowrap">{{'farm.action' | translate}}</th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'importAnimal.batchCode' | translate}} </th>
+                                    <th class="glb-white-space-nowrap" colspan="2">Tên loài </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Thuộc loại </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'exportAnimal.quantity' | translate}} </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Số con đực </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Số con cái </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">Số con không xác định giới tính </th>
+                                    <th class="glb-white-space-nowrap" rowspan="2">{{'exportAnimal.dateExport' | translate}} </th>
+                                </tr>
+                                <tr>
+                                    <th class="glb-white-space-nowrap">Tên tiếng việt</th>
+                                    <th class="glb-white-space-nowrap">Tên khoa học</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="vm.importAnimalsTableExport.length == 0">
+                                    <td colspan="12">
+                                        <p class="text-primary text-center font-weight-bold bg-secondary">
+                                            {{"importAnimal.noData" | translate}}</p>
+                                    </td>
+                                </tr>
+                                <tr ng-if="vm.importAnimalsTableExport.length > 0"
+                                    ng-repeat="exportAnimal in vm.importAnimalsTableExport track by $index">
+                                    <td>{{$index+1}}</td>
+                                    <td ng-if="vm.isSdahView==false" class="glb-white-space-nowrap">
+                                        <a class="green-dark margin-right-5" href="#/detail/exportanimal/{{exportAnimal.id}}" target="_blank"><i class="icon-pencil margin-right-5"></i> {{"animal.edit" | translate}}</a>
+                                        <!-- <a class="green-dark margin-right-5" href="#/detailview/exportanimal/{{exportAnimal.id}}" target="_blank"><i class="icon-pencil margin-right-5"></i> {{"application.buttons.view" | translate}}</a> -->
+                                    </td>
+                                    <td class="text-left glb-white-space-nowrap">{{ exportAnimal.batchCode}}</td>
+                                    <td class="text-left glb-white-space-nowrap">{{ exportAnimal.animal.name }}</td>
+                                    <td class="text-left glb-white-space-nowrap">{{ exportAnimal.animal.scienceName }}</td>
+                                    <td class="text-left glb-white-space-nowrap">{{ vm.getAnimalReportDataType(exportAnimal.importAnimal.animalReportDataType) }}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{ exportAnimal.quantity | number: 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{ exportAnimal.male | number: 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{ exportAnimal.female | number: 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{ exportAnimal.unGender | number: 0}}</td>
+                                    <td class="text-right glb-white-space-nowrap">{{ exportAnimal.dateExport| date: 'dd/MM/yyyy' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <ul uib-pagination total-items="vm.totalElementsImportAnimalTableExport"
+                            ng-model="vm.pageIndexExportAnimal" ng-change="vm.getPageSearchExportAnimalTable()" max-size="7"
+                            items-per-page="vm.pageSizeExportAnimal" class="pagination-sm" boundary-links="true"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+package com.globits.wl.service.impl;
+
+import com.globits.wl.dto.functiondto.DashboardCitesDto;
+import com.globits.wl.service.DashboardService;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+@Service
+public class DashboardServiceImpl implements DashboardService {
+    @PersistenceContext
+    EntityManager manager;
+
+    public Long totalSpeciesNumberPLI(){
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='I' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalSpeciesNumberPLII(){
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='II' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalSpeciesNumberPLIII(){
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='III' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalSpeciesNumberDVHD(){
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberPLI(){
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='I' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberPLII(){
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='II' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberPLIII(){
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='III' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberDVHD(){
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberPLI(){
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='I' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberPLII(){
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='II' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberPLIII(){
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='III' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberDVHD(){
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='' ";
+        Query qCount = manager.createQuery(countSql);
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public DashboardCitesDto Cites(){
+        DashboardCitesDto dashboardCitesDto = new DashboardCitesDto();
+        dashboardCitesDto.setSpeciesNumberPLI(totalSpeciesNumberPLI());
+        dashboardCitesDto.setSpeciesNumberPLII(totalSpeciesNumberPLII());
+        dashboardCitesDto.setSpeciesNumberPLIII(totalSpeciesNumberPLIII());
+        dashboardCitesDto.setSpeciesNumberDVHD(totalAnimalsNumberDVHD());
+        dashboardCitesDto.setFarmsNumberPLI(totalFarmsNumberPLI());
+        dashboardCitesDto.setFarmsNumberPLII(totalFarmsNumberPLII());
+        dashboardCitesDto.setFarmsNumberPLIII(totalFarmsNumberPLIII());
+        dashboardCitesDto.setFarmsNumberDVHD(totalFarmsNumberDVHD());
+        dashboardCitesDto.setAnimalsNumberPLI(totalAnimalsNumberPLI());
+        dashboardCitesDto.setAnimalsNumberPLII(totalAnimalsNumberPLII());
+        dashboardCitesDto.setAnimalsNumberPLIII(totalAnimalsNumberPLIII());
+        dashboardCitesDto.setAnimalsNumberDVHD(totalAnimalsNumberDVHD());
+        return dashboardCitesDto;
+    }
+
+
+
+}

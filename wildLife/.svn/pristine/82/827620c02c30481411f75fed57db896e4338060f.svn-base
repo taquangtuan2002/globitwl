@@ -1,0 +1,32 @@
+package com.globits.wl.rest;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+import com.globits.wl.service.AdministrativeOrganizationService;
+
+@RestController
+@RequestMapping("api/administrativeOrganization")
+public class RestAdministrativeOrganizationController {
+
+	@Autowired
+	private AdministrativeOrganizationService service;
+
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public AdministrativeOrganizationDto save(@RequestBody AdministrativeOrganizationDto dto) {
+		return service.save(dto);
+	}
+	
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	public AdministrativeOrganizationDto update(@PathVariable("id") long id,@RequestBody AdministrativeOrganizationDto dto) {
+		return service.update(dto,id);
+	}
+
+}

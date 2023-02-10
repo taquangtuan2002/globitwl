@@ -1,0 +1,44 @@
+package com.globits.wl.dto.functiondto;
+
+public class DashBoardFarmDto {
+    private Long farmsNumber;
+    private Long farmsNotProvidedCodeNumber;
+    private Long farmProvidedCodeNumber;
+    private Long farmProvidedCodeInYearNumber;
+
+    public DashBoardFarmDto(){
+
+    }
+
+    public Long getFarmsNumber() {
+        return farmsNumber;
+    }
+
+    public void setFarmsNumber(Long farmsNumber) {
+        this.farmsNumber = farmsNumber;
+    }
+
+    public Long getFarmsNotProvidedCodeNumber() {
+        return farmsNotProvidedCodeNumber;
+    }
+
+    public void setFarmsNotProvidedCodeNumber(Long farmsNotProvidedCodeNumber) {
+        this.farmsNotProvidedCodeNumber = farmsNotProvidedCodeNumber;
+    }
+
+    public Long getFarmProvidedCodeNumber() {
+        return farmProvidedCodeNumber;
+    }
+
+    public void setFarmProvidedCodeNumber(Long farmProvidedCodeNumber) {
+        this.farmProvidedCodeNumber = farmProvidedCodeNumber;
+    }
+
+    public Long getFarmProvidedCodeInYearNumber() {
+        return farmProvidedCodeInYearNumber;
+    }
+
+    public void setFarmProvidedCodeInYearNumber(Long farmProvidedCodeInYearNumber) {
+        this.farmProvidedCodeInYearNumber = farmProvidedCodeInYearNumber;
+    }
+}

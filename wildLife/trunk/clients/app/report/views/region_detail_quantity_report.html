@@ -1,0 +1,149 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{'report.regionDetailQuantityReport' | translate}}</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-3">
+                        <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                        <ui-select ng-model="vm.paramDto.regionId" sortable="true" close-on-select="true" on-select="vm.onFmsRegionSelected($item)">
+                            <ui-select-match allow-clear="true" placeholder="{{'region.chooseRegion' | translate}}...">{{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="region.id as region in vm.regions | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="region.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+					<!--<div class="col-md-3" ng-if="vm.isRole==false" >
+                       
+                        <ui-select ng-model="vm.paramDto.regionId" sortable="true" close-on-select="true">
+                            <ui-select-match allow-clear="false" placeholder="{{'region.chooseRegion' | translate}}...">{{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="region.id as region in vm.regions | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="region.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>-->
+                    <div class="col-md-3">
+                        <ui-select ng-model="vm.paramDto.animalParentId" sortable="true" close-on-select="true" on-select="">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">{{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="animal.id as animal in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-4 control-label">{{'report.fromYear' | translate}}</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" name="vm.paramDto.fromYear" ng-model="vm.paramDto.fromYear" required>
+                                    <!-- <option value="">...</option> -->
+                                    <option ng-selected="year==vm.paramDto.fromYear" ng-repeat="year in years" value="{{year}}">{{year}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                    	<div class="form-group">
+                            <label  for="inputEmail3" class="col-sm-4 control-label">{{'report.toYear' | translate}}</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" name="vm.paramDto.toYear" ng-model="vm.paramDto.toYear" required>
+                            <!-- <option value="">...</option> -->
+                            <option ng-selected="year==vm.paramDto.toYear" ng-repeat="year in years" value="{{year}}">{{year}}</option>
+                        </select>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <button ng-click="vm.getQuantityReport()" class="btn btn-primary" type="submit"> {{'report.viewReport' | translate}}</button>
+						<button ng-click="vm.showCalcaulation()" class="btn btn-primary margin-left-10" type="submit">{{'report.calculation' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+					<input type="radio" ng-model="vm.viewType" value="chart" style="color:#0d6cac">{{'report.chart' | translate}}							
+					<!-- <br/> -->				  
+					<input type="radio" ng-model="vm.viewType" value="table">{{'report.table' | translate}}
+					<div ng-show="vm.viewType=='chart'&& vm.isShow==true" id="highchartsContainer">
+					
+					</div>
+					<div ng-show="vm.viewType=='chart'&& vm.isShow==false" > <h4 class="center bold"> {{'report.notData' | translate}}</h4></div>
+					<div id="output"></div>
+					<div ng-show="vm.viewType=='table'" id="wdr-component">
+						
+					</div>
+					<div id="container"></div>
+				</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="farm_size_info.html">
+    <div modal-movable>
+        <div ng-include="'farm_size/views/farm_size_info.html'"></div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete.html">
+    <div modal-movable>
+        <div ng-include="'farm_size/views/confirm_delete.html'"></div>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_delete_record.html">
+    <div class="modal-header alert alert-danger">
+        <h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+
+        <a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <h2>
+
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'farmSize.confirmDelete' | translate}}</p>
+				</h2>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farmSize.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.confirmDeleteRecord()" class="btn btn-danger"><i class="icon-check"></i> {{'farmSize.accept' | translate}}</button>
+    </div>
+
+</script>
+<script type="text/ng-template" id="calculation.html">
+	<div class="modal-header">
+		 <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+		<h4 class="pull-left">{{'report.calculation' | translate}}</h4>
+								
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<strong>	
+                    
+                        {{'report.calculation_formula_by_provinces ' | translate}}<br/>
+                        {{'report.calculation_formula_by_provinces1 ' | translate}}<br/>
+                        {{'report.calculation_formula_by_provinces2 ' | translate}}<br/>
+                        {{'report.calculation_formula_by_provinces3 ' | translate}}<br/>
+				
+				</strong>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farmSize.cancel' | translate}}</button>
+			
+	</div>
+	
+</script>

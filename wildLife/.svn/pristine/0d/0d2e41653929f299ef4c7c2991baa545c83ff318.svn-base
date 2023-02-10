@@ -1,0 +1,448 @@
+<div class="portlet light bordered">
+    <div class="portlet-body">
+        <div class="row">
+            <div class="portlet-header">
+                <div class="row margin-bottom-10 margin-left-5">
+                    <h3><strong>{{'MENU.manager.listFarm '| translate}}</strong></h3>
+                </div>
+            </div>
+        
+            <div class="row margin-bottom-10">
+                <div class="col-md-6">
+                    <button ng-click="vm.showPopupMerge()" ng-disabled="vm.selectedFarms && vm.selectedFarms.length != 2" class="btn btn-primary">Hợp nhất dữ liệu</button>
+                    <button ng-click="vm.showPopupdeleteDataMapByAdministrativeUnit()" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])" class="btn btn-danger">Xóa dữ liệu bản đồ theo đơn vị hành chính</button>
+                    <button ng-if="vm.searchDto.checkSort == false" ng-click="vm.sapXep()" class="btn btn-default">Sắp xếp theo tên cơ sở nuôi</button>
+                    <button ng-if="vm.searchDto.checkSort == true" ng-click="vm.sapXep()" class="btn btn-default">Bỏ sắp xếp theo tên cơ sở nuôi</button>
+                </div>
+                <div class="col-md-6" style="width: 470px; left: 119px;">
+                    <a href="#" class="btn btn-default " file-name="'DanhSachCoSoNuoiDVHD.xls'"  ng-click="getFile()" file-download="myBlobObject"><i class="fa fa-file-excel-o"> Xuất dữ liệu</i></a>
+                    <button ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])" class="btn btn-default" ng-click="vm.synchronizedMap()"><i class="fa fa-cloud-upload"></i>Đồng bộ bản đồ</button>
+                    <button ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])" class="btn btn-default" ng-click="vm.convertDataAndSynchronizedMap()"><i class="fa fa-cloud-upload"></i>Kết xuất dữ liệu và đồng bộ bản đồ</button>
+                </div>
+            </div>
+
+            <div class="row margin-top-10">
+            
+                <div class="col-md-3" ng-if="vm.isRole==true">
+                    <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                    <ui-select ng-model="vm.searchDto.province" sortable="true" close-on-select="true"
+                        on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+                            {{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-3" ng-if="vm.isRole==false">
+                    <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                    <ui-select ng-model="vm.searchDto.province" sortable="true" close-on-select="true">
+                        <ui-select-match allow-clear="false" placeholder="{{'farm.chooseCity' | translate}}...">
+                            {{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>					
+        
+                <div class="col-md-2" ng-if="vm.isRole==true||vm.isSdah ==true" >
+                    <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                    <ui-select ng-model="vm.searchDto.district" sortable="true" close-on-select="true"
+                        on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+                            {{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-2" ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true)" >
+                    <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                    <ui-select ng-model="vm.searchDto.district" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+                            {{$select.selected.code}}--{{$select.selected.name}}  </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-2" ng-if="vm.isRole==true||vm.isSdah ==true || vm.isDistrict == true" >
+                    <ui-select ng-model="vm.searchDto.ward" sortable="true" close-on-select="true"
+                        on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+                            {{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-2" ng-if="vm.isRole==false && vm.isWard == true" >
+                    <ui-select ng-model="vm.searchDto.ward" sortable="true" close-on-select="true">
+                        <ui-select-match allow-clear="false" placeholder="{{'farm.chooseWard' | translate}}...">
+                            {{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-2">
+                    <!-- <label class="bold">Năm</label> -->
+                    <ui-select ng-model="vm.searchDto.yearRegistration" sortable="true" close-on-select="true"
+                        style="width:100%;" aria-multiselectable="true" on-select="vm.onSelectYear()"
+                        on-remove="vm.onRemovedYear()">
+                        <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="year.value as year  in years | propsFilter: {name: $select.search}">
+                            <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-3" ng-if="vm.isRole==true">
+                    <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                    <ui-select ng-model="vm.searchDto.statusFarm" sortable="true" close-on-select="true"
+                        on-select="vm.onStatus($item)">
+                        <ui-select-match allow-clear="true" placeholder="chọn trạng thái">
+                            {{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="x.id as x in  vm.listStatus| propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="x.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)"
+                            class="form-control" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+                        <div class="input-group-btn">
+                            <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i
+                                    class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row margin-top-10" ng-show="vm.isSearchExtend==true">		
+                <div class="col-md-12 bold">{{'farm.searchAdvanced' | translate}}</div>
+                <b>{{"farm.create_date" | translate}}</b>
+                <div class="row">						
+                    <div class="col-md-4 margin-top-10">
+                        <input ng-model="vm.searchDto.createDateFrom" type="text" placeholder="{{'importAnimal.fromDate' | translate}}" class="form-control" my-date-picker/>
+                    </div>
+                    <div class="col-md-4 margin-top-10">
+                        <input ng-model="vm.searchDto.createDateTo" type="text" placeholder="{{'importAnimal.fromDate' | translate}}" class="form-control" my-date-picker/>
+                    </div>
+                    <div class="col-md-4 margin-top-10">
+                        <input ng-model="vm.searchDto.createdBy" type="text" placeholder='{{"farm.createBy" | translate}}' class="form-control"/>
+                    </div>
+                </div>
+                <b>{{"farm.modify_date" | translate}}</b>
+                <div class="row">						
+                    <div class="col-md-4 margin-top-10">
+                        <input ng-model="vm.searchDto.modifiedDateFrom" type="text" placeholder="{{'importAnimal.fromDate' | translate}}" class="form-control" my-date-picker/>
+                    </div>
+                    <div class="col-md-4 margin-top-10">
+                        <input ng-model="vm.searchDto.modifiedDateTo" type="text" placeholder="{{'importAnimal.fromDate' | translate}}" class="form-control" my-date-picker/>
+                    </div>
+                    <div class="col-md-4 margin-top-10">
+                        <input ng-model="vm.searchDto.modifiedBy" type="text" placeholder='{{"farm.modifyBy" | translate}}' class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-md-3 margin-top-10">
+                    <b>{{"farm.fromBalanceNumber" | translate}}</b>
+                    <input  ng-model="vm.searchDto.balanceNumber"  type="number" placeholder="{{'farm.fromBalanceNumber' | translate}}" class="form-control"/>
+                </div>
+                <div class="col-md-3 margin-top-10">
+                    <b>{{"farm.toBalanceNumber" | translate}}</b>
+                    <input  ng-model="vm.searchDto.toBalanceNumber"  type="number" placeholder="{{'farm.toBalanceNumber' | translate}}" class="form-control"/>
+                </div>
+                <!--<div class="col-md-6 margin-top-10">
+                    <input  ng-model="vm.searchDto.quantityProductExist" title="{{'farm.quantityProductExist' | translate}}" type="number" placeholder="{{'farm.quantityProductExist' | translate}}" class="form-control"/>
+                </div>
+                <div class="col-md-6 margin-top-10">
+                    <input  ng-model="vm.searchDto.quantityAnimalProductExist"  title="{{'farm.quantityAnimalProductExist' | translate}}" type="number" placeholder="{{'farm.quantityAnimalProductExist' | translate}}" class="form-control"/>
+                </div>-->
+                <div class="col-md-3 margin-top-10">
+                    <b class="invisible">{{"animal.chooseAnimal" | translate}}</b>
+                    <ui-select ng-model="vm.searchDto.animalId" sortable="true" close-on-select="true">
+                        <ui-select-match allow-clear="true" placeholder="{{'animal.chooseAnimal' | translate}}...">
+                            {{$select.selected.name}} </ui-select-match>
+                        <ui-select-choices
+                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                            <div  ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-3 margin-top-10">
+                    <b class="invisible">{{"product.chooseProduct" | translate}}</b>
+                    <ui-select ng-model="vm.searchDto.productTargetId" sortable="true" close-on-select="true" on-select="vm.onSelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'product.chooseProduct' | translate}}...">
+                            {{$select.selected.name| translate}} </ui-select-match>
+                        <ui-select-choices repeat="husbandryMethod.id as husbandryMethod in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                            <div ng-bind-html="husbandryMethod.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                    <!--<div class="col-md-3 margin-top-10" ng-if="vm.searchDto.quantityProductExist!=null">
+                        <ui-select ng-model="vm.searchDto.productTargetExistId" sortable="true" close-on-select="true" on-select="vm.onSelected($item)">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseProductExist' | translate}}...">
+                                {{$select.selected.name| translate}} </ui-select-match>
+                            <ui-select-choices repeat="husbandryMethod.id as husbandryMethod in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                                <div ng-bind-html="husbandryMethod.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3 margin-top-10">
+                        <input  ng-model="vm.searchDto.quantityAnimalProductExist"  title="{{'farm.quantityAnimalProductExist' | translate}}" type="number" placeholder="{{'farm.quantityAnimalProductExist' | translate}}" class="form-control"/>
+                    </div>
+                        
+                    <div class="col-md-3 margin-top-10"ng-if="vm.searchDto.quantityAnimalProductExist!=null" >
+                        
+                        <ui-select ng-model="vm.searchDto.animalExistId" sortable="true" close-on-select="true">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseAnimalExist' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit.id as adminstrativeUnit in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div  ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3 margin-top-10" ng-if="vm.searchDto.quantityAnimalProductExist!=null">
+                        <ui-select ng-model="vm.searchDto.animalProductTargetId" sortable="true" close-on-select="true" on-select="vm.onSelected($item)">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseAnimalProduct' | translate}}...">
+                                {{$select.selected.name| translate}} </ui-select-match>
+                            <ui-select-choices repeat="husbandryMethod.id as husbandryMethod in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                                <div ng-bind-html="husbandryMethod.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                
+                
+                    <div class="col-md-3 margin-top-10">
+                        <ui-select ng-model="vm.searchDto.productTargetId" sortable="true" close-on-select="true" on-select="vm.onSelected($item)">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseProduction' | translate}}...">
+                                {{$select.selected.name| translate}} </ui-select-match>
+                            <ui-select-choices repeat="husbandryMethod.id as husbandryMethod in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                                <div ng-bind-html="husbandryMethod.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>-->
+                        
+                        <!--<div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.searchDto.husbandryMethodId" sortable="true" close-on-select="true" on-select="vm.onSelected($item)">
+                                <ui-select-match allow-clear="true" placeholder="{{'husbandryMethod.chooseHusbandryMethod' | translate}}...">
+                                    {{$select.selected.name| translate}} </ui-select-match>
+                                <ui-select-choices repeat="husbandryMethod.id as husbandryMethod in vm.husbandryMethods | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div ng-bind-html="husbandryMethod.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>-->
+                        
+                        <!--<div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.searchDto.certificateId" sortable="true" close-on-select="true" on-select="vm.onSelected($item)">
+                                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCertificate' | translate}}...">
+                                    {{$select.selected.name| translate}} </ui-select-match>
+                                <ui-select-choices repeat="husbandryMethod.id as husbandryMethod in vm.certificates | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div ng-bind-html="husbandryMethod.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>-->
+                        
+                    <div class="col-md-3 margin-top-10">
+                        <b>{{"farm.searchAnimalParent" | translate}}</b>
+                        <ui-select ng-model="vm.searchDto.animalParentId" sortable="true" close-on-select="true">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseAnimal' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="parent.id as parent in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div  ng-bind-html="parent.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3 margin-top-10">
+                        <b class="">{{'ownership.title' | translate}}</b>
+                        <ui-select data-ng-model="vm.searchDto.ownership" sortable="true" on-select="vm.onSelectOwnership($item)" close-on-select="true" style="width: 100% !important;">
+                            <ui-select-match allow-clear="true" placeholder="{{'ownership.choose' | translate}}...">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="ownership in vm.ownerships | propsFilter: {name: $select.search}">
+                                <div class="bold" ng-bind-html="ownership.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-3 margin-top-10 text-center invisible"> 
+                        <label style="padding-top: 15px;">{{'farm.isOutSourcing' | translate}}</label>
+                        
+                    </div>
+                    <div class="col-md-3 margin-top-10">
+                        <div style="padding-top:15px;" class="pull-right">
+                            <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit">{{'farm.searchAdvanced' | translate}}</button>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-12 margin-top-10"> 
+                        <label >{{'farm.isOutSourcing' | translate}}</label>
+                        <input data-ng-model="vm.searchDto.isOutSourcing" type="checkbox" />
+                        <div class="pull-right">
+                            <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit">{{'farm.searchAdvanced' | translate}}</button>
+                        </div>
+                    </div> -->
+                    
+                    
+                </div>
+            <div class="portlet-body">
+                <div class="btn-group margin-bottom-20 margin-right-10">
+                    <!-- <button type="button" ng-click="vm.createFarm(null)" class="btn btn-default"><i class="icon-plus"></i></button> -->
+                    <!-- <button type="button" ng-click="vm.deleteOriginals()" class="btn btn-danger "
+                        style="margin-left:15px;"><i class="icon-trash"></i>Xóa</button> -->
+                </div>
+                <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="details.html">
+    <div modal-movable>
+		<div ng-include="'farm/views/detail.html'"></div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete.html">
+    <div modal-movable>
+		<div ng-include="'farm/views/confirm_delete.html'"></div>
+	</div>
+</script>
+<!--  -->
+<script type="text/ng-template" id="confirm_delete_record.html">
+
+	<div class="modal-header alert alert-danger">
+			<h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+			
+			<a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+						
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<h2>
+					
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'farm.store.confirmDelete' | translate}}</p>
+				</h2>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farm.store.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.confirmDeleteRecord()" class="btn btn-danger"><i class="icon-check"></i> {{'farm.store.accept' | translate}}</button>
+	</div>
+	
+</script>
+<script type="text/ng-template" id="import_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Import</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="dash-box display-block link" ngf-select="uploadFiles($file, $invalidFiles)"
+                               accept="/*" ngf-max-size="{{MAX_FILE_SIZE}}"><i class="fa fa-cloud-upload"></i>{{'upload.chooseFile' | translate}}</a>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f != null">
+                            {{'upload.downloadFile' | translate}}: {{f.name}}
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="errFile != null && errFile.$error != ''">
+                            {{'upload.error' | translate}}: <span ng-if="errFile.$error == 'maxSize'"> {{'upload.sizeFile' | translate}} {{errFile.$errorParam}}</span>
+                            <span ng-if="errFile.$error != null && errFile.$error != 'maxSize'"> {{'upload.file' | translate}} {{errFile.name}} {{'upload.error' | translate}}. {{'upload.chooseFileOther' | translate}}.</span>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f.progress >= 0">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="f.progress + '%'" style="width:{{f.progress}}%">
+                                    {{f.progress}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'upload.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'upload.download' | translate}}</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="modal_merge_farm.html">
+    <div modal-movable ng-include="'farm/views/child/modal_merge_farm.html?v={{version}}'"></div>
+</script>
+
+<!--  -->
+<script type="text/ng-template" id="modal_delete_DataMapByAdministrativeUnit.html">
+
+	<div class="modal-header alert alert-danger">
+			<h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+			
+			<a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+						
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<h2>
+					
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>Bạn có chắc chắn muốn xóa dữ liệu bản đồ theo đơn vị hành chính đã chọn hay không?</p>
+				</h2>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farm.store.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.deleteDataMapByAdministrativeUnit()" class="btn btn-danger"><i class="icon-check"></i> {{'farm.store.accept' | translate}}</button>
+	</div>
+	
+</script>
+
+<script type="text/ng-template" id="modal_updateAllFarmtoMap.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-fw fa-warning"></i> Thông báo</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+				<h2>
+					
+                    <p style="padding-left:15px;"><i class="fa fa-fw fa-warning"></i>Bạn có chắc chắn muốn 
+                        <span ng-if="vm.searchDto.isConvert != true">đồng bộ bản đồ</span>
+                        <span ng-if="vm.searchDto.isConvert == true">kết xuất dữ liệu và đồng bộ bản đồ</span> 
+                        không?</p>
+				</h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'farm.store.cancel' | translate}}</button>
+            <button type="button" ng-click="vm.updateAllFarmtoMap()" class="btn btn-primary" data-dismiss="modal">{{'farm.store.accept' | translate}}</button>
+        </div>
+    </div>
+</script>

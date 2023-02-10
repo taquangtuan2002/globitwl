@@ -1,0 +1,117 @@
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="page-bar">-->
+<!--<h3 class="page-title pull-left"><i class="icon-layers"></i> Quản lý người dùng</h3>-->
+<!--<ul class="page-breadcrumb pull-right hidden-xs">-->
+<!--<li>-->
+<!--<a href="#">Hệ thống</a>-->
+<!--<i class="fa fa-circle"></i>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="#/dashboard">Tài khoản người dùng</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{'seedLevel.info'| translate}}</strong></h3>
+            </div>
+			<div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10">
+							<button class="btn btn-default" ng-click="vm.newSeedLevel()"><i class="icon-plus"></i>{{ 'region.create' | translate}}</button>
+							<!--<button class="btn btn-default"><i class="fa fa-search"></i> Tìm kiếm</button>-->
+							<!-- <button class="btn btn-danger margin-left-10" data-ng-disabled="vm.selectedFmsRegions.length <= 0"><i class="icon-trash"></i> Xóa</button> -->
+
+						</div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'region.searchNameCodeSeedLevel' | translate}}" name="search">
+                            <div class="input-group-btn">
+                                <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                
+				<table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 ng-if="vm.seedLevel.isNew == true" class="modal-title"><i class="icon-plus"></i> {{'region.create' | translate}}</h4>
+            <h4 ng-if="vm.seedLevel.isNew == false" class="modal-title"><i class="icon-pencil"></i> {{'region.edit' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-10 margin-top-10">
+                    <label class="bold">{{'region.codeSeedLevel' | translate}}</label>
+                    <input ng-if="vm.seedLevel.isNew == true"  data-ng-model="vm.seedLevel.code" type="text" autofocus="autofocus" class="form-control" />
+					<input ng-if="vm.seedLevel.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+				<div class="col-md-1 margin-top-10">
+					<button ng-if="vm.seedLevel.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+					<button ng-if="vm.seedLevel.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				</div>
+                <!-- <div class="col-md-10 margin-top-10">
+                    <label class="bold">{{'region.codeSeedLevel' | translate}}</label>
+                    <input data-ng-model="vm.seedLevel.code" type="text" class="form-control" />
+                </div> -->
+                <div class="col-md-12 margin-top-10">
+                    <label class="bold">{{'region.nameSeedLevel' | translate}}</label>
+                    <input data-ng-model="vm.seedLevel.name" type="text" class="form-control" />
+                </div>
+                <div class="col-md-12 margin-top-10">
+                    <label class="bold">{{'region.level' | translate}}</label>
+                    <input data-ng-model="vm.seedLevel.level" type="number" class="form-control" />
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'region.cancel' | translate}}</button>
+			<button ng-if="vm.seedLevel.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'region.save' | translate}}</button>
+			<button ng-if="vm.seedLevel.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'region.save' | translate}}</button>
+			<!-- <button type="button" ng-click="vm.save()" class="btn btn-primary" data-dismiss="modal">{{'region.save' | translate}}</button> -->
+
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->
+<script type="text/ng-template" id="delete_modal.html">
+	<div class="modal-header alert alert-danger">
+			<h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+			
+			<a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+						
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<h2>
+					
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'region.confirmDelete' | translate}}</p>
+				</h2>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'region.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.confirmDelete()" class="btn btn-danger"><i class="icon-check"></i> {{'region.accept' | translate}}</button>
+	</div>
+</script>

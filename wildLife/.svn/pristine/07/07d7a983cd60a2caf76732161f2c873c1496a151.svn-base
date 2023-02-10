@@ -1,0 +1,65 @@
+<div login-screen>
+    <!-- BEGIN LOGIN -->
+    <div class="content">
+		<!-- BEGIN LOGO -->
+	    <div class="logo">
+	        <a href="index.html">
+	            <img src="assets/images/login_logo.png?v=1.2" alt="" class="margin-bottom-20 margin-top-20" />
+	        </a>
+	    </div>
+    	<!-- END LOGO -->
+    	
+        <!-- BEGIN LOGIN FORM -->
+        <form class="login-form" novalidate>
+            <section id="content">
+                <div class="content-wrap">
+                    <div class="container clearfix">
+                        <div class="col-md-12" ng-if="vm.checkValided != null && !vm.checkValided.success && !vm.checkValided.phoneNumberSuccess && vm.checkValided.caseResult == 7">
+                            <div class="col-md-12 text-center">
+                                <h4 class="bold">{{'forgotPassword.verify_phone_number' | translate}}</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12 margin-top-20">
+                                    <label class="bold">{{'forgotPassword.phone_number' | translate}}</label>
+                                    <input class="form-control" type="text" autofocus="autofocus" ng-model="vm.phoneNumber" ng-keydown="$event.keyCode === 13 && vm.checkVerifyPhoneNumber()" />
+                                </div>
+                            </div>
+                            <div class="margin-top-20 text-right">
+                                <button class="button button-3d nomargin" ng-click="vm.checkVerifyPhoneNumber()">{{'forgotPassword.button.confirm' | translate}}</button>
+                            </div>
+                        </div>
+            
+                        <div class="col-md-12" ng-if="vm.checkValided != null && vm.checkValided.success && vm.checkValided.phoneNumberSuccess">
+                            <div class="col-md-12 text-center">
+                                <h3>{{'forgotPassword.update_password' | translate}}</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-xs-12 margin-top-20">
+                                    <label class="bold">{{'forgotPassword.new_password' | translate}}</label>
+                                    <input class="form-control" type="password" autofocus="autofocus" ng-model="vm.dto.password" ng-click="vm.onEntter($event)" />
+                                </div>
+                                <div class="col-sm-12 col-xs-12 margin-top-20">
+                                    <label class="bold">{{'forgotPassword.re_enter_new_password' | translate}}</label>
+                                    <input class="form-control" type="password" ng-model="vm.dto.confirmPassword" ng-click="vm.onEntter($event)" />
+                                </div>
+                            </div>
+                            <div class="margin-top-20 text-right">
+                                <button class="button button-3d nomargin" ng-click="vm.changePassword()">{{'forgotPassword.button.update' | translate}}</button>
+                            </div>
+                        </div>
+            
+                        <div ng-if="vm.checkValided == null || (!vm.checkValided.success && vm.checkValided.caseResult != 7)">
+                            <h3 ng-if="vm.checkValided != null && vm.checkValided.caseResult == 4">{{'forgotPassword.link_has_expired' | translate}}</h3>
+                            <h3 ng-if="vm.checkValided != null && vm.checkValided.caseResult == 5">{{'forgotPassword.link_error_or_has_expired' | translate}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+    <div class="login-footer">
+		<img src="assets/images/fao_logo.png" /> 
+		<img src="assets/images/usaid_logo.png" style="float:right" /> 
+    </div>
+    <div class="copyright"> 2019 © Tổng Cục Lâm Nghiệp - Bộ NN-PTNT. Bảo lưu mọi quyền. </div>
+</div>

@@ -1,0 +1,224 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title"><i class="icon-plus"></i> Hợp nhất dữ liệu</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet-body">
+                    <div class="row margin-top-10">
+                        <div class="portlet-header">
+                        </div>
+                        <div class="row margin-top-10">
+                           
+                        </div>
+                        <div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered" margin-left-10>
+                                    <!-- <thead>
+                                        <tr>
+                                            <th class="text-center"></th>
+                                            <th class="text-center" style="width: 300px;"> 1 </th>
+                                            <th class="text-center" style="width: 300px;"> 2 </th>
+                                        </tr>
+                                    </thead> -->
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-left text-info">Chọn cơ sở nuôi chính</th>
+                                            <th class="text-center" style="width: 300px;"><input type="checkbox" ng-click="vm.onClickSelectedA()" ng-checked="vm.checkedFarmA" ng-model="vm.checkedFarmA"/></th>
+                                            <th class="text-center" style="width: 300px;"><input type="checkbox" ng-click="vm.onClickSelectedB()" ng-checked="vm.checkedFarmB" ng-model="vm.checkedFarmB"></th>
+                                        </tr>
+                                        <tr>
+                                        	<th colspan="1" class="text-left text-info bold">1. Thông tin chính của cơ sở nuôi</th>                                        	
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">{{"farm.farmCode" | translate}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.code" type="checkbox" name="code" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.code, 'code')">{{vm.farmA.code}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.code" type="checkbox" name="code" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmB.id, vm.farmB.code, 'code')"> {{vm.farmB.code}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">{{"farm.name" | translate}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.name" type="checkbox" name="name" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.name, 'name')">{{vm.farmA.name}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.name" type="checkbox" name="name" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.name, 'name')"> {{vm.farmB.name}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">{{"farm.ownerName" | translate}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.ownerName" type="checkbox" name="ownerName" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.ownerName, 'ownerName')">{{vm.farmA.ownerName}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.ownerName" type="checkbox" name="ownerName" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmB.id, vm.farmB.ownerName, 'ownerName')"> {{vm.farmB.ownerName}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">{{"farm.ownerPhoneNumber" | translate}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.ownerPhoneNumber" type="checkbox" name="ownerPhoneNumber" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.ownerPhoneNumber, 'ownerPhoneNumber')"> {{vm.farmA.ownerPhoneNumber}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.ownerPhoneNumber" type="checkbox" name="ownerPhoneNumber" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.ownerPhoneNumber, 'ownerPhoneNumber')"> {{vm.farmB.ownerPhoneNumber}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">{{"administrativeUnit.province" | translate}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.provinceName" type="checkbox" name="provinceName" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.provinceName, 'provinceName')"> {{vm.farmA.provinceName}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.provinceName" type="checkbox" name="provinceName" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.provinceName, 'provinceName')"> {{vm.farmB.provinceName}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Huyện</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.districtName" type="checkbox" name="districtName" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.districtName, 'districtName')"> {{vm.farmA.districtName}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.districtName" type="checkbox" name="districtName" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.districtName, 'districtName')"> {{vm.farmB.districtName}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Xã</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.wardsName" type="checkbox" name="wardsName" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.wardsName, 'wardsName')"> {{vm.farmA.wardsName}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.wardsName" type="checkbox" name="wardsName" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.wardsName, 'wardsName')"> {{vm.farmB.wardsName}}</th>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th class="text-left ">Thôn/Ấp</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.village" type="checkbox" name="village" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.village, 'village')"> {{vm.farmA.village}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.village" type="checkbox" name="village" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.village, 'village')"> {{vm.farmB.village}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Địa chỉ chi tiết</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.adressDetail" type="checkbox" name="adressDetail" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.adressDetail, 'adressDetail')"> {{vm.farmA.adressDetail}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.adressDetail" type="checkbox" name="adressDetail" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.adressDetail, 'adressDetail')">{{vm.farmB.adressDetail}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Kinh độ</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.longitude" type="checkbox" name="longitude" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.longitude, 'longitude')">{{vm.farmA.longitude}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.longitude" type="checkbox" name="longitude" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.longitude, 'longitude')">{{vm.farmB.longitude}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Vĩ độ</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.latitude" type="checkbox" name="latitude" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.latitude, 'latitude')">{{vm.farmA.latitude}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.latitude" type="checkbox" name="latitude" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.latitude, 'latitude')">{{vm.farmB.latitude}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Tình trạng đăng ký</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.status" type="checkbox" name="status" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.status, 'status')">{{vm.farmA.status}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.status" type="checkbox" name="status" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.status, 'status')">{{vm.farmB.status}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Trạng thái hoạt động</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.statusFarm!=null" type="checkbox" name="statusFarm" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.statusFarm, 'statusFarm')">{{vm.farmA.statusFarm==0?"Đang hoạt động":(vm.farmA.statusFarm!=null?"Ngưng hoạt động":"")}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.statusFarm!=null" type="checkbox" name="statusFarm" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmB.id, vm.farmB.statusFarm, 'statusFarm')">{{vm.farmB.statusFarm==0?"Đang hoạt động":(vm.farmB.statusFarm!=null?"Ngưng hoạt động":"")}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Ngày thành lập</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.foundingDate" type="checkbox" name="foundingDate" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.foundingDate, 'foundingDate')">{{vm.farmA.foundingDate|date:'MM/dd/yyyy'}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.foundingDate" type="checkbox" name="foundingDate" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.foundingDate, 'foundingDate')">{{vm.farmB.foundingDate|date:'MM/dd/yyyy'}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Ngày cấp mã số</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.dateRegistration" type="checkbox" name="dateRegistration" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.dateRegistration, 'dateRegistration')">{{vm.farmA.dateRegistration|date:'MM/dd/yyyy'}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.dateRegistration" type="checkbox" name="dateRegistration" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.dateRegistration, 'dateRegistration')">{{vm.farmB.dateRegistration|date:'MM/dd/yyyy'}}</th>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th class="text-left ">Số giấy chứng nhận đăng kí</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.oldRegistrationCode" type="checkbox" name="oldRegistrationCode" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.oldRegistrationCode, 'oldRegistrationCode')">{{vm.farmA.oldRegistrationCode}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.oldRegistrationCode" type="checkbox" name="oldRegistrationCode" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.oldRegistrationCode, 'oldRegistrationCode')">{{vm.farmB.oldRegistrationCode}}</th>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th class="text-left ">Mã số cơ sở nuôi (theo nghị định 06/2019)</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.newRegistrationCode" type="checkbox" name="newRegistrationCode" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.newRegistrationCode, 'newRegistrationCode')">{{vm.farmA.newRegistrationCode}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.newRegistrationCode" type="checkbox" name="newRegistrationCode" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.newRegistrationCode, 'newRegistrationCode')">{{vm.farmB.newRegistrationCode}}</th>
+                                        </tr>
+                                        <tr>
+                                        	<th colspan="1" class="text-left text-info bold">2. Thông tin chủ cơ sở nuôi/Người đại diện</th>                                        	
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Họ và tên chủ cơ sở nuôi hoặc người đại diện</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.ownerName" type="checkbox" name="ownerName" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.ownerName, 'ownerName')">{{vm.farmA.ownerName}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.ownerName" type="checkbox" name="ownerName" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.ownerName, 'ownerName')">{{vm.farmB.ownerName}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Năm sinh</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.ownerDob" type="checkbox" name="ownerDob" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.ownerDob, 'ownerDob')">{{vm.farmA.ownerDob | date:'yyyy'}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.ownerDob" type="checkbox" name="ownerDob" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.ownerDob, 'ownerDob')">{{vm.farmB.ownerDob | date:'yyyy'}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Số CMND/Căn cước CD/ Hộ chiếu</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.ownerCitizenCode" type="checkbox" name="ownerCitizenCode" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.ownerCitizenCode, 'ownerCitizenCode')">{{vm.farmA.ownerCitizenCode}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.ownerCitizenCode" type="checkbox" name="ownerCitizenCode" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.ownerCitizenCode, 'ownerCitizenCode')">{{vm.farmB.ownerCitizenCode}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left ">Số điện thoại</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmA.ownerPhoneNumber" type="checkbox" name="ownerPhoneNumber" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.ownerPhoneNumber, 'ownerPhoneNumber')">{{vm.farmA.ownerPhoneNumber}}</th>
+                                            <th class="text-center" style="width: 300px;"> <input ng-if="vm.farmB.ownerPhoneNumber" type="checkbox" name="ownerPhoneNumber" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.ownerPhoneNumber, 'ownerPhoneNumber')">{{vm.farmB.ownerPhoneNumber}}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left text-info">Năm thu thập thông tin</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.yearRegistration" type="checkbox" name="yearRegistration" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.yearRegistration, 'yearRegistration')">{{vm.farmA.yearRegistration}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmB.yearRegistration" type="checkbox" name="yearRegistration" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.yearRegistration, 'yearRegistration')">{{vm.farmB.yearRegistration}}</th>
+                                        </tr>
+    									<tr>
+                                            <th class="text-left text-info">Mã trong file gốc</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.mapCode" type="checkbox" name="mapCode" ng-click="clickCheck($event,vm.farmA.id)" ng-checked="check(vm.farmA.id, vm.farmA.mapCode, 'mapCode')">{{vm.farmA.mapCode}}</th>
+                                            <th class="text-center" style="width: 300px;"><input ng-if="vm.farmA.mapCode" type="checkbox" name="mapCode" ng-click="clickCheck($event,vm.farmB.id)" ng-checked="check(vm.farmA.id, vm.farmB.mapCode, 'mapCode')">{{vm.farmB.mapCode}}</th>
+                                        </tr>
+                                        <!-- <tr rowspan="2">
+                                            <th class="text-left text-info">Hợp nhất dữ liệu vật nuôi (Danh sách các bản ghi trùng ngày và trùng vật nuôi cần hợp nhất) - Click vào từng ngày để lựa chọn bản ghi</th>
+                                            <th colspan="2" class="text-center">
+                                                <div ng-repeat="rp16 in vm.form16Dup">
+                                                   <button ng-if="rp16.mergeStatus==false" ng-style="rp16.mergeStatus==true && {'background-color':'#80ff00'}|| rp16.mergeStatus==false && {'background-color':'pink'}" ng-click="vm.selectDupReport16()">{{rp16.dateReport|date:'MM/dd/yyyy'}} - {{rp16.animal.name}}</button>
+                                                   <button ng-if="rp16.mergeStatus==true" ng-style="rp16.mergeStatus==true && {'background-color':'#80ff00'}|| rp16.mergeStatus==false && {'background-color':'pink'}" ng-click="vm.selectDupReport16()">{{rp16.dateReport|date:'MM/dd/yyyy'}} - {{rp16.animal.name}} - Cơ sở: {{rp16.farm.name?rp16.farm.name:""}}</button>
+                                               </div>
+                                           </th>
+                                        </tr> -->
+                                        <tr colspan="2">
+                                            <th class="text-left text-info">
+                                                Hợp nhất dữ liệu vật nuôi
+                                            </th>
+                                        </tr>
+                                        <tr ng-repeat="animal in vm.listAnimalInForm16FarmAB">
+                                            <th>
+                                                <label style="margin-left:20px; font-weight: bold;" for="">{{animal.name}}</label>
+                                            </th>
+                                            <th class="text-center">
+                                                <div ng-repeat="rp16FarmA in getValues(animal.id,1)">
+                                                    <input type="checkbox" ng-click="selectForm16($event,rp16FarmA)" ng-checked="checkedForm16(rp16FarmA)">
+                                                    <button ng-click="viewReport16(rp16FarmA)">
+                                                        Báo cáo ngày: {{rp16FarmA.dateReport|date:'MM/dd/yyyy'}}
+                                                    </button>
+                                                </div>
+                                            </th>
+                                            <th class="text-center">
+                                                <div ng-repeat="rp16FarmB in getValues(animal.id,2)">
+                                                    <input type="checkbox" ng-click="selectForm16($event,rp16FarmB)" ng-checked="checkedForm16(rp16FarmB)">
+                                                    <button ng-click="viewReport16(rp16FarmB)">
+                                                        Báo cáo ngày: {{rp16FarmB.dateReport|date:'MM/dd/yyyy'}}
+                                                    </button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i
+                class="icon-close"></i> {{'region.cancel' | translate}}</button>
+        <!-- <button type="button" ng-click="vm.acceptMergeFarm()" class="btn btn-primary"
+            data-dismiss="modal">{{'region.save' | translate}}</button> -->
+        <button type="button" ng-click="vm.acceptMergeFarmNew()" class="btn btn-primary"
+            data-dismiss="modal">{{'region.save' | translate}}</button>
+    </div>
+</div>
+<script type="text/ng-template" id="individual_detail.html">
+    <div modal-movable ng-include="'farm/views/child/individual_detail.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="confirm_delete_individual.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_delete_individual.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="view_detail.html">
+    <div modal-movable>
+		<div ng-include="'farm/views/child/view_detail_form16_select.html?v={{version}}'"></div>
+	</div>
+</script>
+<!-- <script type="text/ng-template" id="choose_farm_modal.html">
+    <div modal-movable>
+		<div ng-include="'animal_report_data/views/childs/choose_farm_modal.html'"></div>
+	</div>
+</script> -->

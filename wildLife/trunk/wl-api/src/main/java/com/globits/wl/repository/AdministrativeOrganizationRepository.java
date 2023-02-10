@@ -1,0 +1,29 @@
+package com.globits.wl.repository;
+
+import java.util.List;
+
+import org.hibernate.jpa.TypedParameterValue;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+
+@Repository
+public interface AdministrativeOrganizationRepository extends JpaRepository<AdministrativeOrganization, Long>{
+	@Query("select new com.globits.wl.dto.AdministrativeOrganizationDto(ao) from AdministrativeOrganization ao "
+			+ " where ao.parent.id = ?1")
+	List<AdministrativeOrganizationDto> getChildrenByParentId(Long parentId);
+
+	@Query("select new com.globits.wl.dto.AdministrativeOrganizationDto(entity) from AdministrativeOrganization entity" +
+			" where (?1 is null or entity.id <> ?1)" +
+			" and (entity.governmentLevel is null or entity.governmentLevel <> 3) ")
+    List<AdministrativeOrganizationDto> getOrganization(TypedParameterValue currentOrgId);
+
+	@Query("select new com.globits.wl.dto.AdministrativeOrganizationDto(entity) from AdministrativeOrganization entity" +
+			" where (?1 is null or entity.id <> ?1) " +
+			" and (entity.id in ?2)" +
+			" and (entity.governmentLevel is null or entity.governmentLevel <> 3) ")
+	List<AdministrativeOrganizationDto> getOrganization(TypedParameterValue currentOrgId, List<Long> listId);
+}

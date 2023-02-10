@@ -1,0 +1,44 @@
+ <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i> Chọn chủ trì </h4>
+        </div>
+        <div class="modal-body clearfix">
+			<div class="col-md-5 nopadding">
+                <div class="col-md-12 nopadding">
+                    <div class="panel panel-default" style="border: solid 1px #cddbd1;">
+                        <div class="panel-heading text-center bold"> Danh sách phòng ban </div>
+                        <div class="panel-body">
+
+                            <div style="height:400px; overflow: auto;">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div tree-plugins="search" js-tree="treeConfig" ng-model="vm.treeData" tree="treeInstance" tree-events="select_node:selectChairmanNode;ready:readyCB"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="form-group col-md-12">
+                    <div class="input-group">
+                        <input autofocus="autofocus" type="text" ng-keydown="$event.keyCode === 13 && vm.searchChairPerson()" class="form-control" placeholder="Tìm kiếm theo tên" ng-model="vm.chairPersonSearch.keyword">
+                        <div class="input-group-addon" style="cursor: pointer;" ng-click="vm.searchChairPerson()"><i class="fa fa-search"></i></div>
+                    </div>
+                </div>
+                <div class="col-md-12 list-person">
+                    <div class="portlet-body">
+                        <table bs-table-control="vm.bsTableControlChairPerson"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+        </div>
+    </div>

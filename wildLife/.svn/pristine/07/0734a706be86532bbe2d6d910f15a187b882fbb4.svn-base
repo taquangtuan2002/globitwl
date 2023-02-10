@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <div class="row">
+        <h4 class="modal-title bold font-yellow-gold"><i class="icon-exclamation"></i> Bạn có chắc BKLS này đã hoàn
+            thành?</h4>
+    </div>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="">Ngày xác nhận</label>
+            <input ng-model="vm.confirmDate" type="text" class="form form-control" my-date-picker />
+        </div>
+        <div class="col-md-6">
+            <label for="">Tên người xác nhận</label>
+            <input ng-model="vm.confirmName" type="text" ng-change="" placeholder="Người xác nhận"
+                class="form form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label for="">Kết quả xác minh / xác nhận:</label>
+            <input ng-model="vm.noteConfirm" type="text" ng-change="" placeholder="Ghi chú" class="form form-control" />
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+        Hủy</button>
+    <button type="button" ng-click="$close('no')" class="btn btn-primary"><i class="icon-check"></i> Không chấp
+        nhận</button>
+    <button type="button" ng-click="$close('yes')" class="btn btn-primary"><i class="icon-check"></i> Chấp nhận</button>
+</div>

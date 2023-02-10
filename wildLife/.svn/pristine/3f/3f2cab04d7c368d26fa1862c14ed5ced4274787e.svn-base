@@ -1,0 +1,10 @@
+<div class="row">
+	<marquee class="nameMarQuee"> Giá thị trường hiện nay là : Gà 55.000/1kg; Vịt 50.000/1kg;  Ngỗng 60.000/1kg</marquee>
+     <h1 class="text-center bold">{{'error'|translate}}</h1>
+</div>
+<style>
+  .nameMarQuee{
+	font-size:30px;
+	color:red !important;
+  }
+</style>

@@ -1,0 +1,234 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.reportFormAnimalGiveBirth.isNew == true" class="modal-title"><i class="icon-plus"></i> Tạo mới</h4>
+        <h4 ng-if="vm.reportFormAnimalGiveBirth.isNew == false" class="modal-title"><i class="icon-pencil"></i> Cập nhật</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row margin-bottom-10" ng-show="false">
+            <div class="col-md-3">
+                 <ui-select ng-model="vm.reportFormAnimalGiveBirthPeriod.year" sortable="true" close-on-select="true" style="width:100%;"
+                 aria-multiselectable="true" on-select="vm.onSelectYearForm16($item)" on-remove="vm.onRemovedYear()">
+                     <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                         {{$select.selected.name}}
+                     </ui-select-match>
+                     <ui-select-choices
+                         repeat="year.value as year  in vm.years | propsFilter: {name: $select.search}">
+                         <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                         </div>
+                     </ui-select-choices>
+                 </ui-select>
+            </div>
+            <div class="col-md-3">
+                 <ui-select ng-model="vm.reportFormAnimalGiveBirthPeriod.month" sortable="true" close-on-select="true" style="width:100%;"
+                 aria-multiselectable="true" on-select="vm.onSelectMonthForm16CD(vm.reportFormAnimalGiveBirthPeriod)" on-remove="vm.onSelectMonthForm16CD(vm.reportFormAnimalGiveBirthPeriod)">
+                     <ui-select-match allow-clear="true" placeholder="Chọn tháng...">
+                         {{$select.selected.name}}
+                     </ui-select-match>
+                     <ui-select-choices
+                         repeat="month.value as month  in vm.months | propsFilter: {name: $select.search}">
+                         <div class="bold" ng-bind-html="month.name | highlight: $select.search">
+                         </div>
+                     </ui-select-choices>
+                 </ui-select>
+            </div>
+            <div class="col-md-3">
+                 <ui-select ng-model="vm.reportFormAnimalGiveBirthPeriod.date" sortable="true" close-on-select="true" style="width:100%;"
+                 aria-multiselectable="true"  on-select="vm.onSelectDateForm16()" on-remove="vm.onRemovedDate()">
+                     <ui-select-match allow-clear="true" placeholder="Chọn ngày...">
+                         {{$select.selected.name}}
+                     </ui-select-match>
+                     <ui-select-choices
+                         repeat="date.value as date  in vm.days | propsFilter: {name: $select.search}">
+                         <div class="bold" ng-bind-html="date.name | highlight: $select.search">
+                         </div>
+                     </ui-select-choices>
+                 </ui-select>
+            </div>
+            <!-- <div class="col-md-3">
+             <div class="input-group">
+                 <input readonly data-ng-model="vm.farm.name"
+                     placeholder="{{'exportAnimal.searchFarm' | translate}}" type="text" class="form-control"/>
+                 <div class="input-group-btn">
+                     <button ng-click="vm.showPopupFarm()" class="btn btn-default" type="submit"><i
+                             class="glyphicon glyphicon-plus"></i>{{"exportAnimal.choose" | translate}}</button>
+                 </div>
+             </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-12">                    	
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;" colspan="2">Loài nuôi</th>
+                            <th style="width: 36px;" rowspan="2">Ngày(đẻ, chết...)</th>
+                            <th style="width: 36px;" colspan="2">Số đàn bố mẹ</th>
+                            <th style="width: 36px;" rowspan="2">Số con non</th>
+                            <th style="width: 36px;" rowspan="2">Số con con bị chết</th>
+                            <th style="width: 36px;" rowspan="2">Số con non còn sống</th>
+                            <th style="width: 36px;" rowspan="2">Số con con cộng đồn theo thời gian</th>
+                            <th style="width: 36px;" rowspan="2">Số con non tách khỏi khu nuôi nhốt(tách đàn)</th>
+                            <th style="width: 36px;" rowspan="2">Số con non còn lại</th>
+                            <th style="width: 36px;" rowspan="2">Ghi chú</th>
+                            <th style="width: 36px;" rowspan="2" ng-show="vm.reportFormAnimalGiveBirth.isNew == true">Thao tác</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 25px;">Tên tiếng việt</th>
+                            <th style="width: 25px;">Tên khoa học</th>
+                            <th style="width: 28.8px;">Đực</th>
+                            <th style="width: 28.8px;">Cái</th>
+                        </tr>
+                    </thead>
+                    <!-- <tbody ng-if="vm.reportFormAnimalGiveBirthPeriod.reportFormAnimalGiveBirths.length > 0"> -->
+                    <tbody ng-show="vm.listAnimalGiveBirth.length > 0 && vm.reportFormAnimalGiveBirth.isNew == true">
+                        <!-- <tr ng-repeat="item in vm.reportFormAnimalGiveBirthPeriod.reportFormAnimalGiveBirths track by $index"> -->
+                        <tr ng-repeat="item in vm.listAnimalGiveBirth track by $index">
+                            <td style="max-width: 150px; min-width: 150px;">
+                                <ui-select ng-model="item.animal" sortable="true" close-on-select="true" style="width: 100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedAnimal16D(item)" on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal  in vm.animalsGiveBirths | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td style="max-width: 150px; min-width: 150px;">
+                                <ui-select ng-model="item.animal" sortable="true" close-on-select="true" style="width: 100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedAnimal16D(item)" on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.scienceName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal  in vm.animalsGiveBirths | animalPropsFilter: {scienceName: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td>
+                                <!-- <input ng-change="vm.giveBirthQuantityChildIncrement(item)" data-ng-model="item.dateReport" my-date-picker type="text" class="form-control" ng-change="vm.onChangeDateReport16D()" /> -->
+                                <input ng-change="vm.giveBirthQuantityChildIncrement(item)" data-ng-model="item.dateReport" my-date-picker type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="item.parentMale" number-input type="text" class="form-control glb-disabled" />
+                            </td>
+                            <td>
+                                <input data-ng-model="item.parentFemale" number-input type="text" class="form-control glb-disabled" />
+                            </td>
+                            <td>
+                                <input data-ng-model="item.quantityChildHatch" number-input type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="item.quantityChildDie" number-input type="text" class="form-control" />
+                            </td>
+                            <td>
+                            
+                            <span class="form-control glb-disabled">{{(item.quantityChildHatch - item.quantityChildDie)}}</span></td>
+                            <td>
+                                <!-- <input data-ng-model="item.quantityChildIncrement" number-input type="text" class="form-control" /> -->
+                                <input ng-if="item.hasEditQuantityChildIncrement == false" data-ng-model="item.quantityChildIncrement" number-input type="text" class="form-control" />
+                                <span ng-if="(!item.hasEditQuantityChildIncrement && item.hasEditQuantityChildIncrement != false) || item.hasEditQuantityChildIncrement == true" ng-bind-html="item.quantityChildIncrement"></span>
+                            </td>
+                            <td>
+                                <input data-ng-model="item.quantityChildSeparateCaptivity" number-input type="text" class="form-control" />
+                            </td>
+                            <td><span class="form-control glb-disabled">{{(item.quantityChildIncrement - item.quantityChildSeparateCaptivity)}}</span></td>
+                            <td>
+                                <input data-ng-model="item.note" type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <a ng-click="vm.removeToListAddEditFormAnimalGiveBirth($index)"><i class="icon-trash text-danger"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td style="max-width: 150px; min-width: 150px;">
+                                <ui-select ng-model="vm.reportFormAnimalGiveBirth.animal" sortable="true" close-on-select="true" style="width: 100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedAnimal16D(vm.reportFormAnimalGiveBirth)" on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal  in vm.animalsGiveBirths | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td style="max-width: 150px; min-width: 150px;">
+                                <ui-select ng-model="vm.reportFormAnimalGiveBirth.animal" sortable="true" close-on-select="true" style="width: 100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedAnimal16D(vm.reportFormAnimalGiveBirth)" on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.scienceName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal  in vm.animalsGiveBirths | animalPropsFilter: {scienceName: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td>
+                                <!-- <input ng-change="vm.giveBirthQuantityChildIncrement(vm.reportFormAnimalGiveBirth)" data-ng-model="vm.reportFormAnimalGiveBirth.dateReport" my-date-picker type="text" class="form-control" ng-change="vm.onChangeDateReport16D()" /> -->
+                                <input ng-change="vm.giveBirthQuantityChildIncrement(vm.reportFormAnimalGiveBirth)" data-ng-model="vm.reportFormAnimalGiveBirth.dateReport" my-date-picker type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.reportFormAnimalGiveBirth.parentMale" number-input type="text" class="form-control glb-disabled" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.reportFormAnimalGiveBirth.parentFemale" number-input type="text" class="form-control glb-disabled" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.reportFormAnimalGiveBirth.quantityChildHatch" number-input type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.reportFormAnimalGiveBirth.quantityChildDie" number-input type="text" class="form-control" />
+                            </td>
+                            <td>
+                              <input data-ng-model="vm.reportFormAnimalGiveBirth.quantityChildHatch - vm.reportFormAnimalGiveBirth.quantityChildDie" number-input type="text" class="form-control glb-disabled" />
+                            <td>
+                                <!-- <input data-ng-model="vm.reportFormAnimalGiveBirth.quantityChildIncrement" number-input type="text" class="form-control" /> -->
+                                <input ng-if="vm.reportFormAnimalGiveBirth.hasEditQuantityChildIncrement == false" data-ng-model="vm.reportFormAnimalGiveBirth.quantityChildIncrement" number-input type="text" class="form-control" />
+                                <span ng-if="(!vm.reportFormAnimalGiveBirth.hasEditQuantityChildIncrement && vm.reportFormAnimalGiveBirth.hasEditQuantityChildIncrement != false) || vm.reportFormAnimalGiveBirth.hasEditQuantityChildIncrement == true" ng-bind-html="vm.reportFormAnimalGiveBirth.quantityChildIncrement"></span>
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.reportFormAnimalGiveBirth.quantityChildSeparateCaptivity" number-input type="text" class="form-control" />
+                            </td>
+                            <td>
+                             <input data-ng-model="!vm.reportFormAnimalGiveBirth.quantityChildIncrement==0?(vm.reportFormAnimalGiveBirth.quantityChildIncrement - vm.reportFormAnimalGiveBirth.quantityChildSeparateCaptivity):0" number-input type="text" class="form-control glb-disabled" />
+                            <td>
+                                <input data-ng-model="vm.reportFormAnimalGiveBirth.note" type="text" class="form-control" />
+                            </td>
+                            <td ng-show="vm.reportFormAnimalGiveBirth.isNew == true">
+                                <button ng-click="vm.addToListAddEditFormAnimalGiveBirth()"><i class="icon-plus"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i
+                class="icon-close"></i> {{'region.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.saveReportFormAnimalGiveBirth()" class="btn btn-primary"
+            data-dismiss="modal">{{'region.save' | translate}}</button>
+    </div>
+</div>
+<script type="text/ng-template" id="individual_detail.html">
+    <div modal-movable ng-include="'farm/views/child/individual_detail.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="confirm_delete_individual.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_delete_individual.html?v={{version}}'"></div>
+</script>
+<!-- <script type="text/ng-template" id="choose_farm_modal.html">
+    <div modal-movable>
+		<div ng-include="'animal_report_data/views/childs/choose_farm_modal.html'"></div>
+	</div>
+</script> -->

@@ -1,0 +1,339 @@
+<div class="portlet light bordered">
+    <div class="portlet-header">
+        <h3>
+            <strong> Nhập thông tin các quần thể hoang dã nuôi trừ gấu</strong>
+        </h3>
+        <div class="row margin-top-10 margin-bottom-10" ng-show="vm.isNew">
+            <div class="col-md-3" >
+                <label for="">Tháng báo cáo</label>
+                <select ng-model="vm.monthAnimalReportType1" class="form-control" ng-options="t.value as t.value for t in vm.months">
+                    <option value="t.value" selected="t.value == vm.monthAnimalReportType1"></option>
+                </select>                
+            </div>
+			<div class="col-md-3">
+				<label for="">Năm báo cáo</label>
+                <!-- <div style="width:150px;"> -->
+                    <select ng-model="vm.yearAnimalReportType1" class="form-control" ng-options="t.value as t.value for t in vm.years">
+                        <option value="t.value" selected="t.value == vm.yearAnimalReportType1"></option>
+                    </select>
+                <!-- </div> -->
+			</div>
+            <!-- <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'farmSize.searchNameCode' | translate}}" name="search">
+                    <div class="input-group-btn">
+                        <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="portlet-body" style="overflow-x: auto;overflow-y:visibility;min-height: 450px">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="text-center">TT</th>
+                    <th colspan="2" class="text-center glb-w-type11">Loài nuôi</th>
+                    <th rowspan="2" class="text-center">Tổng số cá thể</th>
+                    <th colspan="4" class="text-center">Đàn bố mẹ</th>
+                    <th colspan="4" class="text-center">Con trên 1 tuổi</th>
+                    <th rowspan="2" class="text-center">Con non dưới 1 tuổi</th>
+                    <th rowspan="2" class="text-center glb-w-type1">Nguồn gốc</th>
+                    <th rowspan="2" class="text-center glb-w-type1">Mục đích</th>
+                    <!-- <th rowspan="2" class="text-center">Năm báo cáo</th> -->
+
+                    <th rowspan="2" class="text-center">Thao tác</th>
+                </tr>
+                <tr>
+                    <th class="text-center glb-w-type1"> Tên tiếng việt </th>
+                    <th class="text-center glb-w-type1"> Tên khoa học </th>
+
+                    <th class="text-center"> Tổng</th>
+                    <th class="text-center"> Đực </th>
+                    <th class="text-center"> Cái </th>
+                    <th class="text-center"> Không rõ </th>
+
+                    <th class="text-center"> Tổng</th>
+                    <th class="text-center"> Đực </th>
+                    <th class="text-center"> Cái </th>
+                    <th class="text-center"> Không rõ </th>
+
+                    <!-- <th class="text-center"> Tổng</th> -->
+                    <!-- <th class="text-center"> Đực </th>
+                    <th class="text-center"> Cái </th>
+                    <th class="text-center"> Không rõ </th> -->
+                </tr>
+            </thead>
+            <tr ng-if="!vm.isNew" ng-repeat="rawTable in vm.farmPeriod.listAnimalReportDataFormDto track by $index">
+                <td class="text-center">{{$index + 1}}</td>
+                <td class="text-center glb-w-type1">{{rawTable.animal.name}}</td>
+                <td class="text-center glb-w-type1">{{rawTable.animal.scienceName}}</td>
+                <td class="text-center">
+                    {{vm.calcTotal(rawTable.totalParent, rawTable.totalChild, rawTable.unGenderChildUnder1YO)}}
+                </td>
+                <td class="text-center">{{rawTable.totalParent}}</td>
+                <td class="text-center">{{rawTable.maleParent}}</td>
+                <td class="text-center">{{rawTable.femaleParent}}</td>
+                <td class="text-center">{{rawTable.unGenderParent}}</td>
+
+                <td class="text-center">{{rawTable.totalChild}}</td>
+                <td class="text-center">{{rawTable.maleChild}}</td>
+                <td class="text-center">{{rawTable.femaleChild}}</td>
+                <td class="text-center">{{rawTable.unGenderChild}}</td>
+
+                <td class="text-center">{{rawTable.unGenderChildUnder1YO}}</td>
+                <td class="text-center glb-w-type1">{{rawTable.source}}</td>
+                <td class="text-center glb-w-type1">{{rawTable.purpose}}</td>
+                <!-- <td class="text-center">{{rawTable.year}}</td> -->
+
+                <!-- <td class="text-center"><button ng-click="vm.removeListSelected($index)"><i
+                            class="fa fa-times text-danger"></i></button></td> -->
+                <td class="text-center"></td>
+            </tr>
+            <tr ng-repeat="rawTable in vm.listDto track by $index">
+                <td class="text-red">{{$index + 1 + vm.farmPeriod.listAnimalReportDataFormDto.length}}</td>
+                <td class="text-red glb-w-type1">{{rawTable.animal.name}}</td>
+                <td class="text-red">{{rawTable.animal.scienceName}}</td>
+                <td class="text-red">
+                    {{vm.calcTotal(rawTable.totalParent, rawTable.totalChild, rawTable.totalChildUnder1YO)}}
+                </td>
+                <td class="text-red">{{rawTable.totalParent}}</td>
+                <td class="text-red">{{rawTable.maleParent}}</td>
+                <td class="text-red">{{rawTable.femaleParent}}</td>
+                <td class="text-red">{{rawTable.unGenderParent}}</td>
+
+                <td class="text-red">{{rawTable.totalChild}}</td>
+                <td class="text-red">{{rawTable.maleChild}}</td>
+                <td class="text-red">{{rawTable.femaleChild}}</td>
+                <td class="text-red">{{rawTable.unGenderChild}}</td>
+
+                <td class="text-red">{{rawTable.totalChildUnder1YO}}</td>
+                <td class="text-red">{{rawTable.source}}</td>
+                <td class="text-red">{{rawTable.purpose}}</td>
+                <!-- <td class="text-red">{{rawTable.year}}</td> -->
+
+                <td class="text-red"><button ng-click="vm.removeListSelected($index)"><i
+                            class="fa fa-times text-danger"></i></button></td>
+            </tr>
+            <tr class="remove-arrow">
+                <td class="text-center">-</td>
+                <td class="text-center glb-w-type1">
+                    <ui-select ng-model="vm.rawTable.animal" sortable="true" close-on-select="true" style="width:200px;"
+                        on-select="">
+                        <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">{{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="animal in vm.getListOtherBear(vm.animals) | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+                <td class="text-center glb-w-type1">
+                    <div class="">
+                        <ui-select ng-model="vm.rawTable.animal" sortable="true" close-on-select="true" style="width:200px;"
+                            on-select="">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">{{$select.selected.scienceName}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                repeat="animal in vm.getListOtherBear(vm.animals) | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </td>
+                <!-- Tong so ca the -->
+                <td class="text-center">
+                    {{vm.calcTotal(vm.rawTable.maleParent, vm.rawTable.femaleParent, vm.rawTable.unGenderParent,vm.rawTable.maleChild, vm.rawTable.femaleChild, vm.rawTable.unGenderChild,vm.rawTable.totalChildUnder1YO)}}
+                </td>
+                <!-- Dan bo me -->
+                <td class="text-center">
+                    {{vm.calcTotal(vm.rawTable.maleParent, vm.rawTable.femaleParent, vm.rawTable.unGenderParent)}}</td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.maleParent" /></td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.femaleParent" /></td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.unGenderParent" /></td>
+                <!-- Con tren 1 tuoi -->
+                <td class="text-center">
+                    {{vm.calcTotal(vm.rawTable.maleChild, vm.rawTable.femaleChild, vm.rawTable.unGenderChild)}}</td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.maleChild" /></td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.femaleChild" /></td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.unGenderChild" /></td>
+                <!-- Con non duoi 1 tuoi -->
+                <td class="text-center">
+                    <input type="text" number-input class="form-control" ng-model="vm.rawTable.totalChildUnder1YO" />
+                </td>
+                <!-- <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.maleChildUnder1YO" /></td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.femaleChildUnder1YO" /></td>
+                <td class="text-center"><input type="text" number-input min=0 class="form-control"
+                        ng-model="vm.rawTable.unGenderChildUnder1YO" /></td> -->
+                <!-- Nguon goc -->
+                <td class="text-center glb-w-type1">
+                    <ui-select ng-model="vm.rawTable.original" sortable="true" close-on-select="true" style="max-width:100%"
+                        on-select="vm.onSelectedOriginal()">
+                        <ui-select-match allow-clear="true" placeholder="Chọn nguồn gốc">{{$select.selected.code}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="original in vm.originals | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="original.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+                <!-- Muc dich -->
+                <td class="text-center glb-w-type1">
+                    <ui-select ng-model="vm.rawTable.productTarget" sortable="true" close-on-select="true" style="max-width:100%"
+                        on-select="vm.onSelectedProductTarget()">
+                        <ui-select-match allow-clear="true" placeholder="Chọn mục đích nuôi">{{$select.selected.code}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="target in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="target.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+                <!-- <td>
+                    <div class="dropdown-icon styled-select" style="width:54px;">
+                        <select ng-model="vm.rawTable.year" class="form-control" ng-options="t.value as t.value for t in vm.years">
+                            <option value="t.value" selected="t.value == vm.rawTable.year"></option>
+                        </select>
+                    </div>
+                </td> -->
+                <td class="text-center"><button ng-click="vm.addAnimalReport()"><i class="icon-plus"></i></button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="portlet-fotter margin-top-10" class="pull-right">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default margin-right-10" data-dismiss="modal"><i class="icon-close text-danger">Huỷ</i>
+        <button type="button" ng-click="vm.saveListAnimalReport()" class="btn btn-primary"><i class="icon-plus"></i>Lưu</button>
+    </div>
+</div>
+<script type="text/ng-template" id="modalSelectOriginal.html">
+    <div class="modal-header">
+        Chọn nguồn gốc
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Chọn</th>
+                        <th>Mã nguồn gốc</th>
+                        <th>Tên nguồn gốc</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="original in vm.originals track by $index">
+                        <td><input type="checkbox" ng-click="vm.selectOriginal($index)"></td>
+                        <td>{{original.code}}</td>
+                        <td>{{original.name}}</td>
+                        <td>{{original.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+            {{'farm.store.cancel' | translate}}</button>
+        <!-- <button type="button" ng-click="vm.selectOriginal()" class="btn btn-primary"><i class="icon-check"></i> {{'farm.store.save' | translate}}</button> -->
+    
+    </div>
+</script>
+<script type="text/ng-template" id="modalSelectProductTarget.html">
+    <div class="modal-header">
+        Chọn hướng sản phẩm
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Chọn</th>
+                        <th>Mã hướng sản phẩm</th>
+                        <th>Tên hướng sản phẩm</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="target in vm.productTargets track by $index">
+                        <td><input type="checkbox" ng-click="vm.selectProductTarget($index)"></td>
+                        <td>{{target.code}}</td>
+                        <td>{{target.name}}</td>
+                        <td>{{target.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+            {{'farm.store.cancel' | translate}}</button>
+        <!-- <button type="button" ng-click="vm.selectProductTarget()" class="btn btn-primary"><i class="icon-check"></i> {{'farm.store.save' | translate}}</button> -->
+    
+    </div>
+</script>
+<script type="text/ng-template" id="modalPopupSelectAnimal.html">
+    <div class="modal-header">
+        Chọn loài vật nuôi
+    </div>
+    <div class="col-md-6 margin-bottom-10 margin-right-10 margin-top-10">
+        <div class="input-group" style="width:300px;">
+            <input type="text" data-ng-model="vm.textSearch" class="form-control" placeholder="Tìm kiếm theo tên tiếng việt" name="search">
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="max-height: 350px; overflow: scroll; width: 100%;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Chọn</th>
+                        <th>Tên tiếng việt</th>
+                        <th>Tên Khoa học</th>
+                        <!-- <th>Mô tả</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="animal in vm.animals | animalPropsFilter: {name:vm.textSearch, scienceName:vm.textSearch} track by $index">
+                        <td class="text-center"><input type="checkbox" ng-click="vm.selectAnimalAndClosePopup(animal)"></td>
+                        <td>{{animal.name}}</td>
+                        <td>{{animal.scienceName}}</td>
+                        <!-- <td>{{animal.description}}</td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+            {{'farm.store.cancel' | translate}}</button>
+        <!-- <button type="button" ng-click="vm.selectProductTarget()" class="btn btn-primary"><i class="icon-check"></i> {{'farm.store.save' | translate}}</button> -->
+    </div>
+</script>
+
+<style>
+    .dropdown-icon {
+        position: relative;
+        display: inline-block;
+    }
+    .styled-select select {
+        -moz-appearance:none; /* Firefox */
+        -webkit-appearance:none; /* Safari and Chrome */
+        appearance:none;
+    }
+    .dropdown-icon::before {
+        position: absolute;
+        content: "\25bc";
+        top: 20%;
+        right: 0px;
+        height: 20px;
+        width: 20px;
+    }
+</style>

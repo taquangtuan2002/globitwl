@@ -1,0 +1,126 @@
+ <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-plus"></i> Xem sự kiện vào {{vm.eventDateNew.name}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12 margin-top-20">
+                    <label class="bold">Tiêu đề sự kiện: </label>
+                    <input data-ng-model="vm.eventDateNew.event.title" data-ng-disabled="true" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 margin-top-20">
+                    <label class="bold">Nội dung: </label>
+                    <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.eventDateNew.event.content" data-ng-disabled="true"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Từ ngày: </label>
+                    <p class="input-group">
+                        <input type="text" data-ng-disabled="true" class="form-control" uib-datepicker-popup="{{format}}" ng-model="vm.eventDateNew.event.fromDate" is-open="popup1.opened" datepicker-options="dateOptions" datetime="dd/MM/yyyy" enable-time="true" ng-required="true" show-button-bar="false" close-text="Close" alt-input-formats="altInputFormats" />
+                        <span class="input-group-btn">
+                            <button type="button" data-ng-disabled="true" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Đến ngày: </label>
+                    <p class="input-group">
+                        <input type="text" data-ng-disabled="true" class="form-control" uib-datepicker-popup="{{format}}" ng-model="vm.eventDateNew.event.toDate" is-open="popup2.opened" datepicker-options="dateOptions" datetime="dd/MM/yyyy" ng-required="true" show-button-bar="false" close-text="Close" alt-input-formats="altInputFormats" />
+                        <span class="input-group-btn">
+                            <button type="button" data-ng-disabled="true" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 margin-top-20">
+                    <div class="col-md-4 nopadding">
+                        <label class="bold">Từ giờ: </label>
+                        <select data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.fromHour" ng-options="hour as hour.name for hour in vm.showHour track by hour.id"></select>
+                    </div>
+
+                    <div class="col-md-4 nopadding">
+                        <label class="bold">Từ phút: </label>
+                        <select data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.fromMinute" ng-options="minute as minute.name for minute in vm.showMinute track by minute.id"></select>
+                    </div>
+                </div>
+
+                <div class="col-md-6 margin-top-20">
+                    <div class="col-md-4 nopadding">
+                        <label class="bold">Đến giờ: </label>
+                        <select data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.toHour" ng-options="hour as hour.name for hour in vm.showHour track by hour.id"></select>
+                    </div>
+
+                    <div class="col-md-4 nopadding">
+                        <label class="bold">Đến phút: </label>
+                        <select data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.toMinute" ng-options="minute as minute.name for minute in vm.showMinute track by minute.id"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Chủ trì: </label>
+                    <select class="form-control" data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.chairman" ng-options="chairman as chairman.name for chairman in vm.chairmans track by chairman.id"></select>
+                </div>
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Thành phần tham gia: </label>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr ng-repeat="person in vm.eventDateNew.event.participates">
+                                <td class="table-border-left" style="border-left: 2px solid #f4f4f4 !important;">{{person.name}}</td>
+                                <td ng-if="vm.isView == true">
+                                    <a ng-click="vm.removeParticipate(person)"> Xóa </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div ng-if="vm.isView == true">
+                        <a ng-click="vm.showModalListPerson()"> thêm người tham gia </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Phòng ban: </label>
+                    <select class="form-control" data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.department" ng-options="Department as Department.name for Department in vm.listDepartment track by Department.id"></select>
+                </div>
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Trạng thái: </label>
+                    <select class="form-control" data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.status" ng-options="status as status.name for status in vm.status track by status.id"></select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">&nbsp;</label>
+                    <div>
+                        <label class="bold">Sử dụng xe : </label>
+                        <input type="checkbox" ng-model="vm.eventDateNew.event.isUsingCar" data-ng-disabled="true" class="size-checkbox">
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="vm.eventDateNew.event.isUsingCar == true">
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Xe: </label>
+                    <select class="form-control" data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.car" ng-options="car as car.name for car in vm.cars track by car.id"></select>
+                </div>
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Số người trên xe: </label>
+                    <input data-ng-model="vm.eventDateNew.event.numberOfPersonInCar" data-ng-disabled="true" type="text" class="form-control" />
+                </div>
+                <div class="col-md-6 margin-top-20">
+                    <label class="bold">Biển số xe: </label>
+                    <select class="form-control" data-ng-disabled="true" data-ng-model="vm.eventDateNew.event.car.licensePlate" ng-options="licensePlate as licensePlate.name for licensePlate in vm.eventDateNew.event.car.licensePlates track by licensePlate.id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="vm.close()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> Thoát </button>
+        </div>
+    </div>

@@ -1,0 +1,19 @@
+<div class="modal-header alert alert-danger">
+    <h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+    
+    <a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+                
+</div>
+<div class="modal-body">
+<div class="row">
+        <h2>
+            
+            <p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'original.confirmDelete' | translate}}{{vm.selectedOrigins.length}}</p>
+        </h2>
+        
+</div>
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'original.cancel' | translate}}</button>
+    <button type="button" ng-click="vm.confirmDelete()" class="btn btn-danger"><i class="icon-check"></i> {{'original.accept' | translate}}</button>
+</div>

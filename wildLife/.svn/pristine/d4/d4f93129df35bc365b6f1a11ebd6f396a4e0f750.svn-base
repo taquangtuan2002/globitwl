@@ -1,0 +1,150 @@
+package com.globits.wl.dto.report;
+
+import java.math.BigInteger;
+import java.util.Date;
+
+public class ReportForm16ForExcelDto {
+
+    private BigInteger rowNumber;
+    private BigInteger farmId;
+    private String farmName;
+    private String addressDetails;
+    private String provinceName;
+    private String districtName;
+    private String communeName;
+    private BigInteger provinceId;
+    private BigInteger districtId;
+    private BigInteger communeId;
+
+    private String phoneNumber;
+    private String newRegistrationCode;
+    private Date dateRegistration;//ngày cấp
+    private Date importExportDate;//ngày nhập xuất
+
+    private BigInteger animalId;
+    private String animalName;
+    private String cites;
+    private String animalScienceName;
+    private Integer total;
+    private String note;
+    private Date registerDate;//ngày cấp giấy chứng nhận chi cục kiểm lâm đã cấp
+    private String certificate;//giấy chứng nhận chi cục kiểm lâm cấp
+    private Boolean checked;
+    private String from;
+
+    private Integer totalFarm;
+    private Integer totalAnimal;
+
+
+    public BigInteger getFarmId() {return farmId;}
+
+    public void setFarmId(BigInteger farmId) {this.farmId = farmId;}
+
+    public BigInteger getRowNumber() {return rowNumber;}
+
+    public void setRowNumber(BigInteger rowNumber) {this.rowNumber = rowNumber;}
+
+    public String getFarmName() {return farmName;}
+
+    public void setFarmName(String farmName) {this.farmName = farmName;}
+
+    public String getAddressDetails() {return addressDetails;}
+
+    public void setAddressDetails(String addressDetails) {this.addressDetails = addressDetails;}
+
+    public String getProvinceName() {return provinceName;}
+
+    public void setProvinceName(String provinceName) {this.provinceName = provinceName;}
+
+    public String getDistrictName() {return districtName;}
+
+    public void setDistrictName(String districtName) {this.districtName = districtName;}
+
+    public String getCommuneName() {return communeName;}
+
+    public void setCommuneName(String communeName) {this.communeName = communeName;}
+
+    public BigInteger getProvinceId() {return provinceId;}
+
+    public void setProvinceId(BigInteger provinceId) {this.provinceId = provinceId;}
+
+    public BigInteger getDistrictId() {return districtId;}
+
+    public void setDistrictId(BigInteger districtId) {this.districtId = districtId;}
+
+    public BigInteger getCommuneId() {return communeId;}
+
+    public void setCommuneId(BigInteger communeId) {this.communeId = communeId;}
+
+    public String getPhoneNumber() {return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+    public String getNewRegistrationCode() {return newRegistrationCode;}
+
+    public void setNewRegistrationCode(String newRegistrationCode) {this.newRegistrationCode = newRegistrationCode;}
+
+    public Date getDateRegistration() {return dateRegistration;}
+
+    public void setDateRegistration(Date dateRegistration) {this.dateRegistration = dateRegistration;}
+
+    public Date getImportExportDate() {return importExportDate;}
+
+    public void setImportExportDate(Date importExportDate) {this.importExportDate = importExportDate;}
+
+    public BigInteger getAnimalId() {return animalId;}
+
+    public void setAnimalId(BigInteger animalId) {this.animalId = animalId;}
+
+    public String getAnimalName() {return animalName;}
+
+    public void setAnimalName(String animalName) {this.animalName = animalName;}
+
+    public String getAnimalScienceName() {return animalScienceName;}
+
+    public void setAnimalScienceName(String animalScienceName) {this.animalScienceName = animalScienceName;}
+
+    public Integer getTotal() {return total;}
+
+    public void setTotal(Integer total) {this.total = total;}
+
+    public String getNote() {return note;}
+
+    public void setNote(String note) {this.note = note;}
+
+    public Date getRegisterDate() {return registerDate;}
+
+    public void setRegisterDate(Date registerDate) {this.registerDate = registerDate;}
+
+    public String getCertificate() {return certificate;}
+
+    public void setCertificate(String certificate) {this.certificate = certificate;}
+
+    public Boolean getChecked() {return checked;}
+
+    public void setChecked(Boolean checked) {this.checked = checked;}
+
+    public String getFrom() {return from;}
+
+    public void setFrom(String from) {this.from = from;}
+
+	public String getCites() {return cites;}
+
+	public void setCites(String cites) {this.cites = cites;}
+
+    public Integer getTotalFarm() {
+        return totalFarm;
+    }
+
+    public void setTotalFarm(Integer totalFarm) {
+        this.totalFarm = totalFarm;
+    }
+
+    public Integer getTotalAnimal() {
+        return totalAnimal;
+    }
+
+    public void setTotalAnimal(Integer totalAnimal) {
+        this.totalAnimal = totalAnimal;
+    }
+}

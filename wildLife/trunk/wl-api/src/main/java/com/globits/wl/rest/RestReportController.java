@@ -1,0 +1,348 @@
+package com.globits.wl.rest;
+
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.globits.wl.dto.AnimalDto;
+import com.globits.wl.dto.AnimalReportDataFormDto;
+import com.globits.wl.dto.Report18Dto;
+import com.globits.wl.dto.functiondto.AnimalReportDataReportDto;
+import com.globits.wl.dto.functiondto.AnimalReportDataSearchDto;
+import com.globits.wl.dto.functiondto.FarmAnimalTotalDto;
+import com.globits.wl.dto.functiondto.FarmSearchDto;
+import com.globits.wl.dto.functiondto.ImportExportAnimalSearchDto;
+import com.globits.wl.dto.functiondto.ReportAccordingToTheRedBookDto;
+import com.globits.wl.dto.functiondto.ReportImportExportTimeDto;
+import com.globits.wl.dto.functiondto.ReportParamDto;
+import com.globits.wl.dto.functiondto.ReportQuantityByCategoryCitesDto;
+import com.globits.wl.dto.report.EggSummaryReportDto;
+import com.globits.wl.dto.report.FarmSummaryReportDto;
+import com.globits.wl.dto.report.InventoryReportDto;
+import com.globits.wl.dto.report.ProductivityForecastReportDto;
+import com.globits.wl.dto.report.ReportSeedLevelDto;
+import com.globits.wl.dto.report.ReportSeedLevelProducTargetDto;
+import com.globits.wl.service.ImportExportAnimalSeedLevelService;
+import com.globits.wl.service.ImportExportAnimalService;
+import com.globits.wl.service.ReportService;
+import com.globits.wl.utils.WLConstant;
+
+@RestController
+@RequestMapping("/api/report")
+public class RestReportController {
+	@Autowired
+	private ImportExportAnimalService importAnimalService;
+
+	@Autowired
+	private ReportService reportService;
+	
+	@Autowired
+	private ImportExportAnimalSeedLevelService importExportAnimalSeedLevelService;
+
+
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/inventory",method=RequestMethod.POST)
+	public List<InventoryReportDto> getInventory(@RequestBody ReportParamDto paramDto) {
+		try {
+			return this.importAnimalService.getQuantityReport(paramDto);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getMeatYieldReport",method=RequestMethod.POST)
+	public List<FarmSummaryReportDto> getMeatYieldReport(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<FarmSummaryReportDto> result = reportService.getMeatYieldReport(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/farm_summary_report",method=RequestMethod.POST)
+	public List<FarmSummaryReportDto> farmSummaryReport(@RequestBody ReportParamDto paramDto) {
+		try {
+				
+			List<InventoryReportDto> list = this.importAnimalService.getQuantityReport(paramDto);			
+			List<FarmSummaryReportDto> ret = this.importAnimalService.farmSummaryReport(list);
+			
+			paramDto.setFromYear(paramDto.getFromYear()-1);
+			paramDto.setToYear(paramDto.getToYear()-1);
+			if(paramDto.getFromMonth()>0) {
+				paramDto.setFromMonth(paramDto.getFromMonth()-1);
+			}
+			if(paramDto.getToMonth()>0) {
+				paramDto.setToMonth(paramDto.getToMonth()-1);
+			}			
+			List<InventoryReportDto> listPrev = this.importAnimalService.getQuantityReport(paramDto);		
+			List<FarmSummaryReportDto> retPrev = this.importAnimalService.farmSummaryReport(listPrev);
+			if(ret!=null && retPrev!=null)
+			for (FarmSummaryReportDto retDto : ret) {
+				for (FarmSummaryReportDto retPrevDto : retPrev) {
+					if((retDto.getRegionName()
+						+retDto.getProvinceName()
+						+retDto.getDistrictName()
+						+retDto.getWardName())
+						.equals(
+						retPrevDto.getRegionName()
+						+retPrevDto.getProvinceName()
+						+retPrevDto.getDistrictName()
+						+retPrevDto.getWardName()
+						))
+					{
+						retDto.setQuantityPrevYear(retPrevDto.getQuantity());
+					}
+				}
+			}
+			return ret;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/seedLevelQuantityReport",method=RequestMethod.POST)
+	public List<ReportSeedLevelDto> seedLevelQuantityReport(@RequestBody ReportParamDto paramDto) {
+		try {
+			return this.importExportAnimalSeedLevelService.getListReportSeedLevel(paramDto);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/seedLevelQuantityProductTargetReport",method=RequestMethod.POST)
+	public List<ReportSeedLevelProducTargetDto> seedLevelQuantityProductTargetReport(@RequestBody ReportParamDto paramDto) throws UnsupportedEncodingException {
+		try {
+			return this.importExportAnimalSeedLevelService.getListReportSeedLevelProductTarget(paramDto);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getEggSummaryReport",method=RequestMethod.POST)
+	public List<EggSummaryReportDto> getEggSummaryReport(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<EggSummaryReportDto> result = reportService.getEggSummaryReport(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getMeatProductivityForecastReport",method=RequestMethod.POST)
+	public  List<ProductivityForecastReportDto> getMeatProductivityForecastReportDto(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<ProductivityForecastReportDto> result = reportService.getMeatProductivityForecastReportDto(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getPredictTheNumberOfLiveMeatSlightly",method=RequestMethod.POST)
+	public  List<ProductivityForecastReportDto> getPredictTheNumberOfLiveMeatSlightly(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<ProductivityForecastReportDto> result = reportService.getPredictTheNumberOfLiveMeatSlightly(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getPredictTheNumberOfLiveMeatSlightly/compare",method=RequestMethod.POST)
+	public  List<ProductivityForecastReportDto> getComparePredictTheNumberOfLiveMeatSlightly(@RequestBody ReportParamDto paramDto) {
+		try {
+			
+			paramDto.setCurrentYear(paramDto.getFromYear());
+			paramDto.setCurrentMonth(paramDto.getFromMonth());
+			List<ProductivityForecastReportDto> result = reportService.getPredictTheNumberOfLiveMeatSlightly(paramDto);
+			
+			paramDto.setCurrentYear(paramDto.getToYear());
+			paramDto.setCurrentMonth(paramDto.getToMonth());
+			List<ProductivityForecastReportDto> results = reportService.getPredictTheNumberOfLiveMeatSlightly(paramDto);
+			
+			result.addAll(results);
+			
+			return result;
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getMeatDetailProductivityForecastReport",method=RequestMethod.POST)
+	public  List<ProductivityForecastReportDto> getMeatDetailProductivityForecastReportDto(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<ProductivityForecastReportDto> result = reportService.getMeatDetailProductivityForecastReportDto(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getEggProductivityForecastReport",method=RequestMethod.POST)
+	public  List<ProductivityForecastReportDto> getEggProductivityForecastReportDto(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<ProductivityForecastReportDto> result = reportService.getEggProductivityForecastReportDto(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getEggDetailProductivityForecastReport",method=RequestMethod.POST)
+	public  List<ProductivityForecastReportDto> getEggDetailProductivityForecastReport(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<ProductivityForecastReportDto> result = reportService.getEggDetailProductivityForecastReportDto(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportNumberAnimalsAndNumberFarmsAccordingToTheRedBook",method=RequestMethod.POST)
+	public  List<ReportAccordingToTheRedBookDto> reportNumberAnimalsAndNumberFarmsAccordingToTheRedBook(@RequestBody ReportParamDto paramDto) {
+		try {
+			List<ReportAccordingToTheRedBookDto> result = reportService.reportNumberAnimalsAndNumberFarmsAccordingToTheRedBookNewByAdministrativeUnit(paramDto);
+			return result;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	/**Báo cáo trả về số lượng loài vật theo cites*/
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportNumberAnimalsAndNumberFarmsCategoryCites",method=RequestMethod.POST)
+	public  List<ReportQuantityByCategoryCitesDto> reportNumberAnimalsAndNumberFarmsCategoryCitest(@RequestBody ReportParamDto paramDto) {
+		/*List<ReportQuantityByCategoryCitesDto> result = reportService.reportNumberAnimalsAndNumberFarmsCategoryCitest(paramDto);*/
+		List<ReportQuantityByCategoryCitesDto> result = reportService.reportNumberAnimalsAndNumberFarmsCategoryCitestNewByAdministrativeUnit(paramDto);
+		return result;
+	}
+	/**Báo cáo hiện trạng theo loài nuôi*/
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportByAnimalsCurrent",method=RequestMethod.POST)
+	public List<FarmAnimalTotalDto> reportByAnimalsCurrent(@RequestBody FarmSearchDto dto) {
+		List<FarmAnimalTotalDto> result = reportService.getReportAnimalsCurrent(dto);
+		return result;
+	}
+	
+	/**Báo cáo hiện trạng loài nuôi theo đơn vị hành chính*/
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportCurrentStatusByAnimalAdministrative",method=RequestMethod.POST)
+	public List<FarmAnimalTotalDto> reportCurrentStatusByAnimalAdministrative(@RequestBody FarmSearchDto dto) {
+		List<FarmAnimalTotalDto> result = reportService.reportCurrentStatusByLastAnimalAdministrative(dto);
+		return result;
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportNumberTimeImportExport",method=RequestMethod.POST)
+	public List<ReportImportExportTimeDto> getReportNumberTimeImportExport(@RequestBody ImportExportAnimalSearchDto searchDto){
+		return reportService.getReportNumberTimeImportExport(searchDto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getReportImportExportForm16",method=RequestMethod.POST)
+	public List<ReportImportExportTimeDto> getReportImportExportForm16(@RequestBody ImportExportAnimalSearchDto searchDto){
+		return reportService.getReportImportExportForm16(searchDto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportAnimalEndangeredPreciousRareNormarlAndCites",method=RequestMethod.POST)
+	public List<Report18Dto> reportActivityOfEndangeredPreciousRareNormarlAndCites(@RequestBody AnimalReportDataSearchDto searchDto){
+//		return reportService.reportActivityOfEndangeredPreciousRareNormarlAndCites(searchDto);
+		return reportService.reportActivityOfEndangeredPreciousRareNormarlAndCitesNativeQuery(searchDto);
+	}
+	
+	/**
+	 * Báo cáo hiện trạng nuôi động vật hoang dã theo họ*/
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/reportCurrentStatusByFamily",method=RequestMethod.POST)
+	public List<Report18Dto> reportCurrentStatusByFamily(@RequestBody AnimalReportDataSearchDto searchDto){
+//		return reportService.reportCurrentStatusByFamily(searchDto);
+		return reportService.reportCurrentStatusByFamilyNewByAdministrativeUnit(searchDto);
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getAnimalReportDataReport",method=RequestMethod.POST)
+	public List<AnimalReportDataReportDto> getAnimalReportDataReport(@RequestBody ReportParamDto dto){
+		return reportService.getAnimalReportDataReport(dto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getAnimalReportDataReport04",method=RequestMethod.POST)
+	public List<AnimalReportDataReportDto> getAnimalReportDataReport04(@RequestBody ReportParamDto dto){
+		return reportService.getAnimalReportDataReport04(dto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getAnimalReportDataReport05",method=RequestMethod.POST)
+	public List<AnimalReportDataReportDto> getAnimalReportDataReport05(@RequestBody ReportParamDto dto){
+		return reportService.getAnimalReportDataReport05(dto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getAnimalReportDataReport07",method=RequestMethod.POST)
+	public List<AnimalReportDataReportDto> getAnimalReportDataReport07(@RequestBody ReportParamDto dto){
+		return reportService.getAnimalReportDataReport07(dto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/report24",method=RequestMethod.POST)
+	public List<Report18Dto> report24(@RequestBody AnimalReportDataSearchDto searchDto){
+		return reportService.report24(searchDto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/report25",method=RequestMethod.POST)
+	public List<Report18Dto> report25(@RequestBody AnimalReportDataSearchDto searchDto){
+		return reportService.report25(searchDto);
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/report26",method=RequestMethod.POST)
+	public List<Report18Dto> report26(@RequestBody AnimalReportDataSearchDto searchDto){
+		return reportService.report26(searchDto);
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value="/getAnimalReportDataReport04s",method=RequestMethod.POST)
+	public List<AnimalReportDataReportDto> getAnimalReportDataReport04s(@RequestBody ReportParamDto dto){
+		return reportService.getAnimalReportDataReport04s(dto);
+	}
+}

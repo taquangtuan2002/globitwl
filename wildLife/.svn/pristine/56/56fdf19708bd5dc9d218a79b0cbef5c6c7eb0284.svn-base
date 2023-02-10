@@ -1,0 +1,55 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{"informationAnimal.titleRaisingAnimalPets" | translate }}</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-3">
+                        <ui-select ng-model="vm.paramDto.animalParentId" sortable="true" close-on-select="true" on-select="">
+                            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="animal.id as animal in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+
+                </div>
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <!-- <button ng-click="vm.getQuantityReport()" class="btn btn-primary" type="submit">
+                            <i class="glyphicon glyphicon-search"></i>{{'report.viewReport' | translate}}
+                        </button>
+                        <button ng-click="vm.showCalcaulation()" class="btn btn-primary margin-left-10" type="submit">{{'report.calculation' | translate}}</button> -->
+                        <button ng-click="vm.clickTest()" class="btn btn-primary margin-left-10" type="submit"><i class="glyphicon glyphicon-search"></i>{{'report.view' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-hover table-bordered" id="searchTextResults">
+                    <tr>
+						<th class="text-center">STT</th>
+                        <th class="text-center">{{'informationAnimal.animalType' | translate}}</th>
+                        <th class="text-center">{{'informationAnimal.totalQuantity' | translate}}</th>
+                    </tr>
+                    <tr ng-repeat="item in vm.listData | filter:searchText">
+						<td class="text-center">{{$index + 1}}</td>
+						<td class="text-center">{{item.animalName}}</td>
+						<td class="text-center">{{item.total}}</td>
+                    </tr>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+
+        .glb-text{
+            text-align: center;
+        }
+    </style>

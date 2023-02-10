@@ -1,0 +1,1062 @@
+package com.globits.wl.domain;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.joda.time.DateTime;
+
+import com.globits.core.domain.BaseObject;
+
+@Entity
+@Table(name = "tbl_farm")
+@XmlRootElement
+/*
+ * Cơ sở chăn nuôi Danh mục trang trại cần quản lý
+ */
+public class Farm extends BaseObject {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/*
+	 * Thông tin cơ bản
+	 */
+	@Column(name = "name")
+	private String name;
+	@Column(name = "code",unique = true)
+	private String code;
+	@Column(name = "old_system_code")
+	private String oldSystemCode;
+
+	@Column(name = "longitude")
+	private String longitude;// Kinh độ
+	@Column(name = "latitude")
+	private String latitude;// Vĩ độ
+
+	@Column(name = "gMap_X")
+	private String gMapX;// Google map X
+	@Column(name = "gMap_Y")
+	private String gMapY;// Google map Y
+	@Column(name = "business_registration_number")
+	private String businessRegistrationNumber;//số đăng ký kinh doanh
+	@Column(name = "business_registration_datee")
+	private Date businessRegistrationDate;//ngày đăng ký kinh doanh
+	
+	@Column(name = "status")
+	private Integer status;// Trạng thái đăng ký trại nuôi: 2 chưa đăng ký,3 đã đăng ký
+	
+	@Column(name = "status_farm")
+	private Integer statusFarm;// Trạng thái hoạt động (0:đang hoạt động, 1: ngưng hoạt động) 
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "administrative_unit_id")
+	private FmsAdministrativeUnit administrativeUnit;// Đơn vị hành chính
+	@Column(name = "village")
+	private String village;// thôn/ấp/xóm
+	
+	@Column(name = "adress_detail")
+	private String adressDetail;// Địa chỉ chi tiết
+	
+	//tran huu dat them thông tin bị thiếu trong file excel start
+	@Column(name = "apartment_number")
+	private Integer apartmentNumber; // số nhà
+	
+	@Column(name = "start_date")
+	private Date startDate;// ngày bắt đầu nuôi
+	//tran huu dat them thông tin bị thiếu trong file excel end
+
+	@Column(name = "media_link")
+	private String mediaLink;// media Link
+	@Column(name = "description",length = 1337)
+	private String description;// ô tả giới tiệu cơ sở chăn nuôi để quảng bá
+	@Column(name = "phone_number")
+	private String phoneNumber;// số điện thoại
+	@Column(name = "fax")
+	private String fax;// Fax
+
+	/*
+	 * Người đại diện
+	 */
+	@Column(name = "owner_name")
+	private String ownerName;// Tên chủ cơ sở
+	@Column(name = "owner_citizen_code")
+	private String ownerCitizenCode;// Số chứng minh thư chủ cơ sở
+	@Column(name = "owner_phone_number")
+	private String ownerPhoneNumber;// Di động
+	@Column(name = "owner_email")
+	private String ownerEmail;// Email chủ cơ sở
+	@Column(name = "owner_Adress")
+	private String ownerAdress;// Địa chỉ chủ cơ sở
+	@Column(name = "owner_dob")
+	private Date ownerDob;
+	@Column(name = "owner_age")
+	private Integer ownerAge;
+	@Column(name = "owner_gender")
+	private String ownerGender;
+	@Column(name = "owner_position_name")
+	private String ownerPositionName; // Chức vụ
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner_administrative_unit_id")
+	private FmsAdministrativeUnit ownerAdministrativeUnit;// Đơn vị hành chính của chủ cơ sở
+	
+	@Column(name="owner_village")
+	private String ownerVillage;
+	
+	//tran huu dat them thông tin bị thiếu trong file excel start
+	@Column(name="owner_citizen_date")
+	private Date ownerCitizenDate;//ngay cap cmnd
+	
+	@Column(name="ownert_citizen_location")
+	private String ownerCitizenLocation;// noi cap cmnd
+	//tran huu dat them thông tin bị thiếu trong file excel end
+	
+	
+	/*
+	 * Nhân viên thú ý (Veterinary Staff : VetStaff)
+	 */
+	@Column(name = "vet_staff_name")
+	private String vetStaffName;// Tên nhân viên thú y
+	@Column(name = "vet_staff_citizen_code")
+	private String vetStaffCitizenCode;// Số chứng minh thư nhân viên thú y
+	@Column(name = "vet_staff_mobile_phone")
+	private String vetStaffPhoneNumber;// Điện thoại nhân viên thú y
+	@Column(name = "vet_staff_email")
+	private String vetStaffEmail;// Email nhân viên thú y
+	@Column(name = "vet_staff_Adress")
+	private String vetStaffAdress;// Địa chỉ nhân viên thú y
+
+	/*
+	 * Thông tin năng lực trang trại
+	 */
+
+	@Column(name = "total_acreage")
+	private Double totalAcreage;// Tổng Diện tích
+
+	@Column(name = "lodging_acreage")
+	private Double lodgingAcreage;// Diện tích chuồng trại
+
+	@Column(name = "max_number_of_animal")
+	private Integer maxNumberOfAnimal;// Số lượng vật nuôi tối đa
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmProductTarget> farmProductTargets = new HashSet<FarmProductTarget>();// Loại hình sản xuất: hướng thịt, hướng trứng, hướng sữa...
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "husbandry_method_id")
+	private HusbandryMethod husbandryMethod;// Phương thức chăn nuôi
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "water_resources_id")
+	private WaterSource waterResources;// Nguồn nước
+	@Column(name = "is_out_sourcing")
+	private Boolean isOutSourcing;// Nhận nuôi gia công
+	@Column(name = "number_of_labor")
+	private Integer numberOfLabor;// Số lượng nhân công
+	@Column(name = "distance_to_residential_area")
+	private Integer distanceToResidentialArea;// Khoảng cách đến khu dân cư
+	@Column(name = "balance_number")
+	private Double balanceNumber;//số tồn hiện tại đang nuôi
+	@Column(name="salangane_house_type")
+	private Integer salanganeHouseType;// loại nhà chim yến: 0-nhà xây mới, 1- nhà cơ nới; null không phải nhà yến
+	@Column(name="salangane_nest_exploit_quantity")
+	private Double salanganeNestExploitQuantity;// số lượng chim yến khai thác(kg/ tháng)
+	@Column(name ="reason_not_yet_register")
+	private String reasonNotYetRegister;// Lý do chưa đăng ký
+	@Column(name = "founding_date")
+	private Date foundingDate;//Ngày thành lập
+	@Column(name = "issuing_code_date")
+	private Date issuingCodeDate;// Ngày cấp mã số
+	@Column(name = "old_registration_code")
+	private String oldRegistrationCode;// Mã đăng ký cũ
+	@Column(name = "new_registration_code")
+	private String newRegistrationCode;// Mã đăng ký mới
+	
+//	@NotFound(action = NotFoundAction.IGNORE)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ownership_id")
+	private Ownership ownership;//Hình thức sở hữu
+	/*
+	 * Chứng chỉ, giấy tờ đính kèm
+	 */
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmFileAttachment> attachments = new HashSet<FarmFileAttachment>();
+	
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmCertificate> farmCertificates = new HashSet<FarmCertificate>();
+
+	/*
+	 * Địa chỉ các cơ sở bán hàng
+	 */
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmStore> stores = new HashSet<FarmStore>();
+
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<ImportExportAnimal> importAnimals = new HashSet<ImportExportAnimal>();// Danh mục nhập đàn
+	
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<ExportAnimal> exportAnimals = new HashSet<ExportAnimal>();// Danh mục xuất đàn
+	
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmAnimal> farmAnimals = new HashSet<FarmAnimal>();// Danh mục vật nuôi của trang trại
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmAnimalType> farmAnimalTypes = new HashSet<FarmAnimalType>();// Danh mục loại vật nuôi của trang trại
+	
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<AnimalReportData> animalReportDatas = new HashSet<AnimalReportData>();// Danh mục khai báo động vật hoang dã
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "farm_size_id")
+	private FarmSize farmSize;// Quy mô trang trại
+	//Lat theo tọa độ GCS
+	@Column(name="gcs_lat")
+	private Double gcsLat;
+	//Long theo tọa độ GCS
+	@Column(name="gcs_long")
+	private Double gcsLong;
+	//Zone theo tọa độ GCS
+	@Column(name="gcs_zone")
+	private String gcsZone;
+	//Độ chính xác theo tọa độ GCS
+	@Column(name="gcs_accuracy")
+	private Double gcsAccuracy;
+	//Cao độ
+	@Column(name="gcs_elevation")
+	private Double gcsElevation;
+	//ngày phỏng vấn
+	@Column(name="interview_date")
+	private Date interviewDate;
+	//ngày phỏng vấn
+	@Column(name="old_code")
+	private String oldCode;
+	//thời gian bắt đầu phỏng vấn
+	@Column(name="interview_start_time")
+	private String interviewStartTime;
+	//thời gian kết thúc phỏng vấn
+	@Column(name="interview_fin_time")
+	private String interviewFinTime;
+	//Người phỏng vấn
+	@Column(name="interviewer")
+	private String interviewer;
+	//Người được phỏng vấn
+	@Column(name="in_name")
+	private String inName;
+	//Tuổi người phỏng vấn
+	@Column(name="in_age")
+	private Integer inAge;
+	//Giới tính
+	@Column(name="in_gen")
+	private String inGen;
+	//Số điện thoại
+	@Column(name="in_tel")
+	private String inTel;
+	@Column(name="ca_name")
+	private String caName;
+	@Column(name="ca_age")
+	private Integer caAge;
+	@Column(name="ca_gen")
+	private String caGen;
+	@Column(name="type")
+	private String type;
+	@Column(name="year_registration")
+	private String yearRegistration;
+	@Column(name="map_code")
+	private String mapCode;
+	
+	private Boolean isDuplicate;
+	
+	@Column(name="method_feed")
+	private Integer methodFeed;//Hình thức nuôi: Nuôi sinh trưởng-1, Nuôi sinh sản-2, Nuôi khác-3
+	
+	@Column(name = "stop_date")
+	private Date stopDate;//Ngày dừng hoạt động
+	
+	@OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<FarmHusbandryMethod> farmHusbandryMethods = new HashSet<FarmHusbandryMethod>();// Danh mục các hình thức nuôi
+	
+	//tran huu dat them thuoc tinh ttbvmt ngaycap ttbvmt
+	
+	@Column(name="date_registration")
+	private Date dateRegistration;//Ngày cấp mã số đăng ký theo 06
+	
+	@Column(name="date_other_registration")
+	private Date dateOtherRegistration;//Ngày cấp mã số giấy CN đăng ký
+	
+	@Column(name="ttbvmt")
+	private String ttbvmt;//tt bao ve moi truong
+	
+	@Column(name="ttbvmt_date")
+	private Date ttbvmtDate;// ngay cap tt bao ve moi truong
+	//tran huu dat them thuoc tinh ttbvmt ngaycap ttbvmt
+	private String xVN2000;
+	private String yVN2000;
+
+	public String getxVN2000() {return xVN2000;}
+
+	public void setxVN2000(String xVN2000) {this.xVN2000 = xVN2000;}
+
+	public String getyVN2000() {return yVN2000;}
+
+	public void setyVN2000(String yVN2000) {this.yVN2000 = yVN2000;}
+
+	public String getOldSystemCode() {
+		return oldSystemCode;
+	}
+
+	public String getOwnerVillage() {
+		return ownerVillage;
+	}
+
+	public void setOwnerVillage(String ownerVillage) {
+		this.ownerVillage = ownerVillage;
+	}
+
+	public Date getDateRegistration() {
+		return dateRegistration;
+	}
+
+	public void setDateRegistration(Date dateRegistration) {
+		this.dateRegistration = dateRegistration;
+	}
+
+	public void setOldSystemCode(String oldSystemCode) {
+		this.oldSystemCode = oldSystemCode;
+	}
+
+	public Date getOwnerDob() {
+		return ownerDob;
+	}
+
+	public void setOwnerDob(Date ownerDob) {
+		this.ownerDob = ownerDob;
+	}
+
+	public Integer getOwnerAge() {
+		return ownerAge;
+	}
+
+	public void setOwnerAge(Integer ownerAge) {
+		this.ownerAge = ownerAge;
+	}
+
+	public String getOwnerGender() {
+		return ownerGender;
+	}
+
+	public void setOwnerGender(String ownerGender) {
+		this.ownerGender = ownerGender;
+	}
+
+	public String getOwnerPositionName() {
+		return ownerPositionName;
+	}
+
+	public void setOwnerPositionName(String ownerPositionName) {
+		this.ownerPositionName = ownerPositionName;
+	}
+
+	public Ownership getOwnership() {
+		return ownership;
+	}
+
+	public void setOwnership(Ownership ownership) {
+		this.ownership = ownership;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getReasonNotYetRegister() {
+		return reasonNotYetRegister;
+	}
+
+	public void setReasonNotYetRegister(String reasonNotYetRegister) {
+		this.reasonNotYetRegister = reasonNotYetRegister;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Set<AnimalReportData> getAnimalReportDatas() {
+		return animalReportDatas;
+	}
+
+	public void setAnimalReportDatas(Set<AnimalReportData> animalReportDatas) {
+		this.animalReportDatas = animalReportDatas;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Date getFoundingDate() {
+		return foundingDate;
+	}
+
+	public void setFoundingDate(Date foundingDate) {
+		this.foundingDate = foundingDate;
+	}
+
+	public Date getIssuingCodeDate() {
+		return issuingCodeDate;
+	}
+
+	public void setIssuingCodeDate(Date issuingCodeDate) {
+		this.issuingCodeDate = issuingCodeDate;
+	}
+
+	public String getOldRegistrationCode() {
+		return oldRegistrationCode;
+	}
+
+	public void setOldRegistrationCode(String oldRegistrationCode) {
+		this.oldRegistrationCode = oldRegistrationCode;
+	}
+
+	public String getNewRegistrationCode() {
+		return newRegistrationCode;
+	}
+
+	public void setNewRegistrationCode(String newRegistrationCode) {
+		this.newRegistrationCode = newRegistrationCode;
+	}
+
+	public Integer getSalanganeHouseType() {
+		return salanganeHouseType;
+	}
+
+	public void setSalanganeHouseType(Integer salanganeHouseType) {
+		this.salanganeHouseType = salanganeHouseType;
+	}
+
+	public Double getSalanganeNestExploitQuantity() {
+		return salanganeNestExploitQuantity;
+	}
+
+	public void setSalanganeNestExploitQuantity(Double salanganeNestExploitQuantity) {
+		this.salanganeNestExploitQuantity = salanganeNestExploitQuantity;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getgMapX() {
+		return gMapX;
+	}
+
+	public void setgMapX(String gMapX) {
+		this.gMapX = gMapX;
+	}
+
+	public String getgMapY() {
+		return gMapY;
+	}
+
+	public void setgMapY(String gMapY) {
+		this.gMapY = gMapY;
+	}
+
+	public FmsAdministrativeUnit getAdministrativeUnit() {
+		return administrativeUnit;
+	}
+
+	public void setAdministrativeUnit(FmsAdministrativeUnit administrativeUnit) {
+		this.administrativeUnit = administrativeUnit;
+	}
+
+	public String getAdressDetail() {
+		return adressDetail;
+	}
+
+	public void setAdressDetail(String adressDetail) {
+		this.adressDetail = adressDetail;
+	}
+
+	public String getMediaLink() {
+		return mediaLink;
+	}
+
+	public void setMediaLink(String mediaLink) {
+		this.mediaLink = mediaLink;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
+
+	public String getOwnerCitizenCode() {
+		return ownerCitizenCode;
+	}
+
+	public void setOwnerCitizenCode(String ownerCitizenCode) {
+		this.ownerCitizenCode = ownerCitizenCode;
+	}
+
+	public String getOwnerPhoneNumber() {
+		return ownerPhoneNumber;
+	}
+
+	public void setOwnerPhoneNumber(String ownerPhoneNumber) {
+		this.ownerPhoneNumber = ownerPhoneNumber;
+	}
+
+	public String getOwnerEmail() {
+		return ownerEmail;
+	}
+
+	public void setOwnerEmail(String ownerEmail) {
+		this.ownerEmail = ownerEmail;
+	}
+
+	public String getVetStaffName() {
+		return vetStaffName;
+	}
+
+	public void setVetStaffName(String vetStaffName) {
+		this.vetStaffName = vetStaffName;
+	}
+
+	public String getVetStaffCitizenCode() {
+		return vetStaffCitizenCode;
+	}
+
+	public void setVetStaffCitizenCode(String vetStaffCitizenCode) {
+		this.vetStaffCitizenCode = vetStaffCitizenCode;
+	}
+
+	public String getVetStaffPhoneNumber() {
+		return vetStaffPhoneNumber;
+	}
+
+	public void setVetStaffPhoneNumber(String vetStaffPhoneNumber) {
+		this.vetStaffPhoneNumber = vetStaffPhoneNumber;
+	}
+
+	public String getVetStaffEmail() {
+		return vetStaffEmail;
+	}
+
+	public void setVetStaffEmail(String vetStaffEmail) {
+		this.vetStaffEmail = vetStaffEmail;
+	}
+
+	public String getVetStaffAdress() {
+		return vetStaffAdress;
+	}
+
+	public void setVetStaffAdress(String vetStaffAdress) {
+		this.vetStaffAdress = vetStaffAdress;
+	}
+
+	public Double getTotalAcreage() {
+		return totalAcreage;
+	}
+
+	public void setTotalAcreage(Double totalAcreage) {
+		this.totalAcreage = totalAcreage;
+	}
+
+	public Double getLodgingAcreage() {
+		return lodgingAcreage;
+	}
+
+	public void setLodgingAcreage(Double lodgingAcreage) {
+		this.lodgingAcreage = lodgingAcreage;
+	}
+
+	public Integer getMaxNumberOfAnimal() {
+		return maxNumberOfAnimal;
+	}
+
+	public void setMaxNumberOfAnimal(Integer maxNumberOfAnimal) {
+		this.maxNumberOfAnimal = maxNumberOfAnimal;
+	}	
+	
+	public Set<FarmProductTarget> getFarmProductTargets() {
+		return farmProductTargets;
+	}
+
+	public void setFarmProductTargets(Set<FarmProductTarget> farmProductTargets) {
+		this.farmProductTargets = farmProductTargets;
+	}
+
+	public Set<ImportExportAnimal> getImportAnimals() {
+		return importAnimals;
+	}
+
+	public void setImportAnimals(Set<ImportExportAnimal> importAnimals) {
+		this.importAnimals = importAnimals;
+	}
+
+	public Set<ExportAnimal> getExportAnimals() {
+		return exportAnimals;
+	}
+
+	public void setExportAnimals(Set<ExportAnimal> exportAnimals) {
+		this.exportAnimals = exportAnimals;
+	}
+
+	public Set<FarmAnimal> getFarmAnimals() {
+		return farmAnimals;
+	}
+
+	public void setFarmAnimals(Set<FarmAnimal> farmAnimals) {
+		this.farmAnimals = farmAnimals;
+	}
+
+	public HusbandryMethod getHusbandryMethod() {
+		return husbandryMethod;
+	}
+
+	public void setHusbandryMethod(HusbandryMethod husbandryMethod) {
+		this.husbandryMethod = husbandryMethod;
+	}
+
+	public WaterSource getWaterResources() {
+		return waterResources;
+	}
+
+	public void setWaterResources(WaterSource waterResources) {
+		this.waterResources = waterResources;
+	}
+
+	public Boolean getIsOutSourcing() {
+		return isOutSourcing;
+	}
+
+	public void setIsOutSourcing(Boolean isOutSourcing) {
+		this.isOutSourcing = isOutSourcing;
+	}
+
+	public Integer getNumberOfLabor() {
+		return numberOfLabor;
+	}
+
+	public void setNumberOfLabor(Integer numberOfLabor) {
+		this.numberOfLabor = numberOfLabor;
+	}
+
+	public Integer getDistanceToResidentialArea() {
+		return distanceToResidentialArea;
+	}
+
+	public void setDistanceToResidentialArea(Integer distanceToResidentialArea) {
+		this.distanceToResidentialArea = distanceToResidentialArea;
+	}
+
+	public Set<FarmFileAttachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(Set<FarmFileAttachment> attachments) {
+		this.attachments = attachments;
+	}	
+
+	public Set<FarmCertificate> getFarmCertificates() {
+		return farmCertificates;
+	}
+
+	public void setFarmCertificates(Set<FarmCertificate> farmCertificates) {
+		this.farmCertificates = farmCertificates;
+	}
+
+	public Set<FarmStore> getStores() {
+		return stores;
+	}
+
+	public void setStores(Set<FarmStore> stores) {
+		this.stores = stores;
+	}	
+	
+	public String getBusinessRegistrationNumber() {
+		return businessRegistrationNumber;
+	}
+
+	public void setBusinessRegistrationNumber(String businessRegistrationNumber) {
+		this.businessRegistrationNumber = businessRegistrationNumber;
+	}
+
+	public Date getBusinessRegistrationDate() {
+		return businessRegistrationDate;
+	}
+
+	public void setBusinessRegistrationDate(Date businessRegistrationDate) {
+		this.businessRegistrationDate = businessRegistrationDate;
+	}
+	
+	public Set<FarmAnimalType> getFarmAnimalTypes() {
+		return farmAnimalTypes;
+	}
+
+	public void setFarmAnimalTypes(Set<FarmAnimalType> farmAnimalTypes) {
+		this.farmAnimalTypes = farmAnimalTypes;
+	}	
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	
+	public FarmSize getFarmSize() {
+		return farmSize;
+	}
+
+	public void setFarmSize(FarmSize farmSize) {
+		this.farmSize = farmSize;
+	}	
+
+	public String getVillage() {
+		return village;
+	}
+
+	public void setVillage(String village) {
+		this.village = village;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getOwnerAdress() {
+		return ownerAdress;
+	}
+
+	public void setOwnerAdress(String ownerAdress) {
+		this.ownerAdress = ownerAdress;
+	}
+	
+	public Double getBalanceNumber() {
+		return balanceNumber;
+	}
+
+	public void setBalanceNumber(Double balanceNumber) {
+		this.balanceNumber = balanceNumber;
+	}
+
+	public Double getGcsLat() {
+		return gcsLat;
+	}
+
+	public void setGcsLat(Double gcsLat) {
+		this.gcsLat = gcsLat;
+	}
+
+	public Double getGcsLong() {
+		return gcsLong;
+	}
+
+	public void setGcsLong(Double gcsLong) {
+		this.gcsLong = gcsLong;
+	}
+
+	public String getGcsZone() {
+		return gcsZone;
+	}
+
+	public void setGcsZone(String gcsZone) {
+		this.gcsZone = gcsZone;
+	}
+
+	public Double getGcsAccuracy() {
+		return gcsAccuracy;
+	}
+
+	public void setGcsAccuracy(Double gcsAccuracy) {
+		this.gcsAccuracy = gcsAccuracy;
+	}
+
+	public Double getGcsElevation() {
+		return gcsElevation;
+	}
+
+	public void setGcsElevation(Double gcsElevation) {
+		this.gcsElevation = gcsElevation;
+	}
+
+	public Date getInterviewDate() {
+		return interviewDate;
+	}
+
+	public void setInterviewDate(Date interviewDate) {
+		this.interviewDate = interviewDate;
+	}
+
+	public String getOldCode() {
+		return oldCode;
+	}
+
+	public void setOldCode(String oldCode) {
+		this.oldCode = oldCode;
+	}
+	
+	public String getInterviewStartTime() {
+		return interviewStartTime;
+	}
+
+	public void setInterviewStartTime(String interviewStartTime) {
+		this.interviewStartTime = interviewStartTime;
+	}
+
+	public String getInterviewFinTime() {
+		return interviewFinTime;
+	}
+
+	public void setInterviewFinTime(String interviewFinTime) {
+		this.interviewFinTime = interviewFinTime;
+	}
+
+	public String getInterviewer() {
+		return interviewer;
+	}
+
+	public void setInterviewer(String interviewer) {
+		this.interviewer = interviewer;
+	}
+
+	public String getInName() {
+		return inName;
+	}
+
+	public void setInName(String inName) {
+		this.inName = inName;
+	}
+
+	public Integer getInAge() {
+		return inAge;
+	}
+
+	public void setInAge(Integer inAge) {
+		this.inAge = inAge;
+	}
+
+	public String getInGen() {
+		return inGen;
+	}
+
+	public void setInGen(String inGen) {
+		this.inGen = inGen;
+	}
+
+	public String getInTel() {
+		return inTel;
+	}
+
+	public void setInTel(String inTel) {
+		this.inTel = inTel;
+	}
+
+	public String getCaName() {
+		return caName;
+	}
+
+	public void setCaName(String caName) {
+		this.caName = caName;
+	}
+
+	public Integer getCaAge() {
+		return caAge;
+	}
+
+	public void setCaAge(Integer caAge) {
+		this.caAge = caAge;
+	}
+
+	public String getCaGen() {
+		return caGen;
+	}
+
+	public void setCaGen(String caGen) {
+		this.caGen = caGen;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getYearRegistration() {
+		return yearRegistration;
+	}
+
+	public void setYearRegistration(String yearRegistration) {
+		this.yearRegistration = yearRegistration;
+	}
+
+	public String getMapCode() {
+		return mapCode;
+	}
+
+	public void setMapCode(String mapCode) {
+		this.mapCode = mapCode;
+	}
+
+	public Boolean getIsDuplicate() {
+		return isDuplicate;
+	}
+	
+	public Integer getMethodFeed() {
+		return methodFeed;
+	}
+
+	public void setMethodFeed(Integer methodFeed) {
+		this.methodFeed = methodFeed;
+	}
+
+	public void setIsDuplicate(Boolean isDuplicate) {
+		this.isDuplicate = isDuplicate;
+	}	
+
+	public Date getStopDate() {
+		return stopDate;
+	}
+
+	public void setStopDate(Date stopDate) {
+		this.stopDate = stopDate;
+	}	
+
+	public Integer getStatusFarm() {
+		return statusFarm;
+	}
+
+	public void setStatusFarm(Integer statusFarm) {
+		this.statusFarm = statusFarm;
+	}
+
+	public Set<FarmHusbandryMethod> getFarmHusbandryMethods() {
+		return farmHusbandryMethods;
+	}
+
+	public void setFarmHusbandryMethods(Set<FarmHusbandryMethod> farmHusbandryMethods) {
+		this.farmHusbandryMethods = farmHusbandryMethods;
+	}
+
+	public Farm() {
+		this.setUuidKey(UUID.randomUUID());
+	}
+
+	public Integer getApartmentNumber() {
+		return apartmentNumber;
+	}
+
+	public void setApartmentNumber(Integer apartmentNumber) {
+		this.apartmentNumber = apartmentNumber;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getOwnerCitizenDate() {
+		return ownerCitizenDate;
+	}
+
+	public void setOwnerCitizenDate(Date ownerCitizenDate) {
+		this.ownerCitizenDate = ownerCitizenDate;
+	}
+
+	public String getOwnerCitizenLocation() {
+		return ownerCitizenLocation;
+	}
+
+	public void setOwnerCitizenLocation(String ownerCitizenLocation) {
+		this.ownerCitizenLocation = ownerCitizenLocation;
+	}
+
+	public String getTtbvmt() {
+		return ttbvmt;
+	}
+
+	public void setTtbvmt(String ttbvmt) {
+		this.ttbvmt = ttbvmt;
+	}
+
+	public Date getTtbvmtDate() {
+		return ttbvmtDate;
+	}
+
+	public void setTtbvmtDate(Date ttbvmtDate) {
+		this.ttbvmtDate = ttbvmtDate;
+	}
+
+	public FmsAdministrativeUnit getOwnerAdministrativeUnit() {
+		return ownerAdministrativeUnit;
+	}
+
+	public void setOwnerAdministrativeUnit(FmsAdministrativeUnit ownerAdministrativeUnit) {
+		this.ownerAdministrativeUnit = ownerAdministrativeUnit;
+	}
+
+	public Date getDateOtherRegistration() {
+		return dateOtherRegistration;
+	}
+
+	public void setDateOtherRegistration(Date dateOtherRegistration) {
+		this.dateOtherRegistration = dateOtherRegistration;
+	}
+	
+}

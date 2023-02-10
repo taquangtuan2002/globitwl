@@ -1,0 +1,112 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.technicalStaff.isNew == true" class="modal-title"><i class="icon-plus"></i>Thêm mới</h4>
+    <h4 ng-if="vm.technicalStaff.isNew == false" class="modal-title"><i class="icon-pencil"></i>Sửa </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-10 margin-top-10">
+            <label class="bold">Mã nhân viên kĩ thuật </label>
+            <input ng-if="vm.technicalStaff.isNew == true" data-ng-model="vm.technicalStaff.code" type="text"
+                autofocus="autofocus" class="form-control" />
+            <input ng-if="vm.technicalStaff.isNew == false" data-ng-model="vm.tempCode" type="text"
+                autofocus="autofocus" class="form-control" />
+        </div>
+        <div class="col-md-1 margin-top-10">
+            <button ng-if="vm.technicalStaff.isNew == true"
+                style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)"
+                type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+            <button ng-if="vm.technicalStaff.isNew == false"
+                style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)"
+                type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Tên Nhân Viên Kĩ Thuật </label>
+            <input data-ng-model="vm.technicalStaff.name" type="text" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Số Điện Thoại </label>
+            <input data-ng-model="vm.technicalStaff.phoneNumber " class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Email </label>
+            <input data-ng-model="vm.technicalStaff.email " class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Giới Tính </label>
+            <ui-select ng-disabled="vm.isViewDetail" ng-model="vm.technicalStaff.gender" sortable="true"
+                on-select="vm.onSelectedGender($item)" close-on-select="true">
+                <ui-select-match allow-clear="true" placeholder="Chọn Giới Tính...">
+                    {{$select.selected}} </ui-select-match>
+                <ui-select-choices repeat="gender in vm.gender ">
+                    <div class="bold" ng-bind-html="gender | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Ngày sinh</label>
+            <input type="text" ng-change="" placeholder="Ngày sinh" my-date-picker class="form-control"
+                ng-model="vm.technicalStaff.birthdate">
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Chức Vụ </label>
+            <input data-ng-model="vm.technicalStaff.position" class="form-control" />
+        </div>
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Chọn Tỉnh/Thành Phố...</label>
+            <ui-select ng-model="vm.technicalStaff.province.id" sortable="true" close-on-select="true"
+                on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+                <ui-select-match allow-clear="true" placeholder="Chọn Tỉnh/Thành Phố...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnitsCity | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Chọn Quận/Huyện...</label>
+            <ui-select ng-model="vm.technicalStaff.district" sortable="true" close-on-select="true"
+                on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="Chọn Quận/Huyện...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Chọn Phường/Xã...</label>
+            <ui-select ng-model="vm.technicalStaff.commune" sortable="true" close-on-select="true"
+                on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="Chọn Phường/Xã...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+        Hủy </button>
+    <!--<button type="button" ng-click="vm.saveProductTarget()" class="btn btn-primary"><i class="icon-check"></i> {{'technicalStaff.save' | translate}}</button>-->
+    <button ng-if="vm.technicalStaff.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)"
+        class="btn btn-primary" data-dismiss="modal"><i class="icon-check"></i>Lưu</button>
+    <button ng-if="vm.technicalStaff.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)"
+        class="btn btn-primary" data-dismiss="modal"><i class="icon-check"></i>Lưu</button>
+</div>

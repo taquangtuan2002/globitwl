@@ -1,0 +1,504 @@
+/**
+ * Created by bizic on 30/8/2016.
+ */
+(function() {
+    'use strict';
+
+    angular.module('Education.User').service('UserService', UserService);
+
+    UserService.$inject = [
+        '$http',
+        '$q',
+        'settings',
+        'Utilities',
+        '$translate'
+    ];
+
+    function UserService($http, $q, settings, utils, $translate) {
+        var self = this;
+        var baseUrl = settings.api.baseUrl + settings.api.apiPrefix;
+
+        var urlUserAttachments = settings.api.baseUrl + settings.api.apiPrefix + "user_attachments";
+
+        self.getTableDefinition = getTableDefinition;
+        self.getUsers = getUsers;
+        self.getUser = getUser;
+        self.saveUser = saveUser;
+        self.deleteUsers = deleteUsers;
+        self.getAllRoles = getAllRoles;
+        self.getAllGroups = getAllGroups;
+        self.usernameDuplicates = usernameDuplicates;
+        self.emailDuplicates = emailDuplicates;
+        self.changePassword = changePassword;
+        self.changePasswordSelf = changePasswordSelf;
+        self.passwordValid = passwordValid;
+        self.cropProfilePhoto = cropProfilePhoto;
+        self.getUserByUsername = getUserByUsername;
+        self.getUserByEmail = getUserByEmail;
+        self.findUserByUserName = findUserByUserName;
+        self.getAdminstrativeUnitsCity = getAdminstrativeUnitsCity;
+        self.getAllByParentId = getAllByParentId;
+        self.saveAdministrativeUnit = saveAdministrativeUnit;
+        self.getAdministrativeUnitByUserId = getAdministrativeUnitByUserId;
+        self.deleteUserById = deleteUserById;
+        self.getAdministrativeUnitDtoByLoginUser = getAdministrativeUnitDtoByLoginUser;
+        self.getCurrentUser = getCurrentUser;
+        self.getPageSearchUser = getPageSearchUser;
+        self.getRolesByAccount = getRolesByAccount;
+        self.getStream = getStream;
+        self.saveFiles = saveFiles;
+        self.getUserAttachmentsByUserId = getUserAttachmentsByUserId;
+        //tran huu dat khai bao bien
+        self.findNotification = findNotification;
+        self.getDetailsSystemMessage = getDetailsSystemMessage;
+        self.updateNotification = updateNotification;
+        self.getStreamDocument = getStreamDocument;
+        self.searchByPage = searchByPage;
+        self.getAdministrativeOrganizationByUser = getAdministrativeOrganizationByUser;
+
+        function getAdministrativeOrganizationByUser() {
+            var url = baseUrl + 'administrativeOrganization/getAdministrativeOrganizationByUser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+            
+        }
+        //tran huu dat khai bao bien
+
+        function searchByPage(dto) {
+            var url = urlUserAttachments + '/searchByPageUniqueUser';
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function getStream(dto) {
+            console.log("RUNNING");
+            var deferred = $q.defer();
+
+            $http({
+                    url: settings.api.baseUrl + settings.api.apiPrefix + 'file/exportSearchUser',
+                    method: "POST", //you can use also GET or POST
+                    data: dto,
+                    headers: { 'Content-type': 'application/json' },
+                    responseType: 'arraybuffer', //THIS IS IMPORTANT
+                })
+                .success(function(data) {
+                    console.debug("SUCCESS");
+                    deferred.resolve(data);
+                }).error(function(data) {
+                    console.error("ERROR");
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+
+        function getPageSearchUser(searchDto, pageIndex, pageSize, successCallback, errorCallback) {
+            if (searchDto != null) {
+
+                var url = baseUrl + 'fms_users/searchDto/' + pageIndex + '/' + pageSize;
+                return utils.resolveAlt(url, 'POST', null, searchDto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, successCallback, errorCallback);
+
+            }
+        }
+
+        function getRolesByAccount() {
+            var url = baseUrl + 'fms_users/getRolesByAccount';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getCurrentUser() {
+            var url = baseUrl + 'fms_users/getCurrentUser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getAdministrativeUnitDtoByLoginUser() {
+            var url = baseUrl + 'user_administrative/get_administrativeUnit_dto_by_loginuser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getAdminstrativeUnitsCity() {
+            var url = baseUrl + 'administrative/getall/city';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getAllByParentId(parentId) {
+            var url = baseUrl + 'administrative/getAllByParentId/' + parentId;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function saveAdministrativeUnit(userId, administrativeUnits) {
+            var url = baseUrl + 'user_administrative/save/' + userId;
+            return utils.resolveAlt(url, 'POST', null, administrativeUnits, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function saveFiles(files) {
+            var url = baseUrl + 'user_attachments/save/';
+            return utils.resolveAlt(url, 'POST', null, files, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function getAdministrativeUnitByUserId(userId) {
+            var url = baseUrl + 'user_administrative/get_administrativeUnit_by_userid/' + userId;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getUserAttachmentsByUserId(userId) {
+            var url = baseUrl + 'user_attachments/getByUserId/' + userId;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function emailDuplicates(user) {
+
+            if (!user.id) {
+                user.id = 0;
+            }
+
+            var url = baseUrl + 'user/duplicate/email';
+
+            return utils.resolveAlt(url, 'POST', null, user, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function usernameDuplicates(user) {
+
+            if (!user.id) {
+                user.id = 0;
+            }
+
+            var url = baseUrl + 'user/duplicate/username';
+
+            return utils.resolveAlt(url, 'POST', null, user, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function getAllRoles() {
+            var url = baseUrl + 'roles/all';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getAllGroups() {
+            var url = baseUrl + 'usergroup/all';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getUsers(pageIndex, pageSize) {
+
+            var url = baseUrl + 'fms_users';
+            url += '/' + ((pageIndex > 0) ? pageIndex : 1);
+            url += '/' + ((pageSize > 0) ? pageSize : 10);
+
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getUser(id) {
+            if (!id) {
+                return $q.when(null);
+            }
+
+            var url = baseUrl + 'fms_users/getbyid/' + id;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function saveUser(user, successCallback, errorCallback) {
+            var url = baseUrl + 'fms_users/create';
+
+            user.active = user.active == null ? 0 : user.active;
+
+            return utils.resolveAlt(url, 'POST', null, user, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function deleteUserById(id, successCallback, errorCallback) {
+            var url = baseUrl + 'fms_users/' + id;
+
+            return utils.resolveAlt(url, 'DELETE', null, id, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function deleteUsers(dtos, successCallback, errorCallback) {
+            if (!dtos || dtos.length <= 0) {
+                return $q.when(null);
+            }
+
+            var url = baseUrl + 'fms_users/remove';
+            return utils.resolveAlt(url, 'DELETE', null, dtos, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function changePassword(user, successCallback, errorCallback) {
+            var url = baseUrl + 'users/password';
+
+            return utils.resolveAlt(url, 'PUT', null, user, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function changePasswordSelf(user, successCallback, errorCallback) {
+            var url = baseUrl + 'users/password/self';
+
+            return utils.resolveAlt(url, 'PUT', null, user, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function passwordValid(passwordObj) {
+            var url = baseUrl + 'users/password/valid';
+
+            return utils.resolveAlt(url, 'POST', null, passwordObj, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function cropProfilePhoto(cropper) {
+            var url = baseUrl + 'users/photo/crop';
+
+            return utils.resolveAlt(url, 'POST', null, cropper, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function getUserByUsername(username) {
+            if (!username) {
+                return $q.when(null);
+            }
+
+            var url = baseUrl + 'fms_users/getbyusername/' + username + '/';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getUserByEmail(email) {
+            if (!email) {
+                return $q.when(null);
+            }
+
+            var url = baseUrl + 'fms_users/e/' + email;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function findUserByUserName(username, pageIndex, pageSize) {
+            var url = baseUrl + 'fms_users/username/' + username + '/' + pageIndex + '/' + pageSize;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        //tran huu dat ham lay thong bao cua currentUser
+        function findNotification() {
+            var url = baseUrl + "userviewednotification";
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        //tran huu dat ham lay thong bao cua currentUser
+
+        //tran huu dat hàm lấy thông báo chi tiết
+        function getDetailsSystemMessage(systemmessageId) {
+            var url = baseUrl + "systemmessage/" + systemmessageId;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        //tran huu dat hàm lấy thông báo chi tiết
+
+        //tran huu dat ham lay thong bao cua currentUser
+        function updateNotification(notification) {
+            var url = baseUrl + "userviewednotification";
+            return utils.resolveAlt(url, 'POST', null, notification, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+        //tran huu dat ham lay thong bao cua currentUser
+
+        //tran huu dat tạo hàm xuất file word start
+        function getStreamDocument(tranhuudat) {
+            console.log("RUNNING");
+            var deferred = $q.defer();
+
+            $http({
+                    url: settings.api.baseUrl + settings.api.apiPrefix + 'file/downloadForestList',
+                    method: "POST", //you can use also GET or POST
+                    data: tranhuudat,
+                    headers: { 'Content-type': 'application/json' },
+                    responseType: 'arraybuffer', //THIS IS IMPORTANT
+                })
+                .success(function(data) {
+                    console.debug("SUCCESS");
+                    deferred.resolve(data);
+                }).error(function(data) {
+                    console.error("ERROR");
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+        //tran huu dat tạo hàm xuất file word end
+        function getTableDefinition() {
+
+            var _tableOperation = function(value, row, index) {
+                return '<a ng-show="!$parent.vm.isSdahView" class="green-dark margin-right-5" href="#" data-ng-click="$parent.editUser(' + "'" + row.user.id + "'" + ')"><i class="icon-pencil margin-right-5"></i>{{"animal.edit" | translate}}</a>' +
+                    '<a ng-show="!$parent.vm.isSdahView" class="green-dark margin-right-5" href="#" data-ng-click="$parent.deleteUserRecord(' + "'" + row.user.id + "'" + ')"><i class="fa fa-trash"></i> {{"animal.delete" | translate}}</a>';
+            };
+
+            var _cellNowrap = function(value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '70px' }
+                };
+            };
+
+            var _cellNowrap2 = function(value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '110px' }
+                };
+            };
+
+            var _cellNowrap3 = function(value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '230px' }
+                };
+            };
+
+            var _dateFormatter = function(value, row, index) {
+                if (!value) {
+                    return '';
+                }
+                return moment(value).format('DD/MM/YYYY');
+            };
+
+            var _cellState = function(value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '1%' }
+                };
+            };
+
+            var _cellActions = function(value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '10%' }
+                }
+            };
+            var _createDateFormatter = function(value, row, index) {
+
+                if (!value) {
+                    return '';
+                } else {
+                    var year = value[0];
+                    var month = value[1];
+                    var date = value[2];
+                    var hour = value[3];
+                    var minutes = value[4];
+                    var seconds = value[5];
+                    return date + '/' + month + '/' + year + ' | ' + hour + ':' + minutes + ':' + seconds;
+                }
+            };
+
+            return [{
+                    field: 'state',
+                    checkbox: true,
+                    cellStyle: _cellState
+                }, {
+                    field: '',
+                    title: '{{"user.action" | translate}}',
+                    switchable: true,
+                    visible: true,
+                    formatter: _tableOperation,
+                    cellStyle: _cellActions
+                }, {
+                    field: 'user.username',
+                    title: '{{"user.username" | translate}}',
+                    sortable: true,
+                    switchable: true,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'user.displayName',
+                    title: '{{"user.displayName" | translate}}',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'department',
+                    title: 'Phòng ban',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'positionNameAccountUser',
+                    title: 'Chức vụ',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'phoneNumber',
+                    title: 'Số điện thoại',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'user.email',
+                    title: 'Email',
+                    sortable: true,
+                    switchable: true,
+                    visible: true,
+                    cellStyle: _cellNowrap2
+                }, {
+                    field: 'displayName',
+                    title: 'Họ và tên người đại diện',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'positionName',
+                    title: 'Chức vụ người đại diện',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'phoneNumberAgencyRepresentative',
+                    title: 'Điện thoại liên hệ',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'emailAgencyRepresentative',
+                    title: 'Email người đại diện',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }
+
+                , {
+                    field: 'organizationName',
+                    title: 'Tên cơ quan/Đơn vị',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'organizationAddress',
+                    title: 'Địa chỉ cơ quan',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'numberPhoneOffice',
+                    title: 'Điện thoại',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }, {
+                    field: 'emailOffice',
+                    title: 'Email cơ quan',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap3
+                }
+            ]
+        }
+    }
+})();

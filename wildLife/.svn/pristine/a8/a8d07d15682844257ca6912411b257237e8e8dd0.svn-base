@@ -1,0 +1,9 @@
+package com.globits.wl.service;
+
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+
+public interface AdministrativeOrganizationService {
+ AdministrativeOrganizationDto save (AdministrativeOrganizationDto dto);
+ AdministrativeOrganizationDto update(AdministrativeOrganizationDto dto,Long id);
+ AdministrativeOrganizationDto delete(AdministrativeOrganizationDto dto,Long id);
+}

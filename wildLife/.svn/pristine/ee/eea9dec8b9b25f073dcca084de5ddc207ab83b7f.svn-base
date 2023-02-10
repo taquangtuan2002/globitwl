@@ -1,0 +1,449 @@
+package com.globits.wl.domain;
+
+import java.util.Date;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.globits.core.domain.BaseObject;
+import com.globits.core.domain.FileDescription;
+import com.globits.security.domain.User;
+
+@Entity
+@Table(name = "tbl_forest_products_list")
+@XmlRootElement
+public class ForestProductsList extends BaseObject {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/* TỔ CHỨC, CÁ NHÂN LẬP BẢNG KÊ LÂM SẢN */
+	@ManyToOne
+	@JoinColumn(name = "farm_id")
+	private Farm farm;
+	private String ownerConfirm;
+	private String code;
+	/**/
+
+	private Date dateIssue;// Ngày khai báo
+	private String original;// Nguồn gốc lâm sản
+	private String invoiceCode;// Số hóa đơn kèm theo (nếu có);
+	private Date invoiceDate;// Ngày hóa đơn kèm theo (nếu có);
+
+	private String vehicle;// Phương tiện vận chuyển (nếu có)
+	private String vehicleRegistrationPlate;// biển số/số hiệu phương tiện
+
+	private Integer transportDuration;// Thời gian vận chuyển (ngày)
+	private Date transportStart;// vận chuyển từ ngày
+	private Date transportEnd;// vận chuyển đến ngày
+	private String transportFrom;// Vận chuyển từ
+	private String transportTo;// Vận chuyển đến
+
+	private String buyerDetailAddress;// Địa chỉ chi tiết người mua
+	// Thông tin khi xác nhận BKLS
+	private Date statusConfirmDate;
+	private String statusConfirmName;
+
+	// thêm file
+	@ManyToOne
+	@JoinColumn(name = "file_id")
+	private FileDescription file;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "administrative_unit_from_id")
+	private FmsAdministrativeUnit administrativeUnitFrom;// Đơn vị hành chính
+
+	// Tỉnh From
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "province_from_id")
+	private FmsAdministrativeUnit provinceFrom;
+
+	// Xã From
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "commune_from_id")
+	private FmsAdministrativeUnit communeFrom;
+
+	// Thôn From
+	private String villageFrom;
+
+	// Tỉnh To
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "province_to_id")
+	private FmsAdministrativeUnit provinceTo;
+
+	// Xã To
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "commune_to_id")
+	private FmsAdministrativeUnit communeTo;
+
+	// Thôn To
+	private String villageTo;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "administrative_unit_to_id")
+	private FmsAdministrativeUnit administrativeUnitTo;// Đơn vị hành chính
+	/* XÁC NHẬN CỦA CƠ QUAN KIỂM LÂM SỞ TẠI */
+	@ManyToOne
+	@JoinColumn(name = "confirm_by_user_id")
+	private User confirmByUser;// Cán bộ xác nhận (maping với user)
+	private String userConfirmName;// Cán bộ xác nhận (dạng String)
+	private String noteConfirm;
+	private String addressConfirm; // nơi xác nhận
+	private String signatureName; // họ và tên người ký xác nhận
+	/**/
+
+	/* Chi tiết bản kê lâm sản */
+	@OneToMany(mappedBy = "forestProductsList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<ForestProductsListDetail> details;
+	/**/
+
+	/* Các lần xuất đàn có bản kê lâm sản */
+	@OneToMany(mappedBy = "forestProductsList", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<ImportExportAnimal> exports;
+	/**/
+	// tên người mua
+	private String buyerName;
+	
+	// số điện thoại người mua
+	private String buyerPhonenumber;
+
+	// trạng thái đã bị hủy của bản kê
+	@Column(name = "cancel_status")
+	private Integer canceled; // 1 là đã bị hủy, 0 hoăc null(nhưng bản kê trc) là đã xác nhận, 2 là chưa xác
+								// nhận( đã xác nhận mới đc trừ nguồn) 3 là hoàn thành, 5 là Từ chối cấp
+
+	// đơn vị cấp bản kê
+	private String organizationName;
+	private String provinceName;
+	private String organizationCreatedFplName;
+	private String addressCreatedFpl; // nơi lập bản kê lâm sản
+	
+	
+	public String getSignatureName() {
+		return signatureName;
+	}
+
+	public void setSignatureName(String signatureName) {
+		this.signatureName = signatureName;
+	}
+
+	public String getAddressCreatedFpl() {
+		return addressCreatedFpl;
+	}
+
+	public void setAddressCreatedFpl(String addressCreatedFpl) {
+		this.addressCreatedFpl = addressCreatedFpl;
+	}
+
+	public String getAddressConfirm() {
+		return addressConfirm;
+	}
+
+	public void setAddressConfirm(String addressConfirm) {
+		this.addressConfirm = addressConfirm;
+	}
+
+	public String getOrganizationCreatedFplName() {
+		return organizationCreatedFplName;
+	}
+
+	public void setOrganizationCreatedFplName(String organizationCreatedFplName) {
+		this.organizationCreatedFplName = organizationCreatedFplName;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
+	public Integer getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Integer canceled) {
+		this.canceled = canceled;
+	}
+
+	public String getBuyerName() {
+		return buyerName;
+	}
+
+	public void setBuyerName(String buyerName) {
+		this.buyerName = buyerName;
+	}
+
+	public String getBuyerDetailAddress() {
+		return buyerDetailAddress;
+	}
+
+	public void setBuyerDetailAddress(String buyerDetailAddress) {
+		this.buyerDetailAddress = buyerDetailAddress;
+	}
+
+	public Date getStatusConfirmDate() {
+		return statusConfirmDate;
+	}
+
+	public void setStatusConfirmDate(Date statusConfirmDate) {
+		this.statusConfirmDate = statusConfirmDate;
+	}
+
+	public String getStatusConfirmName() {
+		return statusConfirmName;
+	}
+
+	public void setStatusConfirmName(String statusConfirmName) {
+		this.statusConfirmName = statusConfirmName;
+	}
+
+	public Farm getFarm() {
+		return farm;
+	}
+
+	public void setFarm(Farm farm) {
+		this.farm = farm;
+	}
+
+	public String getOwnerConfirm() {
+		return ownerConfirm;
+	}
+
+	public void setOwnerConfirm(String ownerConfirm) {
+		this.ownerConfirm = ownerConfirm;
+	}
+
+	public Date getDateIssue() {
+		return dateIssue;
+	}
+
+	public void setDateIssue(Date dateIssue) {
+		this.dateIssue = dateIssue;
+	}
+
+	public String getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(String original) {
+		this.original = original;
+	}
+
+	public String getInvoiceCode() {
+		return invoiceCode;
+	}
+
+	public void setInvoiceCode(String invoiceCode) {
+		this.invoiceCode = invoiceCode;
+	}
+
+	public Date getInvoiceDate() {
+		return invoiceDate;
+	}
+
+	public void setInvoiceDate(Date invoiceDate) {
+		this.invoiceDate = invoiceDate;
+	}
+
+	public String getVehicle() {
+		return vehicle;
+	}
+
+	public void setVehicle(String vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public String getVehicleRegistrationPlate() {
+		return vehicleRegistrationPlate;
+	}
+
+	public void setVehicleRegistrationPlate(String vehicleRegistrationPlate) {
+		this.vehicleRegistrationPlate = vehicleRegistrationPlate;
+	}
+
+	public Integer getTransportDuration() {
+		return transportDuration;
+	}
+
+	public void setTransportDuration(Integer transportDuration) {
+		this.transportDuration = transportDuration;
+	}
+
+	public Date getTransportStart() {
+		return transportStart;
+	}
+
+	public void setTransportStart(Date transportStart) {
+		this.transportStart = transportStart;
+	}
+
+	public Date getTransportEnd() {
+		return transportEnd;
+	}
+
+	public void setTransportEnd(Date transportEnd) {
+		this.transportEnd = transportEnd;
+	}
+
+	public String getTransportFrom() {
+		return transportFrom;
+	}
+
+	public void setTransportFrom(String transportFrom) {
+		this.transportFrom = transportFrom;
+	}
+
+	public String getTransportTo() {
+		return transportTo;
+	}
+
+	public void setTransportTo(String transportTo) {
+		this.transportTo = transportTo;
+	}
+
+	public User getConfirmByUser() {
+		return confirmByUser;
+	}
+
+	public void setConfirmByUser(User confirmByUser) {
+		this.confirmByUser = confirmByUser;
+	}
+
+	public String getUserConfirmName() {
+		return userConfirmName;
+	}
+
+	public String getNoteConfirm() {
+		return noteConfirm;
+	}
+
+	public void setNoteConfirm(String noteConfirm) {
+		this.noteConfirm = noteConfirm;
+	}
+
+	public void setUserConfirmName(String userConfirmName) {
+		this.userConfirmName = userConfirmName;
+	}
+
+	public Set<ForestProductsListDetail> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Set<ForestProductsListDetail> details) {
+		this.details = details;
+	}
+
+	public Set<ImportExportAnimal> getExports() {
+		return exports;
+	}
+
+	public void setExports(Set<ImportExportAnimal> exports) {
+		this.exports = exports;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public FileDescription getFile() {
+		return file;
+	}
+
+	public void setFile(FileDescription file) {
+		this.file = file;
+	}
+
+	public FmsAdministrativeUnit getAdministrativeUnitFrom() {
+		return administrativeUnitFrom;
+	}
+
+	public void setAdministrativeUnitFrom(FmsAdministrativeUnit administrativeUnitFrom) {
+		this.administrativeUnitFrom = administrativeUnitFrom;
+	}
+
+	public FmsAdministrativeUnit getAdministrativeUnitTo() {
+		return administrativeUnitTo;
+	}
+
+	public void setAdministrativeUnitTo(FmsAdministrativeUnit administrativeUnitTo) {
+		this.administrativeUnitTo = administrativeUnitTo;
+	}
+
+	public FmsAdministrativeUnit getProvinceFrom() {
+		return provinceFrom;
+	}
+
+	public void setProvinceFrom(FmsAdministrativeUnit provinceFrom) {
+		this.provinceFrom = provinceFrom;
+	}
+
+	public FmsAdministrativeUnit getCommuneFrom() {
+		return communeFrom;
+	}
+
+	public void setCommuneFrom(FmsAdministrativeUnit communeFrom) {
+		this.communeFrom = communeFrom;
+	}
+
+	public String getVillageFrom() {
+		return villageFrom;
+	}
+
+	public void setVillageFrom(String villageFrom) {
+		this.villageFrom = villageFrom;
+	}
+
+	public FmsAdministrativeUnit getProvinceTo() {
+		return provinceTo;
+	}
+
+	public void setProvinceTo(FmsAdministrativeUnit provinceTo) {
+		this.provinceTo = provinceTo;
+	}
+
+	public FmsAdministrativeUnit getCommuneTo() {
+		return communeTo;
+	}
+
+	public void setCommuneTo(FmsAdministrativeUnit communeTo) {
+		this.communeTo = communeTo;
+	}
+
+	public String getVillageTo() {
+		return villageTo;
+	}
+
+	public void setVillageTo(String villageTo) {
+		this.villageTo = villageTo;
+	}
+
+	public String getBuyerPhonenumber() {
+		return buyerPhonenumber;
+	}
+
+	public void setBuyerPhonenumber(String buyerPhonenumber) {
+		this.buyerPhonenumber = buyerPhonenumber;
+	}
+}

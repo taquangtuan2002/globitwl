@@ -1,0 +1,630 @@
+<style type="text/css">
+    body {
+        color: #000;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    .nopadding {
+        padding: 0px !important;
+    }
+
+    .table-bordered {
+        border: 1px solid #337ab7 !important;
+    }
+
+        .table-bordered > thead > tr > th,
+        .table-bordered > tbody > tr > th,
+        .table-bordered > tfoot > tr > th,
+        .table-bordered > thead > tr > td,
+        .table-bordered > tbody > tr > td,
+        .table-bordered > tfoot > tr > td {
+            border: 1px solid #337ab7 !important;
+        }
+
+    .table > tbody + tbody {
+        border-top: 2px solid #337ab7;
+    }
+
+    .th-center,
+    .td-center {
+        vertical-align: middle !important;
+    }
+
+    .table > thead:first-child > tr:first-child > .th-bg {
+        background-color: #337ab7;
+        color: #fff;
+        border-right-color: #fff !important;
+        border-lè-color: #fff !important;
+    }
+
+    .add {
+        margin-top: 5px;
+    }
+
+    .full button span {
+        background-color: limegreen;
+        border-radius: 32px;
+        color: black;
+    }
+
+    .partially button span {
+        background-color: orange;
+        border-radius: 32px;
+        color: black;
+    }
+
+    .input-group {
+        margin: 0 !important;
+    }
+
+    .bold {
+        padding-right: 10px;
+    }
+
+    .time-event {
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .color-a,
+    .time-event {
+        padding-bottom: 5px;
+    }
+
+        .color-a a {
+            color: #000;
+        }
+
+            .color-a a:hover {
+                color: #337ab7;
+            }
+
+    .table-border-left {
+        border-left: : 1px solid #f4f4f4 !important;
+    }
+
+    .btn-table {
+        float: left;
+        padding-right: 10px;
+        margin: 10px 0px;
+    }
+
+    .btn-view {
+        padding: 5px 10px;
+        background-color: #00c0ef;
+        border-color: #00acd6;
+        color: #fff;
+        border-radius: 15%;
+    }
+
+        .btn-view:hover {
+            background-color: #286ec5;
+            color: #fff;
+            border-color: #1d4f8e;
+        }
+
+    .btn-edit {
+        padding: 5px 10px;
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+        border-radius: 15%;
+    }
+
+        .btn-edit:hover {
+            background-color: #204d74;
+            color: #fff;
+            border-color: #122b40;
+        }
+
+    .btn-delete {
+        padding: 5px 10px;
+        color: #fff;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+        border-radius: 15%;
+    }
+
+        .btn-delete:hover {
+            background-color: #e31d2d;
+            color: #fff;
+            border-color: #a91520;
+        }
+
+    .checkbox label:after,
+    .radio label:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    .checkbox .cr,
+    .radio .cr {
+        position: relative;
+        display: inline-block;
+        border: 1px solid #a9a9a9;
+        border-radius: .25em;
+        width: 1.3em;
+        height: 1.3em;
+        float: left;
+        margin-right: .5em;
+    }
+
+    .radio .cr {
+        border-radius: 50%;
+    }
+
+        .checkbox .cr .cr-icon,
+        .radio .cr .cr-icon {
+            position: absolute;
+            font-size: .8em;
+            line-height: 0;
+            top: 50%;
+            left: 20%;
+        }
+
+        .radio .cr .cr-icon {
+            margin-left: 0.04em;
+        }
+
+    .checkbox label input[type="checkbox"],
+    .radio label input[type="radio"] {
+        display: none;
+    }
+
+        .checkbox label input[type="checkbox"] + .cr > .cr-icon,
+        .radio label input[type="radio"] + .cr > .cr-icon {
+            transform: scale(3) rotateZ(-20deg);
+            opacity: 0;
+            transition: all .3s ease-in;
+        }
+
+        .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+        .radio label input[type="radio"]:checked + .cr > .cr-icon {
+            transform: scale(1) rotateZ(0deg);
+            opacity: 1;
+        }
+
+        .checkbox label input[type="checkbox"]:disabled + .cr,
+        .radio label input[type="radio"]:disabled + .cr {
+            opacity: .5;
+        }
+</style>
+
+<div style="background-color: #fff">
+
+    <div class="col-md-12" style="padding:20px;">
+        <form class="form-inline">
+            <div class="form-group mb-2">
+                <label>Chọn tuần :</label>
+                <input type="week" placeholder="YYYY-W##" value="{{toDay|date :'yyyy-Www'}}" ng-change="changeWeek()" ng-model="toDay" /><br><br>
+            </div>
+        </form>
+
+    </div>
+
+    <ul class="nav nav-tabs" style="margin-bottom: 0px;">
+        <li class="active"><a data-toggle="tab" ng-click="vm.changeView(true)"> <b> Xem lịch </b> </a></li>
+        <li ng-if="vm.showMenuRegister"><a data-toggle="tab" ng-click="vm.changeView(false)"> <b> Đăng kí lịch </b> </a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div ng-if="vm.isViewCalendar == false">
+            <div class="">
+                <div class="col-md-12 clearfix" style="padding: 30px 15px;">
+                    <div class="add" ng-if="vm.eventPermission>=1">
+
+                        <div ng-if="vm.showButtonApprove" style="margin:5px 10px 5px 0px; float:left;" ng-if="vm.eventPermission>=2 && vm.isViewCalendar == false">
+                            <a ng-click="vm.Approve()" href="#" class="btn btn-info btn-lg">
+                                Phê duyệt lịch
+                            </a>
+                        </div>
+
+                        <div ng-if="vm.showButtonApprove" style="margin:5px 30px 5px 0px; float:left;" ng-if="vm.eventPermission>=2 && vm.isViewCalendar == false">
+                            <a ng-click="vm.unApprove()" href="#" class="btn btn-info btn-lg">
+                                Hủy phê duyệt lịch
+                            </a>
+                        </div>
+
+                        <div ng-if="vm.showButtonPublish" style="margin:5px 10px 5px 0px; float:left;" ng-if="vm.eventPermission>=3 && vm.isViewCalendar == false">
+                            <a ng-click="vm.Publish()" href="#" class="btn btn-info btn-lg">
+                                Xuất bản lịch
+                            </a>
+                        </div>
+
+                        <div ng-if="vm.showButtonPublish" style="margin:5px 10px 5px 0px; float:left;" ng-if="vm.eventPermission>=3 && vm.isViewCalendar == false">
+                            <a ng-click="vm.unPublish()" href="#" class="btn btn-info btn-lg">
+                                Hủy xuất bản lịch
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="light bordered" style="background-color: #fff;">
+                    <div class="portlet-body clearfix">
+                        <div style="padding:0 15px;" class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="120px" class="th-bg">Ngày/Tháng</th>
+                                        <th scope="col" class="th-bg">Nội dung</th>
+                                        <th width="200px" class="th-bg" scope="col">Chủ trì</th>
+                                        <th width="150px" class="th-bg" scope="col" ng-if="vm.isViewCalendar==false">Thao tác</th>
+                                        <th class="th-bg" ng-if="vm.isViewCalendar==false">
+                                            <div class="checkbox" style="margin: 0px;padding-top: 5px;padding-left: 5px;">
+                                                <label>
+                                                    <input type="checkbox" ng-model="vm.isCheckAll" ng-click="vm.CheckAll()">
+                                                    <span style="background-color: #fff; color:#000" class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                </label>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="eventDate in vm.eventDates">
+                                    <tr ng-if="eventDate.events.length == 0">
+                                        <th class="th-center" ng-if="eventDate.date != null && vm.isToDay(eventDate.date)"
+                                            style="background-color: #C6FFE2;">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                            <div class="add" ng-if="vm.isAdmin == true && vm.isViewCalendar == false">
+                                                <a ng-click="vm.addEventDate(eventDate)">
+                                                    <span style="font-size: 25px;color: green" class="glyphicon glyphicon-plus-sign"></span>
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th class="th-center" ng-if="eventDate.date != null && !vm.isToDay(eventDate.date)">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                            <div class="add" ng-if="vm.isAdmin == true && vm.isViewCalendar == false">
+                                                <a ng-click="vm.addEventDate(eventDate)">
+                                                    <span style="font-size: 25px;color: green" class="glyphicon glyphicon-plus-sign"></span>
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <td></td>
+                                        <td></td>
+                                        <td ng-if="vm.isViewCalendar==false"></td>
+                                        <td ng-if="vm.isViewCalendar==false"></td>
+                                    </tr>
+                                    <tr ng-repeat="event in eventDate.events">
+                                        <th rowspan="{{eventDate.events.length}}" ng-hide="$index>0" class="th-center" ng-if="vm.isToDay(eventDate.date)"
+                                            style="background-color: #C6FFE2;">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                            <div class="add" ng-if="vm.isAdmin == true && vm.isViewCalendar == false">
+                                                <a ng-click="vm.addEventDate(eventDate)">
+                                                    <span style="font-size: 25px;color: green" class="glyphicon glyphicon-plus-sign"></span>
+                                                </a>
+                                            </div>
+
+                                        </th>
+                                        <th rowspan="{{eventDate.events.length}}" ng-hide="$index>0" class="th-center" ng-if="!vm.isToDay(eventDate.date)">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                            <div class="add" ng-if="vm.isAdmin == true && vm.isViewCalendar == false">
+                                                <a ng-click="vm.addEventDate(eventDate)">
+                                                    <span style="font-size: 25px;color: green" class="glyphicon glyphicon-plus-sign"></span>
+                                                </a>
+                                            </div>
+                                        </th>
+
+
+                                        <td class="td-center" style="position:relative;box-sizing: border-box;">
+
+                                            <div class="time-event col-md-12">
+                                                <span> {{event.startTime | date : 'HH:mm' }} </span>
+                                                <span ng-if="vm.showDate(event.startTime, event.endTime)">
+                                                    {{event.startTime | date : 'dd/MM' }}
+                                                </span>
+                                                <span> - {{event.endTime | date : 'HH:mm' }} </span>
+                                                <span ng-if="vm.showDate(event.startTime, event.endTime)">
+                                                    {{event.endTime | date : 'dd/MM' }}
+                                                </span>
+                                                <span>
+                                                    <span ng-if="!event.otherLocation && event.room != null">
+                                                        :
+                                                        {{event.room.name}}
+                                                    </span>
+                                                    <span ng-if="event.otherLocation && event.location != null">
+                                                        :
+                                                        {{event.location}}
+                                                    </span>
+                                                </span>
+                                            </div>
+
+                                            <div style="float: right" ng-if="vm.isViewCalendar == false">
+                                                <span ng-if="event.lastUpdatePersonName!=null" style="color: grey;">
+                                                    {{event.lastUpdatePersonName}}
+                                                </span>
+                                                <div title="Mới đăng kí" class="glyphicon glyphicon-list-alt" style=" color: #56a4fe;  "
+                                                     ng-if="event.status==0"></div>
+                                                <!-- <span title="Đã được phê duyệt" class="glyphicon glyphicon-check" style=" color: blue;"
+                                                    ng-if="event.status==1"></span> -->
+                                                <span title="Đã xuất bản" class="glyphicon glyphicon-ok" style=" color: rgb(119, 216, 119);"
+                                                      ng-if="event.status==2"></span>
+                                                <!-- <span title="Đã kết thúc" class="glyphicon glyphicon-log-out" style=" color: blue;"
+                                                    ng-if="event.status==3"></span>
+                                                <span title="Đã hủy" class="glyphicon glyphicon-remove" style=" color: red;"
+                                                    ng-if="event.status== -1"></span> -->
+                                                <span>
+                                                    <img src="assets/images/stamp.png" alt="sdas" title="Đã được phê duyệt"
+                                                         ng-if="event.status==1" height="14" width="14">
+                                                </span>
+                                            </div>
+
+                                            <div style="font-size: 14px;" class="color-a col-md-12">
+                                                <div class="col-md-9 nopadding">
+                                                    <a ng-click="vm.viewEventDate(eventDate.id, event.id)">
+                                                        {{event.title}}
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span ng-if="event.status.id == 2">
+                                                        <span title="Đã {{event.status.name}}" style="float: right;color: red"
+                                                              class="glyphicon glyphicon-pawn">
+                                                        </span>
+                                                    </span>
+                                                    <span ng-if="event.status.id == 3">
+                                                        <span title="Đã {{event.status.name}}" style="float: right; color: green"
+                                                              class="glyphicon glyphicon-ok">
+                                                        </span>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <span ng-repeat="dAtt in event.dAttendees"> {{dAtt.displayName}}, </span>
+                                                <span ng-repeat="sAtt in event.sAttendees"> {{sAtt.displayName}}, </span>
+                                                {{event.otherAttendees}}
+                                            </div>
+                                        </td>
+                                        <th class="td-center" style="font-weight: bold;">
+                                            <div ng-if="event.isOtherChairPerson != true">
+                                                {{event.chairPerson.displayName}}
+                                            </div>
+                                            <div ng-if="event.isOtherChairPerson == true">
+                                                {{event.chairPersonName}}
+                                            </div>
+                                        </th>
+
+                                        <td class="td-center" ng-if="vm.isViewCalendar==false">
+                                            <div>
+                                                <div class="btn-table" ng-if="(vm.showButtonEditEvent == true && event.isPermissionEdit == true) || vm.hasAdminPermission == true || vm.checkPermissionByStatus(event.status)">
+                                                    <a ng-click="vm.editEventDate(event.id)" title="Sửa" class="btn-edit">
+                                                        <span class="glyphicon glyphicon-edit"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="btn-table" ng-if="(vm.showButtonEditEvent == true && event.isPermissionEdit == true) || vm.hasAdminPermission == true">
+                                                    <a ng-click="vm.deleteEvent(eventDate.id, event.id)" title="Xóa" class="btn-delete">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="td-center" ng-if="vm.isViewCalendar==false">
+                                            <div class="checkbox" style="text-align:center">
+                                                <label>
+                                                    <input type="checkbox" ng-model="event.isChecked">
+                                                    <span class="cr" style="margin-left: .5em;"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="vm.isViewCalendar == true">
+            <div class="">
+                <div class="col-md-12" style="margin: 30px 0px;">
+                </div>
+                <div class="clear"></div>
+                <div class="light bordered" style="background-color: #fff;">
+                    <div class="portlet-body clearfix">
+                        <div style="padding:0 15px;" class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="120px" class="th-bg">Ngày/Tháng</th>
+                                        <th scope="col" class="th-bg">Nội dung</th>
+                                        <th width="200px" class="th-bg" scope="col">Chủ trì</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="eventDate in vm.eventDatesView">
+                                    <tr ng-if="eventDate.events.length == 0">
+                                        <th class="th-center" ng-if="eventDate.date != null && vm.isToDay(eventDate.date)"
+                                            style="background-color: #C6FFE2;">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                            <div class="add" ng-if="vm.isAdmin == true && vm.isViewCalendar == false">
+                                                <a ng-click="vm.addEventDate(eventDate)">
+                                                    <span style="font-size: 25px;color: green" class="glyphicon glyphicon-plus-sign"></span>
+                                                </a>
+                                            </div>
+                                        </th>
+                                        <th class="th-center" ng-if="eventDate.date != null && !vm.isToDay(eventDate.date)">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                        </th>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr ng-repeat="event in eventDate.events">
+                                        <th rowspan="{{eventDate.events.length}}" ng-hide="$index>0" class="th-center" ng-if="vm.isToDay(eventDate.date)"
+                                            style="background-color: #C6FFE2;">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+
+                                        </th>
+                                        <th rowspan="{{eventDate.events.length}}" ng-hide="$index>0" class="th-center" ng-if="!vm.isToDay(eventDate.date)">
+                                            {{eventDate.name}}
+                                            <div>{{eventDate.date | date:'dd/MM'}}</div>
+                                        </th>
+
+
+                                        <td class="td-center" style="position:relative;box-sizing: border-box;">
+
+                                            <div class="time-event col-md-12">
+                                                <span> {{event.startTime | date : 'HH:mm' }} </span>
+                                                <span ng-if="vm.showDate(event.startTime, event.endTime)">
+                                                    {{event.startTime | date : 'dd/MM' }}
+                                                </span>
+                                                <span> - {{event.endTime | date : 'HH:mm' }} </span>
+                                                <span ng-if="vm.showDate(event.startTime, event.endTime)">
+                                                    {{event.endTime | date : 'dd/MM' }}
+                                                </span>
+                                                <span>
+                                                    <span ng-if="!event.otherLocation && event.room != null">
+                                                        :
+                                                        {{event.room.name}}
+                                                    </span>
+                                                    <span ng-if="event.otherLocation && event.location != null">
+                                                        :
+                                                        {{event.location}}
+                                                    </span>
+                                                </span>
+                                            </div>
+
+                                            <div style="font-size: 14px;" class="color-a col-md-12">
+                                                <div class="col-md-9 nopadding">
+                                                    <a ng-click="vm.viewEventDate(eventDate.id, event.id)">
+                                                        {{event.title}}
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <span ng-if="event.status.id == 2">
+                                                        <span title="Đã {{event.status.name}}" style="float: right;color: red"
+                                                              class="glyphicon glyphicon-pawn">
+                                                        </span>
+                                                    </span>
+                                                    <span ng-if="event.status.id == 3">
+                                                        <span title="Đã {{event.status.name}}" style="float: right; color: green"
+                                                              class="glyphicon glyphicon-ok">
+                                                        </span>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <span ng-repeat="dAtt in event.dAttendees"> {{dAtt.displayName}}, </span>
+                                                <span ng-repeat="sAtt in event.sAttendees"> {{sAtt.displayName}}, </span>
+                                                {{event.otherAttendees}}
+                                            </div>
+                                        </td>
+                                        <th class="td-center" style="font-weight: bold;">
+                                            <div ng-if="event.isOtherChairPerson != true">
+                                                {{event.chairPerson.displayName}}
+                                            </div>
+                                            <div ng-if="event.isOtherChairPerson == true">
+                                                {{event.chairPersonName}}
+                                            </div>
+                                        </th>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<!-- BEGIN MAIN JS -->
+
+<script type="text/ng-template" id="edit_modal.html">
+    <div ng-include="'calendar/views/edit_event.html'"></div>
+</script>
+
+<script type="text/ng-template" id="view_modal.html">
+    <div ng-include="'calendar/views/views/viewevent.html'"></div>
+</script>
+
+<script type="text/ng-template" id="delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i>Xóa</h4>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa sự kiện: <b> {{vm.eventDelete.title}} </b> không?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Có</button>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="ModalListEventAttendee.html">
+    <div ng-include="'calendar/views/views/listeventattendee.html'"></div>
+</script>
+
+<script type="text/ng-template" id="ModalListDepartment.html">
+    <div ng-include="'calendar/views/views/listdepartment.html'"></div>
+</script>
+
+<script type="text/ng-template" id="chairmanselect.html">
+    <div ng-include="'calendar/views/views/chairmanselect.html'"></div>
+</script>
+
+<script type="text/ng-template" id="roomselect.html">
+    <div ng-include="'calendar/views/views/roomselect.html'"></div>
+</script>
+
+<script type="text/ng-template" id="modalApproveAll.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i> Xác nhận </h4>
+        </div>
+        <div class="modal-body clearfix" ng-if="vm.isApprove==true">
+            Bạn có chắc chắn muốn phê duyệt các lịch đã chọn?
+        </div>
+        <div class="modal-body clearfix" ng-if="vm.isApprove==false">
+            Bạn có chắc chắn muốn xuất bản các lịch đã chọn?
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="modalUnApproveAll.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i> Xác nhận </h4>
+        </div>
+        <div class="modal-body clearfix" ng-if="vm.isApprove==true">
+            Bạn có chắc chắn muốn hủy phê duyệt các lịch đã chọn?
+        </div>
+        <div class="modal-body clearfix" ng-if="vm.isApprove==false">
+            Bạn có chắc chắn muốn hủy xuất bản các lịch đã chọn?
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+        </div>
+    </div>
+</script>

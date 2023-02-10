@@ -1,0 +1,12 @@
+package com.globits.wl.service;
+
+import com.globits.wl.dto.functiondto.DashboardCitesDto;
+import com.globits.wl.dto.functiondto.DashboardFarmDto;
+
+public interface DashboardService {
+    DashboardCitesDto Cites();
+
+    DashboardFarmDto getFarm();
+
+    Long farmProvidedCodeInYearNumber (Integer year);
+}

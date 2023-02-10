@@ -1,0 +1,40 @@
+
+package com.globits.wl.dto;
+
+import com.globits.core.domain.BaseObject;
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.domain.FmsAdministrativeUnit;
+
+public class FmsOrganizationAdministrativeDto extends BaseObject {
+	private AdministrativeOrganizationDto administrativeOrganization;
+	private FmsAdministrativeUnitDto fmsAdministrativeUnit;
+
+	public FmsOrganizationAdministrativeDto() {
+
+	}
+
+	public FmsOrganizationAdministrativeDto(AdministrativeOrganizationDto administrativeOrganization,
+			FmsAdministrativeUnitDto fmsAdministrativeUnit) {
+		super();
+		this.administrativeOrganization = administrativeOrganization;
+		this.fmsAdministrativeUnit = fmsAdministrativeUnit;
+	}
+
+	public AdministrativeOrganizationDto getAdministrativeOrganization() {
+		return administrativeOrganization;
+	}
+
+	public void setAdministrativeOrganization(AdministrativeOrganizationDto administrativeOrganization) {
+		this.administrativeOrganization = administrativeOrganization;
+	}
+
+	public FmsAdministrativeUnitDto getFmsAdministrativeUnit() {
+		return fmsAdministrativeUnit;
+	}
+
+	public void setFmsAdministrativeUnit(FmsAdministrativeUnitDto fmsAdministrativeUnit) {
+		this.fmsAdministrativeUnit = fmsAdministrativeUnit;
+	}
+
+}
+

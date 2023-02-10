@@ -1,0 +1,283 @@
+package com.globits.wl.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
+import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.globits.core.service.impl.GenericServiceImpl;
+import com.globits.security.domain.User;
+
+import com.globits.wl.repository.AdministrativeOrganizationRepository;
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+
+import com.globits.wl.repository.FmsAdministrativeUnitRepository;
+import com.globits.wl.repository.FmsOrganizationAdministrativeRepository;
+
+import com.globits.wl.service.AdministrativeOrganizationService;
+import com.globits.wl.service.UserAdministrativeUnitService;
+
+@Service
+public class AdministrativeOrganizationServiceImpl extends GenericServiceImpl<AdministrativeOrganization, Long>
+		implements AdministrativeOrganizationService {
+	@Autowired
+	FmsAdministrativeUnitRepository fmsaAdministrativeUnitRepository;
+	@Autowired
+	FmsOrganizationAdministrativeRepository fmsOrganizationAdministrativeRepository;
+	@Autowired
+	private UserAdministrativeUnitService userAdministrativeUnitService;
+
+	@Autowired
+	AdministrativeOrganizationRepository administrativeOrganizationRepository;
+
+	@Override
+	public AdministrativeOrganizationDto save(AdministrativeOrganizationDto dto) {
+
+		AdministrativeOrganization entity = null;
+		Boolean isEdit = false;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User modifiedUser = null;
+		LocalDateTime currentDate = LocalDateTime.now();
+		String currentUserName = "Unknown User";
+		if (authentication != null) {
+			modifiedUser = (User) authentication.getPrincipal();
+			currentUserName = modifiedUser.getUsername();
+		}
+		if (entity == null) {
+			entity = new AdministrativeOrganization();
+			entity.setCreateDate(currentDate);
+			entity.setCreatedBy(currentUserName);
+		}
+		if (dto.getOrganizationLevel() != null) {
+			entity.setOrganizationLevel(dto.getOrganizationLevel());
+		}
+		if (dto.getName() != null) {
+			entity.setName(dto.getName());
+		}
+		if (dto.getAbbreviations() != null) {
+			entity.setAbbreviations(dto.getAbbreviations());
+		}
+		if (dto.getAddress() != null) {
+			entity.setAddress(dto.getAddress());
+		}
+		if (dto.getGovernmentLevel() != null) {
+			entity.setGovernmentLevel(dto.getGovernmentLevel());
+		}
+		if (dto.getOrganizationalForm() != null) {
+			entity.setOrganizationalForm(dto.getOrganizationalForm());
+		}
+		if (dto.getEmail() != null) {
+			entity.setEmail(dto.getEmail());
+		}
+		if (dto.getPhoneNumber() != null) {
+			entity.setPhoneNumber(dto.getPhoneNumber());
+		}
+		if (dto.getFax() != null) {
+			entity.setFax(dto.getFax());
+		}
+		if (dto.getWebsite() != null) {
+			entity.setWebsite(dto.getWebsite());
+		}
+		if (dto.getNumericalOrder() != null) {
+			entity.setNumericalOrder(dto.getNumericalOrder());
+		}
+		if (dto.getParent() != null) {
+			AdministrativeOrganization parent = null;
+			if (dto.getParent().getId() != null) {
+				parent = this.administrativeOrganizationRepository.findOne(dto.getParent().getId());
+			} else if (dto.getParent().getAbbreviations() != null) {
+				List<AdministrativeOrganization> aus = this.administrativeOrganizationRepository
+						.findListByabbreviations(dto.getParent().getAbbreviations());
+				if (aus != null && aus.size() == 1) {
+					parent = aus.get(0);
+				} else if (aus != null && aus.size() > 1) {
+					for (AdministrativeOrganization x : aus) {
+						if (x.getName().equals(dto.getParent().getName()))
+							;
+						parent = x;
+						break;
+					}
+				}
+
+			}
+
+			if (parent != null) {
+				entity.setParent(parent);
+
+				if (parent.getOrganizationLevel() != null && parent.getOrganizationLevel() > 0) {
+					entity.setOrganizationLevel(parent.getOrganizationLevel());
+				}
+			}
+		} else {
+			entity.setOrganizationLevel(1);
+			entity.setParent(null);
+		}
+		this.administrativeOrganizationRepository.save(entity);
+		dto.setId(entity.getId());
+		return dto;
+
+	}
+
+	@Override
+	public AdministrativeOrganizationDto update(AdministrativeOrganizationDto dto, Long id) {
+		AdministrativeOrganization administrativeOrganization = null;
+		Boolean isEdit = false;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User modifiedUser = null;
+		LocalDateTime currentDate = LocalDateTime.now();
+		String currentUserName = "Unknown User";
+		if (authentication != null) {
+			modifiedUser = (User) authentication.getPrincipal();
+			currentUserName = modifiedUser.getUsername();
+
+		}
+		if (id != null) {
+			isEdit = true;
+			administrativeOrganization = this.administrativeOrganizationRepository.findOne(id);
+		} else if (dto.getId() != null) {
+			administrativeOrganization = this.administrativeOrganizationRepository.findOne(dto.getId());
+
+		}
+		if (administrativeOrganization == null) {
+			administrativeOrganization = new AdministrativeOrganization();
+			isEdit = true;
+			administrativeOrganization.setCreateDate(currentDate);
+			administrativeOrganization.setCreatedBy(currentUserName);
+		}
+		if (dto.getId() != null) {
+			administrativeOrganization = this.administrativeOrganizationRepository.findOne(dto.getId());
+		}
+		if (dto.getOrganizationLevel() != null) {
+			administrativeOrganization.setOrganizationLevel(dto.getOrganizationLevel());
+		}
+		if (dto.getName() != null) {
+			administrativeOrganization.setName(dto.getName());
+
+		}
+		if (dto.getAbbreviations() != null) {
+			administrativeOrganization.setAbbreviations(dto.getAbbreviations());
+		}
+		if (dto.getAddress() != null) {
+			administrativeOrganization.setAddress(dto.getAddress());
+		}
+		if (dto.getGovernmentLevel() != null) {
+			administrativeOrganization.setGovernmentLevel(dto.getGovernmentLevel());
+
+		}
+		if (dto.getOrganizationalForm() != null) {
+			administrativeOrganization.setOrganizationalForm(dto.getOrganizationalForm());
+
+		}
+		if (dto.getEmail() != null) {
+			administrativeOrganization.setEmail(dto.getEmail());
+		}
+		if (dto.getPhoneNumber() != null) {
+			administrativeOrganization.setPhoneNumber(dto.getPhoneNumber());
+		}
+		if (dto.getFax() != null) {
+			administrativeOrganization.setFax(dto.getFax());
+		}
+		if (dto.getWebsite() != null) {
+			administrativeOrganization.setWebsite(dto.getWebsite());
+		}
+		if (dto.getNumericalOrder() != null) {
+			administrativeOrganization.setNumericalOrder(dto.getNumericalOrder());
+		}
+		if (dto.getParent() != null) {
+
+			AdministrativeOrganization parent = null;
+			if (dto.getParent().getId() != null) {
+				parent = this.administrativeOrganizationRepository.findOne(dto.getParent().getId());
+
+			} else if (dto.getParent().getAbbreviations() != null) {
+				List<AdministrativeOrganization> aus = this.administrativeOrganizationRepository
+						.findListByabbreviations(dto.getAbbreviations());
+				if (aus != null && aus.size() == 1) {
+					parent = aus.get(0);
+
+				} else if (aus != null & aus.size() > 1) {
+					for (AdministrativeOrganization item : aus) {
+						if (item.getName().equals(administrativeOrganization.getName())) {
+							parent = item;
+							break;
+						}
+
+					}
+				}
+			}
+			if (parent != null) {
+				administrativeOrganization.setParent(parent);
+				if (parent.getGovernmentLevel() != null && parent.getGovernmentLevel() > 0) {
+					administrativeOrganization.setOrganizationLevel(parent.getOrganizationLevel() + 1);
+
+				}
+
+			}
+
+		} else {
+			administrativeOrganization.setOrganizationLevel(1);//leve1 là thành phố
+			administrativeOrganization.setParent(null);
+
+		}
+		this.administrativeOrganizationRepository.save(administrativeOrganization);
+		dto.setId(administrativeOrganization.getId());
+
+		return dto;
+	}
+
+	
+
+	@Override
+	public List<AdministrativeOrganizationDto> getAllByParentId(Long parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AdministrativeOrganizationDto> getChildrenByParentId(Long parentId) {
+//List<AdministrativeOrganizationDto>list=new ArrayList<AdministrativeOrganizationDto>();
+//AdministrativeOrganizationDto dto=administrativeOrganizationRepository.getById(parentId);
+//if(dto!=null && dto.getSubAdministrativeOrganization() != null && dto.getSubAdministrativeOrganization().size()>0) {
+//	list=dto.getSubAdministrativeOrganization();
+//}
+		return null;
+	}
+
+	@Override
+	public AdministrativeOrganizationDto removeadAdministrativeOrganization(Long id) {
+AdministrativeOrganizationDto administrativeOrganizationdto=null;
+if(administrativeOrganizationRepository!=null && this.administrativeOrganizationRepository.exists(id)) {
+	administrativeOrganizationdto=new AdministrativeOrganizationDto(this.administrativeOrganizationRepository.findOne(id));
+this.administrativeOrganizationRepository.delete(id);
+}
+		return administrativeOrganizationdto;
+	}
+
+	@Override
+	public AdministrativeOrganizationDto deleteAdministrativeOrganization(Long id) {
+List<AdministrativeOrganization>list=new ArrayList<AdministrativeOrganization>();
+AdministrativeOrganizationDto ret=new AdministrativeOrganizationDto();
+AdministrativeOrganization au=administrativeOrganizationRepository.findOne(id);
+if(au!=null&&au.getId()!=null) {
+	ret.setId(au.getId());
+	ret.setName(au.getName());
+ret.setOrganizationLevel(au.getOrganizationLevel());
+list=administrativeOrganizationRepository.getListdministrativeUnitbyParent(au.getId());
+if(list!=null&& list.size()>0) {
+	//ko xóa đc thư mục cha=>phải xóa thư mục con trc
+}else {
+	administrativeOrganizationRepository.delete(au.getId());
+	ret.setOrganizationLevel(-1);
+}
+}
+		return ret;
+	}
+
+}

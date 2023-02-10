@@ -1,0 +1,498 @@
+package com.globits.wl.dto.functiondto;
+
+import java.util.Date;
+import java.util.List;
+
+public class ReportParamDto {
+	private Integer year;
+	private Integer month;
+	private Integer date;
+	private Date dateReport;
+	private Date fromDate;
+	private Date toDate;
+	private String code;
+	private String batchCode;
+	private List<Long> listAnimalIds;
+	private Long animalId; 
+	private Long farmId; 
+	private Long productTargetId;
+	private Long originalId; 
+	private Long wardId;
+	private Long districtId; 
+	private Long provinceId; 
+	private Long regionId; 
+	private Long animalTypeId;
+	private Long animalParentId;
+	private List<String> groupByItems;
+	private Integer type;
+	
+	private int fromYear;
+	private int toYear;
+	
+	private int fromMonth;
+	private int toMonth;
+	
+	private Integer fromWeek;
+	private Integer toWeek;
+	
+	
+	
+	private int currentMonth;
+	private int currentYear;
+	
+	private int periodType;//0: báo cáo theo năm;1: báo cáo theo tháng;const: FMSConstant.ReportPeriodType	
+	private int reportType;//0: báo cáo liệt kê tuần tự; 1: báo cáo so sánh 2 môc thời gian. const: FMSConstant.ReportType
+	private int startTimeType;//0: tính thời gian bắt đầu từ trước tới giờ;1: tính thời gian bắt đầu từ mốc nào đó (đầu tháng, đầu năm,...)
+	private String exportReason;//lý do
+	private int exportType;//loại phiếu xuất
+	private int level;//cấp giống ông bà, bố mẹ...
+	private Long seedLevelId;
+	private Boolean isLevelCommodity;//là cấp thương phẩm
+	private String reportCode;//Sử dụng khi làm báo cáo, nếu cần nhóm 1 số loại vật nuôi lại làm 1 nhóm
+	private String reportName;//Sử dụng khi làm báo cáo, nếu cần nhóm 1 số loại vật nuôi lại làm 1 nhóm
+	private Integer eggType;//Loại trứng: thương phẩm hay trứng giống
+	private Long ownershipId;//hình thức sở hữu
+	private Integer status; 
+	private Double densityCoefficient;//Hệ số mật độ chăn nuôi (con/m2)
+	private Long liveStockProductId;//sản phẩm chăn nuôi
+	private Boolean isSumTotal;
+	private Integer salanganeHouseType;
+	private List<Integer> levels;//cấp giống ông bà, bố mẹ...
+	private Boolean isSeedlevel;//cấp giống con	
+	private Integer liveStockMethod;
+	private Boolean remainingQuantityGreaterThanZero;	//Số lượng còn lại lớn hơn không
+	private Integer animalReportDataType;
+	
+	private String animalClass;
+	//Lis animal class
+	private List<String> listAnimalClass;
+	
+	private String ordo;
+	//List ordo class
+	private List<String> listAnimalOrdo;
+	
+	private String family;
+	//List family
+	private List<String> listAnimalFamily;
+	
+	private String vnlist06;
+	// List vn06
+	private List<String> vnList06s;
+	
+	private boolean showWardData;
+	private boolean showAnimalDetailsData;
+	private String cites;
+	//list city
+	private List<String> listCites;
+	private String animalGroup;
+	//List animal group
+	private List<String> listAnimalGroup;
+	//
+	private Integer protectionLevel;
+	private List<String> listprotectionLevel;
+	
+	public boolean isShowAnimalDetailsData() {
+		return showAnimalDetailsData;
+	}
+	public void setShowAnimalDetailsData(boolean showAnimalDetailsData) {
+		this.showAnimalDetailsData = showAnimalDetailsData;
+	}
+	public String getAnimalGroup() {
+		return animalGroup;
+	}
+	public void setAnimalGroup(String animalGroup) {
+		this.animalGroup = animalGroup;
+	}
+	public String getCites() {
+		return cites;
+	}
+	public void setCites(String cites) {
+		this.cites = cites;
+	}
+	public boolean isShowWardData() {
+		return showWardData;
+	}
+	public void setShowWardData(boolean isShowWardData) {
+		this.showWardData = isShowWardData;
+	}
+	public Integer getAnimalReportDataType() {
+		return animalReportDataType;
+	}
+	public void setAnimalReportDataType(Integer animalReportDataType) {
+		this.animalReportDataType = animalReportDataType;
+	}
+	public Boolean getRemainingQuantityGreaterThanZero() {
+		return remainingQuantityGreaterThanZero;
+	}
+	public void setRemainingQuantityGreaterThanZero(Boolean remainingQuantityGreaterThanZero) {
+		this.remainingQuantityGreaterThanZero = remainingQuantityGreaterThanZero;
+	}
+	public Integer getFromWeek() {
+		return fromWeek;
+	}
+	public void setFromWeek(Integer fromWeek) {
+		this.fromWeek = fromWeek;
+	}
+	public Integer getToWeek() {
+		return toWeek;
+	}
+	public void setToWeek(Integer toWeek) {
+		this.toWeek = toWeek;
+	}
+	public Integer getSalanganeHouseType() {
+		return salanganeHouseType;
+	}
+	public void setSalanganeHouseType(Integer salanganeHouseType) {
+		this.salanganeHouseType = salanganeHouseType;
+	}
+	public Integer getYear() {
+		return year;
+	}
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+	public Date getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+	public Date getToDate() {
+		return toDate;
+	}
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getBatchCode() {
+		return batchCode;
+	}
+	public void setBatchCode(String batchCode) {
+		this.batchCode = batchCode;
+	}
+	
+	public List<Long> getListAnimalIds() {
+		return listAnimalIds;
+	}
+	public void setListAnimalIds(List<Long> listAnimalIds) {
+		this.listAnimalIds = listAnimalIds;
+	}
+	public Long getFarmId() {
+		return farmId;
+	}
+	public void setFarmId(Long farmId) {
+		this.farmId = farmId;
+	}
+	public Long getProductTargetId() {
+		return productTargetId;
+	}
+	public void setProductTargetId(Long productTargetId) {
+		this.productTargetId = productTargetId;
+	}
+	public Long getOriginalId() {
+		return originalId;
+	}
+	public void setOriginalId(Long originalId) {
+		this.originalId = originalId;
+	}
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getProvinceId() {
+		return provinceId;
+	}
+	public void setProvinceId(Long provinceId) {
+		this.provinceId = provinceId;
+	}
+	public Long getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
+	}
+	public Long getAnimalTypeId() {
+		return animalTypeId;
+	}
+	public void setAnimalTypeId(Long animalTypeId) {
+		this.animalTypeId = animalTypeId;
+	}
+	public Long getAnimalParentId() {
+		return animalParentId;
+	}
+	public void setAnimalParentId(Long animalParentId) {
+		this.animalParentId = animalParentId;
+	}
+	public List<String> getGroupByItems() {
+		return groupByItems;
+	}
+	public void setGroupByItems(List<String> groupByItems) {
+		this.groupByItems = groupByItems;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	public int getFromYear() {
+		return fromYear;
+	}
+	public void setFromYear(int fromYear) {
+		this.fromYear = fromYear;
+	}
+	public int getToYear() {
+		return toYear;
+	}
+	public void setToYear(int toYear) {
+		this.toYear = toYear;
+	}
+	public int getFromMonth() {
+		return fromMonth;
+	}
+	public void setFromMonth(int fromMonth) {
+		this.fromMonth = fromMonth;
+	}
+	public int getToMonth() {
+		return toMonth;
+	}
+	public void setToMonth(int toMonth) {
+		this.toMonth = toMonth;
+	}
+	public int getCurrentMonth() {
+		return currentMonth;
+	}
+	public void setCurrentMonth(int currentMonth) {
+		this.currentMonth = currentMonth;
+	}
+	public int getCurrentYear() {
+		return currentYear;
+	}
+	public void setCurrentYear(int currentYear) {
+		this.currentYear = currentYear;
+	}
+	public int getPeriodType() {
+		return periodType;
+	}
+	public void setPeriodType(int periodType) {
+		this.periodType = periodType;
+	}
+	public int getReportType() {
+		return reportType;
+	}
+	public void setReportType(int reportType) {
+		this.reportType = reportType;
+	}
+	public int getStartTimeType() {
+		return startTimeType;
+	}
+	public void setStartTimeType(int startTimeType) {
+		this.startTimeType = startTimeType;
+	}
+	public String getExportReason() {
+		return exportReason;
+	}
+	public void setExportReason(String exportReason) {
+		this.exportReason = exportReason;
+	}
+	public int getExportType() {
+		return exportType;
+	}
+	public void setExportType(int exportType) {
+		this.exportType = exportType;
+	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	public Long getSeedLevelId() {
+		return seedLevelId;
+	}
+	public void setSeedLevelId(Long seedLevelId) {
+		this.seedLevelId = seedLevelId;
+	}
+	public Boolean getIsLevelCommodity() {
+		return isLevelCommodity;
+	}
+	public void setIsLevelCommodity(Boolean isLevelCommodity) {
+		this.isLevelCommodity = isLevelCommodity;
+	}
+	public String getReportCode() {
+		return reportCode;
+	}
+	public void setReportCode(String reportCode) {
+		this.reportCode = reportCode;
+	}
+	public String getReportName() {
+		return reportName;
+	}
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+	public Integer getEggType() {
+		return eggType;
+	}
+	public void setEggType(Integer eggType) {
+		this.eggType = eggType;
+	}
+	public Long getOwnershipId() {
+		return ownershipId;
+	}
+	public void setOwnershipId(Long ownershipId) {
+		this.ownershipId = ownershipId;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public Double getDensityCoefficient() {
+		return densityCoefficient;
+	}
+	public void setDensityCoefficient(Double densityCoefficient) {
+		this.densityCoefficient = densityCoefficient;
+	}
+	public Long getLiveStockProductId() {
+		return liveStockProductId;
+	}
+	public void setLiveStockProductId(Long liveStockProductId) {
+		this.liveStockProductId = liveStockProductId;
+	}
+	public Boolean getIsSumTotal() {
+		return isSumTotal;
+	}
+	public void setIsSumTotal(Boolean isSumTotal) {
+		this.isSumTotal = isSumTotal;
+	}
+	public List<Integer> getLevels() {
+		return levels;
+	}
+	public void setLevels(List<Integer> levels) {
+		this.levels = levels;
+	}
+	public Boolean getIsSeedlevel() {
+		return isSeedlevel;
+	}
+	public void setIsSeedlevel(Boolean isSeedlevel) {
+		this.isSeedlevel = isSeedlevel;
+	}
+	public Integer getLiveStockMethod() {
+		return liveStockMethod;
+	}
+	public void setLiveStockMethod(Integer liveStockMethod) {
+		this.liveStockMethod = liveStockMethod;
+	}
+	public String getAnimalClass() {
+		return animalClass;
+	}
+	public void setAnimalClass(String animalClass) {
+		this.animalClass = animalClass;
+	}
+	public String getOrdo() {
+		return ordo;
+	}
+	public void setOrdo(String ordo) {
+		this.ordo = ordo;
+	}
+	public String getFamily() {
+		return family;
+	}
+	public void setFamily(String family) {
+		this.family = family;
+	}
+	public Integer getMonth() {
+		return month;
+	}
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+	public Integer getDate() {
+		return date;
+	}
+	public void setDate(Integer date) {
+		this.date = date;
+	}
+	public Long getAnimalId() {
+		return animalId;
+	}
+	public void setAnimalId(Long animalId) {
+		this.animalId = animalId;
+	}
+	public String getVnlist06() {
+		return vnlist06;
+	}
+	public void setVnlist06(String vnlist06) {
+		this.vnlist06 = vnlist06;
+	}
+	public List<String> getListAnimalClass() {
+		return listAnimalClass;
+	}
+	public void setListAnimalClass(List<String> listAnimalClass) {
+		this.listAnimalClass = listAnimalClass;
+	}
+	public List<String> getListAnimalOrdo() {
+		return listAnimalOrdo;
+	}
+	public void setListAnimalOrdo(List<String> listAnimalOrdo) {
+		this.listAnimalOrdo = listAnimalOrdo;
+	}
+	public List<String> getListAnimalFamily() {
+		return listAnimalFamily;
+	}
+	public void setListAnimalFamily(List<String> listAnimalFamily) {
+		this.listAnimalFamily = listAnimalFamily;
+	}
+	public List<String> getVnList06s() {
+		return vnList06s;
+	}
+	public void setVnList06s(List<String> vnList06s) {
+		this.vnList06s = vnList06s;
+	}
+	public List<String> getListCites() {
+		return listCites;
+	}
+	public void setListCites(List<String> listCites) {
+		this.listCites = listCites;
+	}
+	public List<String> getListAnimalGroup() {
+		return listAnimalGroup;
+	}
+	public void setListAnimalGroup(List<String> listAnimalGroup) {
+		this.listAnimalGroup = listAnimalGroup;
+	}
+	public Date getDateReport() {
+		return dateReport;
+	}
+	public void setDateReport(Date dateReport) {
+		this.dateReport = dateReport;
+	}
+	public Integer getProtectionLevel() {
+		return protectionLevel;
+	}
+	public void setProtectionLevel(Integer protectionLevel) {
+		this.protectionLevel = protectionLevel;
+	}
+	public List<String> getListprotectionLevel() {
+		return listprotectionLevel;
+	}
+	public void setListprotectionLevel(List<String> listprotectionLevel) {
+		this.listprotectionLevel = listprotectionLevel;
+	}
+	
+}

@@ -1,0 +1,354 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        /* Optional: Makes the sample page fill the window. */
+        /* html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+} */
+
+        html,
+        body,
+        #map {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #map {
+            min-height: 500px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10" ng-if="hasAnyRoles(currentUser, ['ROLE_FARMER'])">
+            <div class="dash-let">
+                <a href="#/detail_farm/">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Thông tin cơ sở nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 " ng-if="!hasAnyRoles(currentUser, ['ROLE_FARMER'])">
+            <div class="dash-let">
+                <a href="#/detail_farm/">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Đăng ký cơ sở gây nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 ">
+            <div class="dash-let">
+                <a href="#/farm">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Danh sách cơ sở nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 ">
+            <div class="dash-let">
+                <a href="#/farm_position_vgmap">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Bản đồ vị trí cơ sở nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 ">
+            <div class="dash-let">
+                <a href="#/report_period">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Sổ theo dõi ĐVHD</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9  margin-top-10 ">
+        </div>
+        <div class="col-md-3  margin-top-10 detail_dashboard_year">
+
+            <div class="col-sm-4"><label for="" class="bold">Nhập năm: </label></div>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input type="text" data-ng-model="vm.year" ng-keyup="vm.enterSearch(e)"
+                        class="form-control" placeholder="Nhập năm..." name="search">
+                    <div class="input-group-btn">
+                        <button ng-click="vm.getCountByYear()" class="btn btn-default" type="submit"><i
+                                class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-4 col-xs-12 margin-top-10">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <div class="detail_dashboard">
+                        <div class="row base_number">
+                            <div class="col-sm-8 ">Số cơ sở nuôi DVHD:</div>
+                            <div class="col-sm-4">{{vm.dashboardFarm.farmsNumber}}</div>
+                        </div>
+                        <div class="row base_number">
+                            <div class="col-sm-8 ">Số cơ sở cần cấp mã số: </div>
+                            <div class="col-sm-4">{{vm.dashboardFarm.farmsNeedProvidedCodeNumber}}</div>
+                        </div>
+                        <div class="row base_number">
+                            <div class="col-sm-8 ">Số cơ sở đã cấp mã số: </div>
+                            <div class="col-sm-4">{{vm.dashboardFarm.farmProvidedCodeNumber}}
+                                ({{vm.dashboardFarm.farmProvidedCodePercent}}%)</div>
+                        </div>
+                        <div class="row base_number">
+                            <div class=" col-sm-8">Số cơ sở đã cấp mã số trong năm: </div>
+                            <div class="col-sm-4">{{vm.dashboardSumInYear}}</div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row detail_dashboard sum_species">
+                        <div class="col-md-12 base_number">Tổng số loài gây nuôi: {{vm.dashboardCities.animalNumber}}</div>
+                        <div class="col-md-6 ">
+                            <div class="">
+                                <div class=""><strong>Phân nhóm theo phụ lục CITES</strong></div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Loài</th>
+                                            <th scope="col">Cơ sở</th>
+                                            <th scope="col">Cá thể</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">PL-I: </th>
+                                            <td>{{vm.dashboardCities.speciesNumberPLI}}</td>
+                                            <td>{{vm.dashboardCities.farmsNumberPLI}}</td>
+                                            <td>{{vm.dashboardCities.animalsNumberPLI}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">PL-II:</th>
+                                            <td>{{vm.dashboardCities.speciesNumberPLII}}</td>
+                                            <td>{{vm.dashboardCities.farmsNumberPLII}}</td>
+                                            <td>{{vm.dashboardCities.animalsNumberPLII}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">PL-III:</th>
+                                            <td>{{vm.dashboardCities.speciesNumberPLIII}}</td>
+                                            <td>{{vm.dashboardCities.farmsNumberPLIII}}</td>
+                                            <td>{{vm.dashboardCities.animalsNumberPLIII}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Các loài DVHD khác</th>
+                                            <td>{{vm.dashboardCities.speciesNumberDVHD}}</td>
+                                            <td>{{vm.dashboardCities.farmsNumberDVHD}}</td>
+                                            <td>{{vm.dashboardCities.animalsNumberDVHD}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="">
+
+                                <div class=""><strong>Phân nhóm theo NĐCP</strong></div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Loài</th>
+                                            <th scope="col">Cơ sở</th>
+                                            <th scope="col">Cá thể</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">PL-IB: </th>
+                                           
+                                            <td>{{vm.dashboardReportForm.numberSpeciesIB}}</td>
+                                            <td>{{vm.dashboardReportForm.numberFarmIB}}</td>
+                                            <td>{{vm.dashboardReportForm.numberIndividualIB}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">PL-IIB:</th>
+                                            <td>{{vm.dashboardReportForm.numberSpeciesIIB}}</td>
+                                            <td>{{vm.dashboardReportForm.numberFarmIIB}}</td>
+                                            <td>{{vm.dashboardReportForm.numberIndividualIIB}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">ĐVRTT:</th>
+                                            <td>{{vm.dashboardReportForm.numberSpeciesDVRTT}}</td>
+                                            <td>{{vm.dashboardReportForm.numberFarmDVRTT}}</td>
+                                            <td>{{vm.dashboardReportForm.numberIndividualDVRTT}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Không QL</th>
+                                            <td>{{vm.dashboardReportForm.numberSpecies}}</td>   
+                                            <td>{{vm.dashboardReportForm.numberFarm}}</td>
+                                            <td>{{vm.dashboardReportForm.numberIndividual}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 ">
+                    <div class="detail_dashboard" ng-If="vm.dashboardForestProduct.increasedVariationOfTheIndividual ">
+                        <div class="row base_number" >
+                            <div class="col-sm-10 ">Số bản kê lâm sản trong năm:</div>
+                            <div class="col-sm-2 ">{{vm.dashboardForestProduct.totalListOfForestProductsByYear}}</div>
+                        </div>
+                        <div ng-If="vm.dashboardForestProduct.increasedVariationOfTheIndividual > 0;" class="base_number ">Biến động tăng: {{vm.dashboardForestProduct.increaseVolatilityOfTheBase}} cơ sở, {{vm.dashboardForestProduct.increasedVariationOfTheIndividual}} cá thể
+                        </div>
+                        <div ng-If="vm.dashboardForestProduct.increasedVariationOfTheIndividual < 0;" class="base_number ">Biến động giảm: {{vm.dashboardForestProduct.decreasedVolatilityOfTheBase}} cơ sở, {{vm.dashboardForestProduct.decreasedIndividualVariability}} cá thể
+                        </div>
+                        <div class="row base_number">
+                            <div class="col-sm-10">Số hộ có biến động/cập nhật:</div>
+                            <div class="col-sm-2">{{vm.dashboardForestProduct.changesInTotalHouseholds}}</div>
+                        </div>
+                    </div>
+                    <div class="detail_dashboard" ng-If="!vm.dashboardForestProduct.increasedVariationOfTheIndividual ">
+                        <div class="row base_number">
+                            <div class="col-sm-10 ">Tổng số bản kê lâm sản:</div>
+                            <div class="col-sm-2 ">{{vm.dashboardForestProduct.totalListOfForestProductsByYear}}</div>
+                        </div>
+                        
+                        <div class="row base_number">
+                            <div class="col-sm-10">Số hộ có biến động/cập nhật:</div>
+                            <div class="col-sm-2">0</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <style>
+        .base_number {
+            font-size: medium;
+            font-weight: bold;
+            margin-top: 5% !important;
+        }
+
+        h2 {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .detail_dashboard {
+            margin-bottom: 20px;
+            display: block;
+            background-color: rgb(221, 229, 216) !important;
+            height: 290px;
+            width: 100%;
+            -webkit-border-radius: 6px !important;
+            color: #347a0a;
+            padding: 4%;
+        }
+
+        .detail_dashboard_year {
+            display: block;
+            background-color: rgb(221, 229, 216) !important;
+            width: 310px;
+            -webkit-border-radius: 6px !important;
+            color: #347a0a;
+            padding: 1% 0 !important;
+            margin-left: 5px;
+        }
+
+        .sum_species {
+            margin: 0;
+            padding: 0 0 0 2%;
+        }
+
+        .table {
+            margin-top: 2%;
+            width: 100%;
+        }
+
+        .table>thead>tr>th {
+            padding: 3px;
+        }
+    </style>
+    <!-- <div id="map"></div> -->
+    <!-- <div id="container" class="min-height-500 portlet light bordered"></div> -->
+    <script>
+      // function initMap() {
+      //   var map = new google.maps.Map(document.getElementById('map'), {
+      //     zoom: 4,
+      //     center: {lat: 21.017342, lng: 105.818178}
+      //   });
+
+      //   var bounds = {
+      //     north: 21.554774,
+      //     south: 20.842898,
+      //     east: 105.022025,
+      //     west: 106.331559
+      //   };
+
+      //   // Display the area between the location southWest and northEast.
+      //   map.fitBounds(bounds);
+
+      //   // Add 5 markers to map at random locations.
+      //   // For each of these markers, give them a title with their index, and when
+      //   // they are clicked they should open an infowindow with text from a secret
+      //   // message.
+      //   var secretMessages = ['This', 'is', 'the', 'secret', 'message'];
+      //   var lngSpan = bounds.east - bounds.west;
+      //   var latSpan = bounds.north - bounds.south;
+      //   var marker = new google.maps.Marker({
+      //       position: {
+      //         lat: 21.045542,
+      //         lng: 105.853902
+      //       },
+      //       map: map
+      //     });
+      //   attachSecretMessage(marker, "HÃ  Ná»™i");
+
+      //   marker = new google.maps.Marker({
+      //       position: {
+      //         lat: 21.201825,
+      //         lng: 105.112656
+      //       },
+      //       map: map
+      //     });
+      //    attachSecretMessage(marker, "Báº¯c Giang");
+
+      //    marker = new google.maps.Marker({
+      //        position: {
+      //          lat: 21.258149,
+      //          lng: 106.221779
+      //        },
+      //        map: map
+      //      });
+      //     attachSecretMessage(marker, "PhÃº Thá»�");
+      // }
+
+      // // Attaches an info window to a marker with the provided message. When the
+      // // marker is clicked, the info window will open with the secret message.
+      // function attachSecretMessage(marker, secretMessage) {
+      //   var infowindow = new google.maps.InfoWindow({
+      //     content: secretMessage
+      //   });
+
+      //   marker.addListener('click', function() {
+      //   	alert('OK');
+      //     infowindow.open(marker.get('map'), marker);
+      //   });
+      // }
+    </script>
+    <!-- Google API -->
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWoIxsP94pzMT5q7f07WPeyU9aLhkgcsc&callback=initMap"></script>
+     -->
+</div>
+<!-- END MAIN CONTENT -->

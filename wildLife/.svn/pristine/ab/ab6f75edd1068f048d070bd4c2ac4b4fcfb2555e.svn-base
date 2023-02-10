@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.injectionPlant.isNew" class="modal-title"><i class="icon-plus"></i> {{"importAnimal.create"|translate}}</h4>
+    <h4 ng-if="!vm.injectionPlant.isNew" class="modal-title"><i class="icon-pencil"></i> {{"importAnimal.update"|translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.injectionPlant.injectionDate' | translate}}</label>
+            <input data-ng-model="vm.injectionPlant.injectionDate" type="text" readonly class="form-control" my-date-picker />
+            <!--  -->
+        </div>
+
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.injectionPlant.drug' | translate}}</label>
+            <input data-ng-model="vm.injectionPlant.drug" type="text" autofocus="autofocus" class="form-control" />
+        </div>
+
+        <!-- <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.injectionPlant.injectionRound' | translate}}</label>
+            <input data-ng-model="vm.injectionPlant.injectionRound" type="text" autofocus="autofocus" class="form-control" />
+        </div> -->
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{"importAnimal.injectionPlant.injectionRound"|translate}}:</label>                        
+            <ui-select ng-model="vm.injectionPlant.injectionTime" sortable="true" close-on-select="true" aria-multiselectable="true">
+                <ui-select-match allow-clear="true" placeholder="{{'injectionPlant.injectionRound'|translate}}...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices repeat="injectionTime in vm.injectionTimes | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="injectionTime.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       {{"exportAnimal.cancel" | translate}}</button>
+    <button type="button" ng-click="vm.saveInjectionPlant()" class="btn btn-primary"><i class="icon-check"></i>{{'exportAnimal.save' | translate}}</button>
+
+</div>

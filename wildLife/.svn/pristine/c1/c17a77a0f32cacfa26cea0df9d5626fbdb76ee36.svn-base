@@ -1,0 +1,19 @@
+package com.globits.wl.rest;
+
+import com.globits.wl.dto.functiondto.DashboardCitesDto;
+import com.globits.wl.service.DashboardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+@RestController
+@RequestMapping("/api/dashboard")
+public class RestDashboardController {
+        @Autowired
+        DashboardService dashboardService;
+        @RequestMapping(value = "/getCites", method = RequestMethod.GET)
+        public DashboardCitesDto getCites(){
+            return dashboardService.Cites();
+        }
+    }
+

@@ -1,0 +1,44 @@
+<div class="row margin-top-10">
+	<div class="col-md-12">
+		<div class="portlet light bordered">
+				<div class="portlet-header">
+					<h3><strong>{{'original.information' | translate}}</strong></h3>
+				</div>
+			<div class="portlet-body">
+				<div class="btn-group margin-bottom-20 margin-right-10">
+					<button type="button" ng-click="vm.createOriginal(null)" class="btn btn-default"><i class="icon-plus"></i>{{'original.create' | translate}}</button>
+					<button type="button" ng-click="vm.deleteOriginals()" class="btn btn-danger margin-left-10"
+						style="margin-left:15px;"><i class="icon-trash"></i>{{'original.delete' | translate}}</button>
+				</div>
+				<table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="original_info.html">
+    <div modal-movable>
+		<div ng-include="'original/views/original_info.html'"></div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete.html">
+    <div modal-movable>
+		<div ng-include="'original/views/confirm_delete.html'"></div>
+	</div>
+</script>
+<script type="text/ng-template" id="confirm_delete_record.html">
+	<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<p style="padding-left:15px;" class="text-primary">{{'original.confirmDelete' | translate}}</p>
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+					{{'original.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.confirmDeleteRecord()" class="btn btn-primary"><i class="icon-check"></i>{{'original.accept' | translate}}</button>
+	</div>
+</script>

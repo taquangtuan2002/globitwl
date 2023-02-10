@@ -1,0 +1,75 @@
+package com.globits.wl.domain;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.globits.core.domain.BaseObject;
+@Entity
+@Table(name = "tbl_bran")
+@XmlRootElement
+/*
+ * danh sách cám
+ * VD: cám gà đẻ...
+ */
+public class Bran extends BaseObject{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Column(name="name")
+	private String name;
+	@Column(name="code")
+	private String code;
+	@Column(name="description")
+	private String description;
+	@Column(name="unit")
+	private String unit;//dơn vị tính
+	@Column(name="uses")
+	private String uses;//công dụng
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	public String getUses() {
+		return uses;
+	}
+	public void setUses(String uses) {
+		this.uses = uses;
+	}
+	public Bran() {
+		this.setUuidKey(UUID.randomUUID());
+	}
+}

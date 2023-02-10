@@ -1,0 +1,461 @@
+<div class="portlet-farm-detail portlet-header">
+</div>
+</div>
+<div class="row margin-top-20 portlet-farm-detail">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 ng-if="vm.forestProduct.isNew">{{"importAnimal.status" | translate}}:
+                            <strong>{{"importAnimal.create" | translate}}</strong></h3>
+                        <h3 ng-if="!vm.forestProduct.isNew">{{"importAnimal.status" | translate}}:
+                            <strong>{{"importAnimal.update" | translate}}</strong></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="">
+                    <div class="box-header">
+                        
+                        <h2 class="text-center bold">Bảng kê lâm sản</h2>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Tên chủ lâm sản:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-disabled="true" class="form-control margin-top-10 glb-disabled" ng-model="vm.forestProduct.farm.ownerName">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Địa chỉ:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-disabled="true" class="form-control margin-top-10 glb-disabled" ng-model="vm.forestProduct.farm.administrativeUnit.name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: smaller; padding-top: 0px;" class="col-sm-2 control-label">Giấy đăng ký kinh doanh/mã số doanh nghiệp (đối với doanh nghiệp):</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-disabled="true" class="form-control margin-top-10 glb-disabled" ng-model="vm.forestProduct.farm.newRegistrationCode">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Số điện thoại liên hệ:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" ng-disabled="true" class="form-control margin-top-10 glb-disabled" ng-model="vm.forestProduct.farm.ownerPhoneNumber">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Số bản kê lâm sản :</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control margin-top-10" ng-model="vm.forestProduct.code">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Nguồn gốc lâm sản:</label>
+                                <div class="col-sm-4">
+                                    <ui-select ng-model="vm.forestProduct.original" sortable="true" close-on-select="true">
+                                        <ui-select-match allow-clear="true" placeholder="Chọn nguồn gốc lâm sản....">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="original.name as original in vm.allOriginal | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold" ng-bind-html="original.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <!-- <input type="text" class="form-control margin-top-10" ng-model="vm.forestProduct.original"> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Số hóa đơn kèm theo (nếu có): </label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control margin-top-10" ng-model="vm.forestProduct.invoiceCode">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Ngày hóa đơn kèm theo: </label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control margin-top-10" my-date-picker ng-model="vm.forestProduct.invoiceDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Phương tiện vận chuyển (nếu có): </label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control margin-top-10" ng-model="vm.forestProduct.vehicle">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">biển số/số hiệu phương tiện: </label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control margin-top-10" ng-model="vm.forestProduct.vehicleRegistrationPlate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Thời gian vận chuyển (ngày): </label>
+                                <div class="col-sm-2">
+                                    <input type="text" number-input class="form-control margin-top-10" ng-model="vm.forestProduct.transportDuration">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Từ ngày: </label>
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="Xin mời chọn ngày..." class="form-control margin-top-10" my-date-picker ng-model="vm.forestProduct.transportStart">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Đến ngày: </label>
+                                <div class="col-sm-2">
+                                    <input type="text" placeholder="Xin mời chọn ngày..." class="form-control margin-top-10" my-date-picker ng-model="vm.forestProduct.transportEnd">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Vận chuyển từ:
+                                </label>
+                                <div class="col-sm-2 margin-top-10">
+                                    <!--tran huu dat start-->
+                                    <ui-select ng-model="vm.selectedCityFrom" sortable="true"
+                                        close-on-select="true" on-select="vm.onFmsadminstrativeUnitCitySelectedFrom($item)">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseCity' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit in vm.adminstrativeUnitsCity | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <!--tran huu dat end-->
+                                </div>
+                                <div class="col-sm-2 margin-top-10">
+                                    <!--tran huu dat start-->
+                                    <ui-select ng-model="vm.forestProduct.administrativeUnitFrom" sortable="true"
+                                        close-on-select="true">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit in vm.adminstrativeUnits_DistFrom | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <!--tran huu dat end-->
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Đến: </label>
+                                <div class="col-sm-2 margin-top-10">
+                                    <!--tran huu dat start-->
+                                    <ui-select ng-model="vm.selectedCityTo" sortable="true"
+                                        close-on-select="true" on-select="vm.onFmsadminstrativeUnitCitySelectedTo($item)" >
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseCity' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit in vm.adminstrativeUnitsCity | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                        <!--tran huu dat end-->
+                                </div>
+                                <div class="col-sm-2 margin-top-10">
+                                    <!--tran huu dat start-->
+                                    <ui-select ng-model="vm.forestProduct.administrativeUnitTo" sortable="true"
+                                        close-on-select="true">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit in vm.adminstrativeUnits_DistTo | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                        <!--tran huu dat end-->
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Tên người mua:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" placeholder="Tên người mua..."
+                                        class="form-control margin-top-10"
+                                        ng-model="vm.forestProduct.buyerName">
+                                </div>
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">File ảnh:</label>
+                                <div class="col-sm-2 margin-top-10" id="image_attach">
+                                    <button class="btn btn-info link bold cursor-pointer" ngf-max-size="'100MB'"
+                                        ngf-select="vm.uploadFilesForest($file, $invalidFiles)"
+                                        ng-model="vm.forestProduct.file"
+                                        ngf-accept="'image/*'" ngf-multiple="true"><i class="fa fa-paperclip"></i>
+                                        {{'genarel.upload_attachments' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="vm.forestProduct.file" >
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6">
+                                    <img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{vm.forestProduct.file.id}}"
+                                    class="col-sm-6 margin-top-10" ngf-accept="'image/*'" style="width: 400px; height: 250px;">
+                                </div>
+                            </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10">
+                    <div class="portlet-header">
+                        <h3></h3>
+                    </div>
+                    <div class="row margin-top-10">
+                        <!-- <button ng-click="vm.addForestProductDetail()"
+                            class="btn btn-primary margin-left-10 margin-bottom-10">{{"importAnimal.create" | translate}}
+                        </button> -->
+                        <button ng-click="vm.addForestProductDetail()"
+                            class="btn btn-primary margin-left-10 margin-bottom-10">Kê khai động vật
+                        </button>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <table class="table table-bordered" margin-left-10>
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" style="width:10px">STT</th>
+                                        <th style="width:50px" colspan="2">Tên loài </th>
+                                        <th rowspan="2" style="width:15px">Nhóm loài </th>
+                                        <th rowspan="2" style="width:15px">Số hiệu đánh dấu </th>
+                                        <th rowspan="2" style="width:15px">Số lượng </th>
+                                        <th rowspan="2" style="width:15px">Khối lượng </th>
+                                        <th rowspan="2" style="width:15px">Đơn vị tính</th>
+                                        <th rowspan="2" style="width:38px">Ghi chú</th>
+                                        <th rowspan="2" style="width:38px">Thao tác</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:25px">Tên phổ thông</th>
+                                        <th style="width:25px">Tên khoa học</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="!(vm.listForesProductDetail.length > 0)">
+                                        <td colspan="5">
+                                            <p class="text-primary text-center font-weight-bold bg-secondary">
+                                                {{"importAnimal.noData" | translate}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="vm.listForesProductDetail.length > 0"
+                                        ng-repeat="forestProductDetail in vm.listForesProductDetail track by $index">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td>{{forestProductDetail.animal.name}}</td>
+                                        <td>{{forestProductDetail.animal.scienceName}}</td>
+                                        
+                                        <td>{{forestProductDetail.animal.animalGroup}}</td>
+
+                                        <!-- <td>{{forestProductDetail.groupAnimalType}}</td> -->
+                                        <td>{{forestProductDetail.code}}</td>
+                                        <td>{{forestProductDetail.quantity}}</td>
+                                        <td>{{forestProductDetail.amount}}</td>
+                                        <td>{{forestProductDetail.unit}}</td>
+                                        <td>{{forestProductDetail.note}}</td>
+                                        <td><a class="green-dark margin-right-5" href="#"
+                                                data-ng-click="vm.addForestProductDetail($index)"><i
+                                                    class="icon-pencil margin-right-5"></i>{{"importAnimal.edit" | translate}}</a>
+                                            <a class="green-dark margin-right-5" href="#"
+                                                data-ng-click="vm.confirmDeleteForestDetail($index)"><i
+                                                    class="fa fa-trash"></i>{{"importAnimal.delete" | translate}}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="portlet-fotter margin-top-10">
+
+                            <button type="button" class="btn btn-default btn-primary" margin-left: 10px
+                                ng-click="$dismiss()">
+                                <i class="fa fa-mail-reply-all"></i>{{"importAnimal.goBack" | translate}}
+                            </button>
+                            <button style='margin-left : 20px' type="button" ng-click="vm.printFileWord()" class="btn btn-primary">
+    
+                                <i class="icon-check"></i>In Bảng kê
+                            </button>
+                            <button style='margin-left : 20px' type="button" ng-click="vm.sendEmail()" class="btn btn-primary">
+    
+                                <i class="icon-check"></i> Gửi bảng kê
+                            </button>
+                            <button type="button" ng-click="vm.saveForestProductList()" class="btn btn-primary">
+
+                                <i class="icon-check"></i> {{'importAnimal.save' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="portlet-body">
+                <div class="row margin-top-10">
+                    <div class="portlet-header">
+                        <h3>Các lần xuất đàn có bản kê lâm sản</h3>
+                    </div>
+                    <div class="row margin-top-10">
+                        <div class="col-md-6 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button ng-click="vm.showPopupBatchCode()" class="btn btn-primary margin-left-10 margin-bottom-10" type="submit"><i class="glyphicon glyphicon-plus"></i>Thêm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <table class="table table-bordered" class="margin-left-10">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã lô </th>
+                                        <th>Ngày xuất </th>
+                                        <th>Tổng số lượng</th>
+                                        <th>Số con đực </th>
+                                        <th>Số con cái </th>
+                                        <th>Số con không rõ giới tính </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-if="!(vm.forestProduct.exports && vm.forestProduct.exports.length > 0)">
+                                        <td colspan="7">
+                                            <p class="text-primary text-center font-weight-bold bg-secondary">
+                                                {{"importAnimal.noData" | translate}}</p>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="vm.forestProduct.exports && vm.forestProduct.exports.length > 0"
+                                        ng-repeat="export in vm.forestProduct.exports track by $index">
+                                        <td class="text-center">{{$index+1}}</td>
+                                        <td>{{export.animal.name}}</td>
+                                        <td>{{export.quantity}}</td>
+                                        <td>{{export.male}}</td>
+                                        <td>{{export.female}}</td>
+                                        <td>{{export.unGender}}</td>
+                                        <td>
+                                            <a class="green-dark margin-right-5" href="#"
+                                                data-ng-click="vm.confirmDeleteListExportAnimal($index)"><i
+                                                    class="fa fa-trash"></i>{{"importAnimal.delete" | translate}}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="portlet-fotter margin-top-10">
+
+                            <button type="button" class="btn btn-default btn-primary" margin-left: 10px
+                                ng-click="$dismiss()">
+                                <i class="fa fa-mail-reply-all"></i>{{"importAnimal.goBack" | translate}}
+                            </button>
+                            <button type="button" ng-click="vm.saveForestProductList()" class="btn btn-primary">
+
+                                <i class="icon-check"></i> {{'importAnimal.save' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <!-- store -->
+</div>
+
+</div>
+</div>
+<style>
+    .margin-left-15 {
+        margin-left: 15px;
+    }
+</style>
+<!-- <div class="col-md-12 margin-top-10">
+    <label class="bold">Loại hình chăn nuôi:</label>
+    <ui-select multiple ng-model="vm.husbandryTypesSelected" sortable="true"
+        close-on-select="true" aria-multiselectable="true"
+        on-select="vm.onHusbandryTypeSelected($item)" on-remove="vm.onRemovedHusbandry()">
+        <ui-select-match allow-clear="true" placeholder="Chọn loại hình chăn nuôi...">
+            {{$item.name}}
+        </ui-select-match>
+        <ui-select-choices
+            repeat="husbandryType  in vm.husbandryTypes | propsFilter: {name: $select.search, code: $select.search}">
+            <div class="bold" ng-bind-html="husbandryType.name | highlight: $select.search">
+            </div>
+        </ui-select-choices>
+    </ui-select>
+</div> -->
+<!-- main js -->
+<script type="text/ng-template" id="forest_product_list_detail.html">
+    <div modal-movable ng-include="'farm/views/child/forest_product_list_detail.html?v={{version}}'"></div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_forest_detail.html">
+    <div modal-movable ng-include="'forest_product_list/views/child/confirm_delete.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="choose_farm_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i> {{"exportAnimal.chooseFarm" | translate}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text"  ng-if="vm.isFamer == false"  data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<input type="text"  ng-if="vm.isFamer == true" readonly data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByFarm()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+					<!--</div>-->
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlFarm" bs-table-control="vm.bsTableControlFarm"></table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agreeFarm()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="choose_batch_code_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i>{{"exportAnimal.chooseBatchCode" | translate}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text" data-ng-model="vm.batchCode" class="form-control" ng-keyup="vm.enterSearchCode(e)" placeholder="{{'exportAnimal.searchNameCode' | translate}}" name="search">
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+					<!--</div>-->
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlCode" bs-table-control="vm.bsTableControlCode"></table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agree()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>

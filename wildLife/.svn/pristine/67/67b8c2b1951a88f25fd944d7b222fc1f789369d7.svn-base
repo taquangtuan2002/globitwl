@@ -1,0 +1,111 @@
+package com.globits.wl.dto;
+
+public class DashboardVolatilityDto {
+
+	 private Long totalListOfForestProductsByYear;
+	 private Long increaseVolatilityOfTheBase;//biến động tăng của cơ sở
+	 private Long increasedVariationOfTheIndividual;//biến động tăng của cá thể
+
+	 private Long decreasedVolatilityOfTheBase;//biến động giảm của cơ sở
+	 private Long decreasedIndividualVariability;//biến động giảm của cá thể
+	 private Long changesInTotalHouseholds;//tổng hô có biến động
+	 private Long exportListOfForestProducts; //xuất bảng kê lâm sản
+	 private Long importListOfForestProducts; //nhập bảng kê lâm sản
+	 private Long totalEstablishmentStopsFarming; //Số cơ sở ngừng gây nuôi
+	 private Long registrationFacilityInTheYear;//sớ cơ sở đăng ký nuôi mới trong năm
+	 private Long theNumberHouseholdsRemainsTheSame; //số hộ giữ nguyên trong năm
+	 
+	 public DashboardVolatilityDto() {
+		 
+	 }
+
+	public Long getTotalListOfForestProductsByYear() {
+		return totalListOfForestProductsByYear;
+	}
+
+	public void setTotalListOfForestProductsByYear(Long totalListOfForestProductsByYear) {
+		this.totalListOfForestProductsByYear = totalListOfForestProductsByYear;
+	}
+
+	public Long getIncreaseVolatilityOfTheBase() {
+		return increaseVolatilityOfTheBase;
+	}
+
+	public void setIncreaseVolatilityOfTheBase(Long increaseVolatilityOfTheBase) {
+		this.increaseVolatilityOfTheBase = increaseVolatilityOfTheBase;
+	}
+
+	public Long getIncreasedVariationOfTheIndividual() {
+		return increasedVariationOfTheIndividual;
+	}
+
+	public void setIncreasedVariationOfTheIndividual(Long increasedVariationOfTheIndividual) {
+		this.increasedVariationOfTheIndividual = increasedVariationOfTheIndividual;
+	}
+
+	public Long getDecreasedVolatilityOfTheBase() {
+		return decreasedVolatilityOfTheBase;
+	}
+
+	public void setDecreasedVolatilityOfTheBase(Long decreasedVolatilityOfTheBase) {
+		this.decreasedVolatilityOfTheBase = decreasedVolatilityOfTheBase;
+	}
+
+	public Long getDecreasedIndividualVariability() {
+		return decreasedIndividualVariability;
+	}
+
+	public void setDecreasedIndividualVariability(Long decreasedIndividualVariability) {
+		this.decreasedIndividualVariability = decreasedIndividualVariability;
+	}
+
+	public Long getChangesInTotalHouseholds() {
+		return changesInTotalHouseholds;
+	}
+
+	public void setChangesInTotalHouseholds(Long changesInTotalHouseholds) {
+		this.changesInTotalHouseholds = changesInTotalHouseholds;
+	}
+
+	public Long getExportListOfForestProducts() {
+		return exportListOfForestProducts;
+	}
+
+	public void setExportListOfForestProducts(Long exportListOfForestProducts) {
+		this.exportListOfForestProducts = exportListOfForestProducts;
+	}
+
+	public Long getImportListOfForestProducts() {
+		return importListOfForestProducts;
+	}
+
+	public void setImportListOfForestProducts(Long importListOfForestProducts) {
+		this.importListOfForestProducts = importListOfForestProducts;
+	}
+
+	public Long getTotalEstablishmentStopsFarming() {
+		return totalEstablishmentStopsFarming;
+	}
+
+	public void setTotalEstablishmentStopsFarming(Long totalEstablishmentStopsFarming) {
+		this.totalEstablishmentStopsFarming = totalEstablishmentStopsFarming;
+	}
+
+	public Long getRegistrationFacilityInTheYear() {
+		return registrationFacilityInTheYear;
+	}
+
+	public void setRegistrationFacilityInTheYear(Long registrationFacilityInTheYear) {
+		this.registrationFacilityInTheYear = registrationFacilityInTheYear;
+	}
+
+	public Long getTheNumberHouseholdsRemainsTheSame() {
+		return theNumberHouseholdsRemainsTheSame;
+	}
+
+	public void setTheNumberHouseholdsRemainsTheSame(Long theNumberHouseholdsRemainsTheSame) {
+		this.theNumberHouseholdsRemainsTheSame = theNumberHouseholdsRemainsTheSame;
+	}
+	
+	 
+}

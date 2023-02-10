@@ -1,0 +1,372 @@
+package com.globits.wl.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.globits.core.service.impl.GenericServiceImpl;
+import com.globits.core.utils.SecurityUtils;
+import com.globits.security.domain.User;
+import com.globits.wl.domain.FmsAdministrativeUnit;
+import com.globits.wl.domain.ProductTarget;
+import com.globits.wl.domain.TechnicalStaff;
+import com.globits.wl.dto.FmsAdministrativeUnitDto;
+import com.globits.wl.dto.ForestProductsListDto;
+import com.globits.wl.dto.ProductTargetDto;
+import com.globits.wl.dto.TechnicalStaffDto;
+import com.globits.wl.dto.functiondto.SearchDto;
+import com.globits.wl.dto.functiondto.SearchReportPeriodDto;
+import com.globits.wl.repository.FmsAdministrativeUnitRepository;
+import com.globits.wl.repository.TechnicalStaffRepository;
+import com.globits.wl.service.TechnicalStaffService;
+import com.globits.wl.service.UserAdministrativeUnitService;
+import com.globits.wl.utils.WLConstant;
+
+
+@Service
+public class TechnicalStaffServiceImpl extends GenericServiceImpl<TechnicalStaff, Long> 
+	implements TechnicalStaffService {
+	
+	@Autowired
+	private TechnicalStaffRepository technicalStaffRepository;
+	
+	@Autowired
+	private FmsAdministrativeUnitRepository fmsAdministrativeUnitRepository;
+	
+	@Autowired
+	private UserAdministrativeUnitService userAdministrativeUnitService;
+
+	@Override
+	public List<TechnicalStaffDto> getAll() {
+		return technicalStaffRepository.getAll();
+	}
+
+	@Override
+	public List<TechnicalStaffDto> getStaffFromProvince(Long id) {
+		if(id!=null) {
+			List<TechnicalStaffDto> list = technicalStaffRepository.getStaffFromProvince(id);
+			return list;
+		}
+		return null;
+	}
+	
+	@Override
+	public TechnicalStaffDto deleteTechnicalStaff(Long id) {
+		TechnicalStaff d = technicalStaffRepository.findOne(id);
+		TechnicalStaffDto dto = new TechnicalStaffDto();
+		if(d!=null && d.getId()!=null) {
+			dto.setId(d.getId());
+			dto.setCode(d.getCode());
+			dto.setName(d.getName());
+			technicalStaffRepository.delete(d.getId());
+		}
+		return dto;
+	}
+	
+	
+	
+	@Override
+	public TechnicalStaff findById(Long id) {
+		return technicalStaffRepository.findOne(id);
+	}
+
+
+	@Override
+	public TechnicalStaffDto saveStaffFromProvince(TechnicalStaffDto dto, Long id) {
+		if(dto !=null) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User modifiedUser = null;
+		LocalDateTime currentDate = LocalDateTime.now();
+		String currentUserName = "Unknown User";
+		if (authentication != null) {
+			modifiedUser = (User) authentication.getPrincipal();
+			currentUserName = modifiedUser.getUsername();
+		}
+		
+		TechnicalStaff technicalStaff = null;
+		if(dto.getId()!=null) {
+			technicalStaff = technicalStaffRepository.findOne(dto.getId());
+		}
+		if(technicalStaff==null) {
+			technicalStaff = new TechnicalStaff();
+			technicalStaff.setCreateDate(currentDate);
+			technicalStaff.setCreatedBy(currentUserName);
+		}
+		if(dto.getId()!=null)
+			technicalStaff.setId(dto.getId());
+		if(dto.getName()!=null)
+			technicalStaff.setName(dto.getName());
+		if(dto.getBirthdate()!=null)
+			technicalStaff.setBirthdate(dto.getBirthdate());
+		if(dto.getPosition()!=null)
+			technicalStaff.setPosition(dto.getPosition());
+		if(dto.getGender()!=null)
+			technicalStaff.setGender(dto.getGender());
+		if(dto.getEmail()!=null)
+			technicalStaff.setEmail(dto.getEmail());
+		if(dto.getPhoneNumber()!=null)
+			technicalStaff.setPhoneNumber(dto.getPhoneNumber());
+		if(dto.getCode()!=null)
+			technicalStaff.setCode(dto.getCode());
+//		FmsAdministrativeUnitDto provinceDto = fmsAdministrativeUnitService.getAdministrativeUnitById(dto.getProvince().getId());
+//		FmsAdministrativeUnit province = new FmsAdministrativeUnit();
+//		if(province!=null) {
+//			province.setId(provinceDto.getId());
+//			province.setName(provinceDto.getName());
+//		}
+		//tinh
+		if(dto.getProvince() != null) {
+			FmsAdministrativeUnitDto provinceDto = dto.getProvince();
+			FmsAdministrativeUnit province = null;
+			if(provinceDto.getId() != null) {
+				province = fmsAdministrativeUnitRepository.findOne(provinceDto.getId());
+				if(province != null) {
+					technicalStaff.setProvince(province);
+//					if(dto.getDistrict() != null) {
+//						FmsAdministrativeUnitDto districtDto = dto.getDistrict();
+//						FmsAdministrativeUnit district = null;
+//						if(districtDto.getId() != null) {
+//							district = fmsAdministrativeUnitRepository.findOne(districtDto.getId());
+//							if(district != null && district.getParent().getId()==province.getId()) {
+//								technicalStaff.setDistrict(district);
+//								if(dto.getCommune() != null) {
+//									FmsAdministrativeUnitDto communeDto = dto.getCommune();
+//									FmsAdministrativeUnit commune = null;
+//									if(communeDto.getId() != null ) {
+//										commune = fmsAdministrativeUnitRepository.findOne(communeDto.getId());
+//										if(commune != null && commune.getParent().getId()==district.getId()) {
+//											technicalStaff.setCommune(commune);
+//										}
+//									}
+//								}
+//							}
+//						}
+//				}
+			}
+			}
+			else if(provinceDto.getCode() != null) {
+				List<FmsAdministrativeUnit> list=fmsAdministrativeUnitRepository.findListByCode(provinceDto.getCode());
+				if(list!=null && list.size()>0){
+					province=list.get(0);
+					technicalStaff.setProvince(province);
+				}	
+			}
+		}
+		
+//		huyen
+		if(dto.getDistrict() != null) {
+			FmsAdministrativeUnitDto districtDto = dto.getDistrict();
+			FmsAdministrativeUnit district = null;
+			if(districtDto.getId() != null) {
+				district = this.fmsAdministrativeUnitRepository.findOne(districtDto.getId());
+				if(district != null ) {
+					technicalStaff.setDistrict(district);
+				}
+			}
+			else if(districtDto.getCode() != null) {
+				List<FmsAdministrativeUnit> list=fmsAdministrativeUnitRepository.findListByCode(districtDto.getCode());
+				if(list!=null && list.size()>0){
+					district=list.get(0);
+					technicalStaff.setDistrict(district);
+				}	
+			}
+		}
+		
+		//xa
+				if(dto.getCommune() != null) {
+					FmsAdministrativeUnitDto communeDto = dto.getCommune();
+					FmsAdministrativeUnit commune = null;
+					if(communeDto.getId() != null) {
+						commune = this.fmsAdministrativeUnitRepository.findOne(communeDto.getId());
+						if(commune != null) {
+							technicalStaff.setCommune(commune);
+						}
+					}
+					else if(communeDto.getCode() != null) {
+						List<FmsAdministrativeUnit> list=fmsAdministrativeUnitRepository.findListByCode(communeDto.getCode());
+						if(list!=null && list.size()>0){
+							commune=list.get(0);
+							technicalStaff.setCommune(commune);
+						}	
+					}
+				}
+		
+		
+			technicalStaff = technicalStaffRepository.save(technicalStaff);
+			dto.setId(technicalStaff.getId());
+			return new TechnicalStaffDto(technicalStaff);
+		}
+		return dto;
+	}
+
+//	@Override
+//	public TechnicalStaff saveOne(TechnicalStaff t) {
+//		return technicalStaffRepository.save(t);
+//			}
+
+
+	@Override
+	public Page<TechnicalStaffDto> searchDto(SearchReportPeriodDto searchDto, int pageIndex,
+			int pageSize) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN) || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		boolean isAdministrativeUnitRole = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_SDAH);
+		boolean isAdministrativeUnitDistrict = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DISTRICT);
+		
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+
+		
+		if(pageIndex > 0) pageIndex = pageIndex-1;
+		else pageIndex = 0;
+		String nameOrCode = searchDto.getText();
+		String sql = " select new com.globits.wl.dto.TechnicalStaffDto(entity) from TechnicalStaff entity   ";
+		String sqlCount = " select count(entity.id) from TechnicalStaff entity  ";
+		String whereClause ="where 1=1";
+		String orderBy = "order by entity.code asc" ;
+		if(nameOrCode!=null && nameOrCode.length()>0) {
+			whereClause += " AND (entity.code like :nameOrCode or entity.name like :nameOrCode or entity.province.id like :nameOrCode )";
+		}
+//		if(searchDto.getWardId() != null) {
+//			whereClause += " AND (entity.commune.id =:wardId )";
+//		} else if(searchDto.getDistrictId() != null) {
+//			whereClause += " AND (entity.district.id =:districtId )";
+//		} else if(searchDto.getProvinceId() != null) {
+//			whereClause += " AND (entity.province.id =:provinceId )";
+//		}
+		
+		if (!isAdmin) {
+			if(isAdministrativeUnitRole) {
+				whereClause += " AND (entity.province.id in (:listWardId)) ";
+			}
+			if(isAdministrativeUnitDistrict) {
+				whereClause += " AND (entity.district.id in (:listWardId)) ";
+			}
+		}
+		Query query = manager.createQuery(sql + whereClause + orderBy, TechnicalStaffDto.class);
+		Query queryCount = manager.createQuery(sqlCount + whereClause, Long.class);
+		
+		if(nameOrCode!=null && nameOrCode.length()>0) {
+			query.setParameter("nameOrCode", '%'+nameOrCode+'%');
+			queryCount.setParameter("nameOrCode", '%'+nameOrCode+'%');
+		}
+//		if (searchDto.getWardId() != null) {
+//			query.setParameter("wardId", searchDto.getWardId());
+//			queryCount.setParameter("wardId", searchDto.getWardId());
+//		} else if (searchDto.getDistrictId() != null) {
+//			query.setParameter("districtId", searchDto.getDistrictId());
+//			queryCount.setParameter("districtId", searchDto.getDistrictId());
+//		} else if (searchDto.getProvinceId() != null) {
+//			query.setParameter("provinceId", searchDto.getProvinceId());
+//			queryCount.setParameter("provinceId", searchDto.getProvinceId());
+//		}
+		if(!isAdmin) {
+			query.setParameter("listWardId", listWardId);
+			queryCount.setParameter("listWardId", listWardId);
+		} 
+		
+		
+		query.setFirstResult(pageIndex * pageSize);
+		query.setMaxResults(pageSize);
+		Pageable pageable = new PageRequest(pageIndex, pageSize);
+		
+		Long total = 0L;
+		Object obj = queryCount.getSingleResult();
+		if (obj != null) {
+			total = (Long) obj;
+		}		
+		Page<TechnicalStaffDto> page = new PageImpl<TechnicalStaffDto>(query.getResultList(), pageable, total);
+		return page;
+	}
+
+
+	@Override
+	public TechnicalStaffDto getTechnicalStaffById(Long id) {
+		if(id!=null) {
+			TechnicalStaff techniaclStaff = new TechnicalStaff();
+			techniaclStaff = technicalStaffRepository.findOne(id);
+			if(techniaclStaff!=null) {
+				TechnicalStaffDto dto = new TechnicalStaffDto(techniaclStaff);
+				return dto;
+			}
+			return null;
+		}
+		return null;
+	}
+
+//	@Override
+//	public List<TechnicalStaffDto> getTechnicalStaffByName(String name) {
+//		List<TechnicalStaffDto> list = technicalStaffRepository.getTechnicalStaffByName(name);
+//		if(list!=null && list.size()>0){
+//			return list;
+//		}
+//		return null;
+//	}
+
+	@Override
+	public Page<TechnicalStaffDto> getPageTechnicalStaff( int pageIndex, int pageSize) {
+		if (pageIndex > 1) {
+			pageIndex--;
+		} else {
+			pageIndex = 0;
+		}
+		Pageable pageable = new PageRequest(pageIndex, pageSize);
+		return technicalStaffRepository.getPageTechnicalStaff(pageable);
+	}
+
+
+	@Override
+	public TechnicalStaffDto checkDuplicateCode(String code) {
+		TechnicalStaffDto viewCheckDuplicateCodeDto = new TechnicalStaffDto();
+		TechnicalStaff technicalStaff = null;
+			List<TechnicalStaff> list = technicalStaffRepository.findTechnicalStaffByCode(code);
+			if (list != null && list.size() > 0) {
+				technicalStaff = list.get(0);
+			}
+			if (list == null) {
+				viewCheckDuplicateCodeDto.setDuplicate(false);
+			} else if (list != null && list.size() > 0) {
+				viewCheckDuplicateCodeDto.setDuplicate(true);
+				viewCheckDuplicateCodeDto.setDupCode(technicalStaff.getCode());
+			}
+			return viewCheckDuplicateCodeDto;
+		}
+
+
+	@Override
+	public ResponseEntity<Boolean> deleteTechnicalStaffs(List<Long> ids) {
+		if (ids != null && ids.size() > 0) {
+			for (Long id : ids) {
+				technicalStaffRepository.delete(id);
+			}
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
+	}
+	
+
+}

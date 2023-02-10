@@ -1,0 +1,246 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 class="modal-title"><i class="fa fa-eye"></i> Xem chi tiết loài khai báo</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+       <div class="col-md-2">
+            <input ng-model="vm.form16Year" type="text" class="form-control" readonly/>
+       </div>
+       <div class="col-md-2">
+            <input ng-model="vm.form16Month" type="text" class="form-control" readonly/>
+       </div>
+       <div class="col-md-2">
+            <input ng-model="vm.form16Date" type="text" class="form-control" readonly/>
+       </div>
+       <div class="col-md-6 input-group">
+            <input readonly data-ng-model="vm.farm.name"
+                placeholder="Cơ sở nuôi" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 margin-top-10" style="overflow: auto;">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <!-- <th style="width: 100px;" rowspan="2">Ng&agrave;y</th> -->
+                        <th style="width: 5px;" rowspan="4">STT</th>
+                        <th style="width: 20px;" colspan="2">Lo&agrave;i
+                            nu&ocirc;i</th>
+                        <th style="width: 148.8px;" colspan="4">Tổng số c&aacute;
+                            thể nu&ocirc;i</th>
+                        <th style="width: 56.8px;" colspan="2">C&aacute; thể bố mẹ</th>
+                        <th style="width: 56.8px;" colspan="2">Đ&agrave;n giống
+                            hậu bị</th>
+                        <th style="width: 40px;" rowspan="4">Số lượng con dưới 1
+                            tuổi (chưa trưởng thành)</th>
+                        <th style="width: 108.8px;" colspan="3">Số lượng c&aacute;
+                            thể tr&ecirc;n 1 tuổi (đã trưởng thành)</th>
+                        <th style="width: 20.8px;" colspan="9">&nbsp;&nbsp;&nbsp;Diễn biến tăng đàn (mua, sinh sản ..vv)</th>
+                        
+                        <th style="width: 30px;" rowspan="4">Tổng tăng</th>
+
+                        <th style="width: 20.8px;" colspan="9">&nbsp;&nbsp;&nbsp;Diễn biến giảm đàn (b&aacute;n, cho tặng, chết&hellip;)</th>
+                        <th style="width: 30px;" rowspan="4">Tổng giảm</th>
+                        <th style="width: 30px;" rowspan="4"> Ghi chú</th>
+                            <!-- <th style="width: 20.8px;" rowspan="4">Xác nhận của cơ quan kiểm lâm/ thủy sản</th> -->
+                            <!-- <th style="width: 20.8px;" rowspan="2"> Thao tác</th> -->
+                        <!-- <th style="width: 20.8px;" rowspan="2">&nbsp;&nbsp;Ghi
+                                ch&uacute;</th>
+                            <th style="width: 38.4px;" rowspan="2">&nbsp;&nbsp;X&aacute;c
+                                nhận của Cơ quan Kiểm l&acirc;m/Cơ quan thủy sản</th> -->
+                    </tr>
+                    <tr>
+                        <th rowspan="4" style="width: 10px;">Tên VN</th>
+                        <th rowspan="4" style="width: 10px;">Tên khoa học</th>
+                        <th rowspan="4" style="width: 36px;">Tổng</th>
+                        <th rowspan="4" style="width: 28px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">C&aacute;i</th>
+                        <th rowspan="4" style="width: 45.6px;">Kh&ocirc;ng x&aacute;c định</th>
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">C&aacute;i</th>
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">C&aacute;i</th>
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 23.2px;">C&aacute;i</th>
+                        <th rowspan="4" style="width: 45.6px;">Kh&ocirc;ng x&aacute;c định</th>
+                        <th colspan="2">Bố mẹ</th>
+                        <th colspan="2">Hậu bị</th>
+                        <th rowspan="4">Cá thể dưới 1 tuổi</th>
+                        <th colspan="3">Cá thể trên 1 tuổi</th>
+                        <th style="width: 20.8px;" rowspan="2">Lí do tăng</th>
+                        <th colspan="2">Bố mẹ</th>
+                        <th colspan="2">Hậu bị</th>
+                        <th rowspan="4">Cá thể dưới 1 tuổi</th>
+                        <th colspan="3">Cá thể trên 1 tuổi</th>
+                        <th style="width: 20.8px;" rowspan="2">Lí do giảm</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Đực</th>
+                        <th rowspan="2">Cái</th>
+                        <th rowspan="2">Đực</th>
+                        <th rowspan="2">Cái</th>
+                        <th rowspan="2">Đực</th>
+                        <th rowspan="2">Cái</th>
+                        <th rowspan="2">Không xác định</th>
+                        <th rowspan="2">Đực</th>
+                        <th rowspan="2">Cái</th>
+                        <th rowspan="2">Đực</th>
+                        <th rowspan="2">Cái</th>
+                        <th rowspan="2">Đực</th>
+                        <th rowspan="2">Cái</th>
+                        <th rowspan="2">Không xác định</th>
+                    </tr>
+                </thead>
+                <tbody ng-if="vm.listReportForm16A.length > 0">
+                    <tr ng-repeat="reportForm in vm.listReportForm16A track by $index">
+                        <!-- <td>
+                            <input data-ng-model="reportForm.dateReport" ng-change="vm.onSelectedQuantityChildIncrementEgg(reportForm)" my-date-picker type="text" class="form-control" />
+                        </td> -->
+                        <td>{{$index + 1}}</td>
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <!-- <ui-select ng-model="reportForm.animal" sortable="true" close-on-select="true" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(reportForm)" on-remove="vm.onRemovedAnimal()">
+                                <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal  in vm.animals | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select> -->
+                            <input ng-model="reportForm.animal.name" type="text" class="form-control" readonly ng-class="{'glb-disabled':true}" />
+                        </td>
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <!-- <ui-select ng-model="reportForm.animal" sortable="true" close-on-select="false" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(reportForm)" on-remove="vm.onRemovedAnimal()">
+                                <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                    {{$select.selected.scienceName}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal  in vm.animals | animalPropsFilter: {scienceName: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select> -->
+                            <input ng-model="reportForm.animal.scienceName" type="text" class="form-control" readonly ng-class="{'glb-disabled':true}" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.total" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.male" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.female" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGender" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleParent" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleParent"  ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleGilts" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleGilts" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.childUnder1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleChildOver1YearOld"  ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleParent" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleParent" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleGilts" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleGilts" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importChildUnder1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importUnGenderChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                          <!-- //tran sinh thanh -->
+                          <td style="max-width: 150px;min-width: 150px;">
+                            <input data-ng-model="reportForm.importReason" type="text" class="form-control" ng-class="{'glb-disabled':true}" />
+                        </td>
+                        <!-- tran sinh thanh -->
+                        <td>
+                            <input data-ng-model="reportForm.totalImport" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleParent" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleParent" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                      
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleGilts" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleGilts" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportChildUnder1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td> 
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportUnGenderChildOver1YearOld" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                       <!-- tran sinh thanh -->
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <input data-ng-model="reportForm.exportReason"type="text" class="form-control" ng-class="{'glb-disabled':true}" />
+                        </td>
+                        <!-- tran sinh thanh -->
+                        <td>
+                            <input data-ng-model="reportForm.totalExport"  ng-class="{'glb-disabled':true}" type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.note"  ng-class="{'glb-disabled':true}" type="text" class="form-control" />
+                        </td>
+                        <!-- <td>
+                            <input data-ng-model="reportForm.confirmForestProtection"  ng-class="{'glb-disabled':true}" type="text" class="form-control" />
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       {{"exportAnimal.close" | translate}}</button>
+</div>

@@ -1,0 +1,320 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.reportPeriod.isNew == true" class="modal-title"><i class="icon-plus"></i> {{"importAnimal.create"|translate}}</h4>
+    <h4 ng-if="vm.reportPeriod.isNew == false" class="modal-title"><i class="icon-pencil"></i> {{"importAnimal.update"|translate}}</h4>
+    <h4 ng-if="vm.reportPeriod.isCopy == true" class="modal-title"><i class="fa fa-copy"></i> Sao chép báo cáo</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+       <div class="col-md-2">
+            <ui-select ng-model="vm.form16Year" sortable="true" close-on-select="true" style="width:100%;"
+            aria-multiselectable="true" on-select="vm.onSelectYearForm16(vm.reportFormAnimalEgg)" on-remove="vm.onRemovedYear()">
+                <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="year.value as year  in vm.years | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+       </div>
+       <div class="col-md-2">
+            <ui-select ng-model="vm.form16Month" sortable="true" close-on-select="true" style="width:100%;"
+            aria-multiselectable="true" on-select="vm.onSelectMonthForm16()" on-remove="vm.onRemovedMonth()">
+                <ui-select-match allow-clear="true" placeholder="Chọn tháng...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="month.value as month  in vm.months | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="month.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+       </div>
+       <div class="col-md-2">
+            <ui-select ng-model="vm.form16Date" sortable="true" close-on-select="true" style="width:100%;"
+            aria-multiselectable="true" on-select="vm.onSelectDateForm16()" on-remove="vm.onRemovedDate()">
+                <ui-select-match allow-clear="true" placeholder="Chọn ngày...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="date.value as date  in vm.days | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="date.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+       </div>
+       <div class="col-md-6 input-group">
+        <input readonly data-ng-model="vm.farm.name"
+            placeholder="{{'exportAnimal.searchFarm' | translate}}" type="text" class="form-control"/>
+        <div class="input-group-btn" ng-if="vm.disabledEditFarm==true">
+            <button ng-click="vm.showPopupFarm()" class="btn btn-default" type="submit"><i
+                    class="glyphicon glyphicon-plus"></i>{{"exportAnimal.choose" | translate}}</button>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 margin-top-10">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <!-- <th style="width: 100px;" rowspan="2">Ng&agrave;y</th> -->
+                        <th style="width: 72px;" colspan="2">Lo&agrave;i
+                            nu&ocirc;i</th>
+                        <th style="width: 148.8px;" colspan="4">Tổng số c&aacute;
+                            thể nu&ocirc;i</th>
+                        <th style="width: 40px;" rowspan="2">Số lượng con dưới 1
+                            tuổi (chưa trưởng thành)</th>
+                        <th style="width: 108.8px;" colspan="3">Số lượng c&aacute;
+                            thể tr&ecirc;n 1 tuổi (đã trưởng thành)</th>
+                        <th style="width: 20.8px;" colspan="3">&nbsp;&nbsp;&nbsp;Diễn biến tăng đàn(mua, sinh sản ..vv)</th>
+                        <th style="width: 20.8px;" colspan="3">&nbsp;&nbsp;&nbsp;Diễn biến giảm đàn(b&aacute;n, cho tặng, chết&hellip;)</th>
+                        <th style="width: 20.8px;" rowspan="2"> Ghi chú</th>
+                        <th style="width: 20.8px;" rowspan="2"> Xác nhận của cơ quan kiểm lâm/ thủy sản</th>
+                        <th style="width: 20.8px;" rowspan="2"> Thao tác</th>
+                        <!-- <th style="width: 20.8px;" rowspan="2">&nbsp;&nbsp;Ghi
+                                ch&uacute;</th>
+                            <th style="width: 38.4px;" rowspan="2">&nbsp;&nbsp;X&aacute;c
+                                nhận của Cơ quan Kiểm l&acirc;m/Cơ quan thủy sản</th> -->
+                    </tr>
+                    <tr>
+                        <th>Tên VN</th>
+                        <th>Tên khoa học</th>
+                        <th style="width: 36px;">Tổng</th>
+                        <th style="width: 28.8px;">Đực</th>
+                        <th style="width: 22.4px;">C&aacute;i</th>
+                        <th style="width: 22.4px;">Không xác định giới tinh</th>
+                        <th style="width: 28.8px;">Đực</th>
+                        <th style="width: 23.2px;">C&aacute;i</th>
+                        <th style="width: 45.6px;">Kh&ocirc;ng x&aacute;c định</th>
+                        <th style="width: 20.8px;">&nbsp;Đực</th>
+                        <th style="width: 20.8px;">&nbsp;C&aacute;i</th>
+                        <th style="width: 20.8px;">&nbsp;Kh&ocirc;ng x&aacute;c định</th>
+                        <th style="width: 20.8px;">&nbsp;Đực</th>
+                        <th style="width: 20.8px;">&nbsp;C&aacute;i</th>
+                        <th style="width: 20.8px;">&nbsp;Kh&ocirc;ng x&aacute;c định</th>
+                    </tr>
+                </thead>
+                <tbody ng-if="vm.listReportForm16A.length > 0">
+                    <tr ng-repeat="reportForm in vm.listReportForm16A track by $index">
+                        <!-- <td>
+                            <input data-ng-model="reportForm.dateReport" ng-change="vm.onSelectedQuantityChildIncrementEgg(reportForm)" my-date-picker type="text" class="form-control" />
+                        </td> -->
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <ui-select ng-model="reportForm.animal" sortable="true" close-on-select="true" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(reportForm)" on-remove="vm.onRemovedAnimal()">
+                                <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal  in vm.animals | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <ui-select ng-model="reportForm.animal" sortable="true" close-on-select="false" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(reportForm)" on-remove="vm.onRemovedAnimal()">
+                                <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                    {{$select.selected.scienceName}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal  in vm.animals | animalPropsFilter: {scienceName: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.total" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.male" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.female" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGender" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        
+                        <td>
+                            <input data-ng-model="reportForm.childUnder1YearOld" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleChildOver1YearOld" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleChildOver1YearOld" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderChildOver1YearOld" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleImport" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleImport" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderImport" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleExport" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleExport" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderExport" ng-change="vm.updateTotalForm16(reportForm)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.note" type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.confirmForestProtection" type="text" class="form-control" />
+                        </td>
+                        <td class="text-center">
+                            <button ng-click="vm.removeForm16ToList($index)"><i class="icon-trash text-danger"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <!-- <td>
+                            <input data-ng-model="vm.reportForm16A.dateReport" ng-change="vm.onSelectedQuantityChildIncrementEgg(vm.reportForm16A)" my-date-picker type="text" class="form-control" />
+                        </td> -->
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <ui-select ng-model="vm.reportForm16A.animal" sortable="true" close-on-select="true" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(vm.reportForm16A)" on-remove="vm.onRemovedAnimal()">
+                                <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal  in vm.animals | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <ui-select ng-model="vm.reportForm16A.animal" sortable="true" close-on-select="false" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(vm.reportForm16A)" on-remove="vm.onRemovedAnimal()">
+                                <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                    {{$select.selected.scienceName}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal  in vm.animals | animalPropsFilter: {scienceName: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.total" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.male" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.female" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.unGender" ng-disabled="true" ng-class="{'glb-disabled':true}" number-input type="text" class="form-control" />
+                        </td>
+                        
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.childUnder1YearOld" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.maleChildOver1YearOld" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.femaleChildOver1YearOld" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.unGenderChildOver1YearOld" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.maleImport" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.femaleImport" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.unGenderImport" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.maleExport" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.femaleExport" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.unGenderExport" ng-change="vm.updateTotalForm16(vm.reportForm16A)" number-input type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.note" type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.reportForm16A.confirmForestProtection" type="text" class="form-control" />
+                        </td>
+                        <td class="text-center">
+                            <button ng-click="vm.addForm16ToList()"><i class="icon-plus"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <!-- <button type="button" ng-click="vm.coppyReportPeriod()" class="btn btn-primary" data-dismiss="modal">Sao chép kỳ báo cáo</button> -->
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       {{"exportAnimal.cancel" | translate}}</button>
+    <button type="button" ng-click="vm.saveReportPeriod()" class="btn btn-primary"><i class="icon-check"></i>{{'exportAnimal.save' | translate}}</button>
+
+</div>
+
+<script type="text/ng-template" id="choose_farm_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i> {{"exportAnimal.chooseFarm" | translate}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text"  ng-if="vm.isFamer == false"  data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<input type="text"  ng-if="vm.isFamer == true" readonly data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByFarm()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+					<!--</div>-->
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlFarm" bs-table-control="vm.bsTableControlFarm"></table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agreeFarm()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>

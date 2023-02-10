@@ -1,0 +1,125 @@
+package com.globits.wl.dto.functiondto;
+
+public class DashboardCitesDto {
+    private Long animalNumber;
+    private Long speciesNumberPLI;
+    private Long speciesNumberPLII;
+    private Long speciesNumberPLIII;
+    private Long speciesNumberDVHD;
+    private Long farmsNumberPLI;
+    private Long farmsNumberPLII;
+    private Long farmsNumberPLIII;
+    private Long farmsNumberDVHD;
+    private Long animalsNumberPLI;
+    private Long animalsNumberPLII;
+    private Long animalsNumberPLIII;
+    private Long animalsNumberDVHD;
+
+    public DashboardCitesDto() {
+    }
+
+    public Long getAnimalNumber() {
+        return animalNumber;
+    }
+
+    public void setAnimalNumber(Long animalNumber) {
+        this.animalNumber = animalNumber;
+    }
+
+    public Long getSpeciesNumberPLI() {
+        return speciesNumberPLI;
+    }
+
+    public void setSpeciesNumberPLI(Long speciesNumberPLI) {
+        this.speciesNumberPLI = speciesNumberPLI;
+    }
+
+    public Long getSpeciesNumberPLII() {
+        return speciesNumberPLII;
+    }
+
+    public void setSpeciesNumberPLII(Long speciesNumberPLII) {
+        this.speciesNumberPLII = speciesNumberPLII;
+    }
+
+    public Long getSpeciesNumberPLIII() {
+        return speciesNumberPLIII;
+    }
+
+    public void setSpeciesNumberPLIII(Long speciesNumberPLIII) {
+        this.speciesNumberPLIII = speciesNumberPLIII;
+    }
+
+    public Long getSpeciesNumberDVHD() {
+        return speciesNumberDVHD;
+    }
+
+    public void setSpeciesNumberDVHD(Long speciesNumberDVHD) {
+        this.speciesNumberDVHD = speciesNumberDVHD;
+    }
+
+    public Long getFarmsNumberPLI() {
+        return farmsNumberPLI;
+    }
+
+    public void setFarmsNumberPLI(Long farmsNumberPLI) {
+        this.farmsNumberPLI = farmsNumberPLI;
+    }
+
+    public Long getFarmsNumberPLII() {
+        return farmsNumberPLII;
+    }
+
+    public void setFarmsNumberPLII(Long farmsNumberPLII) {
+        this.farmsNumberPLII = farmsNumberPLII;
+    }
+
+    public Long getFarmsNumberPLIII() {
+        return farmsNumberPLIII;
+    }
+
+    public void setFarmsNumberPLIII(Long farmsNumberPLIII) {
+        this.farmsNumberPLIII = farmsNumberPLIII;
+    }
+
+    public Long getFarmsNumberDVHD() {
+        return farmsNumberDVHD;
+    }
+
+    public void setFarmsNumberDVHD(Long farmsNumberDVHD) {
+        this.farmsNumberDVHD = farmsNumberDVHD;
+    }
+
+    public Long getAnimalsNumberPLI() {
+        return animalsNumberPLI;
+    }
+
+    public void setAnimalsNumberPLI(Long animalsNumberPLI) {
+        this.animalsNumberPLI = animalsNumberPLI;
+    }
+
+    public Long getAnimalsNumberPLII() {
+        return animalsNumberPLII;
+    }
+
+    public void setAnimalsNumberPLII(Long animalsNumberPLII) {
+        this.animalsNumberPLII = animalsNumberPLII;
+    }
+
+    public Long getAnimalsNumberPLIII() {
+        return animalsNumberPLIII;
+    }
+
+    public void setAnimalsNumberPLIII(Long animalsNumberPLIII) {
+        this.animalsNumberPLIII = animalsNumberPLIII;
+    }
+
+    public Long getAnimalsNumberDVHD() {
+        return animalsNumberDVHD;
+    }
+
+    public void setAnimalsNumberDVHD(Long animalsNumberDVHD) {
+        this.animalsNumberDVHD = animalsNumberDVHD;
+    }
+}
+

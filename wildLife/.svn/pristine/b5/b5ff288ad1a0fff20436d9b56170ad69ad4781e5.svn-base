@@ -1,0 +1,959 @@
+/**
+ * Created by bizic on 28/8/2016.
+ */
+(function () {
+  "use strict";
+
+  angular
+    .module("Education.Report")
+    .controller(
+      "ReportWildAnimalFarmingReportByClassificationController",
+      ReportWildAnimalFarmingReportByClassificationController
+    );
+
+  ReportWildAnimalFarmingReportByClassificationController.$inject = [
+    "$rootScope",
+    "$scope",
+    "$http",
+    "$timeout",
+    "settings",
+    "AnimalReportDataService",
+    "FmsRegionService",
+    "$uibModal",
+    "toastr",
+    "$state",
+    "blockUI",
+    "$stateParams",
+    "Utilities",
+    "$translate",
+    "FmsAdministrativeService",
+    "AnimalService",
+  ];
+
+  function ReportWildAnimalFarmingReportByClassificationController(
+    $rootScope,
+    $scope,
+    $http,
+    $timeout,
+    settings,
+    service,
+    regionService,
+    modal,
+    toastr,
+    $state,
+    blockUI,
+    $stateParams,
+    utils,
+    $translate,
+    auService,
+    animalService
+  ) {
+    $scope.$on("$viewContentLoaded", function () {
+      // initialize core components
+      App.initAjax();
+    });
+
+    $rootScope.settings.layout.pageContentWhite = true;
+    $rootScope.settings.layout.pageBodySolid = false;
+    $rootScope.settings.layout.pageSidebarClosed = false;
+
+    /** declare */
+    var vm = this;
+    var today = new Date();
+    vm.currentYear = today.getFullYear();
+    vm.recordId = null;
+    vm.pageIndex = 1;
+    vm.pageSize = 25;
+    vm.farmSizes = [];
+    vm.modalFarmSize = {};
+    vm.farmSize = { isNew: false };
+    vm.modalConfirmDelete = {};
+    vm.selectedFarmSize = [];
+    vm.count = 0;
+    vm.searchDto = {};
+    vm.viewCheckDuplicateCode = {};
+    vm.tempCode = "";
+    vm.results = [];
+
+    vm.selectedCity = {};
+    $scope.labels = ["Toàn tỉnh"];
+    $scope.series = [];
+    $scope.data = [];
+    vm.viewType = "table";
+    $scope.years = [];
+    vm.regionName = null;
+    vm.provinceName = null;
+    vm.districtName = null;
+    vm.wardsName = null;
+    vm.title = null;
+    vm.isShow = true;
+    for (var i = vm.currentYear; i > 2000; i--) {
+      $scope.years.push({ value: i, name: i + "" });
+    }
+    vm.months = [
+      {
+        name: "Tháng 1",
+        value: 1,
+      },
+      {
+        name: "Tháng 2",
+        value: 2,
+      },
+      {
+        name: "Tháng 3",
+        value: 3,
+      },
+      {
+        name: "Tháng 4",
+        value: 4,
+      },
+      {
+        name: "Tháng 5",
+        value: 5,
+      },
+      {
+        name: "Tháng 6",
+        value: 6,
+      },
+      {
+        name: "Tháng 7",
+        value: 7,
+      },
+      {
+        name: "Tháng 8",
+        value: 8,
+      },
+      {
+        name: "Tháng 9",
+        value: 9,
+      },
+      {
+        name: "Tháng 10",
+        value: 10,
+      },
+      {
+        name: "Tháng 11",
+        value: 11,
+      },
+      {
+        name: "Tháng 12",
+        value: 12,
+      },
+    ];
+
+    /** generate */
+
+    vm.paramDto = {};
+    vm.paramDto.year = today.getFullYear();
+    vm.isRole = false;
+    vm.isFamer = false;
+    vm.isSdah = false;
+    vm.isDistrict = false;
+    vm.isWard = false;
+    vm.isSearchExtend = false;
+    vm.isSdahView = false; //cấp tỉnh nhưng chỉ được xem
+
+    vm.isSelectProvince = false;
+    vm.isSelectDistrict = false;
+    vm.isSelectWard = false;
+    vm.province = null;
+    vm.district = null;
+    vm.ward = null;
+
+    $scope.years = [];
+    var today = new Date();
+    vm.currentYear = today.getFullYear();
+    for (var i = vm.currentYear; i >= 2000; i--) {
+      $scope.years.push({ value: i, name: i + "" });
+    }
+
+    //------Start--Phân quyền theo user đăng nhập-----------
+    blockUI.start();
+    service.getCurrentUser().then(function (data) {
+      vm.user = data;
+      var roles = data.roles;
+      if (roles != null && roles.length > 0) {
+        for (var i = 0; i < roles.length; i++) {
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            (roles[i].authority.toLowerCase() == "role_admin" ||
+              roles[i].authority.toLowerCase() == "role_dlp")
+          ) {
+            vm.isRole = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_sdah"
+          ) {
+            vm.isSdah = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_district"
+          ) {
+            vm.isDistrict = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_ward"
+          ) {
+            vm.isWard = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_famer"
+          ) {
+            vm.isFamer = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_sdah_view"
+          ) {
+            vm.isSdahView = true;
+            vm.isSdah = true;
+          }
+        }
+      } else {
+        vm.isRole = false;
+        vm.isFamer = false;
+        vm.isSdah = false;
+        vm.isDistrict = false;
+        vm.isWard = false;
+        vm.isSdahView = false;
+      }
+      if (vm.isRole) {
+        //trường hợp admin và dlp thì được xem tất cả các cơ sở
+        vm.getAllProvince();
+      } else {
+        // trường hợp này thì phân quyền theo user
+        if (vm.isRole == false) {
+          getAdministrativeUnitDtoByLoginUser();
+        }
+      }
+      blockUI.stop();
+    });
+
+    //load user administrativeunit
+    function getAdministrativeUnitDtoByLoginUser() {
+      service.getAdministrativeUnitDtoByLoginUser().then(function (data) {
+        vm.adminstrativeUnits = data;
+        if (vm.adminstrativeUnits != null && vm.adminstrativeUnits.length > 0) {
+          getDataByCombobox(vm.adminstrativeUnits[0]);
+        }
+      });
+    }
+    function getDataByCombobox(administrativeUnit) {
+      if (administrativeUnit.parentDto == null) {
+        vm.paramDto.provinceId = administrativeUnit.id;
+        if (vm.adminstrativeUnits_City == null) vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_City.push(administrativeUnit);
+        service.getAllByParentId(vm.paramDto.provinceId).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_Dist = data;
+          }
+        });
+      } else if (
+        administrativeUnit.parentDto != null &&
+        administrativeUnit.parentDto.parentDto == null
+      ) {
+        vm.paramDto.districtId = administrativeUnit.id;
+        vm.paramDto.provinceId = administrativeUnit.parentDto.id;
+        vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_City.push(administrativeUnit.parentDto);
+        vm.adminstrativeUnits_Dist = [];
+        if (vm.adminstrativeUnits_Dist == null) vm.adminstrativeUnits_Dist = [];
+        vm.adminstrativeUnits_Dist.push(administrativeUnit);
+        service.getAllByParentId(vm.paramDto.provinceId).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_Dist = data;
+          }
+        });
+        service.getAllByParentId(vm.paramDto.districtId).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_Wards = data;
+          }
+        });
+      } else if (
+        administrativeUnit.parentDto != null &&
+        administrativeUnit.parentDto.parentDto != null
+      ) {
+        vm.paramDto.wardId = administrativeUnit.id;
+        vm.paramDto.districtId = administrativeUnit.parentDto.id;
+        vm.paramDto.provinceId = administrativeUnit.parentDto.parentDto.id;
+
+        if (vm.adminstrativeUnits_City == null) vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_City.push(administrativeUnit.parentDto.parentDto);
+        if (vm.adminstrativeUnits_Dist == null) vm.adminstrativeUnits_Dist = [];
+        vm.adminstrativeUnits_Dist.push(administrativeUnit.parentDto);
+        if (vm.adminstrativeUnits_Wards == null)
+          vm.adminstrativeUnits_Wards = [];
+        vm.adminstrativeUnits_Wards.push(administrativeUnit);
+      }
+    }
+
+    //--------End ----Phân quyền-------------
+    /** get data */
+    vm.searchDto = {};
+    vm.listAnimalClass = [];
+    vm.listAnimalFamily = [];
+    vm.listAnimalOrdo = [];
+    vm.getListAnimalClass = function () {
+      animalService.getListAnimalClass().then(function (data) {
+        vm.listAnimalClass = [];
+        vm.animalClass = null;
+        vm.ordo = null;
+        vm.family = null;
+        data.forEach((item) => {
+          var title = "-";
+          if (item && item.trim().length > 0) {
+            title = item;
+          }
+          vm.listAnimalClass.push({ name: title });
+        });
+      });
+
+      // vm.getListAnimalOrdo();
+      vm.getListAnimalOrdoParam();
+    };
+
+    vm.getListAnimalOrdo = function (callSearchFunction) {
+      animalService
+        .getListAnimalOrdo(vm.searchDto.animalClass)
+        .then(function (data) {
+          vm.listAnimalOrdo = [];
+          vm.ordo = null;
+          vm.family = null;
+          data.forEach((item) => {
+            var title = "-";
+            if (item && item.trim().length > 0) {
+              title = item;
+            }
+            vm.listAnimalOrdo.push({ name: title });
+          });
+          vm.getListAnimalFamily(true);
+        });
+    };
+
+    // Thêm search từ GET thành POST
+    vm.getListAnimalOrdoParam = function(callSearchFunction) {
+      animalService
+        .getListAnimalOrdoParam(vm.searchDto)
+        .then(function (data) {
+          vm.listAnimalOrdo = [];
+          vm.ordo = null;
+          vm.family = null;
+          data.forEach((item) => {
+            var title = "-";
+            if (item && item.trim().length > 0) {
+              title = item;
+            }
+            vm.listAnimalOrdo.push({ name: title });
+          });
+          vm.getListAnimalFamilyParam(true);
+        });
+    }
+    vm.getListAnimalFamily = function (callSearchFunction) {
+      animalService
+        .getListAnimalFamily(vm.searchDto.animalClass, vm.searchDto.ordo)
+        .then(function (data) {
+          vm.listAnimalFamily = [];
+          vm.family = null;
+          data.forEach((item) => {
+            var title = "-";
+            if (item && item.trim().length > 0) {
+              title = item;
+            }
+            vm.listAnimalFamily.push({ name: title });
+          });
+          if (callSearchFunction) {
+            vm.searchByCode();
+          }
+        });
+    };
+
+    //
+    vm.getListAnimalFamilyParam = function (callSearchFunction) {
+      animalService
+        .getListAnimalFamilyParam(vm.searchDto)
+        .then(function (data) {
+          vm.listAnimalFamily = [];
+          vm.family = null;
+          data.forEach((item) => {
+            var title = "-";
+            if (item && item.trim().length > 0) {
+              title = item;
+            }
+            vm.listAnimalFamily.push({ name: title });
+          });
+          if (callSearchFunction) {
+            vm.searchByCode();
+          }
+        });
+    }
+    vm.getListAnimalClass();
+    vm.getListAnimalOrdo();
+    vm.getListAnimalFamily();
+  
+    vm.animalClassSelected = function () {
+      if (vm.animalClass && vm.animalClass == "-") {
+        vm.searchDto.animalClass = null;
+        vm.searchDto.listAnimalClass = null;
+        vm.searchDto.ordo = null;
+        vm.searchDto.family = null;
+      } else {
+        vm.searchDto.listAnimalClass = vm.listAnimalClassParam;       
+        vm.searchDto.ordo = null;
+        vm.searchDto.family = null;
+      }
+      // vm.getListAnimalOrdo(true);
+      vm.getListAnimalOrdoParam(true);
+    };
+
+    vm.animalOrdoSelected = function () {
+      if (vm.ordo && vm.ordo == "-") {
+        vm.searchDto.ordo = null;
+        vm.searchDto.listAnimalOrdo = null;
+        vm.searchDto.family = null;
+      } else {
+        vm.searchDto.listAnimalOrdo = vm.listOrdoClassParam;
+        vm.searchDto.ordo = vm.ordo;
+        vm.searchDto.family = null;
+      }
+      // vm.getListAnimalFamily(true);
+      vm.getListAnimalFamilyParam(true);
+    };
+
+    vm.familySelected = function () {
+      if (vm.family && vm.family == "-") {
+        vm.searchDto.family = null;
+        vm.searchDto.listAnimalFamily = null;
+      } else {
+        vm.searchDto.family = vm.family;
+        vm.searchDto.listAnimalFamily = vm.listFamilyClassParam;
+      }
+      vm.searchByCode();
+    };
+    vm.searchByCode = function () {
+      if (vm.searchDto == null) {
+        vm.searchDto = {};
+      }
+      animalService
+        .getPageSearchAnimal(vm.searchDto, 1, 100000)
+        .then(function (data) {
+          vm.animals = data.content;
+        });
+    };
+
+    vm.getAllProvince = function () {
+      service.getAdminstrativeUnitsCity().then(function (data) {
+        vm.adminstrativeUnits_City = data;
+      });
+    };
+
+    vm.getReportNumberAnimalsAndNumberFarmsAccordingToTheRedBook = function () {
+      if (vm.paramDto.year == null) {
+        toastr.warning("Bạn chưa chọn năm báo cáo", "Cảnh báo");
+        return;
+      }
+      vm.groupByAdminstrativeUnits = [];
+      vm.groupByClassifications = [];
+      vm.paramDto.groupByItems = [];
+
+      if (!vm.paramDto.provinceId || vm.paramDto.provinceId == null) {
+        vm.groupByAdminstrativeUnits = [];
+        vm.groupByAdminstrativeUnits.push("provinceId");
+        vm.groupByAdminstrativeUnits.push("provinceName");
+      }
+      if (vm.paramDto.provinceId != null) {
+        vm.groupByAdminstrativeUnits = [];
+        vm.groupByAdminstrativeUnits.push("districtId");
+        vm.groupByAdminstrativeUnits.push("districtName");
+      }
+      if (vm.paramDto.districtId != null) {
+        vm.groupByAdminstrativeUnits = [];
+        vm.groupByAdminstrativeUnits.push("wardId");
+        vm.groupByAdminstrativeUnits.push("wardName");
+      }
+      if (!vm.animalClass || vm.animalClass == null) {
+        vm.groupByClassifications = [];
+        vm.groupByClassifications.push("animalClass");
+      }
+      if (vm.animalClass && vm.animalClass != null) {
+        vm.groupByClassifications = [];
+        vm.groupByClassifications.push("ordo");
+      }
+      if (vm.ordo && vm.ordo != null) {
+        vm.groupByClassifications = [];
+        vm.groupByClassifications.push("family");
+      }
+      if (
+        (vm.family && vm.family != null) ||
+        (vm.animal && vm.animal != null)
+      ) {
+        vm.groupByClassifications = [];
+        vm.groupByClassifications.push("animalName");
+        vm.groupByClassifications.push("animalId");
+      }
+      if (
+        vm.groupByClassifications != null &&
+        vm.groupByClassifications.length > 0
+      ) {
+        vm.groupByClassifications.forEach((cf) => {
+          vm.paramDto.groupByItems.push(cf);
+        });
+      }
+      if (
+        vm.groupByAdminstrativeUnits != null &&
+        vm.groupByAdminstrativeUnits.length > 0
+      ) {
+        vm.groupByAdminstrativeUnits.forEach((au) => {
+          vm.paramDto.groupByItems.push(au);
+        });
+      }
+      if (vm.isShowToAnimal) {
+        vm.paramDto.showAnimalDetailsData=vm.isShowToAnimal;
+        vm.paramDto.groupByItems = [];
+        vm.paramDto.groupByItems = [
+          "provinceId",
+          "provinceName",
+          "animalName",
+          "animalId",
+          "family",
+          "ordo",
+          "animalClass",
+        ];
+        if (vm.paramDto && vm.paramDto.provinceId != null) {
+          vm.paramDto.groupByItems = [
+            "animalName",
+            "animalId",
+            "family",
+            "ordo",
+            "animalClass",
+          ];
+          vm.paramDto.groupByItems.push("districtId");
+          vm.paramDto.groupByItems.push("districtName");
+        }
+        if (vm.paramDto && vm.paramDto.districtId != null) {
+          vm.paramDto.groupByItems = [
+            "animalName",
+            "animalId",
+            "family",
+            "ordo",
+            "animalClass",
+          ];
+          vm.paramDto.groupByItems.push("wardId");
+          vm.paramDto.groupByItems.push("wardName");
+        }
+      }
+      vm.title = $translate.instant('report.wild_animal_farming_report_by_classification') + " ";
+      if (vm.wardsName != null) {
+        vm.title = vm.title + vm.wardsName + ", ";
+      } 
+      if (vm.districtName != null) {
+        vm.title = vm.title + vm.districtName + ", ";
+      } 
+      if (vm.provinceName != null) {
+        vm.title = vm.title + vm.provinceName + " ";
+      } 
+      if (vm.regionName != null) {
+        vm.title = vm.title + vm.regionName + " ";
+      }
+      vm.rows = [];
+      vm.rowsPivot = [
+        {
+          uniqueName: "year",
+          sort: "asc",
+          caption: $translate.instant("report.year"),
+        },
+      ];
+      vm.rows.push("year");
+      vm.paramDto.animalClass = vm.animalClass;
+      vm.paramDto.listAnimalClass = vm.listAnimalClassParam;
+      vm.paramDto.listAnimalOrdo = vm.listOrdoClassParam;
+      vm.paramDto.listAnimalFamily = vm.listFamilyClassParam;
+      vm.paramDto.ordo = vm.ordo;
+      vm.paramDto.family = vm.family;
+      
+      if (vm.listAnimals && vm.listAnimals.length > 0) {
+        vm.paramDto.listAnimalIds = [];
+        vm.listAnimals.forEach((animal) => {
+          vm.paramDto.listAnimalIds.push(animal.id);
+        });
+      } else {
+        vm.paramDto.listAnimalIds = [];
+      }
+
+      service
+        .wildAnimalFarmingReportByClassification1(vm.paramDto)
+        .then(function (data) {
+          vm.results = data;
+          console.log(data)
+          if (data == null || data == [] || data.length == 0) {
+            vm.isShow = false;
+          } else {
+            vm.isShow = true;
+          }
+          vm.columns = [
+            {
+              caption: "Lớp động vật",
+              uniqueName: "animalClass",
+              sort: "unsorted",
+            },
+            {
+              uniqueName: "Measures",
+            },
+          ];
+
+          vm.rows = [
+            {
+              caption: "Tỉnh/Thành phố",
+              uniqueName: "provinceName",
+            },
+           
+          ];
+
+          if (vm.paramDto != null && vm.paramDto.animalClass != null) {
+            vm.columns = [
+              {
+                caption: "Bộ động vật",
+                uniqueName: "ordo",
+                sort: "unsorted",
+              },
+            ];
+          }
+          if (vm.paramDto != null && vm.paramDto.ordo != null) {
+            vm.columns = [
+              {
+                caption: "Họ",
+                uniqueName: "family",
+                sort: "unsorted",
+              },
+            ];
+          }
+          if (
+            (vm.paramDto != null && vm.paramDto.family != null) ||
+            (vm.animal && vm.animal != null)
+          ) {
+            vm.columns = [
+              {
+                caption: "Loài nuôi",
+                uniqueName: "animalName",
+                sort: "unsorted",
+              },
+            ];
+          }
+
+          if (vm.provinceName != null || vm.paramDto.provinceId) {
+            vm.rows = [
+              {
+                caption: "Quận/Huyện",
+                uniqueName: "districtName",
+              },
+            ];
+          }
+          if (vm.regionName != null || vm.paramDto.districtId) {
+            vm.rows = [
+              {
+                caption: "Phường/Xã",
+                uniqueName: "wardName",
+              },
+            ];
+          }
+          if (vm.isShowToAnimal && vm.isShowToAnimal == true) {
+            vm.rows = [
+              {
+                caption: "Tỉnh/Thành phố",
+                uniqueName: "provinceName",
+              },
+            ];
+
+            if (vm.provinceName != null || vm.paramDto.provinceId) {
+              vm.rows = [
+                {
+                  caption: "Quận/Huyện",
+                  uniqueName: "districtName",
+                },
+              ];
+            }
+            if (vm.regionName != null || vm.paramDto.districtId) {
+              vm.rows = [
+                {
+                  caption: "Phường/Xã",
+                  uniqueName: "wardName",
+                },
+              ];
+            }
+
+            vm.columns = [
+              {
+                caption: "Tên loài",
+                uniqueName: "animalName",
+              },
+              {
+                uniqueName: "Measures",
+              },
+            ];
+            vm.grid = {
+              title:
+                "BC 06:Báo cáo tổng hợp nuôi động vật hoang dã theo đơn vị hành chính",
+                 
+              showTotals: "off",
+              showGrandTotals: "off",
+            };
+          }
+          //Pivot here
+          var pivot = new WebDataRocks({
+            container: "#wdr-component",
+            toolbar: true,
+            height: 530,
+            report: {
+              dataSource: {
+                data: vm.results,
+              },
+              slice: {
+                rows: vm.rows,
+                columns: vm.columns,
+                measures: [
+                  {
+                    caption: "Số cá thể",
+                    uniqueName: "total",
+                    aggregation: "sum",
+                  },
+                  {
+                    caption: "Số cơ sở",
+                    uniqueName: "numberOfFam",
+                    aggregation: "sum",
+                  },
+                ],
+              },
+              options: {
+                grid: {
+                  title:
+                    //"Báo cáo tổng hợp nuôi động vật hoang dã theo phân loại",
+                    vm.title,
+                  showTotals: "off",
+                  "showGrandTotals": "off",
+                },
+              },
+              localization: "assets/scripts/pivot/vi.json",
+            },
+            reportcomplete: function () {
+              pivot.off("reportcomplete");
+              // createChart();
+            },
+            global: {
+              // replace this path with the path to your own translated file
+              localization: "assets/scripts/pivot/vi.json",
+            },
+          });
+          //createChart
+          function createChart() {
+            pivot.highcharts.getData(
+              {
+                //type: "column"	// hien thi bieu do theo dang cot
+                //Tran huu dat start
+                type: "line", //hien thi bieu do theo dang line
+                //Tran huu dat start
+              },
+              function (data) {
+                data.chart.options3d = {
+                  enabled: true,
+                  alpha: 0,
+                  beta: 0,
+                  depth: 20,
+                  viewDistance: 10,
+                };
+                if (
+                  data != null &&
+                  data.series != null &&
+                  data.series.length <= 3
+                ) {
+                  data.colors = ["#009800", "#ff9800", "#95CEFF"];
+                }
+
+                data.plotOptions = {};
+                data.plotOptions.pie = {};
+                data.plotOptions.pie.colors = ["blue", "red", "#FF0000"];
+                data.plotOptions.series = {};
+                data.plotOptions.series.pointWidth = 40; //độ rộng của biểu đồ
+                data.title.text =
+                  $translate.instant("report.reportAnimalByCites") + " ";
+
+                if (vm.wardsName != null) {
+                  data.title.text = data.title.text + vm.wardsName + " ";
+                } else if (vm.districtName != null) {
+                  data.title.text = data.title.text + vm.districtName + " ";
+                } else if (vm.provinceName != null) {
+                  data.title.text = data.title.text + vm.provinceName + " ";
+                } else if (vm.regionName != null) {
+                  data.title.text = data.title.text + vm.regionName + " ";
+                }
+                data.xAxis.title.text = ""; //bỏ title trục ngang
+                data.yAxis[0].title.text = ""; //bỏ title trục dọc
+                Highcharts.chart("highchartsContainer", data);
+              },
+              function (data) {
+                data.chart.options3d = {
+                  enabled: true,
+                  alpha: 0,
+                  beta: 0,
+                  depth: 20,
+                  viewDistance: 10,
+                };
+                if (
+                  data != null &&
+                  data.series != null &&
+                  data.series.length <= 3
+                ) {
+                  data.colors = ["#009800", "#ff9800", "#95CEFF"];
+                }
+                data.plotOptions = {};
+                data.plotOptions.pie = {};
+                data.plotOptions.pie.colors = ["blue", "red", "#FF0000"];
+                data.plotOptions.series = {};
+                data.plotOptions.series.pointWidth = 40; //độ rộng của biểu đồ
+                data.title.text =
+                  $translate.instant(
+                    "report.reportNumberAnimalsAndNumberFarmsAccordingToTheRedBook"
+                  ) + " ";
+                if (vm.wardsName != null) {
+                  data.title.text = data.title.text + vm.wardsName + " ";
+                } else if (vm.districtName != null) {
+                  data.title.text = data.title.text + vm.districtName + " ";
+                } else if (vm.provinceName != null) {
+                  data.title.text = data.title.text + vm.provinceName + " ";
+                } else if (vm.regionName != null) {
+                  data.title.text = data.title.text + vm.regionName + " ";
+                }
+                data.xAxis.title.text = ""; //bỏ title trục ngang
+                data.yAxis[0].title.text = ""; //bỏ title trục dọc
+                Highcharts.chart("highchartsContainer", data);
+              }
+            );
+          }
+        });
+    };
+    vm.onFmsRegionSelected = function (region) {
+      if (region != null && region.id != null) {
+        vm.regionName = region.name;
+        auService.getAllCityByRegion(region.id).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_City = data;
+            vm.selectedCity = null;
+            vm.selectedDist = null;
+            vm.selectWards = null;
+            vm.paramDto.provinceId = null;
+            vm.paramDto.districtId = null;
+            vm.paramDto.wardId = null;
+            vm.provinceName = null;
+            vm.districtName = null;
+            vm.wardsName = null;
+          } else {
+            vm.paramDto.provinceId = null;
+            vm.paramDto.districtId = null;
+            vm.paramDto.wardId = null;
+            vm.selectedCity = null;
+            vm.selectedDist = null;
+            vm.selectWards = null;
+            vm.adminstrativeUnits_City = [];
+            vm.adminstrativeUnits_Dist = [];
+            vm.adminstrativeUnits_Wards = [];
+            vm.provinceName = null;
+            vm.districtName = null;
+            vm.wardsName = null;
+          }
+        });
+      } else {
+        vm.paramDto.provinceId = null;
+        vm.paramDto.districtId = null;
+        vm.paramDto.wardId = null;
+        vm.selectedCity = null;
+        vm.selectedDist = null;
+        vm.selectWards = null;
+        vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_Dist = [];
+        vm.adminstrativeUnits_Wards = [];
+        vm.regionName = null;
+        vm.provinceName = null;
+        vm.districtName = null;
+        vm.wardsName = null;
+      }
+    };
+
+    vm.onFmsadminstrativeUnitCitySelected = function (city) {
+      vm.selectedCity = city;
+
+      //clear data combobox
+      vm.paramDto.districtId = null;
+      vm.paramDto.wardId = null;
+      vm.selectedDist = null;
+      vm.selectWards = null;
+      vm.adminstrativeUnits_Dist = [];
+      vm.adminstrativeUnits_Wards = [];
+      vm.districtName = null;
+      vm.wardsName = null;
+      vm.provinceName = null;
+      // ./end clear data combobox
+
+      if (city != null && city.id != null) {
+        vm.provinceName = city.name;
+
+        auService
+          .getChildrenByParentId(vm.paramDto.provinceId)
+          .then(function (data) {
+            if (data != null && data.length > 0) {
+              vm.adminstrativeUnits_Dist = data;
+            }
+          });
+      }
+    };
+
+    vm.onFmsadminstrativeUnitDistSelected = function (dist) {
+      vm.paramDto.wardId = null;
+      //clear data combobox
+      vm.paramDto.wardId = null;
+      vm.selectWards = null;
+      vm.adminstrativeUnits_Wards = [];
+      vm.wardsName = null;
+      vm.districtName = null;
+      // ./end clear data combobox
+
+      if (dist != null && dist.id != null) {
+        vm.districtName = dist.name;
+
+        auService
+          .getChildrenByParentId(vm.paramDto.districtId)
+          .then(function (data) {
+            if (data != null && data.length > 0) {
+              vm.adminstrativeUnits_Wards = data;
+            }
+          });
+      }
+    };
+
+    vm.onFmsadminstrativeUnitWardsSelected = function (item) {
+      if (item != null) {
+        vm.wardsName = item.name;
+      } else {
+        vm.wardsName = null;
+      }
+    };
+
+    vm.showCalcaulation = function () {
+      vm.modal = modal.open({
+        animation: true,
+        templateUrl: "calculation.html",
+        scope: $scope,
+        backdrop: "static",
+        keyboard: false,
+        size: "md",
+      });
+    };
+  }
+})();

@@ -1,0 +1,152 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 class="modal-title"><i class="icon-plus"></i> Chi tiết</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 margin-top-10">
+                <label class="bold"><strong style="color:red">*</strong>{{'importAnimal.CSCN' | translate}}</label>
+                <input readonly data-ng-model="vm.animalReportData.farm.name"
+                    placeholder="{{'exportAnimal.searchFarm' | translate}}" type="text" class="form-control glb-disabled"
+                    title="vm.code" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold"><strong
+                        style="color:red">*</strong>{{"importAnimal.parentAnimal" | translate}}:</label>
+                <ui-select ng-model="vm.animalReportData.animal" sortable="true" close-on-select="true" class="glb-disabled"
+                    aria-multiselectable="true" on-select="vm.onSelectedAnimal($item)" on-remove="vm.onRemovedAnimal()">
+                    <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="animal  in vm.animals | propsFilter: {name: $select.search, code: $select.search}">
+                        <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Năm của kỳ báo cáo</label>
+                <ui-select ng-model="vm.animalReportData.year" sortable="true" class="glb-disabled" close-on-select="true" on-select="">
+                    <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="year.value as year in vm.years | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="year.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Thuộc loại</label>
+                <ui-select ng-model="vm.animalReportData.type" sortable="true" class="glb-disabled" close-on-select="true" on-select="">
+                    <ui-select-match allow-clear="true" placeholder="Chọn loại...">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="type.value as type in settings.AnimalReportDataType | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="type.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'animalReportData.numberMale'|translate}}</label>
+                <input data-ng-model="vm.animalReportData.male" type="text" class="form-control glb-disabled" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'animalReportData.numberFemale'|translate}}</label>
+                <input data-ng-model="vm.animalReportData.female" type="text" class="form-control glb-disabled" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'animalReportData.numberUnGender'|translate}}</label>
+                <input data-ng-model="vm.animalReportData.unGender" type="text" class="form-control glb-disabled" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'original.information' | translate}}</label>
+                <ui-select ng-model="vm.animalReportData.original" sortable="true" class="glb-disabled" close-on-select="true" on-select="">
+                    <ui-select-match allow-clear="true" placeholder="{{'original.chooseOriginal' | translate}}">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="original in vm.originals | propsFilter: {name: $select.search, code: $select.search}">
+                        <div class="bold" ng-bind-html="original.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'report.productTarget' | translate}}</label>
+                <ui-select ng-model="vm.animalReportData.productTarget" class="glb-disabled" sortable="true" close-on-select="true"
+                    on-select="">
+                    <ui-select-match allow-clear="true" placeholder="{{'product.chooseProduct' | translate}}">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="productTarget in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                        <div class="bold" ng-bind-html="productTarget.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-12">
+                <div class="portlet-body">
+                    <div class="row margin-top-10">
+                        <div class="portlet-header">
+                            <h3>{{"importAnimal.addIndividual"|translate}}</h3>
+                        </div>
+                        <div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered" margin-left-10>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">STT</th>
+                                            <!-- <th class="text-center"> {{'importAnimal.individualName'|translate}} </th> -->
+                                            <th class="text-center"> {{'importAnimal.individualCode'|translate}} </th>
+                                            <th class="text-center"> {{'importAnimal.individualStatus'|translate}} </th>
+                                            <th class="text-center">{{'importAnimal.individualGender'|translate}}</th>
+                                            <th class="text-center">{{'importAnimal.birthDate'|translate}} </th>
+                                            <th class="text-center">{{'importAnimal.dayOld'|translate}} </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-if="!(vm.individuals.length > 0)">
+                                            <td colspan="7">
+                                                <p class="text-primary text-center font-weight-bold bg-secondary">
+                                                    {{"importAnimal.noData" | translate}}</p>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="vm.individuals.length > 0"
+                                            ng-repeat="individual in vm.individuals track by $index">
+                                            <td class="text-center">{{$index+1}}</td>
+                                            <!-- <td class="text-center">{{$index+1}}</td> -->
+                                            <!-- <td class="text-center">{{individual.name}}</td> -->
+                                            <td class="text-center">{{individual.code}}</td>
+                                            <td class="text-center">{{vm.getAnimalStatus(individual.status)}}</td>
+                                            <td class="text-center">{{vm.getAnimalGender(individual.gender)}}</td>
+                                            <td class="text-center">{{individual.birthDate|date: 'dd/MM/yyyy'}}</td>
+                                            <td class="text-center">{{individual.dayOld}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i
+                class="icon-close"></i> Đóng</button>
+    </div>
+</div>
+
+<script type="text/ng-template" id="choose_farm_modal.html">
+    <div modal-movable>
+		<div ng-include="'animal_report_data/views/childs/choose_farm_modal.html'"></div>
+	</div>
+</script>
+<script type="text/ng-template" id="individual_detail.html">
+    <div modal-movable ng-include="'animal_report_data/views/childs/individual_detail.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="confirm_delete_individual.html">
+    <div modal-movable ng-include="'animal_report_data/views/childs/confirm_delete_individual.html?v={{version}}'"></div>
+</script>

@@ -1,0 +1,45 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.productTarget.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'product.create' | translate}}</h4>
+        <h4 ng-if="vm.productTarget.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'product.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'productTarget.code' | translate}}</label>
+                <input ng-if="vm.productTarget.isNew == true" data-ng-model="vm.productTarget.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.productTarget.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			<div class="col-md-1 margin-top-10">
+				<button ng-if="vm.productTarget.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				<button ng-if="vm.productTarget.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			</div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'productTarget.name' | translate}}</label>
+                <input data-ng-model="vm.productTarget.name" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'product.description' | translate}}</label>
+                <input data-ng-model="vm.productTarget.description" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'product.productTargetParent' | translate}}</label>
+                <ui-select ng-model="vm.productTarget.parent" sortable="true" close-on-select="true" on-select="" on-remove="">
+                    <ui-select-match allow-clear="true" placeholder="{{'product.selectParent' | translate}}...">
+                        {{$select.selected.name}} 
+                    </ui-select-match>
+                    <ui-select-choices repeat="productTarget in vm.productTargetsIsParentNull | propsFilter: {name: $select.search, code: $select.search}">
+                        <div class="bold" ng-bind-html="productTarget.name | highlight: $select.search">
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'product.cancel' | translate}}</button>
+        <!--<button type="button" ng-click="vm.saveProductTarget()" class="btn btn-primary"><i class="icon-check"></i> {{'product.save' | translate}}</button>-->
+		<button ng-if="vm.productTarget.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'product.save' | translate}}</button>
+		<button ng-if="vm.productTarget.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'product.save' | translate}}</button>
+    </div>

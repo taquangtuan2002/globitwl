@@ -1,0 +1,49 @@
+.login{background-color:#364150!important}.login .logo{margin:60px auto 0;padding:0 15px;text-align:center}.login .content{background-color:#fff;-webkit-border-radius:7px;-moz-border-radius:7px;-ms-border-radius:7px;-o-border-radius:7px;border-radius:7px;width:400px;margin:40px auto 10px;padding:10px 30px 30px;overflow:hidden;position:relative}
+
+.login .content h3{
+	color: #4d525b !important;
+    text-align: left;
+    font-size: 24px;
+    font-weight: 500 !important;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 9px !important;
+    font-family: sans-serif;
+}
+
+.login .content h4{color:#555}.login .content .hint{color:#999;padding:0;margin:15px 0 7px}
+.login .content .forget-form,.login .content .login-form{padding:0;margin:0}
+.login .content .form-control{
+	background-color: #fff;
+    height: 45px;
+    color: #bec0c2;
+    border: 1px solid #bec0c2;
+    border-radius: 4px;
+}
+.login .content .form-control:active,.login .content .form-control:focus{border:1px solid #2698f1}
+
+.login .content .form-control::-moz-placeholder{color:#8290a3;opacity:1}.login .content .form-control:-ms-input-placeholder{color:#8290a3}.login .content .form-control::-webkit-input-placeholder{color:#8290a3}.login .content select.form-control{padding-left:9px;padding-right:9px}.login .content .forget-form,.login .content .register-form{display:none}.login .content .form-title{font-weight:300;margin-bottom:25px}
+
+.login .content .form-actions{clear:both;border:0;border-bottom:1px solid #eee;padding:0px 0px 30px 0px;}
+
+.login .content .form-actions>.btn{margin-top:-2px}.login-options{margin-top:30px;margin-bottom:30px;overflow:hidden}.login-options h4{float:left;font-weight:600;font-size:15px;color:#7d91aa!important}.login-options .social-icons{float:right;padding-top:3px}.login-options .social-icons li a{border-radius:15px!important;-moz-border-radius:15px!important;-webkit-border-radius:15px!important}.login .content .form-actions .checkbox{margin-left:0;padding-left:0}.login .content .forget-form .form-actions{border:0;margin-bottom:0;padding-bottom:20px}.login .content .register-form .form-actions{border:0;margin-bottom:0;padding-bottom:0}.login .content .form-actions .btn{margin-top:1px;font-weight:600;padding:10px 20px!important}.login .content .form-actions .btn-default{font-weight:600;padding:10px 25px!important;color:#6c7a8d;background-color:#fff;border:none}.login .content .form-actions .btn-default:hover{background-color:#fafaff;color:#45b6af}.login .content .forget-password{font-size:14px;float:right;display:inline-block;margin-top:10px}.login .content .check{color:#8290a3}.login .content .rememberme{margin-left:8px}
+.login .content .create-account{padding:7px 0 17px;text-align:left;-webkit-border-radius:0 0 7px 7px;-moz-border-radius:0 0 7px 7px;-ms-border-radius:0 0 7px 7px;-o-border-radius:0 0 7px 7px;border-radius:0 0 7px 7px}
+.login .content .form-actions button {
+	background: -webkit-linear-gradient(top,#13f08a 0,#0f9b27 100%);
+    background: linear-gradient(to bottom,#13f08a 0,#0f9b27 100%);
+    border: 1px solid #0ef39f;
+    color: #F7F7F7;
+    font-size: 18px !important;
+    font-weight: 500;
+    text-shadow: 0 -1px transparent;
+    display: block;
+    width: 100%;
+}
+
+.login .content .form-actions button:hover {
+	background: #0fb61c !important;
+}
+.login-footer {
+	width: 320px;
+    margin: 10px auto;
+}
+.login .content .create-account>p{margin:0}.login .content .create-account p a{font-weight:600;font-size:14px;color:#c3cedd}.login .content .create-account a{display:inline-block;margin-top:5px}.login .copyright{text-align:center;margin:0 auto 30px 0;padding:10px;color:#7a8ca5;font-size:13px}@media (max-width:440px){.login .content,.login .logo{margin-top:10px}.login .content{width:90%}.login .content .logo img {max-width: 100%;}.login .content h3{font-size:22px}.forget-password{display:inline-block;margin-top:20px}.login-options .social-icons{float:left;padding-top:3px}.login .checkbox{font-size:13px}}

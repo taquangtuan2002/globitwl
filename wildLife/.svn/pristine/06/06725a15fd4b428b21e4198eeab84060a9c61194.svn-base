@@ -1,0 +1,132 @@
+/**
+ * Created by bizic on 30/8/2016.
+ */
+(function () {
+    'use strict';
+    angular.module('Education.Dashboard').service('DashboardService', DashboardService);
+    DashboardService.$inject = [
+        '$http',
+        '$q',
+        'settings',
+        'Utilities',
+        '$translate'
+    ];
+
+    function DashboardService($http, $q, settings, utils, $translate) {
+        var self = this;
+        var baseUrl = settings.api.baseUrl + settings.api.apiPrefix;
+
+        self.getCurrentUser = getCurrentUser;
+        self.getCites = getCites;
+        self.getFarm = getFarm;
+        self.getFarmProvidedCodeInYearNumber = getFarmProvidedCodeInYearNumber;
+        // self.getTotalCites = getTotalCites;
+        self.getVolatility = getVolatility;
+        self.getCitesVN = getCitesVN;
+        // self.getTotalGroverment = getTotalGroverment;
+        //
+        self.getTotalDashboard=getTotalDashboard;
+
+        function getCites(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getCites/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getFarm(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getFarm/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getFarmProvidedCodeInYearNumber(dto){
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getFarmProvidedCodeInYearNumber/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        // function getNumberGovermentDecree() {
+        //     var url = baseUrl + 'dashboard/getNumberGovermentDecree' ;
+        //     return utils.resolveAlt(url, 'POST', angular.noop, angular.noop)
+        // }
+
+        // function getNumberGovermentDecree(dto) {
+        //     if (dto != null) {
+        //         var url = baseUrl + 'dashboard/getNumberGovermentDecree/' ;
+        //         return utils.resolveAlt(url, 'POST', null, dto, {
+        //             'Content-Type': 'application/json; charset=utf-8'
+        //         }, angular.noop, angular.noop);
+
+        //     }
+        // }
+        
+        // function getTotalCites(dto) {
+        //     if (dto != null) {
+        //         var url = baseUrl + 'dashboard/getTotalCites' ;
+        //         return utils.resolveAlt(url, 'POST', null, dto, {
+        //             'Content-Type': 'application/json; charset=utf-8'
+        //         }, angular.noop, angular.noop);
+
+        //     }
+        // }
+
+        // function getTotalGroverment(dto) {
+        //     if (dto != null) {
+        //         var url = baseUrl + 'dashboard/getTotalGroverment/';
+        //         return utils.resolveAlt(url, 'POST', null, dto, {
+        //             'Content-Type': 'application/json; charset=utf-8'
+        //         }, angular.noop, angular.noop);
+
+        //     }
+        // }
+
+        function getTotalDashboard(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getDataDashboard' ;
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+            }
+        }
+
+        function getVolatility(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getVolatility/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getCitesVN(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getCitesVN/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getCurrentUser() {
+            var url = Url + 'users/getCurrentUser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+
+        
+    }
+})();

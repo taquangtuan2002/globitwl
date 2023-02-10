@@ -1,0 +1,573 @@
+package com.globits.wl.service.impl;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Query;
+
+import com.globits.wl.domain.*;
+import com.globits.wl.repository.*;
+import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.globits.core.service.impl.GenericServiceImpl;
+import com.globits.core.utils.SecurityUtils;
+import com.globits.security.domain.User;
+import com.globits.wl.dto.AnimalCertificateDetailDto;
+import com.globits.wl.dto.AnimalCertificateDto;
+import com.globits.wl.dto.FmsAdministrativeUnitDto;
+import com.globits.wl.dto.ForestProductsListDetailDto;
+import com.globits.wl.dto.ForestProductsListDto;
+import com.globits.wl.dto.ReportPeriodDto;
+import com.globits.wl.dto.functiondto.AnimalReportDataSearchDto;
+import com.globits.wl.dto.functiondto.SearchDto;
+import com.globits.wl.dto.functiondto.SearchReportPeriodDto;
+import com.globits.wl.service.AnimalCertificateService;
+import com.globits.wl.service.UserAdministrativeUnitService;
+import com.globits.wl.utils.WLConstant;
+
+@Service
+public class AnimalCertificateServiceImpl extends GenericServiceImpl<AnimalCertificate, Long> implements AnimalCertificateService {
+	@Autowired
+	private AnimalCertificateRepository AnimalCertificateRepository;
+	
+	@Autowired
+	private FarmRepository farmRepository;
+	
+	@Autowired
+	private AnimalCertificateDetailRepository AnimalCertificateDetailRepository;
+	
+	@Autowired
+	private AnimalRepository animalRepository;
+	@Autowired
+	private ReportForm16Repository reportForm16Repository;
+	
+	@Autowired
+	private UserAdministrativeUnitService userAdministrativeUnitService;
+	
+	@Autowired
+	private FmsAdministrativeUnitRepository fmsAdministrativeUnitRepository;
+
+	@Autowired
+	private AdministrativeOrganizationRepository administrativeOrganizationRepository;
+	
+	@Override
+	public Page<AnimalCertificateDto> getPageDto(int pageIndex, int pageSize) {
+		Pageable pageable = new PageRequest(pageIndex - 1, pageSize);
+		return this.AnimalCertificateRepository.getPageDto(pageable);
+	}
+
+	@Override
+	public List<AnimalCertificateDto> getAllDto() {
+		return AnimalCertificateRepository.getAllDto();
+	}
+
+	@Override
+	public AnimalCertificateDto getAnimalCertificateById(Long id) {
+		if (id != null) {
+			AnimalCertificate AnimalCertificate = null;
+			AnimalCertificate = this.AnimalCertificateRepository.findOne(id);
+			if (AnimalCertificate != null) {
+				return new AnimalCertificateDto(AnimalCertificate);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public AnimalCertificateDto deleteById(Long id) {
+		if (id != null) {
+			AnimalCertificateDto AnimalCertificateDto = null;
+			AnimalCertificate AnimalCertificate = new AnimalCertificate();
+			AnimalCertificate = this.AnimalCertificateRepository.findOne(id);
+			if (AnimalCertificate != null) {
+				AnimalCertificateDto = new AnimalCertificateDto(AnimalCertificate);
+				this.AnimalCertificateRepository.delete(id);
+				return AnimalCertificateDto;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean deleteByIds(List<Long> ids) {
+		if (ids != null && ids.size() > 0) {
+			for (Long id : ids) {
+				this.AnimalCertificateRepository.delete(id);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public AnimalCertificateDto createOrUpdateAnimalCertificate(Long id,AnimalCertificateDto dto) {
+		if (dto != null) {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			User modifiedUser = null;
+			LocalDateTime currentDate = LocalDateTime.now();
+			String currentUserName = "Unknown User";
+			if (authentication != null) {
+				modifiedUser = (User) authentication.getPrincipal();
+				currentUserName = modifiedUser.getUsername();
+			}
+			Boolean isNew = true;
+			AnimalCertificate animalCertificate = null;
+			if (dto.getId() != null) {
+				isNew = false;
+				animalCertificate = this.AnimalCertificateRepository.findOne(dto.getId());
+			}
+			if (animalCertificate == null) {
+				animalCertificate = new AnimalCertificate();
+				animalCertificate.setCreateDate(currentDate);
+				animalCertificate.setCreatedBy(currentUserName);
+			}else {
+				if (!animalCertificate.getCreatedBy().equals(currentUserName)) {
+					return null;
+				}
+				animalCertificate.setModifiedBy(currentUserName);
+				animalCertificate.setModifyDate(currentDate);
+			}
+			if (dto.getId() != null) {
+				animalCertificate.setId(dto.getId());
+			}
+			if (dto.getCode() != null) {
+				animalCertificate.setCode(dto.getCode());
+			}
+			if (dto.getName() != null) {
+				animalCertificate.setName(dto.getName());
+			}
+			if (dto.getOrganizationProvinceName() != null) {
+				animalCertificate.setOrganizationProvinceName(dto.getOrganizationProvinceName());
+			}
+			if (dto.getOrganizationName() != null) {
+				animalCertificate.setOrganizationName(dto.getOrganizationName());
+			}
+//			if (dto.getDateIssue() != null) {
+//				animalCertificate.setDateIssue(dto.getDateIssue());
+//			}
+			if (dto.getProvinceName() != null) {
+				animalCertificate.setProvinceName(dto.getProvinceName());
+			}
+			if (dto.getSignerName() != null) {
+				animalCertificate.setSignerName(dto.getSignerName());
+			}
+//			if (dto.getSignerNameDeputy() != null) {
+//				animalCertificate.setSignerNameDeputy(dto.getSignerNameDeputy());
+//			}
+			if (dto.getContentProvided() != null) {
+				animalCertificate.setContentProvided(dto.getContentProvided());
+			}
+			if(dto.getRecipientFirst() != null) {
+				animalCertificate.setRecipientFirst(dto.getRecipientFirst());
+			}
+			if(dto.getRecipientSecond() != null) {
+				animalCertificate.setRecipientSecond(dto.getRecipientSecond());
+			}
+			if(dto.getRecipientThird() != null) {
+				animalCertificate.setRecipientThird(dto.getRecipientThird());
+			}
+			if(dto.getRecipientFourth() != null) {
+				animalCertificate.setRecipientFourth(dto.getRecipientFourth());
+			}
+			if(dto.getTypeSigner() != null) {
+				animalCertificate.setTypeSigner(dto.getTypeSigner());
+			}
+			Farm farm = null;
+			if(isNew) {
+				if (dto.getFarm() != null && dto.getFarm().getId() != null) {
+					farm = farmRepository.getById(dto.getFarm().getId());
+					animalCertificate.setFarm(farm);
+				}
+			}else {
+				farm = animalCertificate.getFarm();
+			}
+			if (dto.getAdministrativeOrganization() != null && dto.getAdministrativeOrganization().getId() != null){
+				AdministrativeOrganization administrativeOrganization = administrativeOrganizationRepository.findOne(dto.getAdministrativeOrganization().getId());
+				if(administrativeOrganization != null){
+					animalCertificate.setAdministrativeOrganization(administrativeOrganization);
+				}
+			}
+			// Du lieu Farm giay Chung nhan trai nuoi => luu nguoc lai farm
+			if(dto.getIsCheckFarm() == true) {
+//				if(dto.getFarm().getAdministrativeUnit() != null) {
+//					FmsAdministrativeUnitDto auDto = dto.getFarm().getAdministrativeUnit();
+//					FmsAdministrativeUnit au = null;
+//					if(auDto.getId() != null) {
+//						au = this.fmsAdministrativeUnitRepository.findOne(auDto.getId());
+//						if(au != null) {
+//							animalCertificate.getFarm().setAdministrativeUnit(au);
+//						} else if(auDto.getCode() != null) {
+//							List<FmsAdministrativeUnit> list = fmsAdministrativeUnitRepository.findListByCode(auDto.getCode());
+//							if(list!=null && list.size() > 0) {
+//								au = list.get(0);
+//								animalCertificate.getFarm().setAdministrativeUnit(au);
+//							}
+//						}
+//					}
+//				}
+				if(dto.getFarm().getVillage() != null) {
+					animalCertificate.getFarm().setVillage(dto.getFarm().getVillage()); // thôn
+				}
+				if(dto.getFarm().getFoundingDate() != null) {
+					animalCertificate.getFarm().setFoundingDate(dto.getFarm().getFoundingDate()); // ngày thành lập
+				}
+				if(dto.getFarm().getDateRegistration() != null) {
+					animalCertificate.getFarm().setDateRegistration(dto.getFarm().getDateRegistration()); // ngày cấp mã số
+				}
+			}			
+			Set<AnimalCertificateDetail> details = new HashSet<AnimalCertificateDetail>();
+			if(dto.getDetails()!=null && dto.getDetails().size() > 0) {
+				for (AnimalCertificateDetailDto cerDetailDto : dto.getDetails()) {
+					if(cerDetailDto != null) {
+						AnimalCertificateDetail animalCertificateDetail = null;
+						if (cerDetailDto.getId() != null) {
+							animalCertificateDetail = AnimalCertificateDetailRepository.getOne(cerDetailDto.getId());
+						}
+						if (animalCertificateDetail == null) {
+							animalCertificateDetail = new AnimalCertificateDetail();
+							animalCertificateDetail.setCreateDate(currentDate);
+							animalCertificateDetail.setCreatedBy(currentUserName);
+						} else {
+							animalCertificateDetail.setModifiedBy(currentUserName);
+							animalCertificateDetail.setModifyDate(currentDate);
+						}
+						animalCertificateDetail.setAnimalCertificate(animalCertificate);
+						Animal animal = animalRepository.findOne(cerDetailDto.getAnimal().getId());
+						if (cerDetailDto.getAnimal() != null && cerDetailDto.getAnimal().getId() != null) {
+							animal = animalRepository.findOne(cerDetailDto.getAnimal().getId());
+						}
+						animalCertificateDetail.setAnimal(animal);
+						animalCertificateDetail.setQuantity(cerDetailDto.getQuantity());
+						animalCertificateDetail.setAmount(cerDetailDto.getAmount());
+						animalCertificateDetail.setNote(cerDetailDto.getNote());
+						animalCertificateDetail.setMarkSpecification(cerDetailDto.getMarkSpecification());
+						animalCertificateDetail.setOriginal(cerDetailDto.getOriginal());
+						animalCertificateDetail.setTotal(cerDetailDto.getTotal());
+						animalCertificateDetail.setMale(cerDetailDto.getMale());
+						animalCertificateDetail.setFemale(cerDetailDto.getFemale());
+						animalCertificateDetail.setUnGender(cerDetailDto.getUnGender());
+						animalCertificateDetail.setUnit(cerDetailDto.getUnit());
+						animalCertificateDetail.setMaleParent(cerDetailDto.getMaleParent());
+						animalCertificateDetail.setFemaleParent(cerDetailDto.getFemaleParent());
+						animalCertificateDetail.setUnGenderParent(cerDetailDto.getUnGenderParent());
+						
+						animalCertificateDetail.setMaleGilts(cerDetailDto.getMaleGilts());
+						animalCertificateDetail.setFemaleGilts(cerDetailDto.getFemaleGilts());
+						animalCertificateDetail.setUnGenderGilts(cerDetailDto.getUnGenderGilts());
+						
+						animalCertificateDetail.setMaleChildUnder1YearOld(cerDetailDto.getMaleChildUnder1YearOld());
+						animalCertificateDetail.setFemaleChildUnder1YearOld(cerDetailDto.getFemaleChildUnder1YearOld());
+						animalCertificateDetail.setChildUnder1YearOld(cerDetailDto.getChildUnder1YearOld());
+						
+						animalCertificateDetail.setMaleChildOver1YearOld(cerDetailDto.getMaleChildOver1YearOld());
+						animalCertificateDetail.setFemaleChildOver1YearOld(cerDetailDto.getFemaleChildOver1YearOld());
+						animalCertificateDetail.setUnGenderChildOver1YearOld(cerDetailDto.getUnGenderChildOver1YearOld());
+						
+					
+						details.add(animalCertificateDetail);
+					}
+				}
+			}
+			
+//			if(dto.getAnimalCertificateDetailDto() != null) {
+//				AnimalCertificateDetail animalCertificateDetail = null;
+//				if(dto.getAnimalCertificateDetailDto().getId() != null) {
+//					animalCertificateDetail = AnimalCertificateDetailRepository.getOne(dto.getAnimalCertificateDetailDto().getId());
+//				}
+//				if(animalCertificateDetail == null) {
+//					animalCertificateDetail = new AnimalCertificateDetail();
+//					animalCertificateDetail.setCreateDate(currentDate);
+//					animalCertificateDetail.setCreatedBy(currentUserName);
+//				} else {
+//					animalCertificateDetail.setModifiedBy(currentUserName);
+//					animalCertificateDetail.setModifyDate(currentDate);
+//				}
+//				animalCertificateDetail.setAnimalCertificate(animalCertificate);
+//				Animal animal = animalRepository.findOne(dto.getAnimalCertificateDetailDto().getAnimal().getId());
+//				if (dto.getAnimalCertificateDetailDto().getAnimal() != null && dto.getAnimalCertificateDetailDto().getAnimal().getId() != null) {
+//					animal = animalRepository.findOne(dto.getAnimalCertificateDetailDto().getAnimal().getId());
+//				}
+//				animalCertificateDetail.setAnimal(animal);
+//				animalCertificateDetail.setQuantity(dto.getAnimalCertificateDetailDto().getQuantity());
+//				animalCertificateDetail.setAmount(dto.getAnimalCertificateDetailDto().getAmount());
+//				animalCertificateDetail.setNote(dto.getAnimalCertificateDetailDto().getNote());
+//				animalCertificateDetail.setMarkSpecification(dto.getAnimalCertificateDetailDto().getMarkSpecification());
+//				animalCertificateDetail.setOriginal(dto.getAnimalCertificateDetailDto().getOriginal());
+//				animalCertificateDetail.setTotal(dto.getAnimalCertificateDetailDto().getTotal());
+//				animalCertificateDetail.setMale(dto.getAnimalCertificateDetailDto().getMale());
+//				animalCertificateDetail.setFemale(dto.getAnimalCertificateDetailDto().getFemale());
+//				animalCertificateDetail.setUnGender(dto.getAnimalCertificateDetailDto().getUnGender());
+//				animalCertificateDetail.setUnit(dto.getAnimalCertificateDetailDto().getUnit());
+//				
+//				details.add(animalCertificateDetail);
+//			}
+			
+			
+			if (animalCertificate.getDetails() == null) {
+				animalCertificate.setDetails(details);
+			} else {
+				animalCertificate.getDetails().clear();
+				animalCertificate.getDetails().addAll(details);
+			}
+
+			animalCertificate = AnimalCertificateRepository.save(animalCertificate);
+			AnimalCertificateDto AnimalCertificateDto= new AnimalCertificateDto(animalCertificate);
+		
+			return AnimalCertificateDto;
+		}
+		return null;
+	}
+
+//	@Override
+//	public AnimalCertificateDto updateAnimalCertificate(Long id, AnimalCertificateDto dto) {
+//		if (dto != null) {
+//			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//			User modifiedUser = null;
+//			LocalDateTime currentDate = LocalDateTime.now();
+//			String currentUserName = "Unknown User";
+//			if (authentication != null) {
+//				modifiedUser = (User) authentication.getPrincipal();
+//				currentUserName = modifiedUser.getUsername();
+//			}
+//
+//			AnimalCertificate AnimalCertificate = null;
+//			if (id != null) {
+//				AnimalCertificate = this.AnimalCertificateRepository.findOne(id);
+//			} else if (dto.getId() != null) {
+//				AnimalCertificate = this.AnimalCertificateRepository.findOne(dto.getId());
+//			}
+//
+//			if (AnimalCertificate == null) {
+//				AnimalCertificate = new AnimalCertificate();
+//				AnimalCertificate.setCreateDate(currentDate);
+//				AnimalCertificate.setCreatedBy(currentUserName);
+//			}
+//			if (dto.getCode() != null) {
+//				AnimalCertificate.setCode(dto.getCode());
+//			}
+//			if (dto.getName() != null) {
+//				AnimalCertificate.setName(dto.getName());
+//			}
+//			
+//
+//			AnimalCertificate AnimalCertificate2 = this.AnimalCertificateRepository.save(AnimalCertificate);
+//
+//			dto.setId(AnimalCertificate2.getId());
+//
+//			return dto;
+//		}
+//		return null;
+//	}
+
+	@Override
+	public Page<AnimalCertificateDto> searchAnimalCertificateDto(SearchDto searchDto, int pageIndex, int pageSize) {
+
+		if (pageIndex > 0)
+			pageIndex = pageIndex - 1;
+		else
+			pageIndex = 0;
+		Pageable pageable = new PageRequest(pageIndex, pageSize);
+
+		String namecode = searchDto.getNameOrCode();
+
+		String sql = "select new com.globits.wl.dto.AnimalCertificateDto(fa) from AnimalCertificate fa  where (1=1)";
+		String sqlCount = "select count(fa.id) from AnimalCertificate fa  where (1=1)";
+		String whereClause = "";
+		if (namecode != null && namecode.length() > 0) {
+			whereClause += " and (fa.code like :namecode or fa.farm.name like :namecode)";
+		}
+
+		sql += whereClause;
+		sql += " order by fa.id desc ";
+		sqlCount += whereClause;
+
+		Query q = manager.createQuery(sql, AnimalCertificateDto.class);
+		Query qCount = manager.createQuery(sqlCount);
+
+		if (namecode != null && namecode.length() > 0) {
+			q.setParameter("namecode", '%' + namecode + '%');
+			qCount.setParameter("namecode", '%' + namecode + '%');
+		}
+
+		q.setFirstResult((pageIndex) * pageSize);
+		q.setMaxResults(pageSize);
+
+		Long numberResult = (Long) qCount.getSingleResult();
+		Page<AnimalCertificateDto> page = new PageImpl<>(q.getResultList(), pageable, numberResult);
+		return page;
+	}
+
+	@Override
+	public AnimalCertificateDto checkDuplicateCode(String code) {
+//		AnimalCertificate au = new AnimalCertificate();
+//		List<AnimalCertificate> list = AnimalCertificateRepository.findByCode(code);
+//		if (list != null && list.size() > 0) {
+//			au = list.get(0);
+//		}
+//		if(au.getId() != null) {
+//			AnimalCertificateDto viewCheckDuplicateCodeDto = new AnimalCertificateDto(au);
+//			return viewCheckDuplicateCodeDto;
+//		}else {
+//			AnimalCertificateDto viewCheckDuplicateCodeDto = new AnimalCertificateDto();
+//			return viewCheckDuplicateCodeDto;
+//		}
+		AnimalCertificateDto viewCheckDuplicateCodeDto = new AnimalCertificateDto();
+		AnimalCertificate au = null;
+		List<AnimalCertificate> list = AnimalCertificateRepository.findByCode(code);
+		if(list != null && list.size() > 0) {
+			au = list.get(0);
+		}
+		if(list == null) {
+			viewCheckDuplicateCodeDto.setDuplicate(false);
+		} else if(list != null && list.size() > 0) {
+			viewCheckDuplicateCodeDto.setDuplicate(true);
+		}
+		return viewCheckDuplicateCodeDto;
+		
+	}
+	
+	@Override
+	public List<ForestProductsListDetailDto> findAllByAC(AnimalReportDataSearchDto searchDto) {
+		if(searchDto!=null) {
+			if(searchDto.getFarmId()!=null && searchDto.getAnimalId()!=null) {
+				String sql = "select new com.globits.wl.dto.AnimalCertificateDetailDto(acd) FROM AnimalCertificateDetail acd ";
+				String whereClause = " where acd.animalCertificate is not null";
+	
+				if(searchDto.getSkipFPLD()!=null) {
+					whereClause += " AND acd.id != :id";
+				}
+				if (searchDto.getFarmId() != null) {
+					whereClause += " AND acd.animalCertificate.farm.id = :farmId";
+				}
+				if (searchDto.getAnimalId() != null) {
+					whereClause += " AND acd.animal.id = :animalId";
+				}
+				Query query = manager.createQuery(sql + whereClause , AnimalCertificateDetailDto.class);
+
+				query.setParameter("cancel", 2);
+				if (searchDto.getSkipFPLD() != null) {
+					query.setParameter("id", searchDto.getSkipFPLD());
+				}
+				if (searchDto.getFarmId() != null) {
+					query.setParameter("farmId", searchDto.getFarmId());
+				}
+				if (searchDto.getAnimalId() != null) {
+					query.setParameter("animalId", searchDto.getAnimalId());
+				}
+				return query.getResultList();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Page<AnimalCertificateDto> searchByPage(SearchReportPeriodDto searchDto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		if(searchDto != null && searchDto.getPageIndex() != null && searchDto.getPageSize() != null) {
+			int pageIndex = searchDto.getPageIndex();
+			int pageSize = searchDto.getPageSize();
+			if(pageIndex > 0) {
+				pageIndex = pageIndex - 1;
+			} else {
+				pageIndex = 0;
+			}
+			Pageable pageable = new PageRequest(pageIndex, pageSize);
+			String sql = "Select new com.globits.wl.dto.AnimalCertificateDto(ac) From AnimalCertificate ac where (1=1) ";
+			String sqlCount = "Select count (ac.id) From AnimalCertificate ac where(1=1)";
+			String whereClause = "";
+			if(searchDto.getFarmId() != null) {
+				whereClause += " and (ac.farm.id := farmId)";
+			}
+			if(searchDto.getText() != null) {
+				whereClause += " and ac.code Like :text Or ac.farm.name Like :text";
+			}
+			if (searchDto.getWardId() != null) {
+				whereClause += " and (ac.farm.administrativeUnit.id =:wardId )";
+			} else if (searchDto.getDistrictId() != null) {
+				whereClause += " and (ac.farm.administrativeUnit.parent.id =:districtId )";
+			} else if (searchDto.getProvinceId() != null) {
+				whereClause += " and (ac.farm.administrativeUnit.parent.parent.id =:provinceId )";
+			}
+			if (!isAdmin) {
+				whereClause += " and (ac.farm.administrativeUnit.id in (:listWardId)) ";
+			}
+			sql += whereClause;
+			sql += " Order by ac.farm.dateRegistration desc";
+			sqlCount += whereClause;
+			
+			Query q = manager.createQuery(sql, AnimalCertificateDto.class);
+			Query qCount = manager.createQuery(sqlCount);
+			
+			if(searchDto.getFarmId() != null) {
+				q.setParameter("farmId", searchDto.getFarmId());
+				qCount.setParameter("farmId", searchDto.getFarmId());
+			}
+			if(searchDto.getText() != null) {
+				q.setParameter("text", "%" + searchDto.getText() + "%");
+				qCount.setParameter("text", "%" + searchDto.getText() + "%");
+			}
+			if (searchDto.getWardId() != null) {
+				q.setParameter("wardId", searchDto.getWardId());
+				qCount.setParameter("wardId", searchDto.getWardId());
+			} else if (searchDto.getDistrictId() != null) {
+				q.setParameter("districtId", searchDto.getDistrictId());
+				qCount.setParameter("districtId", searchDto.getDistrictId());
+			} else if (searchDto.getProvinceId() != null) {
+				q.setParameter("provinceId", searchDto.getProvinceId());
+				qCount.setParameter("provinceId", searchDto.getProvinceId());
+			}
+			if (!isAdmin) {
+				q.setParameter("listWardId", listWardId);
+				qCount.setParameter("listWardId", listWardId);
+			}
+			q.setFirstResult((pageIndex) * pageSize);
+			q.setMaxResults(pageSize);
+			Long numberResult = (Long) qCount.getSingleResult();
+			Page<AnimalCertificateDto> page = new PageImpl<>(q.getResultList(), pageable, numberResult);
+			return page;
+		}
+		return null;
+	}
+
+//	@Override
+//	public InjectionTimeDto checkDuplicateCode(String code) {		
+//		InjectionTimeDto viewCheckDuplicateCodeDto = new InjectionTimeDto();
+//		InjectionTime au = null;
+//		List<InjectionTime> list = AnimalCertificateRepository.findByCode(code);
+//		if(list != null && list.size() > 0) {
+//			au = list.get(0);
+//		}
+//		if(list == null) {
+//			viewCheckDuplicateCodeDto.setDuplicate(false);
+//		}else if(list != null && list.size() > 0) {
+//			viewCheckDuplicateCodeDto.setDuplicate(true);
+//			viewCheckDuplicateCodeDto.setDupCode(au.getCode());
+//			viewCheckDuplicateCodeDto.setDupName(au.getName());
+//		}
+//		return viewCheckDuplicateCodeDto;
+//	}
+//
+
+}

@@ -1,0 +1,67 @@
+package com.globits.wl.response;
+
+public class DashboardTableResponse {
+    private Long number;
+    private String type;
+    private Long countAnimal;
+    private Long sumAnimal;
+    private Long countFarm;
+    private Long countFarmCertificated;
+    private Long countFarmCertificatedInYear;
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Long getCountAnimal() {
+        return countAnimal;
+    }
+
+    public void setCountAnimal(Long countAnimal) {
+        this.countAnimal = countAnimal;
+    }
+
+    public Long getSumAnimal() {
+        return sumAnimal;
+    }
+
+    public void setSumAnimal(Long sumAnimal) {
+        this.sumAnimal = sumAnimal;
+    }
+
+    public Long getCountFarm() {
+        return countFarm;
+    }
+
+    public void setCountFarm(Long countFarm) {
+        this.countFarm = countFarm;
+    }
+
+    public Long getCountFarmCertificated() {
+        return countFarmCertificated;
+    }
+
+    public void setCountFarmCertificated(Long countFarmCertificated) {
+        this.countFarmCertificated = countFarmCertificated;
+    }
+
+    public Long getCountFarmCertificatedInYear() {
+        return countFarmCertificatedInYear;
+    }
+
+    public void setCountFarmCertificatedInYear(Long countFarmCertificatedInYear) {
+        this.countFarmCertificatedInYear = countFarmCertificatedInYear;
+    }
+}

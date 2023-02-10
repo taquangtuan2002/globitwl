@@ -1,0 +1,96 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.reportFormAnimalEgg.isNew == true" class="modal-title"><i class="icon-plus"></i> Tạo mới</h4>
+        <h4 ng-if="vm.reportFormAnimalEgg.isNew == false" class="modal-title"><i class="icon-pencil"></i> Cập nhật</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 margin-top-10">
+                <label class="bold"><strong
+                        style="color:red">*</strong>{{"importAnimal.parentAnimal" | translate}}:</label>
+                <ui-select ng-model="vm.reportFormAnimalEgg.animal" sortable="true" close-on-select="true"
+                    aria-multiselectable="true" on-select="vm.onSelectedAnimal($item)" on-remove="vm.onRemovedAnimal()">
+                    <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="animal  in vm.animals | propsFilter: {name: $select.search, code: $select.search}">
+                        <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Ngày lấy trứng</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.dateReport" my-date-picker type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số cá thể bố</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.parentMale" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số cá thể mẹ</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.parentFemale" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số lượng trứng</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityEgg" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số lượng trứng được đưa vào ấp</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityEggWarm" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số con non nở</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityChildHatch" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số con non bị chết</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityChildDie" type="text" class="form-control" />
+            </div>
+            <!-- <div class="col-md-12 margin-top-10">
+                <label class="bold">Số con non còn sống</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityChildLive" type="text" class="form-control" />
+            </div> -->
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số con non cộng dồn theo thời gian</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityChildIncrement" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Số con non tách khỏi khu nuôi nhốt</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.quantityChildSeparateCaptivity" type="text" class="form-control" />
+            </div>
+            <!-- <div class="col-md-12 margin-top-10">
+                <label class="bold">Số con non còn lại</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.remainQuantity" type="text" class="form-control" />
+            </div> -->
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">Ghi chú</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.note" type="text" class="form-control" />
+            </div>
+            <!-- <div class="col-md-12 margin-top-10">
+                <label class="bold">Xác nhận của cơ quan kiểm lâm thủy sản</label>
+                <input data-ng-model="vm.reportFormAnimalEgg.remainQuantity" type="text" class="form-control" />
+            </div> -->
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i
+                class="icon-close"></i> {{'region.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.saveReportFormAnimalEgg()" class="btn btn-primary"
+            data-dismiss="modal">{{'region.save' | translate}}</button>
+    </div>
+</div>
+<script type="text/ng-template" id="individual_detail.html">
+    <div modal-movable ng-include="'farm/views/child/individual_detail.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="confirm_delete_individual.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_delete_individual.html?v={{version}}'"></div>
+</script>
+<!-- <script type="text/ng-template" id="choose_farm_modal.html">
+    <div modal-movable>
+		<div ng-include="'animal_report_data/views/childs/choose_farm_modal.html'"></div>
+	</div>
+</script> -->

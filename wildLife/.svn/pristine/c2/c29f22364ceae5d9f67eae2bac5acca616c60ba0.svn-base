@@ -1,0 +1,223 @@
+<div class="row margin-top-10">
+    <div class="col-md-3">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <div class="col-md-12   margin-top-10">
+                    <div class="input-group">
+                        <input type="text" data-ng-model="" ng-keyup="" class="form-control"
+                            placeholder="Tìm kiếm tổ chức..." name="search">
+                        <div class="input-group-btn">
+                            <button ng-click="" class="btn btn-default" type="submit"><i
+                                    class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-title">
+
+            </div>
+            <div class="portlet-body">
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>Quản lý tổ chức hành chính</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6" style="display:flex; justify-content: flex-end;">
+                        <button type="button" ng-click="" style="margin-right: 2%;"
+                            class="margin-top-5 btn btn-success"><i class="icon-plus"></i>
+                            Thêm mới</button>
+                        <button type="button" ng-click="" style="margin-right: 2%;"
+                            class="margin-top-5 btn btn-success"><i class="icon-plus"></i>
+                            Thêm mới tổ chức con</button>
+                        <button type="button" ng-click="confirm_delete.html" style="margin-right: 2%;"
+                            class="margin-top-5 btn btn-danger"><i class="icon-close"></i> Xóa</button>
+                        <button type="button" ng-click="" style="margin-right: 2%;"
+                            class="margin-top-5 btn btn-success"><i class="icon-check"></i> Lưu</button>
+
+                        <!-- <a href="#" class="btn btn-default" file-name="'DanhDonViHanhChinh.xls'"  ng-click="getFile()" file-download="myBlobObject"><i class="fa fa-file-excel-o"> Export</i></a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="container">
+
+                    <div class="row form-horizontal">
+                        <div class="form-group margin-top-1">
+                            <!--Dong 1-->
+                            <label style=" font-size: smaller; margin: 0;" class="col-sm-2 control-label">Cấp
+                                tổ chức:
+                            </label>
+
+                            <div class="col-sm-1"  >
+                                <input type="radio" id="unit" name="organization_level" ng-model="" value="1">
+                                <label for="unit" style="font-size: smaller; margin: 0;">Đơn vị </label><br>
+                            </div>
+                            <div class="col-sm-1"  >
+                                <input type="radio" id="department" name="organization_level" ng-model="" value="2">
+                                <label for="department" style="font-size: smaller; margin: 0;">Phòng </label><br>
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <label style=" font-size: smaller; margin: 0;" class="col-sm-2 control-label">Số
+                                Địa chỉ
+                                :</label>
+                            <div class="col-sm-4" >
+                                <input ng-model="" type="text" placeholder="Địa chỉ" class="form form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 2-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Cơ quan chủ
+                                quản: 
+                            </label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="Cơ quan chủ quản"
+                                    class="form form-control" />
+                            </div>
+
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Email:</label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="Email" class="form form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 3-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Tên Đơn vị:
+                            </label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="Nhập tên đơn vị"
+                                    class="form form-control" />
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Điện thoại:
+                            </label>
+                            <div class="col-sm-4">
+                                <input ng-model="  " type="text" placeholder="Điện thoại" class="form form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 4-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Tên Viết
+                                tắt:</label>
+                            <div class="col-sm-4 d-flex justify-between"
+                                style="display: flex;justify-content: space-between;">
+                                <input ng-model="" type="text" placeholder="Tên viết tắt" class="form form-control" />
+
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Fax:</label>
+                            <div class="col-sm-4 d-flex justify-between"
+                                style="display: flex;justify-content: space-between;">
+                                <input ng-model="" type="text" placeholder="Mã Fax" class="form form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 5-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Cấp chính
+                                quyền:</label>
+                            <div class="col-sm-4">
+                                <select class="form-control" ng-model="" style="padding: 0;">
+                                    <option value="1" selected>Cấp tỉnh</option>
+                                    <option value="2">Cấp huyện</option>
+                                    <option value="3">Cấp xã</option>
+                                </select>
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Website:
+                            </label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="" class="form form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 6-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Hình thức tổ
+                                chức:
+                            </label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="" class="form form-control" />
+
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Thứ Tự:
+                            </label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="" class="form form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 7-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Khu vực quản lý<br>-  Tỉnh:</label>
+                            <div class="col-sm-4">
+                                <ui-select ng-model="" sortable="true" close-on-select="true"
+                                    on-select="onFmsadminstrativeUnitCitySelected($item)">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'farm.chooseCity' | translate}}...">
+                                        {{$item.name}} </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit in adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-4">
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 8-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Huyện:</label>
+                            <div class="col-sm-4">
+                                <ui-select ng-model="" sortable="true" close-on-select="true"
+                                    on-select="onFmsadminstrativeUnitDistSelected($item)">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                        {{$item.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit in adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-4">
+                            </div>
+                        </div>
+                        <div class="form-group margin-top-1">
+                            <!--Dong 9-->
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label">Mô tả tổ
+                                chức:</label>
+                            <div class="col-sm-4">
+                                <input ng-model="" type="text" placeholder="" class="form form-control" />
+                            </div>
+                            <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .margin-top-1{
+        margin-top: 1%;
+    }
+</style>
+
+<script type="text/ng-template" id="confirm_delete.html">
+    <div modal-movable>
+		<div ng-include="'administrative_organization/views/confirm_delete.html'"></div>
+	</div>
+</script>

@@ -1,0 +1,470 @@
+<section id="page-title">
+    <!-- <div class="container clearfix">
+        <h1><i class="icon-newspaper text-muted"></i> Tin tức</h1>
+    </div>  -->
+</section>
+
+<!-- Content
+============================================= -->
+<section id="content">
+    <div class="content-wrap tight">
+        <div class="container clearfix">
+            <!-- Post Content
+            ============================================= -->
+            <div class="col-md-7 postcontent nobottommargin clearfix">
+                <div class="single-post bottommargin-sm">
+
+                    <!-- Single Post
+                    ============================================= -->
+                    <div class="entry clearfix">
+
+                        <!-- Entry Title
+                        ============================================= -->
+                        <div class="entry-title">
+                            <h2><span ng-bind-html="vm.news.title"></span></h2>
+                        </div><!-- .entry-title end -->
+
+                        <!-- Entry Meta
+                        ============================================= -->
+                        <ul class="entry-meta clearfix">
+                            <li><span ng-bind-html="vm.news.publishDate | date:'dd/MM/yyyy'"></span></li>
+                            <li class="li" ng-repeat="cate in vm.news.categories">
+                                <span ng-bind-html="cate.category.title"></span>
+                            </li>
+                            <!-- <li><a href="#"><i class="icon-comments"></i> 5</a></li> -->
+                        </ul><!-- .entry-meta end -->
+
+                        <!-- Entry Image
+                        ============================================= -->
+                        <div class="entry-image">
+                                <a href="#"><img class="image_fade" ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{vm.news.titleImageUrl}}" alt="{{vm.news.title}}"></a>
+                        </div><!-- .entry-image end -->
+
+                        <!-- Entry Content
+                        ============================================= -->
+                        <div class="entry-content topmargin-sm">
+
+                            <span ng-bind-html="vm.news.content"></span>
+
+                            <div class="clear"></div>
+
+                            <!-- Post Single - Share
+                            ============================================= -->
+                            <!-- <div class="si-share noborder clearfix">
+                                <span>Chia sẻ bài viết &rarr;</span>
+                                <div>
+                                    <a href="#" class="social-icon si-borderless si-facebook">
+                                        <i class="icon-facebook"></i>
+                                        <i class="icon-facebook"></i>
+                                    </a>
+                                    <a href="#" class="social-icon si-borderless si-twitter">
+                                        <i class="icon-twitter"></i>
+                                        <i class="icon-twitter"></i>
+                                    </a>
+                                    <a href="#" class="social-icon si-borderless si-pinterest">
+                                        <i class="icon-pinterest"></i>
+                                        <i class="icon-pinterest"></i>
+                                    </a>
+                                    <a href="#" class="social-icon si-borderless si-gplus">
+                                        <i class="icon-gplus"></i>
+                                        <i class="icon-gplus"></i>
+                                    </a>
+                                </div>
+                            </div> -->
+                            <!-- Post Single - Share End -->
+
+                        </div>
+                    </div><!-- .entry end -->
+
+                    <!-- <h4>Các tin liên quan</h4>
+
+                    <div class="related-posts clearfix">
+
+                        <div class="col_half nobottommargin">
+
+                            <div class="mpost clearfix">
+                                <div class="entry-image">
+                                    <a href="#"><img src="assets/images/blog/small/10.jpg" alt="Blog Single"></a>
+                                </div>
+                                <div class="entry-c">
+                                    <div class="entry-title">
+                                        <h4><a href="#">Bổ nhiệm Giám đốc Quỹ hỗ trợ người nhiễm HIV/AIDS</a></h4>
+                                    </div>
+                                    <ul class="entry-meta clearfix">
+                                        <li>2 ngày trước</li>
+                                        <li><a href="#"><i class="icon-comments"></i> 5</a></li>
+                                    </ul>
+                                    <div class="entry-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia nisi perferendis.</div>
+                                </div>
+                            </div>
+
+                            <div class="mpost clearfix">
+                                <div class="entry-image">
+                                    <a href="#"><img src="assets/images/blog/small/20.jpg" alt="Blog Single"></a>
+                                </div>
+                                <div class="entry-c">
+                                    <div class="entry-title">
+                                        <h4><a href="#">Tổ chức tập huấn Can thiệp lạm dụng ma túy tổng hợp</a></h4>
+                                    </div>
+                                    <ul class="entry-meta clearfix">
+                                        <li>2 ngày trước</li>
+                                        <li><a href="#"><i class="icon-comments"></i> 5</a></li>
+                                    </ul>
+                                    <div class="entry-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia nisi perferendis.</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col_half nobottommargin col_last">
+
+                            <div class="mpost clearfix">
+                                <div class="entry-image">
+                                    <a href="#"><img src="assets/images/blog/small/21.jpg" alt="Blog Single"></a>
+                                </div>
+                                <div class="entry-c">
+                                    <div class="entry-title">
+                                        <h4><a href="#">Mỗi viên thuốc mỗi ngày để giảm nguy cơ lây nhiễm </a></h4>
+                                    </div>
+                                    <ul class="entry-meta clearfix">
+                                        <li>2 ngày trước</li>
+                                        <li><a href="#"><i class="icon-comments"></i> 5</a></li>
+                                    </ul>
+                                    <div class="entry-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia nisi perferendis.</div>
+                                </div>
+                            </div>
+
+                            <div class="mpost clearfix">
+                                <div class="entry-image">
+                                    <a href="#"><img src="assets/images/blog/small/22.jpg" alt="Blog Single"></a>
+                                </div>
+                                <div class="entry-c">
+                                    <div class="entry-title">
+                                        <h4><a href="#">Thông điệp K=K: Không phát hiện = Không lây nhiễm</a></h4>
+                                    </div>
+                                    <ul class="entry-meta clearfix">
+                                        <li>2 ngày trước</li>
+                                        <li><a href="#"><i class="icon-comments"></i> 5</a></li>
+                                    </ul>
+                                    <div class="entry-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia nisi perferendis.</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div> -->
+
+                    <!-- Comments
+                    ============================================= -->
+                    <!-- <div id="comments" class="clearfix"> -->
+
+                        <!-- <h3 id="comments-title"><span>2</span> bình luận</h3> -->
+
+                        <!-- Comments List
+                        ============================================= -->
+                        <!-- <ol class="commentlist clearfix">
+
+                            <li class="comment even thread-even depth-1" id="li-comment-1">
+                                <div id="comment-1" class="comment-wrap clearfix">
+                                    <div class="comment-meta">
+                                        <div class="comment-author vcard">
+                                            <span class="comment-avatar clearfix">
+                                            <img alt='' src='http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=60' class='avatar avatar-60 photo avatar-default' height='60' width='60' /></span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-content clearfix">
+                                        <div class="comment-author">Hoàng Quốc Dũng<span><a href="#" title="Permalink to this comment">5 ngày trước</a></span></div>
+                                        <p>Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+
+                            </li>
+
+                            <li class="comment byuser comment-author-_smcl_admin even thread-odd thread-alt depth-1" id="li-comment-2">
+                                <div id="comment-2" class="comment-wrap clearfix">
+                                    <div class="comment-meta">
+                                        <div class="comment-author vcard">
+                                            <span class="comment-avatar clearfix">
+                                            <img alt='' src='http://1.gravatar.com/avatar/30110f1f3a4238c619bcceb10f4c4484?s=60&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D60&amp;r=G' class='avatar avatar-60 photo' height='60' width='60' /></span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-content clearfix">
+                                        <div class="comment-author">Nguyễn Hải Đăng<span><a href="#" title="Permalink to this comment">7 ngày trước</a></span></div>
+                                        <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </li>
+                        </ol> -->
+                        <!-- .commentlist end -->
+
+                        <div class="clear"></div>
+
+                        <!-- Comment Form
+                        ============================================= -->
+                        <!-- <div id="respond" class="clearfix">
+                            <h3>Gửi bình luận</h3>
+                            <div class="col_one_third">
+                                <label for="author">Họ tên bạn</label>
+                                <input type="text" name="author" id="author" value="" size="22" tabindex="1" class="sm-form-control" />
+                            </div>
+
+                            <div class="col_one_third">
+                                <label for="email">Địa chỉ email</label>
+                                <input type="text" name="email" id="email" value="" size="22" tabindex="2" class="sm-form-control" />
+                            </div>
+
+                            <div class="col_one_third col_last">
+                                <label for="url">Website</label>
+                                <input type="text" name="url" id="url" value="" size="22" tabindex="3" class="sm-form-control" />
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="col_full">
+                                <label for="comment">Nội dung bình luận</label>
+                                <textarea id="comment" name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control"></textarea>
+                            </div>
+
+                            <div class="col_full nobottommargin">
+                                <button name="submit" type="submit" id="submit-button" tabindex="5" value="Submit" class="button button-3d nomargin">Gửi đi</button>
+                            </div>
+                        </div> -->
+                        <!-- #respond end -->
+                    <!-- </div> -->
+                    <!-- #comments end -->
+                </div>
+            </div><!-- .postcontent end -->
+
+            <!-- Sidebar
+            ============================================= -->
+            <div class="sidebar col-md-2 nobottommargin col_last clearfix"></div>
+            <div class="sidebar col-md-3 nobottommargin col_last clearfix">
+                <div class="sidebar-widgets-wrap">
+                	<div class="widget_links customed clearfix">
+                        <h3>Chuyên mục tin</h3>
+                        <ul>
+                            <li style="margin: 0px 0px 0px 20px; font-size:20px" ng-repeat="cate in vm.listCategory">
+                                <i class="glyphicon glyphicon-hand-right"></i> <a href="#" ng-click="vm.linkToNewsByCategory(cate.id)"><span ng-bind-html="cate.title"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget clearfix">
+                        <h3><i class="glyphicon glyphicon-bullhorn text-muted"></i> Tin mới</h3>
+                        <div id="post-list-footer">
+                            <div class="spost clearfix" ng-repeat="item in vm.listNewsMenuRight">
+                                <div class="entry-image">
+                                    <a href="#" class="nobg" ng-click="vm.linkToDetail(item.id)"><img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{item.titleImageUrl}}" alt=""></a>
+                                </div>
+                                <div class="entry-c">
+                                    <div class="entry-title">
+                                        <h4><a href="#" ng-click="vm.linkToDetail(item.id)"><span ng-bind-html="item.title"></span></a></h4>
+                                    </div>
+                                    <ul class="entry-meta">
+                                        <li><span ng-bind-html="item.publishDate | date:'dd/MM/yyyy':'UTC+7'"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget clearfix">
+                        <h3><i class="glyphicon glyphicon-fire text-muted"></i> Tin đọc nhiều</h3>
+                        <div id="post-list-footer2">
+                            <div id="post-list-footer2">
+                                <div id="post-list-footer">
+                                    <div class="spost clearfix" ng-repeat="item in vm.listCmsArticleOrderByViewDESC">
+                                        <div class="entry-image">
+                                            <a href="#" class="nobg" ng-click="vm.linkToDetail(item.id)"><img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{item.titleImageUrl}}" alt=""></a>
+                                        </div>
+                                        <div class="entry-c">
+                                            <div class="entry-title">
+                                                <h4><a href="#" ng-click="vm.linkToDetail(item.id)"><span ng-bind-html="item.title"></span></a></h4>
+                                            </div>
+                                            <ul class="entry-meta">
+                                                <li><span ng-bind-html="item.publishDate | date:'dd/MM/yyyy':'UTC+7'"></span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- <div class="widget clearfix">
+                        <h4>Tag Cloud</h4>
+                        <div class="tagcloud">
+                            <a href="#">hiv/aids</a>
+                            <a href="#">uống thuốc prep</a>
+                            <a href="#">pepfar</a>
+                            <a href="#">xét nghiệm nhanh</a>
+                            <a href="#">điều trị arv</a>
+                            <a href="#">tải lượng virus</a>
+                            <a href="#">đồng nhiễm lao</a>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <!-- .sidebar end -->
+        </div>
+    </div>
+</section>
+<style>
+.entry-content p{
+	margin:10px 0;
+	font-size:16px;
+	font-weight:400
+}
+.small-thumbs .entry-image, .ievent .entry-image {
+    float: left;
+    width: 300px;
+    margin: 0 30px 0 0;
+}
+.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img {
+    display: block;
+    position: relative;
+    height: auto;
+}
+.entry {
+    position: relative;
+    margin: 0 0 30px 0;
+    padding-bottom: 30px;
+    border-bottom: 1px dashed #e5e5e5;
+}
+.small-thumbs .entry-image img, .ievent .entry-image img {
+    border-radius: 0;
+}
+.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+a img {
+    border: none;
+}
+img {
+    max-width: 100%;
+}
+img {
+    vertical-align: middle;
+}
+.small-thumbs .entry-title h2, .ievent .entry-title h2 {
+    font-size: 18px;
+}
+.small-thumbs .entry-title h2, .ievent .entry-title h2 {
+    font-weight: 600;
+}
+.entry-title h2 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+h2 {
+    font-size: 30px;
+    color: #444;
+    line-height: 1.5;
+    font-family: 'Muli', sans-serif;
+}
+.entry-c {
+    position: relative;
+    overflow: hidden;
+}
+.entry-meta {
+    margin: 10px -10px -15px 0;
+    list-style: none;
+}
+.entry-meta li {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 10px 15px 0;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+    /* font-style: italic; */
+}
+ul{
+    font-family: 'Muli', sans-serif;
+    padding: 0;
+}
+#content p {
+    line-height: 1.8;
+}
+.entry-content p {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 400;
+}
+.single-post .entry-meta {
+    margin-bottom: 20px;
+}
+.entry-meta li {
+    float: left;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 10px 15px 0;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+    /* font-style: italic; */
+}
+.entry-meta .li:before {
+    content: '/';
+    display: inline-block;
+    margin-right: 10px;
+    opacity: 0.5;
+}
+.entry-meta {
+    margin: 10px -10px -15px 0;
+    list-style: none;
+}
+.spost .entry-image, .spost .entry-image a, .spost .entry-image img, .spost .entry-image i {
+    width: 90px;
+    height: 90px;
+}
+.spost, .mpost {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed #E5E5E5;
+}
+.spost .entry-image, .mpost .entry-image {
+    float: left;
+    margin: 0 15px 0 0;
+    text-align: center;
+}
+h3 {
+	margin-bottom:20px;
+}
+.spost:first-child, .mpost:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+.spost .entry-title h4, .mpost .entry-title h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+.entry-c {
+    position: relative;
+    overflow: hidden;
+}
+.sidebar-widgets-wrap .widget {
+    padding-top: 50px;
+    border-top: 1px solid #EEE;
+}
+.widget {
+    position: relative;
+    margin-top: 50px;
+}
+.widget_nav_menu > ul, .widget_links > ul, .widget_meta > ul, .widget_archive > ul, .widget_recent_comments > ul, .widget_recent_entries > ul, .widget_categories > ul, .widget_pages > ul, .widget_rss > ul {
+    margin-top: -4px !important;
+}
+.widget_nav_menu ul, .widget_nav_menu li, .widget_links ul, .widget_links li, .widget_meta ul, .widget_meta li, .widget_archive ul, .widget_archive li, .widget_recent_comments ul, .widget_recent_comments li, .widget_recent_entries ul, .widget_recent_entries li, .widget_categories ul, .widget_categories li, .widget_pages ul, .widget_pages li, .widget_rss ul, .widget_rss li {
+    list-style: none;
+    margin: 0;
+}
+.widget_nav_menu li, .widget_links li, .widget_meta li, .widget_archive li, .widget_recent_comments li, .widget_recent_entries li, .widget_categories li, .widget_pages li, .widget_rss li {
+    padding: 4px;
+}
+</style>

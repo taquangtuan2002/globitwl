@@ -1,0 +1,110 @@
+
+<div class="modal-header">
+	<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+	<h4 ng-if="vm.administrativeUnitEditable.isNew == true" class="modal-title"><i class="icon-plus"></i> {{'user.create' | translate}}</h4>
+	<h4 ng-if="vm.administrativeUnitEditable.isNew == false" class="modal-title"><i class="icon-pencil"></i> {{'user.edit' | translate}}</h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-12 margin-top-10">
+            <div class="col-md-3">
+                <!-- <button type="button" ng-click="vm.openPopupSelectFmsAdmin()" class="btn btn-default">
+                    Chọn đơn vị hành chính
+                </button> -->
+                <label class="bold">Chọn đơn vị hành chính:</label>
+            </div>
+            <div class="col-md-9">
+                <ui-select ng-if="vm.administrativeUnitEditable.isNew == false" theme="bootstrap" on-select="vm.selectFmsAdmin($item)" data-ng-model="vm.administrativeUnitEditable.adminUnit" sortable="true" close-on-select="true" style="width: 100% !important;">
+                    <ui-select-match allow-clear="true" placeholder="{{'user.choose' | translate}}...">{{vm.administrativeUnitEditable.adminUnit.name}}</ui-select-match>
+                    <ui-select-choices repeat="role in vm.adminstrativeUnits_City | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="role.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+
+				<ui-select multiple ng-if="vm.administrativeUnitEditable.isNew == true" theme="bootstrap" on-select="vm.selectListFmsAdmin($item)" data-ng-model="vm.listSelectedFmsAdmin" sortable="true" close-on-select="true" style="width: 100% !important;">
+					<ui-select-match allow-clear="true" placeholder="{{'user.choose' | translate}}...">{{$item.name}}</ui-select-match>
+					<ui-select-choices repeat="role in vm.adminstrativeUnits_City | propsFilter: {name: $select.search}">
+						<div class="bold" ng-bind-html="role.name | highlight: $select.search"></div>
+					</ui-select-choices>
+				</ui-select>
+            </div>
+           
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6 margin-top-10">
+            <div class="col-md-4"><label class="bold">Có thể chỉnh sửa:</label></div>
+            <div class="col-md-8">
+                <label style="margin-left: 10px;">
+                    <input type="radio" name="response" ng-change="vm.onSelectIsEditable(true)" data-ng-model="vm.administrativeUnitEditable.editable" data-ng-value="true" />
+                    {{vm.editable.choices[0].text}}
+                </label>
+				<label style="margin-left: 10px;">
+                    <input type="radio" name="response" ng-change="vm.onSelectIsEditable(false)" data-ng-model="vm.administrativeUnitEditable.editable" data-ng-value="false" />
+                    {{vm.editable.choices[1].text}}
+                </label>
+            </div>
+		</div>  
+		<div class="col-md-6 margin-top-10" >
+			<label class="bold">ROLE:</label>
+			<ui-select multiple theme="bootstrap" on-select="vm.selectRoles()" data-ng-model="vm.tempRoles" sortable="true" close-on-select="true" style="width: 100% !important;">
+				<ui-select-match allow-clear="true" placeholder="{{'user.choose' | translate}}...">{{$item.name}}</ui-select-match>
+				<ui-select-choices repeat="role in vm.roles | propsFilter: {name: $select.search}">
+					<div class="bold" ng-bind-html="role.name | highlight: $select.search"></div>
+				</ui-select-choices>
+			</ui-select>
+		</div>         		
+	</div>
+	
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label style="margin-left:5px;" class="bold" for="">Quý:</label>
+            <input class="form-control" type="number" theme="bootstrap" ng-model="vm.administrativeUnitEditable.quater">
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold" for="">Năm:</label>
+            <input class="form-control" type="number" theme="bootstrap" ng-model="vm.administrativeUnitEditable.year">
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+	<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'user.cancel' | translate}}</button>
+	<button type="button" ng-click="vm.saveAdministrativeUnitEditable()" class="btn btn-primary"><i class="icon-check"></i> {{'user.save' | translate}}</button>
+</div>
+<script type="text/ng-template" id="choose_fmsAdmin_modal.html">
+    <div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i> Chọn đơn vị hành chính</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text"  ng-if="vm.isFamer == false"  data-ng-model="vm.fsmAdminCode" class="form-control" ng-keyup="vm.enterSearchFmsAdmin(e)" placeholder="Tìm kiếm..." name="search">
+								<!-- <input type="text"  ng-if="vm.isFamer == true" readonly data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFmsAdmin(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search"> -->
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByFmsAdmin()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlFmsAdmin" bs-table-control="vm.bsTableControlFmsAdmin"></table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agreeFarm()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>

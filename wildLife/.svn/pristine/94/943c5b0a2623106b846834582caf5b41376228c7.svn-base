@@ -1,0 +1,24 @@
+<!-- BEGIN HEADER -->
+<div data-ng-include="'common/views/navs/header.html?v={{version}}'" data-ng-controller="HeaderController" class="page-header navbar"> </div>
+<!-- END HEADER -->
+<div class="clearfix"> </div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container" admin-screen block-ui="main">
+    <!-- BEGIN SIDEBAR -->
+    <div data-ng-include="'common/views/navs/sidebars.html?v={{version}}'" data-ng-controller="SidebarController" class="page-sidebar-wrapper"> </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN CONTENT -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!-- BEGIN ACTUAL CONTENT -->
+            <div ui-view class="fade-in-up"> </div>
+            <!-- END ACTUAL CONTENT -->
+        </div>
+
+		<!-- BEGIN FOOTER -->
+		<div data-ng-include="'common/views/navs/footer.html?v={{version}}'" data-ng-controller="FooterController" class="page-footer"> </div>
+		<!-- END FOOTER -->
+    </div>
+    <!-- END CONTENT -->
+</div>
+<!-- END CONTAINER -->

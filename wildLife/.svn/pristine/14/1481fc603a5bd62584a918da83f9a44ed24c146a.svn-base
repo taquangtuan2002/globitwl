@@ -1,0 +1,244 @@
+(function() {
+    'use strict';
+    angular.module('Education.AdministrativeOrganization').controller('AdministrativeOrganizationController', AdministrativeOrganizationController);
+    AdministrativeOrganizationController.$inject = [
+        '$rootScope',
+        '$scope',
+        '$timeout',
+        'settings',
+        '$uibModal',
+        'toastr',
+        'blockUI',
+        'bsTableAPI',
+        'Utilities',
+        '$translate',
+        'AdministrativeOrganizationService',
+        'UserService',
+        'FmsAdministrativeService'
+    ];
+
+    function AdministrativeOrganizationController($rootScope, $scope, $timeout, settings, modal, toastr, blockUI, bsTableAPI, utils, $translate, service, userService, fmsAdministrative) {
+        $scope.$on('$viewContentLoaded', function() {
+            // initialize core components
+            App.initAjax();
+        });
+
+        $rootScope.settings.layout.pageContentWhite = true;
+        $rootScope.settings.layout.pageBodySolid = false;
+        $rootScope.settings.layout.pageSidebarClosed = false;
+        var vm = this;
+        
+        vm.treeData = [];
+
+        // FmsAdiministrative
+        vm.fmsAdministratives = [];
+        vm.fmsAdministrative = {};
+        vm.modalInstance = {};
+        vm.searchDto = {};
+        vm.pageIndex = 1;
+        vm.pageSize = 10;
+        vm.administrativeOrganization = {};
+        vm.organizationLevel = [];
+        vm.listGorvernmentLevel = [];
+        vm.listFOrganizationalForm = [];
+        
+        // Role
+        vm.isRole = false;
+        vm.isFamer = false;
+        vm.isSdah = false;
+        vm.isDistrict = false;
+        vm.isWard = false;
+        vm.isSearchExtend = false;
+        vm.filterRole = null;
+        vm.isSdahView = false;
+        
+        // Các thẻ select
+        vm.organizationLevel = [
+            {
+                value: 1,
+                name: 'Đơn vị',
+            },
+            {
+                value: 2,
+                name: 'Phòng',
+            }
+        ];
+        vm.listGorvernmentLevel = [
+            {
+                id: 1,
+                name: "Tỉnh"
+            },
+            {
+                id: 2,
+                name: "Huyện"
+            }
+        ]
+        vm.listFOrganizationalForm = [
+            {
+                id: 1,
+                name: "Chi cục kiểm lâm"
+            },
+            {
+                id: 2,
+                name: "Hạt kiểm lâm"
+            },
+            {
+                id: 3,
+                name: "Phòng ban"
+            },
+            {
+                id: 4,
+                name: "Nhóm"
+            },
+        ]
+        // Phân quyền theo user đăng nhập
+        blockUI.start();
+        service.getCurrentUser().then(function(data) {
+            console.log(data);
+            vm.user = data;
+            var roles = data.roles;
+            if (roles != null && roles.length > 0) {
+                for (var i = 0; i < roles.length; i++) {
+                    if (roles[i] != null && roles[i].authority && (roles[i].authority.toLowerCase() == 'role_admin' || roles[i].authority.toLowerCase() == 'role_dlp')) {
+                        vm.isRole = true;
+
+                    }
+                    if (roles[i] != null && roles[i].authority && roles[i].authority.toLowerCase() == 'role_sdah') {
+                        vm.isSdah = true;
+                    }
+                    if (roles[i] != null && roles[i].authority && roles[i].authority.toLowerCase() == 'role_sdah_view') {
+                        vm.isSdahView = true;
+                        vm.isSdah = true;
+                    }
+
+                }
+            } else {
+                vm.isRole = false;
+                vm.isSdah = false;
+                vm.isSdahView = false;
+
+            }
+            if (vm.isRole) { 
+                getAllCity();
+                //vm.getUsers();
+                // vm.findBy();
+            } else {
+                if (vm.isRole == false) {
+                    getAdministrativeUnitDtoByLoginUser();
+                }
+            }
+            blockUI.stop();
+        });
+        
+        // Load user
+        function getAdministrativeUnitDtoByLoginUser() {
+            service.getAdministrativeUnitDtoByLoginUser().then(function(data) {
+                vm.adminstrativeUnits = data;
+                if(vm.adminstrativeUnits != null && vm.adminstrativeUnits.length > 0) {
+                    getDataByCombobox(vm.adminstrativeUnits);
+                }
+            })
+        }
+        function getDataByCombobox(administrativeUnit) {
+            if (vm.searchDto == null) {
+                vm.searchDto = {};
+            }
+            for (var i = 0; i < administrativeUnit.length; i++) {
+                var item = administrativeUnit[i];
+                if (item.parentDto == null) {
+                    vm.selectedCity = item;
+                    vm.searchDto.administrativeUnitId = item.id;
+                    vm.province = item;
+                    if (vm.adminstrativeUnits_City == null) vm.adminstrativeUnits_City = [];
+                    vm.adminstrativeUnits_City.push(item);
+                    service.getAllByParentId(vm.searchDto.administrativeUnitId).then(function(data) {
+                        if (data != null && data.length > 0) {
+                            vm.adminstrativeUnits_Dist = data;
+                        }
+
+                    });
+                } else if (item.parentDto != null && item.parentDto.parentDto == null) {
+                    vm.searchDto.administrativeUnitId = item.parentDto.id;
+                    vm.selectedDist.push(item);
+                    vm.selectedCity = item.parentDto;
+
+                    if (vm.adminstrativeUnits_City == null) vm.adminstrativeUnits_City = [];
+                    vm.adminstrativeUnits_City.push(item.parentDto);
+                    if (vm.adminstrativeUnits_Dist == null) vm.adminstrativeUnits_Dist = [];
+                    vm.adminstrativeUnits_Dist.push(item);
+                    service.getAllByParentId(item.id).then(function(data) {
+                        if (data != null && data.length > 0) {
+                            vm.adminstrativeUnits_Wards = data;
+                        }
+
+                    });
+                }
+            }
+            // vm.findBy();
+
+        }
+
+        //  End phân quyền
+        function getAllCity() {
+            fmsAdministrative.getAllCity().then(function(data) {
+                vm.adminstrativeUnits_City = data;
+            })
+        }
+
+        vm.onSelectNode = function(node) {
+            console.log('node gốc');
+            getChildrenByParentId(node.id);
+        }
+
+        vm.onClickNode = function(node) {
+            console.log('node lá');
+            getChildrenByParentId(node.id);
+        }
+
+        function getChildrenByParentId(parentId) {
+            service.getChildrenByParentId(parentId).then(function(data) {
+                vm.childs = data;
+                if(vm.treeData != null && vm.treeData.length > 0) {
+                    for(var i=0; i<vm.treeData.length; i++) {
+                        if (vm.treeData[i].id == parentId) {
+                            vm.treeData[i].children = vm.childs;
+                            vm.treeData[i].expanded = true;
+
+                        } else if (vm.treeData[i].parentDto == null && vm.treeData[i].expanded == false) {
+                            vm.treeData[i].children = [];
+                        }
+                    }
+                }
+            })
+        }
+
+        vm.treeData = [];
+
+        // Thêm mới
+        vm.addAdministrativeOrganization = function() {
+            vm.administrativeOrganization = {};
+            vm.gorvernmentLevel = null;
+            vm.organizationalForm = null;
+        }
+
+        // Lưu
+        vm.saveAdministrativeOrganization = function() {
+            if(vm.gorvernmentLevel) {
+                vm.administrativeOrganization.gorvernmentLevel = vm.gorvernmentLevel;
+            }
+            if(vm.organizationalForm) {
+                vm.administrativeOrganization.organizationalForm = vm.organizationalForm;
+            }
+            if(vm.selectedCity) {
+                console.log("ABC" + vm.selectedCity);
+            }
+            service.saveAdministrativeOrganization(vm.administrativeOrganization, function success(data) {
+                toastr.info("Thêm thành công", "Thông báo");
+                vm.administrativeOrganization = {};
+                vm.gorvernmentLevel = null;
+                vm.organizationalForm = null;
+            })
+        }
+
+    }
+})();

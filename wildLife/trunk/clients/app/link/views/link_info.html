@@ -1,0 +1,30 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.Link.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'link.create' | translate}}</h4>
+        <h4 ng-if="vm.Link.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'link.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'link.code' | translate}}</label>
+                <input data-ng-model="vm.Link.code" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'link.name' | translate}}</label>
+                <input data-ng-model="vm.Link.name" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'link.hyperLink' | translate}}</label>
+                <input data-ng-model="vm.Link.hyperLink" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'link.description' | translate}}</label>
+                <input data-ng-model="vm.Link.description" class="form-control" />
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'link.cancel' | translate}}</button>
+		<button type="button" ng-click="vm.saveLink()" class="btn btn-primary" data-dismiss="modal">{{'link.save' | translate}}</button>
+    </div>

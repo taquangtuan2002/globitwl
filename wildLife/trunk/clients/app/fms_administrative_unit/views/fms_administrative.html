@@ -1,0 +1,269 @@
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="page-bar">-->
+<!--<h3 class="page-title pull-left"><i class="icon-layers"></i> Quản lý người dùng</h3>-->
+<!--<ul class="page-breadcrumb pull-right hidden-xs">-->
+<!--<li>-->
+<!--<a href="#">Hệ thống</a>-->
+<!--<i class="fa fa-circle"></i>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="#/dashboard">Tài khoản người dùng</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+        <!--<div class="col-md-3" style="border: solid 1px #cddbd1;">
+			<!-- <div class="row form-group" style="margin-top: 15px">
+				<div class="col-md-12">
+					<input type="text" class="form-control" ng-model="search" ng-keyup="applySearch(search)" placeholder="Tìm theo tên">
+				</div>
+			</div> 
+			
+			<div class="panel-body" style="height:400px; overflow: auto;">
+				<div tree-plugins="search" js-tree="treeConfig" ng-model="vm.treeData" tree="treeInstance" tree-events="select_node:selectNode;ready:readyCB"></div>
+			</div>
+		</div>-->
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+			<div class="portlet-header">
+				<h3><strong>{{'administrativeUnit.information'| translate}}</strong></h3>
+			</div>
+			<div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10">
+							<button class="btn btn-default" ng-click="vm.importFmsAdministrative()"><i class="fa fa-cloud-upload"></i>Import</button>
+							<button class="btn btn-default margin-left-10" ng-click="vm.newFmsAdministrative()"><i class="icon-plus"></i>{{'administrativeUnit.create' | translate}}</button>
+							<!--<button class="btn btn-default"><i class="fa fa-search"></i> Tìm kiếm</button>-->
+
+						</div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'administrativeUnit.searchNameCode' | translate}}" name="search">
+                            <div class="input-group-btn">
+                                <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+			<div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <tree-grid
+                                tree-data     = "vm.treeData"
+                                col-defs      = "vm.treeColumnDefinitions"
+                                expand-on     = "vm.expandingProperty"
+                                icon-leaf     = "fa fa-leaf"
+                                icon-expand   = "fa fa-plus"
+                                icon-collapse = "fa fa-minus"
+                                on-select     = "vm.onSelectNode(branch)"
+                                on-click      = "vm.onClickNode(branch)"
+                        >
+                        </tree-grid>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <ul uib-pagination total-items="vm.totalItems" ng-model="vm.pageIndex" ng-change="pageChanged()" class="pagination-sm" boundary-links="true"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 ng-if="vm.fmsAdministrative.isNew == true" class="modal-title"><i class="icon-plus"></i> {{'administrativeUnit.create' | translate}}</h4>
+            <h4 ng-if="vm.fmsAdministrative.isNew == false" class="modal-title"><i class="icon-pencil"></i> {{'administrativeUnit.edit' | translate}}</h4>
+            
+        </div>
+        <div class="modal-body">
+            <div class="row">
+				 <div class="col-md-12 margin-top-10">
+					<label class="bold">{{'administrativeUnit.name' | translate}}</label>
+					<input  data-ng-model="vm.fmsAdministrative.name" type="text" class="form-control" />
+				</div>
+                <div class="col-md-10 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.code' | translate}}</label>
+                    <input  ng-if="vm.fmsAdministrative.isNew == true" data-ng-model="vm.fmsAdministrative.code" type="text" autofocus="autofocus" class="form-control" />
+					<input ng-if="vm.fmsAdministrative.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+				<div class="col-md-1 margin-top-10">
+					<button ng-if="vm.fmsAdministrative.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+					<button ng-if="vm.fmsAdministrative.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				</div>
+                
+                
+                <!-- <div class="col-md-12 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.level' | translate}}</label>
+                    <input data-ng-model="vm.fmsAdministrative.level" type="text" autofocus="autofocus" class="form-control" />
+                </div> -->
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">{{'region.name' | translate}}</label>
+                    <ui-select ng-model="vm.fmsAdministrative.regionDto" sortable="true" close-on-select="true" on-select="vm.onFmsRegionSelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'region.chooseRegion' | translate}}...">{{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="region in vm.regions | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="region.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.parent' | translate}}</label>
+                    <!--<ui-select ng-model="vm.fmsAdministrative.parentDto" sortable="true" close-on-select="true" on-select="vm.onParentSelected($item)">
+                        <ui-select-match allow-clear="true" placeholder="{{'administrativeUnit.chooseParent' | translate}}...">{{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="parent in vm.parents | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="parent.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>-->
+					<div class="input-group">
+						<input readonly	data-ng-model="vm.fmsAdministrative.parentDto.name" placeholder="" type="text" class="form-control" title="vm.fmsAdministrative.parentDto.name"/>
+						<div class="input-group-btn">	
+							<button ng-if="vm.fmsAdministrative.parentDto!=null && vm.fmsAdministrative.parentDto.name!=null" ng-click="vm.remove()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-remove"></i></button>
+							<button ng-click="vm.showPopupAdministrativeParent()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i>{{'administrativeUnit.choose' | translate}}</button>
+						</div>
+					</div>
+                </div>
+               
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.longitude' | translate}}</label>
+                    <input data-ng-model="vm.fmsAdministrative.latitude" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.latitude' | translate}}</label>
+					<input data-ng-model="vm.fmsAdministrative.longitude" type="text" autofocus="autofocus" class="form-control" />                    
+                </div>                
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.mapCode' | translate}}</label>
+                    <input data-ng-model="vm.fmsAdministrative.mapCode" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+                <div class="col-md-6 margin-top-10">
+                    <label class="bold">{{'administrativeUnit.totalAcreage' | translate}}</label>
+                    <input data-ng-model="vm.fmsAdministrative.totalAcreage" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+            
+
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'administrativeUnit.cancel' | translate}}</button>
+            <!--<button type="button" ng-click="vm. ()" class="btn btn-primary"><i class="icon-check"></i> {{'administrativeUnit.save' | translate}}</button>-->
+			<button ng-if="vm.fmsAdministrative.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'administrativeUnit.save' | translate}}</button>
+			<button ng-if="vm.fmsAdministrative.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'administrativeUnit.save' | translate}}</button>
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->
+
+<script type="text/ng-template" id="delete_modal.html">
+	<div class="modal-header alert alert-danger">
+			<h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+			
+			<a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+						
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<h2>
+					
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'administrativeUnit.confirmDelete' | translate}}</p>
+				</h2>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'administrativeUnit.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.confirmDelete()" class="btn btn-danger"><i class="icon-check"></i> {{'administrativeUnit.accept' | translate}}</button>
+	</div>
+</script>
+
+<script type="text/ng-template" id="import_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Import</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="dash-box display-block link" ngf-select="uploadFiles($file, $invalidFiles)"
+                               accept="/*" ngf-max-size="{{MAX_FILE_SIZE}}"><i class="fa fa-cloud-upload"></i>{{'upload.chooseFile' | translate}}</a>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f != null">
+                            {{'upload.downloadFile' | translate}}: {{f.name}}
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="errFile != null && errFile.$error != ''">
+                            {{'upload.error' | translate}}: <span ng-if="errFile.$error == 'maxSize'"> {{'upload.sizeFile' | translate}} {{errFile.$errorParam}}</span>
+                            <span ng-if="errFile.$error != null && errFile.$error != 'maxSize'"> {{'upload.file' | translate}} {{errFile.name}} {{'upload.error' | translate}}. {{'upload.chooseFileOther' | translate}}.</span>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f.progress >= 0">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="f.progress + '%'" style="width:{{f.progress}}%">
+                                    {{f.progress}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'upload.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'upload.download' | translate}}</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="choose_auparent_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i>{{'administrativeUnit.chooseParent' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="portlet-title">
+
+                    <div class="row margin-top-10 margin-bottom-10">
+                        <div class="col-md-6">
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" data-ng-model="vm.textSearch" class="form-control" ng-keyup="vm.enterSearchCode(e)" placeholder="{{'administrativeUnit.searchNameCode' | translate}}" name="search">
+                                <div class="input-group-btn">
+                                    <button ng-click="vm.searchByName()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+                    <!--</div>-->
+                </div>
+                <div class="box-body">
+                    <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            <button type="button" ng-click="vm.agree()" class="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,251 @@
+   <div modal-movable>
+        <div class="modal-body nopadding" >
+            <div class="panel panel-default" style="border: solid 1px #cddbd1;">
+                <button type="button" class="close" ng-click="$dismiss()" style="margin: 15px;" aria-hidden="true"></button>
+                <div class="panel-heading bold" style="font-size: 16px;" ng-if="vm.isNew == true"> <i class="icon-plus"></i> Thêm sự kiện </div>
+                <div class="panel-heading bold" style="font-size: 16px;" ng-if="vm.isNew != true"> <span class="glyphicon glyphicon-pencil"></span> Sửa sự kiện </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 margin-top-20">
+                            <label class="bold">Tiêu đề sự kiện: </label>
+                            <input data-ng-model="vm.event.title" type="text" autofocus="autofocus" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 margin-top-20">
+                            <label class="bold">Nội dung: </label>
+                            <textarea ui-tinymce="vm.tinymceOptions" ng-model="vm.event.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 margin-top-20">
+                            <label class="bold">Từ ngày: </label>
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="vm.event.startTime" is-open="popup1.opened" datepicker-options="dateOptions" datetime="dd/MM/yyyy" enable-time="true" ng-required="true" show-button-bar="false" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="col-md-3 margin-top-20">
+                            <label class="bold"> Thời gian bắt đầu: </label>
+                            <p class="input-group">
+                                <input type="time" id="exampleInput" class="form-control" name="input" ng-model="vm.event.startTime"
+                                       placeholder="HH:mm" required />
+                            </p>
+                        </div>
+
+                        <div class="col-md-3 margin-top-20">
+                            <label class="bold">Đến ngày: </label>
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="vm.event.endTime" is-open="popup2.opened" datepicker-options="dateOptions" datetime="dd/MM/yyyy" ng-required="true" show-button-bar="false" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="col-md-3 margin-top-20">
+                            <label class="bold"> Thời gian kết thúc: </label>
+                            <p class="input-group">
+                                <input type="time" id="exampleInput" class="form-control" name="input" ng-model="vm.event.endTime"
+                                       placeholder="HH:mm" required />
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">Loại sự kiện: </label>
+                            <select class="form-control" data-ng-model="vm.eventType" ng-options="eventType as eventType.name for eventType in vm.eventTypes track by eventType.id"></select>
+                        </div>
+
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">Trạng thái: </label>
+                            <select class="form-control" data-ng-disabled="true" data-ng-model="vm.status" ng-options="status as status.name for status in vm.statuses track by status.id"></select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">Chủ trì: </label>
+                            <div class="col-md-12 list-person">
+                                <div ng-if="vm.event.isOtherChairPerson != true">
+                                    <table class="table table-striped" ng-if="vm.event != null && vm.event.chairPerson != null">
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-border-left" style="border-left: 2px solid #f4f4f4 !important;">{{vm.event.chairPerson.displayName}}</td>
+                                                <td>
+                                                    <a ng-click="vm.chairPersonRemove()"> Xóa </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-if="vm.isView != true">
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="vm.showModalChairPerson()">
+                                            <span class="glyphicon glyphicon-plus"></span> Chọn người chủ trì
+                                        </button>
+                                    </div>
+                                </div>
+                                <input ng-if="vm.event.isOtherChairPerson == true" data-ng-model="vm.event.chairPersonName" type="text" autofocus="autofocus" class="form-control" />
+                                <div class="checkbox margin-top-10">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.event.isOtherChairPerson">
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                        <b> Chọn người chủ trì khác</b>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">Địa điểm: </label>
+                            <div class="col-md-12 list-person">
+                                <div ng-if="vm.event.otherLocation != true">
+                                    <table class="table table-striped" ng-if="vm.event != null && vm.event.room != null">
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-border-left" style="border-left: 2px solid #f4f4f4 !important;">{{vm.event.room.name}}</td>
+                                                <td>
+                                                    <a ng-click="vm.roomRemove()"> Xóa </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div ng-if="vm.isView != true">
+                                        <button type="button" class="btn btn-default btn-sm" ng-click="vm.showModalRoom()">
+                                            <span class="glyphicon glyphicon-plus"></span> Chọn địa điểm
+                                        </button>
+                                    </div>
+                                </div>
+                                <input ng-if="vm.event.otherLocation" data-ng-model="vm.event.location" type="text" autofocus="autofocus" class="form-control" />
+                                <div class="checkbox margin-top-10">
+                                    <label>
+                                        <input type="checkbox" ng-model="vm.event.otherLocation">
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                        <b> Chọn địa điểm khác</b>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">Người tham gia: </label>
+                            <div class="col-md-12 list-person">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr ng-repeat="person in vm.event.sAttendees">
+                                            <td class="table-border-left" style="border-left: 2px solid #f4f4f4 !important;">{{person.displayName}}</td>
+                                            <td>
+                                                <a ng-click="vm.sAttendeesRemove($index)"> Xóa </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="vm.isView != true">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="vm.showModallistPerson()">
+                                    <span class="glyphicon glyphicon-plus"></span> Thêm người tham gia
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">Phòng ban tham gia: </label>
+                            <div class="col-md-12 list-person">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr ng-repeat="department in vm.event.dAttendees">
+                                            <td class="table-border-left" style="border-left: 2px solid #f4f4f4 !important;">{{department.displayName}}</td>
+                                            <td>
+                                                <a ng-click="vm.dAttendeesRemove($index)"> Xóa </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="vm.isView != true">
+                                <button type="button" class="btn btn-default btn-sm" ng-click="vm.showModalListDepartment()">
+                                    <span class="glyphicon glyphicon-plus"></span> Thêm phòng ban tham gia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 margin-top-20">
+	                        <label class="bold">Mức độ ưu tiên: </label>
+	                        <select class="form-control" data-ng-model="vm.event.priority" ng-options="priority as priority.name for priority in vm.priorities track by priority.id"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 margin-top-20">
+                            <label class="bold"> Những người tham gia khác: </label>
+                            <textarea class="form-control" id="exampleFormControlTextarea3" rows="3" ng-model="vm.event.otherAttendees"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="vm.event.otherLocation">
+                        <div class="col-md-6 margin-top-20">
+                            <label class="bold">&nbsp;</label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="vm.event.carRegistered">
+                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                    <b>Sử dụng xe</b>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="panel panel-default" style="border: solid 1px #cddbd1; margin-top:20px;" ng-if="vm.event.carRegistered == true">
+                                <div class="panel-heading text-center bold"> Thông tin xe </div>
+                                <div class="panel-body">
+
+                                    <div class="row">
+                                        <div class="col-md-6 margin-top-20">
+                                            <label class="bold">Xe: </label>
+                                            <select class="form-control" ng-change="vm.changeCar(vm.event.car)" data-ng-model="vm.event.car" ng-options="car as car.name for car in vm.cars track by car.id"></select>
+                                        </div>
+                                        <div class="col-md-6 margin-top-20">
+                                            <label class="bold">Số lượng người đi: </label>
+                                            <input data-ng-model="vm.event.personsRequireTravelling" type="text" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6 margin-top-20">
+                                            <label class="bold">Biển số xe: </label>
+                                            <select class="form-control" data-ng-model="vm.event.car.licensePlate" ng-options="licensePlate as licensePlate.name for licensePlate in vm.listlicensePlate track by licensePlate.id"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 margin-top-20">
+                            <a class="no-content1 display-block link" style="padding: 8px 0 !important; font-weight: 600 !important;" ngf-select="vm.uploadFiles($file, $invalidFiles)" accept="*/*" ngf-max-size="5MB">
+                                <i class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+                            </a>
+                        </div>
+                        <div class="col-md-12 margin-top-20" ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+                            Có lỗi: <span class="bold" ng-if="vm.errorFile.$error == 'maxSize'">Kích thước tệp tin không được lớn hơn {{vm.errorFile.$errorParam}}</span>
+                            <span class="bold" ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp tin {{vm.errorFile.name}} không hợp lệ.</span>
+                        </div>
+                        <div class="row" ng-if="vm.event.attachments.length > 0">
+                            <div class="col-md-12 margin-top-20">
+                                <table id="bsTableControl4Files" bs-table-control="vm.bsTableControl4Files"></table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="vm.close()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> Hủy </button>
+            <button type="button" ng-click="vm.save()" class="btn btn-primary"><i class="icon-check"></i> Lưu </button>
+        </div>
+    </div>

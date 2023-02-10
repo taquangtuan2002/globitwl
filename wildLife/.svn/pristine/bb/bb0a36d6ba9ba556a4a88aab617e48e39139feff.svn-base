@@ -1,0 +1,181 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 class="modal-title"><i class="icon-plus"></i> {{'genarel.upload_signature_template' | translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row" ng-repeat="userAttachments in files">
+        <div class="col-md-12">
+            <div class="row">
+                
+                <div class="col-md-12 ">
+                    <!-- 1 Thông tin về cơ quan trổ chức -->
+                    <label class="col-md-12 bold" for="">1.Thông tin về cơ quan/tổ chức</label>
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for=""  class="bold" >Tên cơ quan/Đơn vị</label>
+                        <input ng-model="userAttachments.organizationName" type="text" placeholder="Nhập tên đơn vị" class="form form-control"/>
+                    </div>
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Địa chỉ cơ quan</label>
+                        <input ng-model="userAttachments.organizationAddress" type="text" placeholder="Địa chỉ cơ quan" class="form form-control"/>
+                    </div>
+                    <!-- thanh thêm trường start-->
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Điện thoại</label>
+                        <input ng-model="userAttachments.numberPhoneOffice  " type="text" placeholder="Điện thoại" class="form form-control"/>
+                    </div>
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Email</label>
+                        <input ng-model="userAttachments.emailOffice" type="text" placeholder="Email" class="form form-control"/>
+                    </div>
+
+                    <!-- thanh thêm trường end -->
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+                
+                <label style="right: -5px;" class="col-md-12 bold" for=""> 2.Thông tin về người đại diện cơ quan</label>
+                <div class="col-md-12" >
+                        <!-- 2. thông tin về người đại diện cơ quan -->
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Họ và tên</label>
+                        <input ng-model="userAttachments.displayName" type="text" placeholder="Họ và tên" class="form form-control"/>
+                    </div>
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Chức vụ</label>
+                        <input ng-model="userAttachments.positionName" type="text" placeholder="Nhập tên chức vụ" class="form form-control"/>
+                    </div>
+                    <!-- thanh thêm trường start-->
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Điện thoại liên hệ</label>
+                        <input ng-model="userAttachments.phoneNumberAgencyRepresentative" type="text" placeholder="Điện thoại liên hệ" class="form form-control"/>
+                    </div>
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Email liên hệ</label>
+                        <input ng-model="userAttachments.emailAgencyRepresentative" type="text" placeholder="Email liên hệ" class="form form-control"/>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <hr>
+                </div>
+                <label style="right: -5px;" class="col-md-12 bold" for=""> 3.Thông tin người sử dụng tài khoản</label>
+                <div class="col-md-12 " >
+                        <!-- 3. thông tin người sử dụng tài khoản -->
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Họ và tên</label>
+                        <input ng-model="userAttachments.displayNameAccountUser" type="text" placeholder="Họ và tên" class="form form-control"/>
+                    </div>
+
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Phòng ban</label>
+                        <input ng-model="userAttachments.department" type="text" placeholder="Nhập phòng ban" class="form form-control"/>
+                    </div>
+
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Chức vụ</label>
+                        <input ng-model="userAttachments.positionNameAccountUser" type="text" placeholder="Nhập tên chức vụ" class="form form-control"/>
+                    </div>
+                    <!-- thanh thêm trường end -->
+
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Số điện thoại</label>
+                        <input ng-model="userAttachments.phoneNumber" type="text" placeholder="Số điện thoại" class="form form-control"/>
+                    </div>
+                    
+                    <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Email</label>
+                        <input ng-model="userAttachments.email" type="text" placeholder="Email" class="form form-control"/>
+                    </div>
+                    <!-- thanh thêm trường start -->
+                    <!-- <div class="col-md-6 margin-top-5 margin-bottom-5">
+                        <label for="" class="bold">Vai trò tài khoản cấp</label>
+                        <input ng-model="userAttachments.accountRoleLevel" type="text" placeholder="Vai trò tài khoản cấp" class="form form-control"/>
+                    </div> -->
+                    <!-- thanh thêm trường end -->
+                </div>
+                 
+            </div>
+        </div>
+        <!--tran huu dat test cat anh-->
+        <!-- <input type="file" id="inputFile12456"/> -->
+        <!-- <div style="background: #E4E4E4; overflow: hidden;width:500px;height:300px;">
+            <ui-cropper image="myImage" area-type="rectangle" aspect-ratio="0" result-image="myCroppedImage" result-image-size='{w: 340,h: 200}'></ui-cropper>
+        </div>
+        <div>Cropped Image:
+            <div><img ng-src="{{myCroppedImage}}" /></div>
+        </div> -->
+        <!--tran huu dat test cat anh-->
+        <!-- <div style="right: -5px;" class="col-md-6 margin-top-10 margin-bottom-10"  id="image_attach">
+            <button class="btn btn-info link bold cursor-pointer" ngf-max-size="'100MB'"
+                ngf-select="uploadFiles($file, $invalidFiles)"
+                ngf-accept="'image/*'" ngf-multiple="true"><i class="fa fa-paperclip"></i>
+                {{'genarel.upload_attachments2' | translate}}</button>
+        </div> -->
+        <div class="col-md-12" ng-if="files && files.length > 0">
+            <!-- <div ng-repeat="userAttachments in files"> -->
+                <!-- <div ng-if="userAttachments.file.contentType != 'image/png' && userAttachments.file.contentType != 'image/jpeg'">
+                    
+                </div> -->
+
+                <!--them cat anh-->
+                
+                <!-- <div class="col-md-12 margin-top-10 margin-bottom-10" ng-if="myImage!=null">
+                    <div style="background: #E4E4E4; overflow: hidden;width:500px;height:300px;">
+                        <ui-cropper image="myImage" area-type="rectangle" aspect-ratio="0" result-image="myCroppedImage" result-image-size='{w: 340,h: 200}'></ui-cropper>
+                    </div>
+                    <div>Cropped Image:
+                        <div><img ng-src="{{myCroppedImage}}" id="imageCropped" /></div>
+                    </div>
+                </div> -->
+                <!--them cat anh-->  
+                <!-- <div ng-if="myImage==null && userAttachments.file !=null" class=" col-md-6 margin-top-10 margin-bottom-10 image-custom" ng-click="openFile(userAttachments)"> -->
+                    <!-- ng-if="userAttachments.file.contentType == 'image/png' || userAttachments.file.contentType == 'image/jpeg'"> -->
+                    <!-- <ul class="tags">
+                        <li class="tag">
+                            <span title="{{userAttachments.fileName}}">{{userAttachments.fileName}}</span>
+                        </li>
+                    </ul>
+                    <div class="margin-10">
+                        <div class="image-preview" ng-if="userAttachments != null"
+                            style="background-image: url({{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{userAttachments.file.id}})"
+                            alt="">
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div class="product-overlay text-center">
+                    <button href="#" class="btn btn-default btn-remove-image"
+                        ng-click="removeImage($index)">
+                        <i class="fa fa-times fa-2" aria-hidden="true"></i> Xóa
+                    </button>
+                </div> -->
+            <!-- </div> -->
+            
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+        {{'user.cancel' | translate}}</button>
+    <button type="button" ng-click="saveFileAfterCrop(myCroppedImage)" class="btn btn-primary"><i class="icon-check"></i>
+        {{'user.save' | translate}}</button>
+</div>
+
+<script type="text/ng-template" id="open_file_images_user_attachment_home.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <h4 class="modal-title bold"><i class="icon-info"></i> <span ng-bind-html="fileOpen.fileName"></span> </h4>
+        </div>
+        <div class="modal-body clearfix">
+            <div class="col-md-12">
+                <div class="open-img">
+                    <img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{fileOpen.file.id}}"
+                         ngf-accept="'image/*'" style="width: 100%; height:100%;">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="closeShowImage()" class="button button-3d tab-linker" data-dismiss="modal">{{'application.modal.close' | translate}}</button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,253 @@
+<!-- BEGIN MAIN CONTENT -->
+<style>
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  /* /* #map {
+    height:500px;
+  } */ */
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<div class="row ">
+	<div class="col-md-6">
+		<!-- <div class="min-height-500 portlet light bordered">
+				<div class="row margin-top-10 margin-bottom-10"> 
+                    <div class="col-md-6">
+                        <label class="bold">{{'region.name' | translate}}</label>
+						<ui-select ng-model="vm.searchDto.region" sortable="true" close-on-select="true" on-select="vm.onFmsRegionSelected($item)">
+							<ui-select-match allow-clear="true" placeholder="{{'region.chooseRegion' | translate}}...">{{$select.selected.name}}
+							</ui-select-match>
+							<ui-select-choices repeat="region.id as region in vm.regions | propsFilter: {name: $select.search, code: $select.search}">
+								<div class="bold" ng-bind-html="region.name | highlight: $select.search"></div>
+							</ui-select-choices>
+						</ui-select>
+                    </div>	
+					<div class="col-md-6">
+                        <label class="bold">{{'region.name' | translate}}</label>
+						<ui-select ng-model="vm.searchDto.province" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+							<ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+								{{$select.selected.name}} </ui-select-match>
+							<ui-select-choices repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+								<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+								</div>
+							</ui-select-choices>
+						</ui-select>
+                    </div>	
+					<div class="col-md-6">
+						<label class="bold">{{'region.name' | translate}}</label>
+						<ui-select ng-model="vm.searchDto.district" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+							<ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+								{{$select.selected.name}} </ui-select-match>
+							<ui-select-choices repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+								<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+								</div>
+							</ui-select-choices>
+						</ui-select>
+					</div>	
+                </div>
+                <div class="row margin-top-10 margin-bottom-10">
+                	
+					<div class="col-md-6">
+                        <label class="bold">{{'region.name' | translate}}</label>
+						<ui-select ng-model="vm.searchDto.ward" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+							<ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+								{{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+							<ui-select-choices repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+								<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+								</div>
+							</ui-select-choices>
+						</ui-select>
+                    </div>
+                    
+            	</div>
+            	<div class="row margin-top-10 margin-bottom-10">
+            		<div class="col-md-12">
+            			<input type="text" data-ng-model="vm.searchDto.nameOrCode" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+            		</div>   
+            		<div class="input-group">
+                        <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+                        <div class="input-group-btn">
+                            <button ng-click="vm.getListFarm()" class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>         		
+            	</div>
+            	<div class="row margin-top-10 margin-bottom-10">
+            		<div class="col-md-12">
+            			
+            		</div>            		
+            	</div>            	
+            	
+            	
+            	<div class="row margin-top-10 margin-bottom-10">
+            		
+            		<ui-select ng-model="vm.farm" sortable="true" close-on-select="true" >
+						<ui-select-match allow-clear="true" placeholder="{{'importAnimal.CSCN' | translate}}...">
+							{{$select.selected.name}} 
+						</ui-select-match>
+						<ui-select-choices repeat="farm in vm.farms | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="farm.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+            		<table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+				</div>
+				<div ng-if="vm.positionSelected" class="row margin-top-10 margin-bottom-10">
+					<table class="table table-hover">
+						<tr>
+							<th style="width: 20%">{{'report.nameFarm' | translate}}</th>
+							<th style="width: 20%">{{'farm.ownerName' | translate}}</th>
+							<th style="width: 20%">{{'report.numberPhone' | translate}}</th>
+							<th style="width: 40%">{{'report.address' | translate}}</th>
+						</tr>
+						<tr>
+							<td id="farm_name"></td>
+							<td id="farm_ownerName">{{vm.positionSelected.ownerName}}</td>
+							<td id="farm_ownerPhoneNumber">{{vm.positionSelected.ownerPhoneNumber}}</td>
+							<td id="farm_adressDetail">{{vm.positionSelected.adressDetail}}</td>
+						</tr>
+					</table>
+				</div>
+		</div> -->
+		<div id="container"  class="min-height-500 portlet light bordered"></div>
+		<strong>{{'report.densityMapCalculation' | translate}}</strong>
+	</div>
+	<div class="col-md-6 ">
+		<!--<div id="map" class="min-height-500 portlet light bordered"></div>-->
+		<div ng-if="vm.listFarmDistrict!=null" class="min-height-500 portlet light bordered col-md-12">
+			<h4><strong>{{'report.detail' | translate}} - <span>{{'report.city' | translate}} {{vm.nameCity}}</span></strong></h4>		
+			<strong>{{'report.listFarmDistrict' | translate}} {{vm.nameCity}}</strong>
+			<a href="#" class="btn btn-default margin-left-10" file-name="'SoLuongGiaCam.xls'"  ng-click="getFile()" file-download="myBlobObject"><i class="fa fa-file-excel-o"> Export</i></a>
+			<!--<button class="btn btn-default margin-left-10"  ng-click="calculation()" ><i class="fa fa-file-excel-o"> Công thức</i></button>-->
+			<!--<span>Tỉnh {{vm.nameCity}} ({{vm.count}}/con)</span>-->
+			<table class="table table-hover table-bordered">
+				<tr>
+					<!--<th style="width: 20%">{{'report.codeAu' | translate}}</th>-->
+					<th style="width: 50%">{{'report.nameAu' | translate}}</th>						
+					<th style="width: 50%">{{'report.countAu' | translate}}({{'report.ba' | translate}})</th>
+					<!--<th style="width: 20%">{{'report.area' | translate}}(km2)</th>-->
+					
+				</tr>
+				<tr ng-repeat=" item in vm.listFarmDistrict">		
+					<!--<td><a ng-click=vm.showPopupDetail(item.idAu,item.nameAu,item.quantity)>{{item.codeAu}}</a></td>-->
+					<td><a ng-click=vm.showPopupDetail(item.idAu,item.nameAu,item.quantity)>{{item.nameAu}}</a></td>					
+					<td style="text-align:center"><a ng-click=vm.showPopupDetail(item.idAu,item.nameAu,item.quantity)>{{item.quantity | number }}</a></td>
+					<!--<td style="text-align:center"><a ng-click=vm.showPopupDetail(item.idAu,item.nameAu,item.quantity)>{{item.totalAcreage | number }}</a></td>-->
+					<td ng-if="vm.id!=null && vm.id==item.idAu" ><i class="icon-pencil"></i></td>
+				</tr>
+			</table>
+			<strong>{{'report.densityRegion' | translate}} {{vm.regionDto.regionName}}: {{vm.regionDto.densityRegion | number }} {{'report.ba' | translate}}/km2 ({{'report.include' | translate}} 1/ {{vm.regionDto.numberProvince | number }} {{'report.city' | translate}})</strong>
+			<a href="#"    ng-click="vm.getListDensity()" >{{'report.viewDensityRegion' | translate}}</a>
+			
+			<table ng-if="vm.regions!=null && vm.regions.length>0" class="table table-hover table-bordered">
+				<tr>
+					<!--<th style="width: 20%">{{'report.codeAu' | translate}}</th>-->
+					<th style="width: 50%">{{'report.regi' | translate}}</th>						
+					<th style="width: 30%">{{'report.density' | translate}}</th>
+					<th style="width: 20%">{{'report.numberProvince' | translate}}</th>
+					<!--<th style="width: 20%">{{'report.area' | translate}}(km2)</th>-->
+					
+				</tr>
+				<tr ng-repeat=" item in vm.regions">		
+					
+					<td>{{item.regionName}}</td>					
+					<td style="text-align:right">{{item.densityRegion | number }}</td>
+					<td style="text-align:right">{{item.numberProvince | number }}</td>
+				</tr>
+			</table>
+		</div>
+		<!--<div ng-if="vm.listFarmWards!=null" class="portlet light bordered col-md-12">
+			<strong>{{'report.listFarmWards' | translate}} {{vm.nameDistrict}} ({{vm.countDistrict}} {{'report.ba' | translate}})</strong>		
+			<!--<span>Tỉnh {{vm.nameCity}} ({{vm.count}}/con)</span>
+			<table class="table table-hover table-bordered">
+				<tr>
+					<th style="width: 30%">{{'report.codeAu' | translate}}</th>
+					<th style="width: 50%">{{'report.nameAu' | translate}}</th>						
+					<th style="width: 20%">{{'report.countAu' | translate}}</th>					
+				</tr>
+				<tr ng-repeat=" a in vm.listFarmWards">		
+					<td>{{a.codeAu}}</td>
+					<td>{{a.nameAu}}</td>					
+					<td style="text-align:center">{{a.count}}</td>
+				</tr>
+			</table>
+			
+			
+		</div>-->
+	</div>
+	    
+</div>
+<script type="text/ng-template" id="detail_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"> {{'report.listFarmWards' | translate}} {{vm.nameDistrict}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<!--<div class="row margin-top-10 margin-bottom-10">
+						
+					</div>
+					<!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+					<!--</div>-->
+				</div>
+				<div class="box-body">
+					<!--<table id="bsTableControlFarm" bs-table-control="vm.bsTableControlFarm"></table>-->
+					<table class="table table-hover table-bordered">
+						<tr>
+							<!--<th style="width: 20%">{{'report.codeAu' | translate}}</th>-->
+							<th style="width: 50%">{{'report.nameAu' | translate}}</th>						
+							<th style="width: 40%">{{'report.countAu' | translate}}({{'report.ba' | translate}})</th>		
+							<!--<th style="width: 30%">{{'report.area' | translate}}(km2)</th>		-->					
+						</tr>
+						<tr ng-repeat=" a in vm.listFarmWards">		
+							<!--<td>{{a.codeAu}}</td>-->
+							<td>{{a.nameAu}}</td>					
+							<td style="text-align:center">{{a.quantity | number}}</td>
+							<!--<td style="text-align:center">{{a.totalAcreage | number }}</td>-->
+						</tr>
+						<tr>
+							<td style="font-weight:bold">{{'report.total' | translate}}</td>
+							<td style="text-align:center; font-weight:bold"> {{vm.countDistrict | number }}</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			
+		</div>
+	</div>
+</script>
+<style>  
+	
+  table, th , td {  
+      border: 1px solid grey;  
+      border-collapse: collapse;  
+      padding: 5px;  
+   }  
+     
+   table tr:nth-child(odd) {  
+      background-color: #f2f2f2;  
+   }  
+  
+   table tr:nth-child(even) {  
+      background-color: #ffffff;  
+   }  
+   .table tr th{
+		background-color:#3c8dbc !important;
+		text-align:center;
+   }
+   td a:click{
+	background-color:#3c8dbc !important;
+   }
+</style>  
+<!-- END MAIN CONTENT -->

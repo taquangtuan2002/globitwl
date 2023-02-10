@@ -1,0 +1,42 @@
+(function () {
+    'use strict';
+
+    Education.AdministrativeOrganization = angular.module('Education.AdministrativeOrganization', [
+        'ui.router',
+        'oc.lazyLoad',
+        'bsTable',
+        'toastr',
+        'Education.Common'
+    ]);
+
+    Education.AdministrativeOrganization.config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('application.administrativeOrganization', {
+                url: '/_administrative_organization',
+                templateUrl: 'administrative_organization/views/administrative_organization.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Administrative Organization',
+                    pageSubTitle: ''
+                },
+                controller: 'AdministrativeOrganizationController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AdministrativeOrganization',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'administrative_organization/controller/AdministrativeOrganizationController.js?v='+Education.version,
+                                'administrative_organization/bussiness/AdminstrativeOrganizationService.js?v='+Education.version,
+                                'users/business/UserService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version,
+                            ]
+                        });
+                    }]
+                }
+            });
+    }]);
+
+})();

@@ -1,0 +1,33 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.unit.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'unit.create' | translate}}</h4>
+        <h4 ng-if="vm.unit.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'unit.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'unit.code' | translate}}</label>
+                <input ng-if="vm.unit.isNew == true" data-ng-model="vm.unit.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.unit.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			<div class="col-md-1 margin-top-10">
+				<button ng-if="vm.unit.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				<button ng-if="vm.unit.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			</div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'unit.name' | translate}}</label>
+                <input data-ng-model="vm.unit.name" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'unit.description' | translate}}</label>
+                <input data-ng-model="vm.unit.description" class="form-control" />
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'unit.cancel' | translate}}</button>
+        <!--<button type="button" ng-click="vm.saveOriginal()" class="btn btn-primary"><i class="icon-check"></i> {{'unit.save' | translate}}</button>-->
+		<button ng-if="vm.unit.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'unit.save' | translate}}</button>
+		<button ng-if="vm.unit.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'unit.save' | translate}}</button>
+    </div>

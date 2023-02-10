@@ -1,0 +1,233 @@
+package com.globits.wl.dto;
+
+import com.globits.cms.dto.BaseObjectDto;
+import com.globits.core.dto.FileDescriptionDto;
+import com.globits.security.domain.User;
+import com.globits.security.dto.UserDto;
+import com.globits.wl.domain.UserAttachments;
+
+public class UserAttachmentsDto extends BaseObjectDto {
+
+	private String title;
+	private String fileName;
+	private FileDescriptionDto file;
+	private UserDto user;
+	
+	// thông tin cơ quan/ tổ chức
+	private String organizationName; // Tên cơ quan/ đơn vị
+	private String orgGroup; // nhóm cơ quan
+	private String organizationAddress; // địa chỉ
+	private String numberPhoneOffice;
+	private String emailOffice;
+	
+	// Thông tin về người đại diện cơ quan
+	private String displayName;
+	private String positionName; // chức vụ
+	private String phoneNumberAgencyRepresentative;
+	private String emailAgencyRepresentative;
+	
+	// Thông tin người sử dụng tài khoản
+	private String displayNameAccountUser;
+	private String Department;
+	private String positionNameAccountUser; // vị trí công tác 
+	private String phoneNumber;
+	private String email;
+	
+	private String accountRoleLevel;
+	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public FileDescriptionDto getFile() {
+		return file;
+	}
+	public void setFile(FileDescriptionDto file) {
+		this.file = file;
+	}
+	public UserDto getUser() {
+		return user;
+	}
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
+	
+	public String getOrganizationName() {
+		return organizationName;
+	}
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+	public String getPositionName() {
+		return positionName;
+	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+	
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getOrganizationAddress() {
+		return organizationAddress;
+	}
+	public void setOrganizationAddress(String organizationAddress) {
+		this.organizationAddress = organizationAddress;
+	}
+	
+	public String getNumberPhoneOffice() {
+		return numberPhoneOffice;
+	}
+	public void setNumberPhoneOffice(String numberPhoneOffice) {
+		this.numberPhoneOffice = numberPhoneOffice;
+	}
+	public String getEmailOffice() {
+		return emailOffice;
+	}
+	public void setEmailOffice(String emailOffice) {
+		this.emailOffice = emailOffice;
+	}
+	public String getPhoneNumberAgencyRepresentative() {
+		return phoneNumberAgencyRepresentative;
+	}
+	public void setPhoneNumberAgencyRepresentative(String phoneNumberAgencyRepresentative) {
+		this.phoneNumberAgencyRepresentative = phoneNumberAgencyRepresentative;
+	}
+	public String getEmailAgencyRepresentative() {
+		return emailAgencyRepresentative;
+	}
+	public void setEmailAgencyRepresentative(String emailAgencyRepresentative) {
+		this.emailAgencyRepresentative = emailAgencyRepresentative;
+	}
+	public String getDisplayNameAccountUser() {
+		return displayNameAccountUser;
+	}
+	public void setDisplayNameAccountUser(String displayNameAccountUser) {
+		this.displayNameAccountUser = displayNameAccountUser;
+	}
+	public String getDepartment() {
+		return Department;
+	}
+	public void setDepartment(String department) {
+		Department = department;
+	}
+	public String getPositionNameAccountUser() {
+		return positionNameAccountUser;
+	}
+	public void setPositionNameAccountUser(String positionNameAccountUser) {
+		this.positionNameAccountUser = positionNameAccountUser;
+	}
+	public String getAccountRoleLevel() {
+		return accountRoleLevel;
+	}
+	public void setAccountRoleLevel(String accountRoleLevel) {
+		this.accountRoleLevel = accountRoleLevel;
+	}
+	public String getOrgGroup() {
+		return orgGroup;
+	}
+	public void setOrgGroup(String orgGroup) {
+		this.orgGroup = orgGroup;
+	}
+	public UserAttachmentsDto() {
+		super();
+	}
+	
+	public UserAttachmentsDto(UserAttachments entity) {
+		super();
+		if (entity != null) {
+			this.setId(entity.getId());
+			this.fileName = entity.getFileName();
+			this.title = entity.getTitle();
+			this.organizationName = entity.getOrganizationName();
+			this.positionName = entity.getPositionName();
+			this.orgGroup = entity.getOrgGroup();
+			this.phoneNumber = entity.getPhoneNumber();
+			this.displayName = entity.getDisplayName();
+			this.email = entity.getEmail();
+			this.organizationAddress = entity.getOrganizationAddress();
+
+			this.numberPhoneOffice = entity.getNumberPhoneOffice();
+			this.emailOffice = entity.getEmailOffice();
+			
+			this.phoneNumberAgencyRepresentative = entity.getPhoneNumberAgencyRepresentative();
+			this.emailAgencyRepresentative = entity.getEmailAgencyRepresentative();
+			
+			this.displayNameAccountUser = entity.getDisplayNameAccountUser();
+			this.Department = entity.getDepartment();
+			this.positionNameAccountUser = entity.getPositionNameAccountUser();
+			this.accountRoleLevel = entity.getAccountRoleLevel();
+			if (entity.getUser() != null) {
+				this.user = new UserDto();
+				if (entity.getUser().getPerson() != null && entity.getUser().getPerson().getId() != null) {
+					this.user.setDisplayName(entity.getUser().getPerson().getDisplayName());
+				}
+				this.user.setUsername(entity.getUser().getUsername());
+			}
+			if (entity.getFile() != null) {
+				this.file = new FileDescriptionDto(entity.getFile());
+			}
+		}
+	}
+	
+	public UserAttachmentsDto(UserAttachments entity, User user) {
+		super();
+		if (entity != null) {
+			this.setId(entity.getId());
+			this.fileName = entity.getFileName();
+			this.title = entity.getTitle();
+			this.organizationName = entity.getOrganizationName();
+			this.positionName = entity.getPositionName();
+			this.phoneNumber = entity.getPhoneNumber();
+			this.displayName = entity.getDisplayName();
+			this.email = entity.getEmail();
+			this.organizationAddress = entity.getOrganizationAddress();
+			this.orgGroup = entity.getOrgGroup();
+			
+			this.numberPhoneOffice = entity.getNumberPhoneOffice();
+			this.emailOffice = entity.getEmailOffice();
+			
+			this.phoneNumberAgencyRepresentative = entity.getPhoneNumberAgencyRepresentative();
+			this.emailAgencyRepresentative = entity.getEmailAgencyRepresentative();
+			
+			this.displayNameAccountUser = entity.getDisplayNameAccountUser();
+			this.Department = entity.getDepartment();
+			this.positionNameAccountUser = entity.getPositionNameAccountUser();
+			this.accountRoleLevel = entity.getAccountRoleLevel();
+			
+			if (entity.getFile() != null) {
+				this.file = new FileDescriptionDto(entity.getFile());
+			}
+		}
+		if (user != null) {
+			this.user = new UserDto(user);
+		
+		}
+	}
+
+
+}

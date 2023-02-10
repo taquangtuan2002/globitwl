@@ -1,0 +1,353 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.reportPeriod.isNew == true" class="modal-title"><i class="icon-plus"></i> {{"importAnimal.create"|translate}}</h4>
+    <h4 ng-if="vm.reportPeriod.isNew == false" class="modal-title"><i class="icon-pencil"></i> Xem chi tiết tăng giảm</h4>
+    <h4 ng-if="vm.reportPeriod.isCopy == true" class="modal-title"><i class="fa fa-copy"></i> Sao chép báo cáo</h4>
+</div>
+<div class="modal-body">
+    <div class="row margin-top-10 margin-bottom-10">
+        
+        <div class="col-md-4">
+            <label class="row">Cơ sở nuôi:</label>
+            <input readonly data-ng-model="vm.detail16.farmName"
+                placeholder="Cơ sở nuôi" type="text" class="form-control"/>
+            <div class="input-group-btn" ng-if="vm.disabledEditFarm==true">
+                <!-- <button ng-click="vm.showPopupFarm()" class="btn btn-default" type="submit"><i
+                        class="glyphicon glyphicon-plus"></i>{{"exportAnimal.choose" | translate}}</button> -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label>Loài:</label>
+            <input readonly data-ng-model="vm.detail16.animalName"
+            placeholder="Cơ sở nuôi" type="text" class="form-control"/>
+        </div>
+        <div class="col-md-4">
+            <label>Tên khoa học:</label>
+           <input readonly data-ng-model="vm.detail16.animalSciName"
+            placeholder="Cơ sở nuôi" type="text" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="row" style="overflow: auto;">
+        <div class="col-md-12 margin-top-10">
+            <table class="table table-bordered auto">
+                <thead>
+                    <tr>
+                        <th style="width: 5px;" rowspan="3">STT</th>
+                        <th style="width: 8px;" rowspan="3">Ngày</th>
+                        <th style="width: 148.8px;" colspan="4" rowspan="2">Tổng số c&aacute;
+                            thể nu&ocirc;i</th>
+                        <th style="width: 56.8px;" colspan="3" rowspan="2">C&aacute; thể bố mẹ</th>
+                        <th style="width: 56.8px;" colspan="3" rowspan="2">Đàn giống hậu bị</th>
+                        <th style="width: 40px;" colspan="3" rowspan="2">Số lượng con dưới 1
+                            tuổi (chưa trưởng thành)</th>
+                        <th style="width: 108.8px;" colspan="3" rowspan="2">Số lượng c&aacute;
+                            thể tr&ecirc;n 1 tuổi (đã trưởng thành)</th>
+                        <th style="width: 20.8px;" colspan="14">&nbsp;&nbsp;&nbsp;Diễn biến tăng đàn (mua, sinh sản ..vv)</th>
+                            
+                        <th style="width: 20.8px;" colspan="14">&nbsp;&nbsp;&nbsp;Diễn biến giảm đàn (b&aacute;n, cho tặng, chết&hellip;)</th>
+                        <th style="width: 56.8px;" rowspan="3"> Ghi chú</th>
+                        
+                        <th style="width: 20.8px;" rowspan="3"> Thao tác</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 56.8px;" rowspan="2">Tổng tăng</th>
+                        <th style="width: 56.8px;" colspan="3">Bố mẹ</th>
+                        <th style="width: 56.8px;" colspan="3">Hậu Bị</th>
+                        <th style="width: 20.8px;" colspan="3" >&nbsp;C&aacute; Thể dưới 1 tuổi</th>
+                        <th style="width: 20.8px;" colspan="3" >&nbsp;C&aacute; Thể trên 1 tuổi</th>
+                        <th style="width: 20.8px;" rowspan="2">Lí do tăng</th>
+
+                        <th style="width: 56.8px;" rowspan="2">Tổng giảm</th>
+                        <th style="width: 56.8px;" colspan="3">Bố mẹ</th>
+                        <th style="width: 56.8px;" colspan="3">Hậu Bị</th>
+                        <th style="width: 20.8px;" colspan="3" >&nbsp;C&aacute; Thể dưới 1 tuổi</th>
+                        <th style="width: 20.8px;" colspan="3" >&nbsp;C&aacute; Thể trên 1 tuổi</th>
+                        <th style="width: 20.8px;" rowspan="2">Lí do giảm</th>
+                    </tr>
+                    <tr>
+                        <th style="width: 36px;">Tổng</th>
+                        <th style="width: 28px;">Đực</th>
+                        <th style="width: 22.4px;">Cái</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+
+                        <th style="width: 28.8px;">Đực</th>
+                        <th style="width: 22.4px;">Cái</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+
+                        <th style="width: 28.8px;">Đực</th>
+                        <th style="width: 22.4px;">C&aacute;i</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+
+                        <th style="width: 28.8px;">Đực</th>
+                        <th style="width: 22.4px;">C&aacute;i</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+
+                        <th style="width: 28.8px;">Đực</th>
+                        <th style="width: 23.2px;">C&aacute;i</th>
+                        <th style="width: 45.6px;">Kh&ocirc;ng x&aacute;c định</th>
+
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+                        
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 45.6px;">Không xác định</th>
+
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 20.8px;"> Không xác định</th>
+                        <!-- xuất -->
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 20.8px;"> Không xác định</th>
+
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 20.8px;"> Không xác định</th>
+
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 20.8px;"> Không xác định</th>
+
+                        <th style="width: 20.8px;"> Đực</th>
+                        <th style="width: 20.8px;"> Cái</th>
+                        <th style="width: 20.8px;"> Không xác định</th>
+                    </tr>
+                </thead>
+                <tbody ng-if="vm.listReportForm16Animal.length > 0">
+                    <tr ng-repeat="reportForm in vm.listReportForm16Animal track by $index">
+                        <td>{{$index + 1}}</td>
+                        <td><input style="min-width: 68px;" data-ng-model="reportForm.dateReport" ng-change="vm.pickDateForm16()" max="{{vm.currentDate}}" my-date-picker class="form-control" ng-disable="true"/></td>     
+                        <td>
+                            <input data-ng-model="reportForm.total" ng-disabled="true" ng-class="{'glb-disabled':true}"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.male" ng-disabled="true" ng-class="{'glb-disabled':true}"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.female" ng-disabled="true" ng-class="{'glb-disabled':true}"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGender" ng-disabled="true" ng-class="{'glb-disabled':true}"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleParent" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}"  ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleParent" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderParent" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleGilts" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleGilts" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderGilts" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.childUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.maleChildOver1YearOld" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.femaleChildOver1YearOld" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.unGenderChildOver1YearOld" ng-disabled="true" ng-class="{'glb-disabled':true}" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateTotalForm16(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                          
+                        <td>
+                            <input data-ng-model="reportForm.totalImport" ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleParent" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleParent" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importUnGenderParent" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleGilts" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleGilts" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importUnGenderGilts" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importMaleChildOver1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"/>
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importFemaleChildOver1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.importUnGenderChildOver1YearOld" ng-disabled="true"ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <ui-select  ng-class="{'glb-disabled':reportForm.editable == false}" ng-disabled="true" ng-model="reportForm.importReason" sortable="true" close-on-select="true" on-select="">
+                                <ui-select-match allow-clear="true" placeholder="Chọn lí do tăng...">{{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="importReason.name as importReason in vm.importReason | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="importReason.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.totalExport" ng-disabled="true" ng-class="{'glb-disabled':true}"   type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleParent" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleParent" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"/>
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportUnGenderParent" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"/>
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleGilts" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleGilts" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportUnGenderGilts" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportChildUnder1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportMaleChildOver1YearOld" ng-disabled="true" ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportFemaleChildOver1YearOld" ng-disabled="true"ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control"  />
+                        </td>
+                        <td>
+                            <input data-ng-model="reportForm.exportUnGenderChildOver1YearOld" ng-disabled="true"ng-class="{'glb-disabled':reportForm.editable == false}" ng-change="vm.updateForm16Exist(reportForm,reportForm.dateReport)"    type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td style="max-width: 150px;min-width: 150px;">
+                            <ui-select  ng-class="{'glb-disabled':reportForm.editable == false}" ng-disabled="true" ng-model="reportForm.exportReason" sortable="true" close-on-select="true" on-select="">
+                                <ui-select-match allow-clear="true" placeholder="Chọn lí do giảm...">{{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="exportReason.name as exportReason in vm.exportReason | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="exportReason.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </td>
+                        <td>
+                            <input style="width: 56.8px;" data-ng-model="reportForm.note" type="text" ng-class="{'glb-disabled':reportForm.editable == false}" class="form-control"/>
+                        </td>
+                        <!-- <td class="text-center" style="max-width: 100px;min-width: 100px;">
+                            <a ng-click="vm.deleteForm16Record($index,reportForm.id)"><i class="text-danger">Xóa</i></a>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <!-- <button type="button" ng-click="vm.coppyReportPeriod()" class="btn btn-primary" data-dismiss="modal">Sao chép kỳ báo cáo</button> -->
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       Đóng</button>
+    <!-- <button type="button" ng-click="vm.saveReportForm16()" class="btn btn-primary"><i class="icon-check"></i>{{'exportAnimal.save' | translate}}</button> -->
+
+</div>
+
+<script type="text/ng-template" id="choose_farm_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i> {{"exportAnimal.chooseFarm" | translate}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text"  ng-if="vm.isFamer == false"  data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<input type="text"  ng-if="vm.isFamer == true" readonly data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByFarm()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlFarm" bs-table-control="vm.bsTableControlFarm"></table>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agreeFarm()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_record.html">
+
+	<div class="modal-header alert alert-danger">
+			<h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+			
+			<a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>
+						
+	</div>
+	<div class="modal-body">
+		<div class="row">
+				<h2>
+					
+					<p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'farm.store.confirmDelete' | translate}}</p>
+				</h2>
+				
+		</div>
+	</div>
+	<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'farm.store.cancel' | translate}}</button>
+			<button type="button" ng-click="vm.confirmDeleteRecord()" class="btn btn-danger"><i class="icon-check"></i> {{'farm.store.accept' | translate}}</button>
+	</div>
+	
+</script>

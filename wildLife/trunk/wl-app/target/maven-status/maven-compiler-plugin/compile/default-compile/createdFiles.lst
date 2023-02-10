@@ -1,0 +1,10 @@
+com\globits\wl\config\WebSecurityConfig.class
+com\globits\wl\listeners\ApplicationStartupListener.class
+com\globits\wl\WLApplication.class
+com\globits\wl\config\WebConfig.class
+com\globits\wl\config\DatabaseConfig.class
+com\globits\wl\config\WebInit.class
+com\globits\wl\config\ApplicationConfig.class
+com\globits\wl\config\OAuth2AuthorizationServerConfig.class
+com\globits\wl\config\MethodSecurityConfig.class
+com\globits\wl\config\OAuth2ResourceServerConfig.class

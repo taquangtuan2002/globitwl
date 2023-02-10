@@ -1,0 +1,7 @@
+package com.globits.wl.service;
+
+import com.globits.wl.dto.functiondto.DashboardCitesDto;
+
+public interface DashboardService {
+    DashboardCitesDto Cites();
+}

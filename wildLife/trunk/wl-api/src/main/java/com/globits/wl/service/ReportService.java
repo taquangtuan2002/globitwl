@@ -1,0 +1,95 @@
+package com.globits.wl.service;
+
+import java.text.ParseException;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import com.globits.wl.dto.AnimalDto;
+import com.globits.wl.dto.AnimalReportDataFormDto;
+import com.globits.wl.dto.ImportExportAnimalDto;
+import com.globits.wl.dto.Report18Dto;
+import com.globits.wl.dto.functiondto.AnimalReportDataReportDto;
+import com.globits.wl.dto.functiondto.AnimalReportDataSearchDto;
+import com.globits.wl.dto.functiondto.FarmAnimalTotalDto;
+import com.globits.wl.dto.functiondto.FarmSearchDto;
+import com.globits.wl.dto.functiondto.ImportExportAnimalSearchDto;
+import com.globits.wl.dto.functiondto.ReportAccordingToTheRedBookDto;
+import com.globits.wl.dto.functiondto.ReportImportExportTimeDto;
+import com.globits.wl.dto.functiondto.ReportParamDto;
+import com.globits.wl.dto.functiondto.ReportQuantityByCategoryCitesDto;
+import com.globits.wl.dto.report.EggSummaryReportDto;
+import com.globits.wl.dto.report.FarmSummaryReportDto;
+import com.globits.wl.dto.report.InventoryReportDto;
+import com.globits.wl.dto.report.ProductivityForecastReportDto;
+
+public interface ReportService {
+
+	List<FarmSummaryReportDto> getMeatYieldReport(ReportParamDto paramDto) throws ParseException;
+
+	List<EggSummaryReportDto> getEggSummaryReport(ReportParamDto paramDto) throws ParseException;
+
+	List<ProductivityForecastReportDto> getMeatProductivityForecastReportDto(ReportParamDto paramDto)
+			throws ParseException;
+
+	List<ProductivityForecastReportDto> getMeatDetailProductivityForecastReportDto(ReportParamDto paramDto)
+			throws ParseException;
+
+	List<ProductivityForecastReportDto> getEggProductivityForecastReportDto(ReportParamDto paramDto)
+			throws ParseException;
+
+	public List<ProductivityForecastReportDto> getEggDetailProductivityForecastReportDto(ReportParamDto paramDto)
+			throws ParseException;
+
+	List<ProductivityForecastReportDto> getPredictTheNumberOfLiveMeatSlightly(ReportParamDto paramDto)
+			throws ParseException;
+
+	List<ReportAccordingToTheRedBookDto> reportNumberAnimalsAndNumberFarmsAccordingToTheRedBook(ReportParamDto paramDto)
+			throws ParseException;
+
+	List<ReportQuantityByCategoryCitesDto> reportNumberAnimalsAndNumberFarmsCategoryCitest(ReportParamDto paramDto);
+
+	List<FarmAnimalTotalDto> getReportAnimalsCurrent(FarmSearchDto dto);
+
+	List<FarmAnimalTotalDto> reportCurrentStatusByAnimalAdministrative(FarmSearchDto dto);
+
+	List<FarmAnimalTotalDto> reportCurrentStatusByLastAnimalAdministrative(FarmSearchDto dto);
+
+	List<ReportImportExportTimeDto> getReportNumberTimeImportExport(ImportExportAnimalSearchDto searchDto);
+
+	List<ReportImportExportTimeDto> getReportImportExportForm16(ImportExportAnimalSearchDto searchDto);
+
+	List<AnimalReportDataFormDto> reportActivityOfEndangeredPreciousRareNormarlAndCites(
+			AnimalReportDataSearchDto searchDto);
+
+	List<Report18Dto> reportActivityOfEndangeredPreciousRareNormarlAndCitesNativeQuery(
+			AnimalReportDataSearchDto searchDto);
+
+	List<FarmAnimalTotalDto> reportCurrentStatusByFamily(AnimalReportDataSearchDto searchDto);
+
+	List<AnimalReportDataReportDto> getAnimalReportDataReport(ReportParamDto dto);
+	
+	List<AnimalReportDataReportDto> getAnimalReportDataReport04(ReportParamDto dto);
+	
+	List<AnimalReportDataReportDto> getAnimalReportDataReport05(ReportParamDto dto);
+	
+	List<AnimalReportDataReportDto> getAnimalReportDataReport07(ReportParamDto dto);
+
+	List<ReportAccordingToTheRedBookDto> reportNumberAnimalsAndNumberFarmsAccordingToTheRedBookNewByAdministrativeUnit(
+			ReportParamDto paramDto) throws ParseException;
+
+	List<ReportQuantityByCategoryCitesDto> reportNumberAnimalsAndNumberFarmsCategoryCitestNewByAdministrativeUnit(
+			ReportParamDto paramDto);
+
+	List<Report18Dto> reportCurrentStatusByFamilyNewByAdministrativeUnit(AnimalReportDataSearchDto searchDto);
+
+	List<ReportAccordingToTheRedBookDto> reportNumberAnimalsAndNumberFarmsAccordingToTheRedBookNewByReportForm16AndAdministrativeUnit(
+			ReportParamDto paramDto) throws ParseException;
+	List<Report18Dto> report24(AnimalReportDataSearchDto searchDto);
+	
+	List<Report18Dto> report25(AnimalReportDataSearchDto searchDto);
+	
+	List<Report18Dto> report26(AnimalReportDataSearchDto searchDto);
+	
+	List<AnimalReportDataReportDto> getAnimalReportDataReport04s(ReportParamDto dto);
+}

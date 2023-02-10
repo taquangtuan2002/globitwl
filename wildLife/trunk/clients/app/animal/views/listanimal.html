@@ -1,0 +1,118 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{'animal.information' | translate}}</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <div class="col-md-3" style="margin-top:0px ; margin-bottom: 30px">
+                            <ui-select ng-model="vm.animalClass" sortable="true" close-on-select="true"
+                                on-select="vm.animalClassSelected()">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalClass' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listAnimalClass | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                    <small ng-if="item.scienceName">{{item.scienceName}}</small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3" style="margin-top:0px ; margin-bottom: 30px">
+                            <ui-select ng-model="vm.ordo" sortable="true" close-on-select="true"
+                                on-select="vm.animalOrdoSelected()">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalOrdo' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listAnimalOrdo | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                    <small ng-if="item.scienceName">{{item.scienceName}}</small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3" style="margin-top:0px ; margin-bottom: 30px">
+                            <ui-select ng-model="vm.family" sortable="true" close-on-select="true"
+                                on-select="vm.familySelected(true)">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalFamily' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listAnimalFamily | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                    <small ng-if="item.scienceName">{{item.scienceName}}</small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3" style="margin-top:0px ; margin-bottom: 30px">
+                            <ui-select ng-model="vm.cites" sortable="true" close-on-select="true"
+                                on-select="vm.animalCitySelected()">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalCites' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listcites | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                    <small ng-if="item.scienceName">{{item.scienceName}}</small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3" style="margin-top:0px ; margin-bottom: 30px">
+                            <ui-select ng-model="vm.vnlist" sortable="true" close-on-select="true"
+                                on-select="vm.animalListSelected()">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalVnList' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.Lists | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                    <small ng-if="item.scienceName">{{item.scienceName}}</small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3" style="margin-top:0px ; margin-bottom: 30px">
+                            <ui-select ng-model="vm.vnlist06" sortable="true" close-on-select="true"
+                                on-select="vm.animalList06Selected(true)">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalVnList06' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.list06 | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                    <small ng-if="item.scienceName">{{item.scienceName}}</small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)"
+                                    class="form-control" placeholder="{{'animal.searchNameCode' | translate}}"
+                                    name="search">
+                                <div class="input-group-btn">
+                                    <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i
+                                            class="glyphicon glyphicon-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table id="bsTableControl" bs-table-control="vm.bsTableControl1"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="listanimal_info.html">
+    <div modal-movable>
+		<div ng-include="'animal/views/listanimal_info.html'"></div>
+	</div>
+</script>

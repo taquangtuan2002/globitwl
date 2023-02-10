@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.injectionPlant.isNew" class="modal-title"><i class="icon-plus"></i> {{"importAnimal.create"|translate}}</h4>
+    <h4 ng-if="!vm.injectionPlant.isNew" class="modal-title"><i class="icon-pencil"></i> {{"importAnimal.update"|translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <label class="bold"><strong
+                    style="color:red">*</strong>{{"importAnimal.animal.name"|translate}}</label>
+            <ui-select ng-model="vm.forestProductDetail.animal" sortable="true" close-on-select="true"
+                on-select="vm.onSelectedAnimal($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'animal.chooseAnimal'|translate}}...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="animal in vm.animals2 | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Nhóm loài</label>
+            <input data-ng-model="vm.forestProductDetail.groupAnimalType" disabled="true" ng-value="vm.forestProductDetail.animal.animalGroup" type="text" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Số hiệu nhãn đánh dấu(nếu có)</label>
+            <input data-ng-model="vm.forestProductDetail.code" type="text" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Số lượng</label>
+            <input data-ng-model="vm.forestProductDetail.quantity" number-input type="text" class="form-control" />
+            <label ng-if="vm.forestProductDetail.animal" class="bold">Số lượng hiện tại của cơ sở: {{vm.totalAnimal}} con</label>
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Khối lượng</label>
+            <input data-ng-model="vm.forestProductDetail.amount" number-input type="text" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Đơn vị tính</label>
+            <input data-ng-model="vm.forestProductDetail.unit" type="text" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Ghi chú</label>
+            <input data-ng-model="vm.forestProductDetail.note" type="text" class="form-control" />
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       {{"exportAnimal.cancel" | translate}}</button>
+    <button type="button" ng-click="vm.saveForestProductListDetail()" class="btn btn-primary"><i class="icon-check"></i>{{'exportAnimal.save' | translate}}</button>
+
+</div>

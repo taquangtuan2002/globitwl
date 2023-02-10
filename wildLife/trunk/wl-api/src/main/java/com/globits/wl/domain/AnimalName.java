@@ -1,0 +1,57 @@
+package com.globits.wl.domain;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.globits.core.domain.BaseObject;
+@Entity
+@Table(name = "tbl_animal_name")
+@XmlRootElement
+/*
+ * Tên Động vật.
+ * VD: Cá sấu nước ngọt, gấu, hổ, báo...
+ */
+public class AnimalName extends BaseObject{
+		
+	
+	@ManyToOne
+	@JoinColumn(name="animal_id")
+	private Animal animal;
+	@Column(name="name")
+	private String name;
+	@Column(name="lang_code")
+	private String langCode;
+	
+	public Animal getAnimal() {
+		return animal;
+	}
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getLangCode() {
+		return langCode;
+	}
+	public void setLangCode(String langCode) {
+		this.langCode = langCode;
+	}
+	public AnimalName() {
+		super();		
+	}
+}

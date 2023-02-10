@@ -1,0 +1,109 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+    
+        <div class="portlet light bordered">
+			
+            <div class="portlet-body">
+                <div class="btn-group  margin-top-10 margin-bottom-10">
+                    <button  ng-if="vm.isRole==true" class="btn btn-default" data-ng-click="vm.newCategory()"><i class="fa fa-plus-circle"></i>{{'cmscategory.create' | translate}}</button>
+                </div>
+                <div ng-if="vm.isRole==true">
+					<table   id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+				</div>
+                
+				<div ng-if="vm.isRole==false">
+					<table   id="bsTableControlNotAdmin" bs-table-control="vm.bsTableControlNotAdmin"></table>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_category_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title" data-ng-if="vm.category.isNew == true"><i class="icon-plus"></i>{{'cmscategory.create' | translate}}</h4>
+            <h4 class="modal-title" data-ng-if="vm.category.isNew == false"><i class="fa fa-pencil-square-o"></i>{{'cmscategory.update' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <label class="bold">{{'cmscategory.title' | translate}}:</label>
+                    <input class="form-control" ng-model="vm.category.title" autofocus />
+                </div>
+                <div class="col-xs-12">
+                    <label class="bold">{{'cmscategory.description' | translate}}:</label>
+                    <input class="form-control" ng-model="vm.category.description" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'cmscategory.cancel' | translate}}</button>
+            <button type="button" ng-click="vm.save()" class="btn btn-primary" data-dismiss="modal">{{'cmscategory.save' | translate}}</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="confirm_delete_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i>{{'cmscategory.delete' | translate}}</h4>
+        </div>
+        <div class="modal-body">
+            <p>{{'cmscategory.confirmDelete' | translate}} </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'cmscategory.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'cmscategory.accept' | translate}}</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="import_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Import</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="dash-box display-block link" ngf-select="uploadFiles($file, $invalidFiles)"
+                               accept="/*" ngf-max-size="{{MAX_FILE_SIZE}}"><i class="fa fa-cloud-upload"></i> Chọn tệp tin để tải lên</a>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f != null">
+                            Tải tệp tin: {{f.name}}
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="errFile != null && errFile.$error != ''">
+                            Có lỗi: <span ng-if="errFile.$error == 'maxSize'">Kích thước tệp tin phải nhỏ hơn {{errFile.$errorParam}}</span>
+                            <span ng-if="errFile.$error != null && errFile.$error != 'maxSize'">Tệp tin {{errFile.name}} có lỗi. Xin mời chọn tệp tin khác.</span>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f.progress >= 0">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="f.progress + '%'" style="width:{{f.progress}}%">
+                                    {{f.progress}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Tải lên</button>
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->

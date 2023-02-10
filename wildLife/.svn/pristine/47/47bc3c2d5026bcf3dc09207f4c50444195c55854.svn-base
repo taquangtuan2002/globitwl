@@ -1,0 +1,249 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.reportFormAnimalEgg.isNew == true" class="modal-title"><i class="icon-plus"></i> Tạo mới</h4>
+        <h4 ng-if="vm.reportFormAnimalEgg.isNew == false" class="modal-title"><i class="icon-pencil"></i> Cập nhật</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row" ng-show="false">
+            <div class="col-md-3">
+                 <ui-select ng-model="vm.addEditReportAnimalEggPeriod.year" sortable="true" close-on-select="true" style="width:100%;"
+                 aria-multiselectable="true" on-select="vm.onSelectYearForm16(vm.reportFormAnimalEgg)" on-remove="vm.onRemovedYear()">
+                     <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                         {{$select.selected.name}}
+                     </ui-select-match>
+                     <ui-select-choices
+                         repeat="year.value as year  in vm.years | propsFilter: {name: $select.search}">
+                         <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                         </div>
+                     </ui-select-choices>
+                 </ui-select>
+            </div>
+            <div class="col-md-3">
+                 <ui-select ng-model="vm.addEditReportAnimalEggPeriod.month" sortable="true" close-on-select="true" style="width:100%;"
+                 aria-multiselectable="true" on-select="vm.onSelectMonthForm16CD(vm.addEditReportAnimalEggPeriod)" on-remove="vm.onSelectMonthForm16CD(vm.addEditReportAnimalEggPeriod)">
+                     <ui-select-match allow-clear="true" placeholder="Chọn tháng...">
+                         {{$select.selected.name}}
+                     </ui-select-match>
+                     <ui-select-choices
+                         repeat="month.value as month  in vm.months | propsFilter: {name: $select.search}">
+                         <div class="bold" ng-bind-html="month.name | highlight: $select.search">
+                         </div>
+                     </ui-select-choices>
+                 </ui-select>
+            </div>
+            <div class="col-md-3">
+                 <ui-select ng-model="vm.addEditReportAnimalEggPeriod.date" sortable="true" close-on-select="true" style="width:100%;"
+                 aria-multiselectable="true"  on-select="vm.onSelectDateForm16()" on-remove="vm.onRemovedDate()">
+                     <ui-select-match allow-clear="true" placeholder="Chọn ngày...">
+                         {{$select.selected.name}}
+                     </ui-select-match>
+                     <ui-select-choices
+                         repeat="date.value as date  in vm.days | propsFilter: {name: $select.search}">
+                         <div class="bold" ng-bind-html="date.name | highlight: $select.search">
+                         </div>
+                     </ui-select-choices>
+                 </ui-select>
+            </div>
+            <!-- <div class="col-md-3">
+             <div class="input-group">
+                 <input readonly data-ng-model="vm.farm.name"
+                     placeholder="{{'exportAnimal.searchFarm' | translate}}" type="text" class="form-control"/>
+                 <div class="input-group-btn">
+                     <button ng-click="vm.showPopupFarm()" class="btn btn-default" type="submit"><i
+                             class="glyphicon glyphicon-plus"></i>{{"exportAnimal.choose" | translate}}</button>
+                 </div>
+             </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="row margin-top-10 margin-bottom-10">
+                <div class="col-md-12">                    	
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 36px;" rowspan="2">Ngày(Lấy trứng khỏi tổ/ấp trứng/con non nở, chết...)</th>
+                                <th style="width: 50px;" colspan="2">Tên loài</th>
+                                <th style="width: 36px;" colspan="2">Số đàn bố mẹ</th>
+                                <th style="width: 36px;" rowspan="2">Số lượng trứng</th>
+                                <th style="width: 36px;" rowspan="2">Số lượng trứng được đưa vào ấp</th>
+                                <th style="width: 36px;" rowspan="2">Số con non nở</th>
+                                <th style="width: 36px;" rowspan="2">Số con con bị chết</th>
+                                <th style="width: 36px;" rowspan="2">Số con non còn sống</th>
+                                <th style="width: 36px;" rowspan="2">Số con cộng dồn theo thời gian</th>
+                                <th style="width: 36px;" rowspan="2">Số con non tách khỏi khu nuôi nhốt(tách đàn)</th>
+                                <th style="width: 36px;" rowspan="2">Số con non còn lại</th>
+                                <th style="width: 36px;" rowspan="2">Ghi chú</th>
+                                <th style="width: 36px;" rowspan="2" ng-if="vm.reportFormAnimalEgg.isNew == true">Thao tác</th>
+                                <!-- <th style="width: 36px;" rowspan="2">Xác nhận của cơ quan kiểm lâm/thủy sản</th> -->
+                            </tr>
+                            <tr>
+                                <th style="width: 25px;">Tên tiếng việt</th>
+                                <th style="width: 25px;">Tên khoa học</th>
+                                <th style="width: 28.8px;">Đực</th>
+                                <th style="width: 28.8px;">Cái</th>
+                            </tr>
+                        </thead>
+                        <!-- <tbody ng-if="vm.addEditReportAnimalEggPeriod.reportFormAnimalEggs.length > 0 && vm.addEditReportAnimalEggPeriod.isNew == true"> -->
+                        <tbody ng-if="vm.listAnimalGiveEggs.length > 0">
+                            <!-- <tr ng-repeat="item in vm.addEditReportAnimalEggPeriod.reportFormAnimalEggs track by $index"> -->
+                            <tr ng-repeat="item in vm.listAnimalGiveEggs track by $index">
+                                <td>
+                                    <input data-ng-model="item.dateReport" ng-change="vm.onSelectedQuantityChildIncrementEgg(item)" my-date-picker type="text" class="form-control" />
+                                </td>
+                                <td style="max-width: 150px;min-width: 150px;">
+                                    <ui-select ng-model="item.animal" sortable="true" close-on-select="true" style="width:100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEggForList(item)" on-remove="vm.onRemovedAnimal()">
+                                        <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                            {{$select.selected.name}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="animal  in vm.animalsGiveEggs | propsFilter: {name: $select.search}">
+                                            <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td style="max-width: 150px;min-width: 150px;">
+                                    <ui-select ng-model="item.animal" sortable="true" close-on-select="false" style="width:100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEggForList(item)" on-remove="vm.onRemovedAnimal()">
+                                        <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                            {{$select.selected.scienceName}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="animal  in vm.animalsGiveEggs | animalPropsFilter: {scienceName: $select.search}">
+                                            <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.parentMale" number-input type="text" class="form-control glb-disabled" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.parentFemale" number-input type="text" class="form-control glb-disabled" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.quantityEgg" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.quantityEggWarm" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.quantityChildHatch" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.quantityChildDie" number-input type="text" class="form-control" />
+                                </td>
+                                <td><span class="form-control glb-disabled">{{(item.quantityChildHatch - item.quantityChildDie)}}</span></td>
+                                <td>
+                                    <!-- <input data-ng-model="item.quantityChildIncrement" number-input type="text" class="form-control" /> -->
+                                    <input ng-if="item.isQuantityChildEgg == false" data-ng-model="item.quantityChildIncrement" number-input type="text" class="form-control" />
+									<span class="form-control glb-disabled" ng-if="(!item.isQuantityChildEgg && item.isQuantityChildEgg!= false) || item.isQuantityChildEgg == true">{{item.quantityChildIncrement}}</span>
+                                </td>
+                                <td>
+                                    <input data-ng-model="item.quantityChildSeparateCaptivity" number-input type="text" class="form-control" />
+                                </td>
+                                <td><span class="form-control glb-disabled">{{(item.quantityChildIncrement - item.quantityChildSeparateCaptivity)}}</span></td>
+                                <td>
+                                    <input data-ng-model="item.note" type="text" class="form-control" />
+                                </td>
+                                <td class="text-center" ng-if="vm.reportFormAnimalEgg.isNew == true">
+                                    <a ng-click="vm.removeToListAddEditFormAnimalEgg($index)"><i class="icon-trash text-danger"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.dateReport" ng-change="vm.onSelectedQuantityChildIncrementEgg(vm.reportFormAnimalEgg)" my-date-picker type="text" class="form-control" />
+                                </td>
+                                <td style="max-width: 150px;min-width: 150px;">
+                                    <ui-select ng-model="vm.reportFormAnimalEgg.animal" sortable="true" close-on-select="true" style="width:100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(vm.reportFormAnimalEgg)" on-remove="vm.onRemovedAnimal()">
+                                        <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                            {{$select.selected.name}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="animal  in vm.animalsGiveEggs | propsFilter: {name: $select.search}">
+                                            <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td style="max-width: 150px;min-width: 150px;">
+                                    <ui-select ng-model="vm.reportFormAnimalEgg.animal" sortable="true" close-on-select="false" style="width:100%;"
+                                    aria-multiselectable="true" on-select="vm.onSelectedQuantityChildIncrementEgg(vm.reportFormAnimalEgg)" on-remove="vm.onRemovedAnimal()">
+                                        <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                            {{$select.selected.scienceName}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="animal  in vm.animalsGiveEggs | animalPropsFilter: {scienceName: $select.search}">
+                                            <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.parentMale" number-input type="text" class="form-control glb-disabled" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.parentFemale" number-input type="text" class="form-control glb-disabled" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.quantityEgg" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.quantityEggWarm" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.quantityChildHatch" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.quantityChildDie" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.quantityChildHatch - vm.reportFormAnimalEgg.quantityChildDie" number-input type="text" class="form-control glb-disabled" />
+                                   
+                                <td>
+                                    <!-- <input data-ng-model="vm.reportFormAnimalEgg.quantityChildIncrement" number-input type="text" class="form-control" /> -->
+                                    <input ng-if="vm.isQuantityChildEgg == false" data-ng-model="vm.reportFormAnimalEgg.quantityChildIncrement" number-input type="text" class="form-control" />
+									<span class="form-control glb-disabled" ng-if="vm.isQuantityChildEgg == true">{{vm.reportFormAnimalEgg.quantityChildIncrement}}</span>
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.quantityChildSeparateCaptivity" number-input type="text" class="form-control" />
+                                </td>
+                                <td>
+                                    <input data-ng-model="!vm.reportFormAnimalEgg.quantityChildIncrement==0?(vm.reportFormAnimalEgg.quantityChildIncrement - vm.reportFormAnimalEgg.quantityChildSeparateCaptivity):0" number-input type="text" class="form-control glb-disabled" />
+                                <!--<span class="form-control glb-disabled">{{!vm.reportFormAnimalEgg.quantityChildIncrement==0?(vm.reportFormAnimalEgg.quantityChildIncrement - vm.reportFormAnimalEgg.quantityChildSeparateCaptivity):0}}</span>-->
+                                </td>
+                                <td>
+                                    <input data-ng-model="vm.reportFormAnimalEgg.note" type="text" class="form-control" />
+                                </td>
+                                <td class="text-center" ng-if="vm.reportFormAnimalEgg.isNew == true">
+                                    <button ng-click="vm.addToListAddEditFormAnimalEgg()"><i class="icon-plus"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i
+                class="icon-close"></i> {{'region.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.saveReportFormAnimalEgg()" class="btn btn-primary"
+            data-dismiss="modal">{{'region.save' | translate}}</button>
+    </div>
+</div>
+<script type="text/ng-template" id="individual_detail.html">
+    <div modal-movable ng-include="'farm/views/child/individual_detail.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="confirm_delete_individual.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_delete_individual.html?v={{version}}'"></div>
+</script>
+<!-- <script type="text/ng-template" id="choose_farm_modal.html">
+    <div modal-movable>
+		<div ng-include="'animal_report_data/views/childs/choose_farm_modal.html'"></div>
+	</div>
+</script> -->

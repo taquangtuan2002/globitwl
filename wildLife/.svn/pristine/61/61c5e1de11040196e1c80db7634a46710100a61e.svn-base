@@ -1,0 +1,128 @@
+package com.globits.wl.service.impl;
+
+import com.globits.wl.dto.AnimalDto;
+import com.globits.wl.dto.Report18Dto;
+import com.globits.wl.dto.functiondto.SearchReportForm16Dto;
+import com.globits.wl.dto.report.ReportForm16ForExcelDto;
+import com.globits.wl.service.ExportForm16Service;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+@Service
+public class ExportForm16ServiceImpl implements ExportForm16Service {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ExportForm16ServiceImpl.class);
+
+    @Autowired
+    public EntityManager manager;
+
+    @Autowired
+    ResourceLoader resourceLoader;
+
+    @Override
+    public Workbook getReportForm16(SearchReportForm16Dto search) {
+        List<ReportForm16ForExcelDto> data =  this.getDataForExcel(search);
+        return null;
+    }
+
+    private List<ReportForm16ForExcelDto> getDataForExcel(SearchReportForm16Dto search) {
+        StringBuilder whereBuilder = new StringBuilder();
+
+        if (!ObjectUtils.isEmpty(search.getProvinceId())) {
+            whereBuilder.append(" and prov.id = :provinceId ");
+        }
+        if (!ObjectUtils.isEmpty(search.getDateReport())) {
+            whereBuilder.append(" and f16.date_report  <= :dateReport ");
+        }
+        if (!ObjectUtils.isEmpty(search.getDistrictId())) {
+            whereBuilder.append(" and dis.id  = :districtId ");
+        }
+        if (!ObjectUtils.isEmpty(search.getWardId())) {
+            whereBuilder.append(" and w.id  = :wardId ");
+        }
+
+        String sql = "select *\n" +
+                "from (\n" +
+                "         select ROW_NUMBER() OVER (PARTITION BY f16.farm_id,f16.animal_id ORDER BY f16.date_report,f16.modify_date,f16.create_date DESC )\n" +
+                "                                         AS rowNumber,\n" +
+                "                tf.id                    as farmId,\n" +
+                "                tf.name                  as farmName,\n" +
+                "                tf.adress_detail         as addressDetails,\n" +
+                "                prov.id                  as provinceId,\n" +
+                "                prov.name                as provinceName,\n" +
+                "                dis.id                   as districtId,\n" +
+                "                dis.name                 as districtName,\n" +
+                "                w.id                     as communeId,\n" +
+                "                w.name                   as communeName,\n" +
+                "                tf.new_registration_code as newRegistrationCode,\n" +
+                "                tf.date_registration     as dateRegistration,\n" +
+                "                tf.phone_number          as phoneNumber,\n" +
+                "                f16.date_report          as importExportDate,\n" +
+                "                f16.total                as total,\n" +
+                "                f16.note                 as note,\n" +
+                "                f16.animal_id            as animalId,\n" +
+                "                ta.name                  as animalName,\n" +
+                "                ta.science_name          as animalScienceName,\n" +
+                "                tac.code                 as certificate,\n" +
+                "                tac.dateIssue            as registerDate \n" +
+                "         from tbl_report_form16 as f16\n" +
+                "                  INNER JOIN tbl_report_period p ON f16.report_period_id = p.id\n" +
+                "                  inner join tbl_animal ta on f16.animal_id = ta.id\n" +
+                "                  inner join tbl_farm tf on f16.farm_id = tf.id\n" +
+                "                  left join tbl_animal_certificate tac on tf.id = tac.farm_id\n" +
+                "                  INNER JOIN tbl_fms_administrative_unit prov ON prov.id = p.province_id AND prov.parent_id IS NULL\n" +
+                "                  INNER JOIN tbl_fms_administrative_unit dis ON dis.id = p.district_id AND dis.parent_id IS NOT NULL\n" +
+                "                  INNER JOIN tbl_fms_administrative_unit w\n" +
+                "                             ON w.id = p.administrative_unit_id AND w.parent_id IS NOT NULL\n" +
+                "         where ta.cites is not null and ta.code != ''\n" +
+                "           and f16.total <> 0\n" + whereBuilder +
+                "     ) as tb1\n" +
+                "where tb1.rowNumber = 1\n" +
+                "order by tb1.farmId, tb1.animalId";
+
+        Query query = manager.createNativeQuery(sql).unwrap(org.hibernate.query.Query.class).setResultTransformer(new AliasToBeanResultTransformer(ReportForm16ForExcelDto.class));
+        if (!ObjectUtils.isEmpty(search.getProvinceId())) {
+            query.setParameter("provinceId", search.getProvinceId());
+        }
+        if (!ObjectUtils.isEmpty(search.getDateReport())) {
+            query.setParameter("dateReport", search.getDateReport());
+        }
+        if (!ObjectUtils.isEmpty(search.getDistrictId())) {
+            query.setParameter("districtId", search.getDistrictId());
+        }
+        if (!ObjectUtils.isEmpty(search.getWardId())) {
+            query.setParameter("wardId", search.getWardId());
+        }
+        List<ReportForm16ForExcelDto> rs = (List<ReportForm16ForExcelDto>) query.getResultList();
+        return rs;
+    }
+
+    private Workbook writeDataToWorkBook(List<ReportForm16ForExcelDto> data, List<AnimalDto> animals, SearchReportForm16Dto search) {
+        Workbook workBook = null;
+        try (InputStream template = resourceLoader.getResource("classpath:template/excel/BC1_3.xlsx")
+                .getInputStream()) {
+            workBook = new XSSFWorkbook(template);
+        } catch (IOException e) {
+            LOGGER.error("Error reading workbook");
+        }
+
+        if (workBook == null) {
+            throw new RuntimeException();
+        }
+        return workBook;
+    }
+
+}

@@ -1,0 +1,109 @@
+<div login-screen>
+    <!-- BEGIN LOGIN -->
+    <div class="content">
+		<!-- BEGIN LOGO -->
+	    <div class="logo">
+	        <a href="index.html">
+	            <img src="assets/images/login_logo.png?v=1.2" alt="" class="margin-bottom-20 margin-top-20" />
+	        </a>
+	    </div>
+    	<!-- END LOGO -->
+    	
+        <!-- BEGIN LOGIN FORM -->
+        <form class="login-form" novalidate>
+            <h3 class="form-title font-green">{{"login.login" | translate}}</h3>
+            <div class="form-group">
+                <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                <label class="control-label visible-ie8 visible-ie9"></label>
+                <input on-key-press="vm.login()" when-key-code="13" class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Tên đăng nhập" id="username" data-ng-model="vm.user.username" autofocus />
+                <span class="input-icon"><i class="fa fa-user"></i></span>
+            </div>
+            <div class="form-group margin-top-20">
+                <label class="control-label visible-ie8 visible-ie9">{{"login.password" | translate}}</label>
+                <input on-key-press="vm.login()" when-key-code="13" class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Mật khẩu" id="password" data-ng-model="vm.user.password" />
+                <span class="input-icon"><i class="fa fa-key"></i></span>
+            </div>
+            
+            <!--<div class="create-account">-->
+                    <!--<a href="javascript:;" class="">Bạn đã quên mật khẩu?</a>-->
+            <!--</div>-->
+            <div class="form-actions margin-top-20">
+                <button type="button" data-ng-click="vm.login()" class="btn green uppercase">{{"login.login" | translate}} </button>
+            </div>
+            <div class="form-group margin-top-20">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="javascript:;" class="">{{"login.hotline" | translate}}: <h3>034.888.6670</h3></a> 
+                    </div>
+                    
+                    <div class="col-md-6 pull-right">
+                        <a href="javascript:;" ng-click="vm.openPopupForgotPassword()" class="pull-right">{{'forgotPassword.title'|translate}}</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a target="_blank" href="https://ee.humanitarianresponse.info/x/nQ5XAyTf" class="">Khảo sát trước tập huấn</a> 
+                        <a target="_blank" href="https://ee.humanitarianresponse.info/x/scOJHIyd" class="">Khảo sát sau tập huấn</a>
+                        
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                    	<a target="_blank" href="https://www.youtube.com/playlist?list=PL2GmKZc8F2sQnIvpv-7cv7Av9BBvn7xeL" class="">Hướng dẫn sử dụng</a>
+                    </div>
+                </div>
+            	<!-- <a href="https://play.google.com/store/apps/details?id=com.globits.fms"><i class="fa fa-fw fa-google"></i>Android App</a>
+            	<a href="https://apps.apple.com/us/app/fmsclient/id1489860117?ls=1" class="pull-right"><i class="fa fa-fw fa-apple"></i>IOS App</a> -->
+            </div>
+            
+            <!--<div class="login-options">-->
+                <!--Bạn chưa có tài khoản? <a href="javascript:;" class="">Tạo tài khoản mới</a> -->
+                <!--&lt;!&ndash;<label class="rememberme check mt-checkbox mt-checkbox-outline">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input type="checkbox" data-ng-model="vm.user.remember" value="1" />Tự động đăng nhập lần tới&ndash;&gt;-->
+                    <!--&lt;!&ndash;<span></span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</label>&ndash;&gt;-->
+            <!--</div>-->
+        </form>
+        <!-- END LOGIN FORM -->
+        <!-- BEGIN FORGOT PASSWORD FORM -->
+        <form class="forget-form" novalidate>
+            <h3 class="font-green">Forgot your password?</h3>
+            <p>Enter your email address and we will send a new password.</p>
+            <div class="form-group">
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" id="email" data-ng-model="vm.user.email" /> </div>
+            <div class="form-actions">
+                <button type="button" data-ng-click="vm.backToLogin()" class="btn green btn-outline">Cancel</button>
+                <button type="button" data-ng-click="vm.getPassword()" class="btn btn-success uppercase pull-right">Get new password</button>
+            </div>
+        </form>
+        <script type="text/ng-template" id="popup_forgot_password.html">
+            <div modal-movable>
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+                    <h3 class="font-green">{{'forgotPassword.title'|translate}}</h3>
+                    <p>{{'forgotPassword.descriptionInputEmail'|translate}}</p>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label class="bold"><strong class="text-danger">*</strong>{{'forgotPassword.username'|translate}}:</label>
+                            <input class="form-control" ng-model="vm.forgotUsername" />
+                        </div>
+                        <div class="col-xs-12">
+                            <label class="bold"><strong class="text-danger">*</strong>{{'forgotPassword.email'|translate}}:</label>
+                            <input class="form-control" ng-model="vm.forgotEmail" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'application.buttons.cancel'|translate}}</button>
+                    <button type="button" ng-click="vm.getPassword()" class="btn btn-primary" data-dismiss="modal">{{'forgotPassword.send'|translate}}</button>
+                </div>
+            </div>
+        </script>
+        <!-- END FORGOT PASSWORD FORM -->
+    </div>
+    <div class="login-footer">
+		<!-- <img src="assets/images/fao_logo.png" /> 
+		<img src="assets/images/usaid_logo.png" style="float:right" /> --> 
+    </div>
+    <div class="copyright"> 2019 © Tổng cục lâm nghiệp - Bộ NN-PTNT. Bảo lưu mọi quyền. </div>
+</div>

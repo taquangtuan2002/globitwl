@@ -1,0 +1,170 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.animal.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'animal.create' | translate}}</h4>
+    <h4 ng-if="vm.animal.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'animal.edit' | translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <!-- <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.code' | translate}}</label>
+            <input data-ng-model="vm.animal.code" type="text" autofocus="autofocus" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div>
+            <label class="bold">{{'animal.oldCode' | translate}}</label>
+            <input data-ng-model="vm.animal.oldCode" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div> -->
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.vnName' | translate}}</label>
+            <input data-ng-model="vm.animal.name" type="text" class="form-control" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.enName' | translate}}</label>
+            <input data-ng-model="vm.animal.enName" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.scienceName' | translate}}</label>
+            <input data-ng-model="vm.animal.scienceName" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.aniGroup' | translate}}</label>
+            <input data-ng-model="vm.animal.aniGroup" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.animalClass' | translate}}</label>
+            <input data-ng-model="vm.animal.animalClass" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.ordo' | translate}}</label>
+            <input data-ng-model="vm.animal.ordo" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.family' | translate}}</label>
+            <input data-ng-model="vm.animal.family" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.cites' | translate}}</label>
+            <input data-ng-model="vm.animal.cites" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.vnList' | translate}}</label>
+            <input data-ng-model="vm.animal.vnlist" type="text" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.description' | translate}}</label>
+            <input data-ng-model="vm.animal.description" ng-disabled="true" class="form-control glb-disabled" />
+        </div>
+		<!-- <div class="col-md-12 margin-top-10">
+		 <label class="bold">{{'animal.type' | translate}}</label>
+            <ui-select ng-model="vm.animal.parent" sortable="true" close-on-select="true"
+                on-select="vm.onOriginalSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="animal in vm.animalParents | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div> -->
+        <div class="col-md-12 margin-top-10">
+		 <label class="bold">{{'original.information' | translate}}</label>
+            <ui-select ng-model="vm.animal.originalDto" sortable="true" close-on-select="true" ng-disabled="true" class="glb-disabled"
+                on-select="vm.onOriginalSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'original.chooseOriginal' | translate}}">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="original in vm.originals | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="original.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-12 margin-top-10">
+		 <label class="bold">{{'animalType.information' | translate}}</label>
+            <ui-select ng-model="vm.animal.typeDto" sortable="true" close-on-select="true" ng-disabled="true" class="glb-disabled"
+                on-select="vm.onAnimalTypeSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'animalType.chooseAnimalType' | translate}}">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="animalType in vm.animalTypes | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="animalType.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-12 margin-top-10">
+		    <label class="bold">{{'product.information' | translate}}</label>
+			 <ui-select multiple ng-model="vm.animal.animalProductTargets" ng-disabled="true" class="glb-disabled" sortable="true" close-on-select="true" aria-multiselectable="true" on-select="vm.onSelectedAnimalType($item)" on-remove="vm.onRemovedAnimalType($item)">
+				<ui-select-match allow-clear="true" placeholder="{{'product.chooseProduct' | translate}}...">
+					{{$item.name}} 
+				</ui-select-match>
+				<ui-select-choices repeat="animal  in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+					<div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+					</div>
+				</ui-select-choices>
+			</ui-select>
+						
+           <!-- <ui-select ng-model="vm.animal.productTargetDto" sortable="true" close-on-select="true"
+                on-select="vm.onProductTargetDtoSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'product.chooseProduct' | translate}}">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="productTarget in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="productTarget.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select> -->
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Hình thức sinh sản</label>
+               <ui-select ng-model="vm.animal.reproductionForm" sortable="true" close-on-select="true" ng-disabled="true" class="glb-disabled"
+                   on-select="">
+                   <ui-select-match allow-clear="true" placeholder="Chọn hình thức sinh sản">{{$select.selected.name}}
+                   </ui-select-match>
+                   <ui-select-choices
+                       repeat="reproductionForm.value as reproductionForm in vm.reproductionForms | propsFilter: {name: $select.search}">
+                       <div class="bold" ng-bind-html="reproductionForm.name | highlight: $select.search"></div>
+                   </ui-select-choices>
+               </ui-select>
+           </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.orderCode' | translate}}</label>
+            <input data-ng-model="vm.animal.orderCode" class="form-control glb-disabled" ng-disabled="true"/>
+        </div>
+        <!-- <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.reportCode' | translate}}</label>
+            <input data-ng-model="vm.animal.reportCode" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.reportName' | translate}}</label>
+            <input data-ng-model="vm.animal.reportName" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Nhóm báo cáo</label>
+            <input data-ng-model="vm.animal.reportType" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">Phương thức chăn nuôi</label>
+            <input data-ng-model="vm.animal.liveStockMethod" class="form-control" />
+        </div>
+		<div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.farmingTime' | translate}}</label>
+            <input data-ng-model="vm.animal.farmingTime" class="form-control" />
+        </div>
+		<div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.weightGain' | translate}}</label>
+            <input data-ng-model="vm.animal.weightGain" class="form-control" />
+        </div>
+		<div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.loss' | translate}}</label>
+            <input data-ng-model="vm.animal.loss" class="form-control" />
+        </div>
+		<div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.eggYield' | translate}}</label>
+            <input data-ng-model="vm.animal.eggYield" class="form-control" />
+        </div> -->
+
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+        {{'animal.cancel' | translate}}</button>
+</div>

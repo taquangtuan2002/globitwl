@@ -1,0 +1,188 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.animal.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'animal.create' | translate}}
+    </h4>
+    <h4 ng-if="vm.animal.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'animal.edit' | translate}}
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6" ng-if="vm.animal.isNew == false">
+            <!-- <div class="col-md-10"> -->
+                <label class="bold">{{'animal.code' | translate}}</label>
+                <input ng-if="vm.animal.isNew == false" data-ng-model="vm.animal.code" type="text" autofocus="autofocus"
+                    class="form-control" disabled="true"/>
+                <!-- <input ng-if="vm.animal.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus"
+                    class="form-control" /> -->
+            <!-- </div> -->
+            <!-- <div class="col-md-2">
+                <button ng-if="vm.animal.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;"
+                    ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i
+                        class="fa fa-history"></i></button>
+                <button ng-if="vm.animal.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;"
+                    ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i
+                        class="fa fa-history"></i></button>
+            </div> -->
+        </div>
+        <div class="col-md-6">
+            <label class="bold">{{'animal.oldCode' | translate}}</label>
+            <input data-ng-model="vm.animal.oldCode" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.vnName' | translate}}</label>
+            <input data-ng-model="vm.animal.name" type="text" class="form-control" />
+        </div>
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.enName' | translate}}</label>
+            <input data-ng-model="vm.animal.enName" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.scienceName' | translate}}</label>
+            <input data-ng-model="vm.animal.scienceName" type="text" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.otherName' | translate}}</label>
+            <input data-ng-model="vm.animal.otherName" type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.aniGroup' | translate}}</label>
+            <input data-ng-model="vm.animal.aniGroup" type="text" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.animalClass' | translate}}</label>
+            <ui-select ng-model="vm.animal.animalClass" sortable="true" close-on-select="true" on-select="vm.animalClassSelected1()">
+                <ui-select-match allow-clear="true" placeholder="Chọn lớp động vật">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="animalClass.name as animalClass in vm.listAnimalClass | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="animalClass.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.ordo' | translate}}</label>
+            <ui-select ng-model="vm.animal.ordo" sortable="true" close-on-select="true" on-select="vm.animalOrdoSelected1()">
+                <ui-select-match allow-clear="true" placeholder="Chọn bộ động vật">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="ordo.name as ordo in vm.listAnimalOrdo1 | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="ordo.name  | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.family' | translate}}</label>
+            <ui-select ng-model="vm.animal.family" sortable="true" close-on-select="true" on-select="vm.familySelected1(true)">
+                <ui-select-match allow-clear="true" placeholder="Chọn họ động vật">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="family.name as family in vm.listAnimalFamily1 | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="family.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.cites' | translate}}</label>
+            <ui-select ng-model="vm.animal.cites" sortable="true" close-on-select="true" on-select="">
+                <ui-select-match allow-clear="true" placeholder="Chọn cấp độ nguy cấp">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="cites.name as cites in vm.listcites | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="cites.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.vnList06' | translate}}</label>
+            <ui-select ng-model="vm.animal.vnlist06" sortable="true" close-on-select="true" on-select="">
+                <ui-select-match allow-clear="true" placeholder="Chọn phân nhóm theo nghị định 06">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="vnlist06.name as vnlist06 in vm.vnList06s | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="vnlist06.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.vnList' | translate}}</label>
+            <ui-select ng-model="vm.animal.vnlist" sortable="true" close-on-select="true" on-select="">
+                <ui-select-match allow-clear="true" placeholder="Chọn phân nhóm theo nghị định 64">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="vnlist.name as vnlist in vm.vnLists | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="vnlist.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Hình thức sinh sản</label>
+            <ui-select ng-model="vm.animal.reproductionForm" sortable="true" close-on-select="true" on-select="">
+                <ui-select-match allow-clear="true" placeholder="Chọn hình thức sinh sản">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="reproductionForm.value as reproductionForm in vm.reproductionForms | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="reproductionForm.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Loại động vật:</label>
+            <ui-select ng-model="vm.animal.typeDto" sortable="true" close-on-select="true" on-select="">
+                <ui-select-match allow-clear="true" placeholder="Chọn loại động vật">{{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="typeDto in vm.animalTypes | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="typeDto.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.source' | translate}}</label>
+            <!-- <input data-ng-model="vm.animal.source" type="text" class="form-control" /> -->
+            <ui-select ng-model="vm.animal.source" sortable="true"  close-on-select="true"
+            on-select="">
+            <ui-select-match allow-clear="true" placeholder="{{'animal.chooseSource' | translate}}...">
+                {{$select.selected.name}}
+            </ui-select-match>
+            <ui-select-choices
+                repeat="source.value as source in vm.listSource | propsFilter: {name: $select.search, value: $select.search}">
+                <div class="bold" ng-bind-html="source.name | highlight: $select.search"></div>
+            </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'animal.description' | translate}}</label>
+            <input data-ng-model="vm.animal.description" class="form-control" />
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+        {{'animal.cancel' | translate}}</button>
+    <!--<button type="button" ng-click="vm.saveAnimal()" class="btn btn-primary"><i class="icon-check"></i> {{'animal.save' | translate}}</button>-->
+    <button type="button" ng-click="vm.saveAnimal()" class="btn btn-primary"
+        data-dismiss="modal">{{'animal.save' | translate}}</button>
+    <!-- <button ng-if="vm.animal.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary"
+        data-dismiss="modal">{{'animal.save' | translate}}</button> -->
+</div>

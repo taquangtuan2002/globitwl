@@ -1,0 +1,203 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <!--<tree-grid-->
+                        <!--tree-data     = "vm.treeData"-->
+                        <!--col-defs      = "vm.treeColumnDefinitions"-->
+                        <!--expand-on     = "vm.expandingProperty"-->
+                        <!--icon-leaf     = "fa fa-leaf"-->
+                        <!--icon-expand   = "fa fa-plus"-->
+                        <!--icon-collapse = "fa fa-minus"-->
+                        <!--on-select     = "vm.onSelectNode(branch)"-->
+                        <!--on-click      = "vm.onClickNode(branch)"-->
+                <!--&gt;-->
+                <!--</tree-grid>-->
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 padding-tb-20" style="padding-left: 40px; padding-right: 20px;">
+                        <figure class="book">
+                            <!-- Front -->
+                            <ul class="hardcover_front">
+                                <li>
+                                    <div class="coverDesign yellow">
+                                        <i class="fa fa-university"></i>
+                                        <h1>Unisis</h1>
+                                        <p class="uppercase">Quản lý Đào tạo</p>
+                                    </div>
+                                </li>
+                                <li></li>
+                            </ul>
+                            <!-- Pages -->
+                            <ul class="page">
+                                <li></li>
+                                <li>
+                                    <a class="btn" href="#/course_years/listing"><i class="fa fa-caret-right"></i>Khóa học</a>
+                                    <a class="btn" href="#/semesters/listing"><i class="fa fa-caret-right"></i>Học kỳ</a>
+                                    <a class="btn" href="#/subjects/listing"><i class="fa fa-caret-right"></i>Môn học</a>
+                                    <a class="btn" href="#/enrollment_classes/listing"><i class="fa fa-caret-right"></i>Lớp học</a>
+                                    <a class="btn" href="#/course_hours/listing"><i class="fa fa-caret-right"></i>Giờ học</a>
+                                </li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <!-- Back -->
+                            <ul class="hardcover_back">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <ul class="book_spine">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <figcaption>
+                                <h1>Q.lý đào tạo</h1>
+                                <span>Unisis Education Module</span>
+                                <p>Phân hệ chức năng giúp quản lý thông tin năm học, khóa học, lớp học, học kỳ, học phần, các chương trình đào tạo, thời khóa biểu sinh viên...</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-md-6 col-sm-12 padding-tb-20" style="padding-left: 40px; padding-right: 20px;">
+                        <figure class="book">
+                            <!-- Front -->
+                            <ul class="hardcover_front">
+                                <li>
+                                    <div class="coverDesign blue">
+                                        <i class="icon-graduation"></i>
+                                        <h1>Unisis</h1>
+                                        <p class="uppercase">Quản lý sinh viên</p>
+                                    </div>
+                                </li>
+                                <li></li>
+                            </ul>
+                            <!-- Pages -->
+                            <ul class="page">
+                                <li></li>
+                                <li>
+                                    <a class="btn" href="#/manager_students/listing"><i class="fa fa-caret-right"></i>D.sách sinh viên</a>
+                                    <a class="btn" href="#/student_research/listing"><i class="fa fa-caret-right"></i>Ng.cứu khoa học</a>
+                                    <a class="btn" href="#/student_reward/listing"><i class="fa fa-caret-right"></i>Q.lý khen thưởng</a>
+                                    <a class="btn" href="#/student_discipline/listing"><i class="fa fa-caret-right"></i>Kỷ luật sinh viên</a>
+                                    <a class="btn" href="#/scholarship_funds/listing"><i class="fa fa-caret-right"></i>Quỹ học bổng</a>
+                                </li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <!-- Back -->
+                            <ul class="hardcover_back">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <ul class="book_spine">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <figcaption>
+                                <h1>Q.lý sinh viên</h1>
+                                <span>Unisis Student Management Module</span>
+                                <p>Phân hệ chức năng giúp quản lý danh sách sinh viên theo từng năm học, khen thưởng, kỉ luật sinh viên, quỹ học bổng và các nghiên cứu khoa học...</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 padding-tb-20" style="padding-left: 40px; padding-right: 20px;">
+                        <figure class="book">
+                            <!-- Front -->
+                            <ul class="hardcover_front">
+                                <li>
+                                    <div class="coverDesign red">
+                                        <i class="fa fa-certificate"></i>
+                                        <h1>Unisis</h1>
+                                        <p class="uppercase">Quản lý Khảo thí</p>
+                                    </div>
+                                </li>
+                                <li></li>
+                            </ul>
+                            <!-- Pages -->
+                            <ul class="page">
+                                <li></li>
+                                <li>
+                                    <a class="btn" href="#/studentmarks"><i class="fa fa-caret-right"></i>Điểm sinh viên</a>
+                                    <a class="btn" href="#/semestersubjectexams"><i class="fa fa-caret-right"></i>Tổ chức thi</a>
+                                    <a class="btn" href="#/semestersubjectexamrooms"><i class="fa fa-caret-right"></i>Phòng thi</a>
+                                    <a class="btn" href="#/studentmarkexamrooms"><i class="fa fa-caret-right"></i>Điểm theo P.thi</a>
+                                    <a class="btn" href="#/studentsubjectmarks"><i class="fa fa-caret-right"></i>Điểm tổng kết</a>
+                                </li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <!-- Back -->
+                            <ul class="hardcover_back">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <ul class="book_spine">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <figcaption>
+                                <h1>Q.lý khảo thí</h1>
+                                <span>Unisis Examination Management Module</span>
+                                <p>Phân hệ chức năng giúp quản lý việc tổ chức thi, phòng thi, quản lý điểm sinh viên, điểm theo phòng thi, điểm tổng kết theo từng học kỳ, học phần...</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="col-md-6 col-sm-12 padding-tb-20" style="padding-left: 40px; padding-right: 20px;">
+                        <figure class="book">
+                            <!-- Front -->
+                            <ul class="hardcover_front">
+                                <li>
+                                    <div class="coverDesign grey">
+                                        <i class="icon-magic-wand"></i>
+                                        <h1>Unisis</h1>
+                                        <p class="uppercase">Quản lý Học phí</p>
+                                    </div>
+                                </li>
+                                <li></li>
+                            </ul>
+                            <!-- Pages -->
+                            <ul class="page">
+                                <li></li>
+                                <li>
+                                    <a class="btn" href="#"><i class="fa fa-caret-right"></i>Thu học phí</a>
+                                    <a class="btn" href="#"><i class="fa fa-caret-right"></i>Báo cáo H.phí</a>
+                                </li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <!-- Back -->
+                            <ul class="hardcover_back">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <ul class="book_spine">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <figcaption>
+                                <h1>Q.lý học phí</h1>
+                                <span>Unisis Fee Management Module</span>
+                                <p>Phân hệ chức năng giúp quản lý công tác thu học phí, các khoản thu khác và báo cáo tổng hợp cũng như chi tiết theo từng chỉ số liên quan đến việc thu học phí...</p>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MAIN CONTENT -->

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="Education"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="Education"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="vi" data-ng-app="Education">
+<!--<![endif]-->
+
+<head>
+
+    <title data-ng-bind="'WILD LIFE | ' + $state.current.data.pageTitle"></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!--<base href="/">-->
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                "families": ["Muli:300,400,500,700"]
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <!--end::Web font -->
+
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />-->
+    <!--<link href="https://fonts.googleapis.com/css?family=Trirong:300,400,500,700" rel="stylesheet" type="text/css" />-->
+
+    <!--build:css assets/css/plugins.min.css-->
+    <link href="assets/css/external/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/iconsmind.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/select.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/angular-bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/jstree-style.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/angular-toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/jquery.webui-popover.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/jquery.orgchart.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/AdminLTE.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/datetimepicker.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/angular-block-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/angucomplete-alt.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/ng-tree-dnd.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/external/ui-cropper.css" rel="stylesheet" type="text/css" />
+    
+    <link href="assets/css/pivot/webdatarocks.min.css" rel="stylesheet" type="text/css" />
+    
+    <!--endbuild-->
+
+    <link id="ng_load_plugins_before" />
+
+    <!--build:css assets/css/client.min.css-->
+    <link href="assets/css/components-md.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/layout.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/darkblue.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/custom.css?v=7895862xh" rel="stylesheet" type="text/css" />
+    <link href="assets/css/custom-alt.css" rel="stylesheet" type="text/css" />
+    <!--endbuild-->
+
+    <link rel="shortcut icon" href="assets/images/favicon.png" />
+
+    <!--[if lt IE 9]>
+        <script src="assets/scripts/external/respond.min.js" type="text/javascript"></script>
+        <script src="assets/scripts/external/excanvas.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js" type="text/javascript"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.js" type="text/javascript"></script>
+        <script src="assets/scripts/ui-select-ielt9.js" type="text/javascript"></script>
+        <![endif]-->
+     
+     <link href="assets/css/pivot/master/c3.min.css" rel="stylesheet" type="text/css" /> 
+     <link href="assets/css/pivot/master/pivot.css" rel="stylesheet" type="text/css" />
+     
+     <!-- vgmap -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+        rel="stylesheet">
+        
+        
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" />
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+        crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+        integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet"
+        href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" />
+
+    <link rel="stylesheet" href="https://fao.gisgo.vn/samples/vgmap.css">
+</head>
+
+<body ng-controller="AppController" class="page-container-bg-solid">
+    <!-- page-sidebar-closed-hide-logo page-container-bg-solid ng-scope page-header-fixed" ng-class="{'page-content-white': settings.layout.pageContentWhite,'page-container-bg-solid': settings.layout.pageBodySolid, 'page-sidebar-closed': settings.layout.pageSidebarClosed} -->
+    <!--<div ng-spinner-bar class="page-spinner-bar">-->
+    <!--<div class="bounce1"></div>-->
+    <!--<div class="bounce2"></div>-->
+    <!--<div class="bounce3"></div>-->
+    <!--</div>-->
+
+    <svg ng-spinner-bar width="300px" height="200px" viewBox="0 0 187.3 93.7" preserveAspectRatio="xMidYMid meet" style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%) matrix(1, 0, 0, 1, 0, 0);">
+            <path stroke="#dc143c" id="outline" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 				c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z" />
+            <path id="outline-bg" opacity="0.1" fill="none" stroke="#ccc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="				M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1 				c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z" />
+        </svg>
+
+    <ui-view></ui-view>
+
+    <!--build:js assets/scripts/core-jquery.min.js-->
+    <script src="assets/scripts/external/jquery.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/js.cookie.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-table.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-table-vi-VN.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/jstree.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-tabdrop.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/jquery.webui-popover.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/moment-with-locales.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/accounting.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/moment.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/taffy-min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/tinymce.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/lodash.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-treeview.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/fullcalendar.min.js" type="text/javascript"></script>
+
+    <!--endbuild-->
+
+    <!--build:js assets/scripts/core-angular.min.js-->
+    <script src="assets/scripts/external/angular.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-sanitize.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-touch.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-cookies.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-ui-router.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ocLazyLoad.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/query-string.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-oauth2.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/bootstrap-table-angular.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-bootstrap-datepicker.js?v=7895862xh" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/scripts/external/select.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ngJsTree.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-toastr.tpls.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-block-ui.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-ui-tinymce.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ng-file-upload-shim.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ng-file-upload.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-input-masks-standalone.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angucomplete-alt.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/focusIf.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ng-tree-dnd.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/ui-cropper.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-idle.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/FileSaver.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-file-saver.min.js" type="text/javascript"></script>
+
+    <script src="assets/scripts/external/angular-translate.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-translate-loader-static-files.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-translate-storage-local.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-translate-storage-cookie.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-translate-handler-log.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/external/angular-translate-loader-partial.min.js" type="text/javascript"></script>
+    
+    <script src="assets/scripts/chart/Chart.min.js" type="text/javascript" ></script>
+    <script src="assets/scripts/chart/angular-chart.min.js" type="text/javascript" ></script>
+    
+    <script src="assets/scripts/pivot/webdatarocks.js" type="text/javascript" ></script>
+    <script src="assets/scripts/pivot/webdatarocks.highcharts.js" type="text/javascript" ></script>
+    <script src="assets/scripts/pivot/webdatarocks.googlecharts.js" type="text/javascript" ></script>
+    <script src="assets/scripts/pivot/webdatarocks.fusioncharts.js" type="text/javascript" ></script>
+    <script src="assets/scripts/pivot/webdatarocks.toolbar.min.js" type="text/javascript" ></script>
+    <!--tran huu dat them file ng-img-crop-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-img-crop/0.3.2/ng-img-crop.js"></script>
+    <!--tran huu dat them file ng-img-crop-->
+    <!--endbuild-->
+
+    <!--build:js assets/scripts/application.min.js-->
+    <script src="application.js?v=7895862xh" type="text/javascript"></script>
+    <script src="application.configs.js?v=7895862xh" type="text/javascript"></script>
+    <script src="application.services.js?v=7895862xh" type="text/javascript"></script>
+    <script src="application.controllers.js?v=7895862xh" type="text/javascript"></script>
+    <script src="common/common.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="dashboard/dashboard.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="settings/setting.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="users/user.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="administrative_unit_editable/administrative_unit_editable.module.js?v=7895862xh" type="text/javascript"></script>
+   
+    <script src="water_source/water_source.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="husbandry_type/husbandry_type.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="husbandry_method/husbandry_method.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="export_animal/export_animal.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="report_of_farmer/report_of_farmer.module.js?v=7895862xh" type="text/javascript"></script>
+    <!--<script src="education_programs/education_programs.module.js?v=7895862xh" type="text/javascript"></script>-->
+    
+    <script src="users/business/UserService.js?v=7895862xh" type="text/javascript"></script>
+    
+    <script src="original/original.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="product_target/product_target.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="fms_region/fms_region.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="animal_type/original_type.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="animal/animal.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="fms_administrative_unit/fmsadministrative.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="farm/farm.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="import_animal/import_animal.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="event_news/event_new.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="farm_size/farm_size.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="injectionPlant/injectionPlant.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="injectionTime/injectionTime.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="bran/bran.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="certificate/certificate.module.js?v=7895862xh" type="text/javascript"></script>   
+    <script src="animal_certificate/animal_certificate.modlue.js?v=7895862xh" type="text/javascript"></script>   
+    <script src="administrative_organization/administrative_organization.module.js?v=7895862xh"></script>
+    <script src="biological_class/biological_class.module.js?v=7895862xh" type="text/javascript"></script>
+    
+    <script src="internal_statistics/internal_statistics.module.js?v=7895862xh"></script>
+    <script src="members/members.module.js?v=7895862xh"></script>
+    <script src="statistic/statistic.module.js?v=7895862xh"></script>
+    <script src="affiliated_units/affiliated_units.module.js?v=7895862xh"></script>
+    <script src="report/report.module.js?v=7895862xh"></script>
+	<script src="cmscategory/cmscategory.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="cmsArticleType/cmsArticleType.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="cmsArticle/cmsArticle.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="news/news.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="common/utils/directives.js?v=7895862xh" type="text/javascript"></script>
+    <script src="common/utils/utilities.js?v=7895862xh" type="text/javascript"></script>
+    <script src="common/utils/filters.js?v=7895862xh" type="text/javascript"></script>
+    <script src="assets/scripts/app.js?v=7895862xh" type="text/javascript"></script>
+    <script src="assets/scripts/layout.js?v=7895862xh" type="text/javascript"></script>
+	
+    <script src="import_animal_feed/import_animal_feed.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="export_animal_feed/export_animal_feed.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="import_animal_seed/import_animal_seed.module.js?v=7895862xh" type="text/javascript"></script>
+    <script src="exportEgg/export_egg.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="drug/drug.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="import_drug/import_drug.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="report_farm_manager/report_farmer_manager.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="seed_level/seed_level.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="ownership/ownership.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="importEgg/import_egg.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="unit/unit.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="live_stock_product/live_stock_product.module.js?v=7895862xh" type="text/javascript"></script> 
+	<script src="import_export_live_stock_product/import_export_live_stock_product.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="export_drug/export_drug.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="total_report/total_report.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="animal_raising_report/animal_raising_report.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="animal_report_data/animal_report_data.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="farm_duplicate_doubts/farm_duplicate_doubts.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="forest_product_list/forest_product_list.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="look_up_the_signature/look_up_the_signature.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="report_period/report_period.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="wl_abouts/wl_abouts.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="animal_required/animal_required.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="user_file_upload/user_file_upload.module.js?v=7895862xh" type="text/javascript"></script>
+	<script src="link/link.module.js?v=7895862xh" type="text/javascript"></script>
+    <!--endbuild-->
+    <!-- Google API DANGNH-KEY-->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWoIxsP94pzMT5q7f07WPeyU9aLhkgcsc&libraries=places&callback=initMap&language=vi&region=VN"></script>
+
+	<!-- 
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWoIxsP94pzMT5q7f07WPeyU9aLhkgcsc&libraries=places&callback=initMap&language=vi&region=VN"></script>
+
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXMVK6g81S4yDBWXYp-sGiTu8vUMZVbsQ&libraries=places&callback=initMap&language=vi&region=VN"></script>
+ 	-->
+    <!--Pivot Master-->
+    <script type="text/javascript" src="assets/scripts/pivot/master/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/pivot.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/show_code.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/d3.min.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/d3_renderers.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/c3.min.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/pivot.fr.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/gchart_renderers.js"></script>
+    <script type="text/javascript" src="assets/scripts/pivot/master/jsapi.js"></script>
+
+    <!-- highcharts -->
+    <script src="assets/scripts/chart/highcharts/highstock.js"></script>
+    <script src="assets/scripts/chart/highcharts/highcharts.js"></script>
+	<script src="assets/scripts/chart/highcharts/highcharts-more.js"></script>
+	<script src="assets/scripts/chart/highcharts/highcharts-3d.js"></script>
+	<script src="assets/scripts/chart/highcharts/highcharts-3d.src.js"></script>
+	
+	<script src="assets/scripts/chart/highcharts/exporting.js"></script>
+	<script src="assets/scripts/chart/highcharts/exporting.src.js"></script>
+	<script src="assets/scripts/chart/highcharts/export-data.js"></script>
+	<script src="assets/scripts/chart/highcharts/export-data.src.js"></script>	
+
+	<script src="assets/scripts/pivot/webdatarocks.highcharts.js"></script>
+	<!-- highmapsChart -->
+	<script src="assets/scripts/chart/highcharts/highmaps.js"></script>
+	<script src="assets/scripts/chart/highcharts/map.js"></script>
+	<script src="assets/scripts/chart/highcharts/exporting.js"></script>
+	<script src="assets/scripts/chart/highcharts/vn-all.js"></script>
+
+	<!-- vgmap -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"
+        integrity="sha512-RtZU3AyMVArmHLiW0suEZ9McadTdegwbgtiQl5Qqo9kunkVg1ofwueXD8/8wv3Af8jkME3DDe3yLfR8HSJfT2g=="
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://fao.gisgo.vn/samples/vgmap.js"></script>
+    <script src="assets/vgmap/proj4-src.js" type="text/javascript"></script>
+    <script src="assets/vgmap/proj4.js" type="text/javascript"></script>
+    <!-- vgmap -->
+</body>
+
+</html>

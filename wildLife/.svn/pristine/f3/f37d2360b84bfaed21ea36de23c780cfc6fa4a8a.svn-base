@@ -1,0 +1,145 @@
+package com.globits.wl.rest;
+
+import java.io.IOException;
+import java.util.List;
+
+import com.globits.wl.dto.functiondto.DataDvhdDto;
+import com.globits.wl.dto.functiondto.ImportResultDto;
+import com.globits.wl.utils.ImportExportExcelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import com.globits.wl.dto.FmsAdministrativeUnitDto;
+import com.globits.wl.dto.FmsRegionDto;
+import com.globits.wl.dto.functiondto.SearchDto;
+import com.globits.wl.service.FmsAdministrativeUnitService;
+import com.globits.wl.utils.WLConstant;
+import org.springframework.web.multipart.MultipartFile;
+
+@RestController
+@RequestMapping("/api/administrative")
+public class RestFmsAdministrativeUnitController {
+	@Autowired
+	private FmsAdministrativeUnitService administrativeUnitService;
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "{Id}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
+	public Page<FmsAdministrativeUnitDto> getListAdministratives(@PathVariable Long Id ,@PathVariable int pageIndex,
+			@PathVariable int pageSize) {
+		return this.administrativeUnitService.getListAdministrative(Id,pageIndex, pageSize);
+	}
+	//list tree
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "tree/{pageIndex}/{pageSize}", method = RequestMethod.GET)
+	public ResponseEntity<Page<FmsAdministrativeUnitDto>> getListTree(@PathVariable int pageIndex, @PathVariable int pageSize) {
+		Page<FmsAdministrativeUnitDto> page = administrativeUnitService.getListTree(pageIndex, pageSize);
+		return new ResponseEntity<Page<FmsAdministrativeUnitDto>>(page, HttpStatus.OK);
+	}
+	
+	//get All list ko phan trang
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getall", method = RequestMethod.GET)
+	public List<FmsAdministrativeUnitDto> getAll(){
+		return this.administrativeUnitService.getAll();
+	}
+	
+	//get All list ko phan trang
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getAllByParentId/{parentId}", method = RequestMethod.GET)
+	public List<FmsAdministrativeUnitDto> getAllByParentId(@PathVariable("parentId") Long parentId){
+		return this.administrativeUnitService.getAllByParentId(parentId);
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getall/city", method = RequestMethod.GET)
+	public List<FmsAdministrativeUnitDto> getAllCity(){
+		return this.administrativeUnitService.getAllCity();
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getCityByRegion/{regionId}", method = RequestMethod.GET)
+	public List<FmsAdministrativeUnitDto> getAllCityByRegion(@PathVariable("regionId") Long regionId){
+		return this.administrativeUnitService.getAllCityByRegion(regionId);
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	private FmsAdministrativeUnitDto getAdministrativeUnitById(@PathVariable("id") String id) {
+		FmsAdministrativeUnitDto dto=this.administrativeUnitService.getAdministrativeUnitById(new Long(id));
+		return dto;
+	}
+	
+	//get All list by children
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getChildrenByParentId/{parentId}", method = RequestMethod.GET)
+	public List<FmsAdministrativeUnitDto> getChildrenByParentId(@PathVariable("parentId") Long parentId){
+		return this.administrativeUnitService.getChildrenByParentId(parentId);
+	}
+
+	// create
+	@Secured({"ROLE_ADMIN"})
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public FmsAdministrativeUnitDto saveAdministrative(@RequestBody FmsAdministrativeUnitDto fmsAdministrativeUnitDto) {
+		return this.administrativeUnitService.saveAdministrative(fmsAdministrativeUnitDto, null);
+	}
+
+	// update
+	@Secured({"ROLE_ADMIN"})
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	public FmsAdministrativeUnitDto updateAdministrative(@PathVariable("id") Long id, @RequestBody FmsAdministrativeUnitDto fmsAdministrativeUnitDto) {
+		return this.administrativeUnitService.saveAdministrative(fmsAdministrativeUnitDto, id);
+	}
+	@Secured({"ROLE_ADMIN"})
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public FmsAdministrativeUnitDto removeAdministrative(@PathVariable Long id) {
+		FmsAdministrativeUnitDto dto=new FmsAdministrativeUnitDto();
+		try {
+			dto=this.administrativeUnitService.deleteAdministrativeUnit(id);			 
+			return dto;
+		} catch (Exception e) {			
+			dto.setCode("-2");
+			return dto;
+			// TODO: handle exception
+		}
+	}
+	@Secured({"ROLE_ADMIN"})
+	@RequestMapping(path = "/searchDto/{pageIndex}/{pageSize}", method = RequestMethod.POST)	
+	public ResponseEntity<Page<FmsAdministrativeUnitDto>> getListSimpleByNameCode(@RequestBody SearchDto dto,@PathVariable int pageIndex, @PathVariable int pageSize) {
+		
+		Page<FmsAdministrativeUnitDto> results = this.administrativeUnitService.searchDto(dto, pageIndex, pageSize);
+		return new ResponseEntity<Page<FmsAdministrativeUnitDto>>(results, HttpStatus.OK);
+	}
+	@Secured({"ROLE_ADMIN"})
+	@RequestMapping(value = "/checkCode/{code}",method = RequestMethod.GET)
+	public FmsAdministrativeUnitDto checkDuplicateCode(@PathVariable("code") String code) {
+		return administrativeUnitService.checkDuplicateCode(code);
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/nameCode/{Id}/{code}/{pageIndex}/{pageSize}", method = RequestMethod.GET)
+	public Page<FmsAdministrativeUnitDto> getListAdministratives(@PathVariable("Id") Long Id,@PathVariable("code") String code,@PathVariable int pageIndex,
+			@PathVariable int pageSize) {
+		return this.administrativeUnitService.getListAdministrativeByCodeOrName(Id,code, pageIndex, pageSize);
+	}
+	//get All list by level
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getallbylevel/{level}", method = RequestMethod.GET)
+	public List<FmsAdministrativeUnitDto> getAllByLevel(@PathVariable("level") Integer level){
+		return this.administrativeUnitService.getAllByLevel(level);
+	}
+	
+	@RequestMapping(value = "/getListWard/{id}", method = RequestMethod.GET)
+	private List<FmsAdministrativeUnitDto> getListWard(@PathVariable("id") Long id) {
+		List<FmsAdministrativeUnitDto> dto=this.administrativeUnitService.getListWard(id);
+		return dto;
+	}
+
+	@RequestMapping(value = "/update-vn2000/{code}/{vn2000}", method = RequestMethod.POST)
+	@Secured({ "ROLE_ADMIN"})
+	@ResponseBody
+	public ResponseEntity<List<FmsAdministrativeUnitDto>> uploadFileAndCallApiUpdateListFromFileImportByListDto(
+			@RequestParam("uploadfile") MultipartFile uploadfile, @PathVariable("code") int colCode,
+			@PathVariable("vn2000") int colVn2000) throws IOException {
+		List<FmsAdministrativeUnitDto> list = ImportExportExcelUtil.getFmsAdministrativeUnit(uploadfile.getInputStream(),colCode, colVn2000);
+		return new ResponseEntity<>( administrativeUnitService.updateVN2000(list),HttpStatus.OK);
+	}
+}

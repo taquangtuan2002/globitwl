@@ -1,0 +1,356 @@
+package com.globits.wl.domain;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.globits.core.domain.BaseObject;
+
+@Entity
+@Table(name = "tbl_animal_report_data")
+@XmlRootElement
+/*
+ * Số liệu động vật báo cáo theo kỳ
+ */
+public class AnimalReportData extends BaseObject{	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7732061859227706512L;
+	
+	@ManyToOne
+	@JoinColumn(name="animal_id")
+	private Animal animal;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="farm_report_period_id")
+	private FarmReportPeriod farmReportPeriod;//Không còn sử dụng
+	
+	@ManyToOne
+	@JoinColumn(name="farm_id")
+	private Farm farm;
+	@Column(name="year")
+	private Integer year;//Năm của kỳ báo cáo
+	@Column(name="quarter")
+	private Integer quarter;//Tháng của kỳ báo cáo
+	@Column(name="month")
+	private Integer month;//Tháng của kỳ báo cáo
+	@Column(name="day")
+	private Integer day;//Ngày của kỳ báo cáo
+	
+	@Column(name="total")
+	private Integer total;//Tổng số con
+	@Column(name="male")
+	private Integer male;//Số con con cái
+	@Column(name="female")
+	private Integer female;//Số con đực
+	@Column(name="un_gender")
+	private Integer unGender;//Số con không xác định giới tính
+	
+	@Column(name="source")
+	private String source;//Nguồn gốc là mã code của original
+	@Column(name="purpose")
+	private String purpose;//Mục đích nuôi là mã code của bản ghi product target
+	@Column(name="registration_date")
+	private Date registrationDate;//ngày đăng ký
+	
+	@Column(name="type")
+	private int type;//Loại: Con bố mẹ, con non dưới 1 tuổi, hậu bị...WLConstant.AnimalReportDataType
+	
+	@ManyToOne
+	@JoinColumn(name="ogiginal_id")
+	private Original original;
+	
+	@ManyToOne
+	@JoinColumn(name="product_target_id")
+	private ProductTarget productTarget;
+	
+	@OneToMany(mappedBy = "animalReportData", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<IndividualAnimal> individualAnimals = new HashSet<IndividualAnimal>();// Danh mục khai báo động vật hoang dã
+	
+	@Column(name="form_id")
+	private UUID formId;
+	
+	@Column(name="form_type")
+	private Integer formType;
+	
+	@Column(name="reason_born_at_farm")
+	private Integer reasonBornAtFarm;// Số gấu sinh ra tại trại
+	@Column(name="reason_other")
+	private Integer reasonOther;// số gấu do nguyên nhân khác
+	
+	@ManyToOne
+	@JoinColumn(name="administrative_unit_id")
+	private FmsAdministrativeUnit administrativeUnit;
+
+	@ManyToOne
+	@JoinColumn(name="district_id")
+	private FmsAdministrativeUnit district;
+	
+	@ManyToOne
+	@JoinColumn(name="province_id")
+	private FmsAdministrativeUnit province;
+	
+	//Thêm 4 trường này để phân loại loài theo năm nếu có thay đổi
+	@Column(name = "vnlist")
+	private String vnlist;// DVHD nguy cap, quy, hiem (nghị định 64-2019)
+
+	@Column(name = "vnlist06")
+	private String vnlist06;
+	
+	@Column(name = "cites") // Cấp độ nguy cấp (CITES list là IB, IIB và IIIB)
+	private String cites;
+	
+	@Column(name="animal_group")
+	private String animalGroup;/*nhóm động vật:Nhóm 1: I cites, IB và NĐ64.
+											   Nhóm 2: II,III cites và IIB
+											   Nhóm 3: Động vật rừng thông thường hoang dã khác*/
+	
+	public Integer getReasonBornAtFarm() {
+		return reasonBornAtFarm;
+	}
+
+	public void setReasonBornAtFarm(Integer reasonBornAtFarm) {
+		this.reasonBornAtFarm = reasonBornAtFarm;
+	}
+
+	public Integer getReasonOther() {
+		return reasonOther;
+	}
+
+	public void setReasonOther(Integer reasonOther) {
+		this.reasonOther = reasonOther;
+	}
+
+	public FmsAdministrativeUnit getAdministrativeUnit() {
+		return administrativeUnit;
+	}
+
+	public void setAdministrativeUnit(FmsAdministrativeUnit administrativeUnit) {
+		this.administrativeUnit = administrativeUnit;
+	}
+
+	public Set<IndividualAnimal> getIndividualAnimals() {
+		return individualAnimals;
+	}
+
+	public void setIndividualAnimals(Set<IndividualAnimal> individualAnimals) {
+		this.individualAnimals = individualAnimals;
+	}
+
+	public Original getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(Original original) {
+		this.original = original;
+	}
+
+	public ProductTarget getProductTarget() {
+		return productTarget;
+	}
+
+	public void setProductTarget(ProductTarget productTarget) {
+		this.productTarget = productTarget;
+	}
+
+	public Animal getAnimal() {
+		return animal;
+	}
+
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
+	}
+
+	public FarmReportPeriod getFarmReportPeriod() {
+		return farmReportPeriod;
+	}
+
+	public void setFarmReportPeriod(FarmReportPeriod farmReportPeriod) {
+		this.farmReportPeriod = farmReportPeriod;
+	}
+
+	public Farm getFarm() {
+		return farm;
+	}
+
+	public void setFarm(Farm farm) {
+		this.farm = farm;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public Integer getQuarter() {
+		return quarter;
+	}
+
+	public void setQuarter(Integer quarter) {
+		this.quarter = quarter;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public Integer getDay() {
+		return day;
+	}
+
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+
+	public Integer getMale() {
+		return male;
+	}
+
+	public void setMale(Integer male) {
+		this.male = male;
+	}
+
+	public Integer getFemale() {
+		return female;
+	}
+
+	public void setFemale(Integer female) {
+		this.female = female;
+	}
+
+	public Integer getUnGender() {
+		return unGender;
+	}
+
+	public void setUnGender(Integer unGender) {
+		this.unGender = unGender;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getPurpose() {
+		return purpose;
+	}
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public UUID getFormId() {
+		return formId;
+	}
+
+	public void setFormId(UUID formId) {
+		this.formId = formId;
+	}
+
+	public Integer getFormType() {
+		return formType;
+	}
+
+	public void setFormType(Integer formType) {
+		this.formType = formType;
+	}
+
+	public FmsAdministrativeUnit getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(FmsAdministrativeUnit district) {
+		this.district = district;
+	}
+
+	public FmsAdministrativeUnit getProvince() {
+		return province;
+	}
+
+	public void setProvince(FmsAdministrativeUnit province) {
+		this.province = province;
+	}
+
+	public String getVnlist() {
+		return vnlist;
+	}
+
+	public void setVnlist(String vnlist) {
+		this.vnlist = vnlist;
+	}
+
+	public String getVnlist06() {
+		return vnlist06;
+	}
+
+	public void setVnlist06(String vnlist06) {
+		this.vnlist06 = vnlist06;
+	}
+
+	public String getCites() {
+		return cites;
+	}
+
+	public void setCites(String cites) {
+		this.cites = cites;
+	}
+
+	public String getAnimalGroup() {
+		return animalGroup;
+	}
+
+	public void setAnimalGroup(String animalGroup) {
+		this.animalGroup = animalGroup;
+	}
+
+	public AnimalReportData() {
+		super();
+	}
+	
+}

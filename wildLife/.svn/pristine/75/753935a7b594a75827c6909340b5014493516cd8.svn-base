@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding="UTF-8" ?>
+
+<!-- A list of system-managed user roles. These roles are created/updated 
+	at system start-up, and cannot be modified/deleted at runtime. For method-level 
+	security check, we can hard-code these roles such as @PreAuthorize("hasRole('ROLE_ADMIN')") -->
+
+<sys-roles>
+	<sys-role>
+		<name>ROLE_ADMIN</name>
+		<description>The system administrative role</description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_USER</name>
+		<description></description>
+	</sys-role>	
+	<sys-role>
+		<name>ROLE_DLP</name>
+		<description></description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_SDAH</name>
+		<description></description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_SDAH_VIEW</name>
+		<description></description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_DISTRICT</name>
+		<description></description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_WARD</name>
+		<description></description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_FAMER</name>
+		<description></description>
+	</sys-role>
+	<sys-role>
+		<name>ROLE_APPROVED_SPECIES</name>
+		<description></description>
+	</sys-role>
+	
+</sys-roles>

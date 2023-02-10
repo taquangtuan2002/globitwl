@@ -1,0 +1,9 @@
+<div class="row ">
+	<div class="col-md-12">
+		<div class="card card-body bg-light" id="form-container">
+			<!-- ng-src="'https://fao.gisgo.vn/samples/index.html?token_id={{token_id}}'" -->
+			<iframe style="width: 100%;min-height: 700px"  title="FAO MAP" ng-src="{{iframeUrlSearch}}">
+			</iframe>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+package com.globits.wl.service;
+
+import com.globits.wl.dto.functiondto.SearchReportForm16Dto;
+import org.apache.poi.ss.usermodel.Workbook;
+
+public interface ExportForm16Service {
+    Workbook getReportForm16(SearchReportForm16Dto search);
+}

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Built-By: tatua
+Build-Jdk: 17.0.3.1
+Implementation-Title: wl-app
+Implementation-Version: 1.0.0-SNAPSHOT
+Implementation-Vendor-Id: com.globits
+Implementation-Vendor: Pivotal Software, Inc.
+Implementation-URL: http://maven.apache.org
+Main-Class: com.globits.wl.WLApplication
+Created-By: Maven Integration for Eclipse
+

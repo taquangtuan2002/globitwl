@@ -1,0 +1,120 @@
+package com.globits.wl.dto.functiondto;
+
+public class DashboardGovermentDecreeDto {
+	private Long numberSpeciesIB; // Số loài
+	private Long numberFarmIB; // Số cơ sở
+	private Long numberIndividualIB; // Số cá thể
+	
+	private Long numberSpeciesIIB;
+	private Long numberFarmIIB; 
+	private Long numberIndividualIIB;
+	
+	private Long numberSpeciesDVRTT; 
+	private Long numberFarmDVRTT; 
+	private Long numberIndividualDVRTT; 
+	
+	private Long numberSpecies;
+	private Long numberFarm; 
+	private Long numberIndividual; 
+	
+	public DashboardGovermentDecreeDto () {
+		
+	}
+
+	public Long getNumberSpeciesIB() {
+		return numberSpeciesIB;
+	}
+
+	public void setNumberSpeciesIB(Long numberSpeciesIB) {
+		this.numberSpeciesIB = numberSpeciesIB;
+	}
+
+	public Long getNumberFarmIB() {
+		return numberFarmIB;
+	}
+
+	public void setNumberFarmIB(Long numberFarmIB) {
+		this.numberFarmIB = numberFarmIB;
+	}
+
+	public Long getNumberIndividualIB() {
+		return numberIndividualIB;
+	}
+
+	public void setNumberIndividualIB(Long numberIndividualIB) {
+		this.numberIndividualIB = numberIndividualIB;
+	}
+
+	public Long getNumberSpeciesIIB() {
+		return numberSpeciesIIB;
+	}
+
+	public void setNumberSpeciesIIB(Long numberSpeciesIIB) {
+		this.numberSpeciesIIB = numberSpeciesIIB;
+	}
+
+	public Long getNumberFarmIIB() {
+		return numberFarmIIB;
+	}
+
+	public void setNumberFarmIIB(Long numberFarmIIB) {
+		this.numberFarmIIB = numberFarmIIB;
+	}
+
+	public Long getNumberIndividualIIB() {
+		return numberIndividualIIB;
+	}
+
+	public void setNumberIndividualIIB(Long numberIndividualIIB) {
+		this.numberIndividualIIB = numberIndividualIIB;
+	}
+
+	public Long getNumberSpeciesDVRTT() {
+		return numberSpeciesDVRTT;
+	}
+
+	public void setNumberSpeciesDVRTT(Long numberSpeciesDVRTT) {
+		this.numberSpeciesDVRTT = numberSpeciesDVRTT;
+	}
+
+	public Long getNumberFarmDVRTT() {
+		return numberFarmDVRTT;
+	}
+
+	public void setNumberFarmDVRTT(Long numberFarmDVRTT) {
+		this.numberFarmDVRTT = numberFarmDVRTT;
+	}
+
+	public Long getNumberIndividualDVRTT() {
+		return numberIndividualDVRTT;
+	}
+
+	public void setNumberIndividualDVRTT(Long numberIndividualDVRTT) {
+		this.numberIndividualDVRTT = numberIndividualDVRTT;
+	}
+
+	public Long getNumberSpecies() {
+		return numberSpecies;
+	}
+
+	public void setNumberSpecies(Long numberSpecies) {
+		this.numberSpecies = numberSpecies;
+	}
+
+	public Long getNumberFarm() {
+		return numberFarm;
+	}
+
+	public void setNumberFarm(Long numberFarm) {
+		this.numberFarm = numberFarm;
+	}
+
+	public Long getNumberIndividual() {
+		return numberIndividual;
+	}
+
+	public void setNumberIndividual(Long numberIndividual) {
+		this.numberIndividual = numberIndividual;
+	}
+	
+}

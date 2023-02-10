@@ -1,0 +1,65 @@
+package com.globits.wl.dto;
+
+public class DashboardVolatilityDto {
+
+	 private Long totalListOfForestProductsByYear;
+	 private Long increaseVolatilityOfTheBase;//biến động tăng của cơ sở
+	 private Long increasedVariationOfTheIndividual;//biến động tăng của cá thể
+
+	 private Long decreasedVolatilityOfTheBase;//biến động giảm của cơ sở
+	 private Long decreasedIndividualVariability;//biến động giảm của cá thể
+	 private Long changesInTotalHouseholds;//tổng hô có biến động
+	 
+	 public DashboardVolatilityDto() {
+		 
+	 }
+
+	public Long getTotalListOfForestProductsByYear() {
+		return totalListOfForestProductsByYear;
+	}
+
+	public void setTotalListOfForestProductsByYear(Long totalListOfForestProductsByYear) {
+		this.totalListOfForestProductsByYear = totalListOfForestProductsByYear;
+	}
+
+	public Long getIncreaseVolatilityOfTheBase() {
+		return increaseVolatilityOfTheBase;
+	}
+
+	public void setIncreaseVolatilityOfTheBase(Long increaseVolatilityOfTheBase) {
+		this.increaseVolatilityOfTheBase = increaseVolatilityOfTheBase;
+	}
+
+	public Long getIncreasedVariationOfTheIndividual() {
+		return increasedVariationOfTheIndividual;
+	}
+
+	public void setIncreasedVariationOfTheIndividual(Long increasedVariationOfTheIndividual) {
+		this.increasedVariationOfTheIndividual = increasedVariationOfTheIndividual;
+	}
+
+	public Long getDecreasedVolatilityOfTheBase() {
+		return decreasedVolatilityOfTheBase;
+	}
+
+	public void setDecreasedVolatilityOfTheBase(Long decreasedVolatilityOfTheBase) {
+		this.decreasedVolatilityOfTheBase = decreasedVolatilityOfTheBase;
+	}
+
+	public Long getDecreasedIndividualVariability() {
+		return decreasedIndividualVariability;
+	}
+
+	public void setDecreasedIndividualVariability(Long decreasedIndividualVariability) {
+		this.decreasedIndividualVariability = decreasedIndividualVariability;
+	}
+
+	public Long getChangesInTotalHouseholds() {
+		return changesInTotalHouseholds;
+	}
+
+	public void setChangesInTotalHouseholds(Long changesInTotalHouseholds) {
+		this.changesInTotalHouseholds = changesInTotalHouseholds;
+	}
+	 
+}

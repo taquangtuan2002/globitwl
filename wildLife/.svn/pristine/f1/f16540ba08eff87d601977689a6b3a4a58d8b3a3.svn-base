@@ -1,0 +1,98 @@
+(function() {
+    'use strict';
+    angular.module('Education.AdministrativeOrganization').controller('AdministrativeOrganizationController', AdministrativeOrganizationController);
+    AdministrativeOrganizationController.$inject = [
+        '$rootScope',
+        '$scope',
+        '$timeout',
+        'settings',
+        '$uibModal',
+        'toastr',
+        'blockUI',
+        'bsTableAPI',
+        'Utilities',
+        '$translate',
+        'AdministrativeOrganizationService',
+        'UserService'
+    ];
+
+    function AdministrativeOrganizationController($rootScope, $scope, $timeout, settings, modal, toastr, blockUI, bsTableAPI, utils, $translate, service, userService) {
+        $scope.$on('$viewContentLoaded', function() {
+            // initialize core components
+            App.initAjax();
+        });
+
+        $rootScope.settings.layout.pageContentWhite = true;
+        $rootScope.settings.layout.pageBodySolid = false;
+        $rootScope.settings.layout.pageSidebarClosed = false;
+        var vm = this;
+        
+        vm.treeData = [];
+
+        // FmsAdiministrative
+        vm.fmsAdministratives = [];
+        vm.fmsAdministrative = {};
+        vm.modalInstance = {};
+        vm.parent = {};
+        vm.parents = [];
+        vm.searchDto = {};
+        vm.pageIndex = 1;
+        vm.pageSize = 10;
+        vm.administrativeOrganization = {};
+        vm.organizationLevel = [];
+
+        vm.getCurrentUser = function() {
+            service.getCurrentUser().then(function(data) {
+                vm.idUserAttachments = data.id;
+                userService.getAdministrativeUnitByUserId(vm.idUserAttachments).then(function(data){
+                    if(data != null && data.length > 0) {
+                        console.log("ABC" + data.parentDto);
+                    } else {
+
+                    }
+                });
+
+            })
+        }
+        vm.getCurrentUser();
+        vm.onSelectNode = function(node) {
+            console.log('node gốc');
+            getChildrenByParentId(node.id);
+        }
+
+        vm.onClickNode = function(node) {
+            console.log('node lá');
+            getChildrenByParentId(node.id);
+        }
+
+        function getChildrenByParentId(parentId) {
+            service.getChildrenByParentId(parentId).then(function(data) {
+                vm.childs = data;
+                if(vm.treeData != null && vm.treeData.length > 0) {
+                    for(var i=0; i<vm.treeData.length; i++) {
+                        if (vm.treeData[i].id == parentId) {
+                            vm.treeData[i].children = vm.childs;
+                            vm.treeData[i].expanded = true;
+
+                        } else if (vm.treeData[i].parentDto == null && vm.treeData[i].expanded == false) {
+                            vm.treeData[i].children = [];
+                        }
+                    }
+                }
+            })
+        }
+
+        vm.treeData = [];
+        vm.organizationLevel = [
+            {
+                value: 1,
+                name: 'Đơn vị',
+            },
+            {
+                value: 2,
+                name: 'Phòng',
+            }
+        ]
+
+    }
+})();

@@ -1,0 +1,32 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.certificate.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'certificate.create' | translate}}</h4>
+        <h4 ng-if="vm.certificate.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'certificate.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'certificate.code' | translate}}</label>
+                <input ng-if="vm.certificate.isNew == true" data-ng-model="vm.certificate.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.certificate.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'certificate.name' | translate}}</label>
+                <input data-ng-model="vm.certificate.name" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'certificate.description' | translate}}</label>
+                <input data-ng-model="vm.certificate.description" type="text" class="form-control" />
+            </div>
+            
+            
+          
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'certificate.cancel' | translate}}</button>
+		<button ng-if="vm.certificate.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'certificate.save' | translate}}</button>
+		<button ng-if="vm.certificate.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'injectionTime.save' | translate}}</button>
+    </div>

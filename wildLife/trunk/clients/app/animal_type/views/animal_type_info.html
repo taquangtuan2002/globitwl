@@ -1,0 +1,33 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.animalType.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'animalType.create' | translate}}</h4>
+        <h4 ng-if="vm.animalType.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'animalType.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'animalType.code' | translate}}</label>
+                <input ng-if="vm.animalType.isNew == true" data-ng-model="vm.animalType.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.animalType.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			<div class="col-md-1 margin-top-10">
+				<button ng-if="vm.animalType.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				<button ng-if="vm.animalType.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			</div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'animalType.name' | translate}}</label>
+                <input data-ng-model="vm.animalType.name" type="text" class="form-control" />
+            </div>
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'animalType.description' | translate}}</label>
+                <input data-ng-model="vm.animalType.description" class="form-control" />
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'animalType.cancel' | translate}}</button>
+        <!--<button type="button" ng-click="vm.saveAnimalType()" class="btn btn-primary"><i class="icon-check"></i> {{'animalType.save' | translate}}</button>-->
+		<button ng-if="vm.animalType.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'animalType.save' | translate}}</button>
+		<button ng-if="vm.animalType.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'animalType.save' | translate}}</button>
+    </div>

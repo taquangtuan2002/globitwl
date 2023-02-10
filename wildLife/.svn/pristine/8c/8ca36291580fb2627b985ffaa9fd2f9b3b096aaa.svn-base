@@ -1,0 +1,197 @@
+<section id="page-title">
+    <div class="container clearfix">
+        <h1 class="col-md-6" style="margin-top:0px ; margin-bottom: 30px"><i class="icon-newspaper"></i>{{'MENU.cms' | translate}}</h1>
+	    <div class="col-md-6" style="float: right; margin-top:0px ; margin-bottom: 30px">
+	         <ui-select ng-model="vm.cateId" sortable="true" close-on-select="true"
+	             on-select="vm.getListNewsByCatetegoryId()">
+	             <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCategoryArticle' | translate}}...">
+	                 {{$select.selected.title}} </ui-select-match>
+	             <ui-select-choices
+	                 repeat="Category.id as Category in vm.listCategory | propsFilter: {title: $select.search}">
+	                 <div class="bold" ng-bind-html="Category.title | highlight: $select.search">
+	                 </div>
+	             </ui-select-choices>
+	         </ui-select>
+	     </div>
+     </div>
+</section>
+<!-- Content
+============================================= -->
+<section id="content">
+    <div class="content-wrap tight">
+        <div class="container clearfix">
+            <!-- Post Content
+            ============================================= -->
+            <div class="postcontent nobottommargin clearfix">
+
+                <!-- Posts
+                ============================================= -->
+                <div id="posts" class="small-thumbs">
+                    <!-- <div class="col-md-12" ng-if="vm.listNews == null || vm.listNews.length <=0">
+                        <h3>Không có tin nào trong chuyên mục <span ng-if="vm.category != null && vm.category.title != ''">"<span ng-bind-html="vm.category.title"></span>"</span></h3>
+                    </div>  -->
+                    <div class="entry clearfix" ng-repeat="item in vm.listNews">
+                        <div class="entry-image">
+                            <a href="#" ng-click="vm.linkToDetail(item.id)"><img class="image_fade" ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{item.titleImageUrl}}" alt="Standard Post with Image"></a>
+                        </div>
+                        <div class="entry-c">
+                            <div class="entry-title">
+                                <h2><a href="#" ng-click="vm.linkToDetail(item.id)"><span ng-bind-html="item.title"></span></a></h2>
+                            </div>
+                            <ul class="row entry-meta clearfix">
+                                <li><span>Ngày đăng: </span><span ng-bind-html="item.publishDate | date:'dd/MM/yyyy':'UTC+7'"></span></li>
+                                <!-- <li class="li" ng-repeat="cate in item.categories">
+                                    <a href="#"><span ng-bind-html="cate.category.title"></span></a>
+                                </li>
+                                 <li><a href="#"><i class="icon-comments"></i> 3</a></li> -->
+                            </ul>
+                            <div class="entry-content">
+                                <p><span ng-bind-html="item.summary"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- #posts end -->
+
+                <!-- Pagination
+                ============================================= -->
+                <div class="row mb-3" ng-if="vm.listNews != null && vm.listNews.length > 0">
+                    <div class="col-12">
+                        <a href="#" ng-click="vm.prePage()" class="btn btn-outline-secondary float-left" ng-disabled="vm.pageIndex <= 1">&larr; Bài cũ hơn</a>
+                        <a href="#" ng-click="vm.nextPage()" class="btn btn-outline-dark float-right" ng-disabled="vm.pageIndex >= vm.totalPage">Bài mới hơn &rarr;</a>
+                    </div>
+                </div>
+                <!-- .pager end -->
+
+            </div><!-- .postcontent end -->
+
+        </div>
+    </div>
+</section>
+<style>
+a[disabled],
+fieldset[disabled]  {
+    cursor: not-allowed;
+}
+.entry-content p{
+	margin:10px 0;
+	font-size:16px;
+	font-weight:400
+}
+.small-thumbs .entry-image, .ievent .entry-image {
+    float: left;
+    width: 300px;
+    margin: 0 30px 0 0;
+}
+.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img {
+    display: block;
+    position: relative;
+    height: auto;
+}
+.entry {
+    position: relative;
+    margin: 0 0 30px 0;
+    padding-bottom: 30px;
+    border-bottom: 1px dashed #e5e5e5;
+}
+.small-thumbs .entry-image img, .ievent .entry-image img {
+    border-radius: 0;
+}
+.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+a img {
+    border: none;
+}
+img {
+    max-width: 100%;
+}
+img {
+    vertical-align: middle;
+}
+.small-thumbs .entry-title h2, .ievent .entry-title h2 {
+    font-size: 18px;
+}
+.small-thumbs .entry-title h2, .ievent .entry-title h2 {
+    font-weight: 600;
+}
+.entry-title h2 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+h2 {
+    font-size: 30px;
+    color: #444;
+    line-height: 1.5;
+    font-family: 'Muli', sans-serif;
+}
+.entry-c {
+    position: relative;
+    overflow: hidden;
+}
+.entry-meta {
+    margin: 10px -10px -15px 0;
+    list-style: none;
+}
+.entry-meta li {
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 10px 15px 0;
+    color: #999;
+    font-family: 'Muli', sans-serif;
+    /* font-style: italic; */
+}
+.entry-meta .li:before {
+    content: '/';
+    display: inline-block;
+    margin-right: 10px;
+    opacity: 0.5;
+}
+ul{
+    font-family: 'Muli', sans-serif;
+    padding: 0;
+}
+#content p {
+    line-height: 1.8;
+}
+.entry-content span {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 400;
+}
+.float-right {
+    float: right !important;
+}
+.float-left {
+    float: left !important;
+}
+.btn-outline-secondary {
+    color: #343a40;
+    border-color: #343a40;
+}
+.btn-outline-dark {
+    color: #343a40;
+    border-color: #343a40;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all) {
+    min-height: 34px!important;
+    padding: 8px 14px 7px;
+}
+</style>

@@ -1,0 +1,42 @@
+<div class="modal-header">
+	<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+	<h4 ng-if="vm.waterSource.isNew == true" class="modal-title"><i class="icon-plus"></i> {{'animal.create' | translate}}</h4>
+	<h4 ng-if="vm.waterSource.isNew == false" class="modal-title"><i class="icon-pencil"></i> {{'animal.edit' | translate}}</h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		
+		<div class="col-md-10 margin-top-10">
+			<label class="bold">{{'waterSource.code' | translate}} </label>
+			<input ng-if="vm.waterSource.isNew == true" data-ng-model="vm.waterSource.code" type="text" autofocus="autofocus" class="form-control" />
+			<input ng-if="vm.waterSource.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+		</div>
+		<div class="col-md-1 margin-top-10">
+			<button ng-if="vm.waterSource.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			<button ng-if="vm.waterSource.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+		</div>
+		
+		<div class="col-md-12 margin-top-10">
+			<label class="bold">{{'waterSource.name' | translate}} </label>
+			<input data-ng-model="vm.waterSource.name" type="text" autofocus="autofocus" class="form-control" />
+		</div>
+
+		<!-- <div class="col-md-12 margin-top-10">
+			<label class="bold">Mô tả</label>
+			<input data-ng-model="vm.fmsRegion.description" type="text" autofocus="autofocus" class="form-control" />
+		</div> -->
+
+		<!-- <div class="col-md-12 margin-top-10">
+			<label class="bold">Diện tích</label>
+			<input data-ng-model="vm.fmsRegion.acreage" type="text" autofocus="autofocus" class="form-control" />
+		</div> -->
+	</div>
+
+</div>
+<div class="modal-footer">
+	<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'waterSource.cancel' | translate}}</button>
+	<!--<button type="button" ng-click="vm.saveWaterSource()" class="btn btn-primary"><i class="icon-check"></i> {{'waterSource.save' | translate}}</button>-->
+	<button ng-if="vm.waterSource.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'waterSource.save' | translate}}</button>
+		<button ng-if="vm.waterSource.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'waterSource.save' | translate}}</button>
+
+</div>

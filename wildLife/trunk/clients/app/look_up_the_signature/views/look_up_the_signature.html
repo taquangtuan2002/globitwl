@@ -1,0 +1,121 @@
+
+<section id="content">
+    <div class="content-wrap tight">
+        <div class="portlet light bordered">
+            <div class="container margin-top-20 clearfix">
+                <div class="row">
+
+                    <h1 class="col-md-6" style="margin-top:0px ; margin-bottom: 30px"><i
+                            class="icon-newspaper"></i>{{'MENU.look_up_the_signature2' | translate}}</h1>
+
+                    <div class="col-md-6">
+                        <div class="input-group" style="padding-left: 5px;">
+                            <input type="text" data-ng-model="vm.textSearch" ng-keydown="$event.keyCode === 13 && vm.search()" class="form-control"
+                                placeholder="{{'look_up_the_signature.search_by' | translate}}" name="search">
+                            <div class="input-group-btn">
+                                <button ng-click="vm.search()" class="btn btn-primary" type="submit"><i
+                                        class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered margin-top-20 bold">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th style="width: 300px;">{{'look_up_the_signature.username' | translate}}</th>
+                            <th style="width: 400px;">{{'look_up_the_signature.displayName' | translate}}</th>
+                            <th style="width: 400px;">Tên đơn vị</th>
+                            <th style="width: 400px;">Chức vụ</th>
+                            <th style="width: 400px;">Số điện thoại</th>
+                            <th style="width: 400px;">Họ tên</th>
+                            <th style="width: 400px;">Email</th>
+                            <th style="width: 400px;">Địa chỉ cơ quan</th>
+                            <!-- <th>{{'look_up_the_signature.template' | translate}}</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in vm.listUserAttachment" style="height:100px;">
+                            <td class="text-center align-middle">
+                                <span>{{$index + 1}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.user.username}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.user.displayName}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.organizationName}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.positionName}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.phoneNumber}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.displayName}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.email}}</span>
+                            </td>
+                            <td class="align-middle">
+                                <span>{{item.organizationAddress}}</span>
+                            </td>
+                            <!-- <td>
+                                <div class="open-img text-center">
+                                    <a href="#" ng-click="vm.openFile(item)">
+                                        <img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{item.file.id}}"
+                                            ngf-accept="'image/*'" style="height:100px;">
+                                    </a>
+                                </div>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination total-items="vm.totalItem" max-size="vm.maxSize" items-per-page="vm.pageSize"
+                    ng-model="vm.pageIndex" ng-change="vm.searchByPage()" class="pagination-sm pull-right"
+                    boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                    last-text="&raquo;"></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/ng-template" id="open_file_images_user_attachment.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <h4 class="modal-title bold"><i class="icon-info"></i> <span ng-bind-html="vm.fileOpen.fileName"></span> </h4>
+        </div>
+        <div class="modal-body clearfix">
+            <div class="col-md-12">
+                <div class="open-img">
+                    <img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{vm.fileOpen.file.id}}"
+                         ngf-accept="'image/*'" style="width: 100%; height:100%;">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="vm.closeShowImage()" class="button button-3d tab-linker" data-dismiss="modal">{{'application.modal.close' | translate}}</button>
+        </div>
+    </div>
+</script>
+
+<style>
+    #viewAnimalProductTargetExist>ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #viewAnimalProductTargetExist>ul>li {
+        padding-left: 16px;
+    }
+
+    #viewAnimalProductTargetExist>ul>li::before {
+        content: "+";
+        padding-right: 8px;
+        color: blue;
+    }
+</style>

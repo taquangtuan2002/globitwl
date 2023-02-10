@@ -1,0 +1,250 @@
+(function() {
+    'use strict';
+
+    /* Education App */
+    if (typeof window.Education == 'undefined') {
+        var Education = angular.module('Education', [
+            'ui.router',
+            'ui.bootstrap',
+            'oc.lazyLoad',
+            'ngSanitize',
+            'ngCookies',
+            'angular-oauth2',
+            'blockUI',
+            'ngFileUpload',
+            'uiCropper',
+            'toastr',
+            'ngIdle',
+            'pascalprecht.translate',
+            'chart.js',
+            'webdatarocks',
+            // Sub modules
+            'Education.Common',
+            'Education.Dashboard',
+            'Education.Settings',
+            'Education.User',
+            'Education.AdministrativeUnitEditable',
+            'Education.Original',
+            'Education.ProductTarget',
+            'Education.FmsRegion',
+            'Education.AnimalType',
+            'Education.FmsAdministrative',
+            'Education.Animal',
+            'Education.InjectionPlant',
+            'Education.InjectionTime',
+            'Education.Bran',
+            'Education.Farm',
+            'Education.WaterSource',
+            'Education.HusbandryType',
+            'Education.HusbandryMethod',
+            'Education.ImportAnimal',
+            'Education.ExportAnimal',
+            'Education.InternalStatistics',
+            'Education.Members',
+            'Education.Statistic',
+            'Education.AffiliatedUnits',
+			'Education.EventNew',
+			'Education.FarmSize',
+			'Education.Report',
+			'Education.CmsCategory',
+            'Education.CmsArticle',
+            'Education.Certificate',
+            'Education.CmsArticleType',
+            'Education.ReportOfFarmer',
+            'Education.News',
+            'Education.ExportEgg',
+			'Education.ImportAnimalFeed',
+			'Education.ExportAnimalFeed',
+            'Education.ImportAnimalSeed',
+			'Education.Drug',
+			'Education.ImportDrug',
+			'Education.ReportFarmerManagerment',
+			'Education.FmsSeedLevel',
+			'Education.Ownership',
+			'Education.ImportEgg',
+			'Education.Unit',
+            'Education.LiveStockProduct',
+            'Education.ImportExportLiveStockProduct',
+            'Education.ExportDrug',
+            'Education.TotalReport',
+            'Education.InformationAnimal',
+            'Education.AnimalReportData',
+            'Education.FarmDuplicateDoubts',
+            'Education.LookUpTheSignature',
+            'Education.ForestProductList',
+            'Education.ReportPeriod',
+            'Education.WildLifeAbouts',
+            'Education.AnimalRequired',
+            'Education.UserFileUpload',
+            'Education.Link',
+            'Education.BiologicalClass',
+            'Education.AnimalCertificate',
+            'Education.TechnicalStaff',
+            'Education.AdministrativeOrganization'
+        ]);
+
+        window.Education = Education;
+    };
+
+    Education.HOST=window.location.host;
+    Education.PORT='8098';
+    Education.protocol='http'
+    Education.API_SERVER_URL = Education.protocol+'://'+Education.HOST+':'+Education.PORT+'/wl/';
+//    	Education.API_SERVER_URL=	'http://wldemo.globits.net:8082/wl/';
+    Education.API_CLIENT_ID = 'wl_client';
+    Education.API_CLIENT_KEY = 'password';
+    Education.API_PREFIX = 'api/';
+    Education.version =(new Date()).getTime().toString();
+
+    /* Init global settings and run the app */
+    Education.run(['$rootScope', 'settings', '$http', '$cookies', '$state', '$injector', 'constants', 'OAuth', 'blockUI', 'toastr', 'Idle', 'Keepalive',//'$templateCache',
+        function($rootScope, settings, $http, $cookies, $state, $injector, constants, OAuth, blockUI, toastr, Idle, Keepalive,$templateCache) {
+            $rootScope.$state = $state; // state to be accessed from view
+            $rootScope.$settings = settings; // state to be accessed from view
+            $rootScope.StudentId = 0;
+            $rootScope.version = (new Date()).getTime().toString();
+
+            $rootScope.API_SERVER_URL = Education.API_SERVER_URL;
+
+            // Idle management
+            Idle.watch();
+            Keepalive.start();
+//            $templateCache.removeAll();
+            $rootScope.$on('IdleStart', function() {
+                $http.get(settings.api.baseUrl + 'api/users/getCurrentUser').success(function(response, status, headers, config) {
+                	consle.log(response);
+                    if (response) {
+                        /* Display modal warning or sth */
+                        $rootScope.idleToastr = toastr.warning('Bạn đã ngưng làm việc trên hệ thống một khoảng thời gian khá lâu. Phiên làm việc của bạn sẽ tự động kết thúc ngay sau đây nếu bạn không thực hiện một thao tác nào.', 'Cảnh báo...', {
+                            timeOut: 60000, // 60 seconds
+                            closeButton: true,
+                            progressBar: true
+                        });
+                    }
+                }).error(function(response, status, headers, config) {});
+            });
+
+            $rootScope.$on('IdleEnd', function() {
+                if ($rootScope.idleToastr) {
+                    toastr.remove($rootScope.idleToastr);
+                }
+            });
+
+            $rootScope.$on('IdleTimeout', function() {
+                OAuth.revokeToken();
+
+                $cookies.remove(constants.oauth2_token);
+                $state.go('login');
+            });
+
+            // oauth2...
+            $rootScope.$on('oauth:error', function(event, rejection) {
+
+                blockUI.stop();
+
+                // Ignore `invalid_grant` error - should be catched on `LoginController`.
+                if (angular.isDefined(rejection.data) && 'invalid_grant' === rejection.data.error) {
+                    toastr.error('Tên đăng nhập hoặc mật khẩu không đúng. Xin mời thử lại.', 'Lỗi');
+
+                    $cookies.remove(constants.oauth2_token);
+                    $state.go('login');
+
+                    return;
+                }
+
+                // Refresh token when a `invalid_token` error occurs.
+                if (angular.isDefined(rejection.data) && 'invalid_token' === rejection.data.error) {
+                    return OAuth.getRefreshToken();
+                }
+
+                // Redirect to `/login` with the `error_reason`.
+                $rootScope.$emit('$unauthorized', function(event, data) {});
+                $state.go('login');
+            });
+
+            $rootScope.$on('$locationChangeSuccess', function(event) {
+                if (!OAuth.isAuthenticated()) {
+                    $rootScope.$emit('$unauthorized', function(event, data) {});
+                    if(window.location.href.split('#').length > 1 && window.location.href.split('#')[1].split('?')[0] == '/change_password/path'){
+
+                    }else $state.go('login');
+                }
+
+                blockUI.start();
+                $http.get(settings.api.baseUrl + 'api/users/getCurrentUser').success(function(response, status, headers, config) {
+                    blockUI.stop();
+                    if (response) {
+                        $rootScope.user = response;
+//                        console.log($rootScope.user);
+                        $cookies.putObject("currentUser", $rootScope.user);
+                        $rootScope.$emit('$onCurrentUserData', response);
+                        $rootScope.isAdmin = false;
+                        $rootScope.isRoleSDAH = false;
+                        $rootScope.isApprovedSpecies= false;
+                        $rootScope.isEducationManager = false;
+                        $rootScope.isStudentManager = false;
+                        $rootScope.isExamManager = false;
+                        $rootScope.isFinalcialManager = false;
+                        if ($rootScope.user != null && $rootScope.user.roles != null) {
+//                            console.log($rootScope.user.roles);
+                            for (var i = 0; i < $rootScope.user.roles.length; i++) {
+                                var role = $rootScope.user.roles[i];
+//                                console.log(role);
+                                if (role.name == 'ROLE_ADMIN') {
+                                    $rootScope.isAdmin = true;
+                                }
+                                if(role.name == 'ROLE_SDAH'){
+                                    $rootScope.isRoleSDAH = true;
+                                }
+                                if (role.name == 'ROLE_APPROVED_SPECIES') {
+                                    $rootScope.isApprovedSpecies = true;
+                                }
+//                                $rootScope.isEducationManager = $rootScope.isAdmin || $rootScope.isEducationManager || (role.name == 'ROLE_EDUCATION_MANAGERMENT');
+//                                $rootScope.isStudentManager = $rootScope.isAdmin || $rootScope.isStudentManager || (role.name == 'ROLE_STUDENT_MANAGERMENT');
+//                                $rootScope.isExamManager = $rootScope.isAdmin || $rootScope.isExamManager || (role.name == 'ROLE_EXAM_MANAGERMENT');
+//                                $rootScope.isFinalcialManager = $rootScope.isAdmin || $rootScope.isFinalcialManager || (role.name == 'ROLE_FINANCIAL_MANAGERMENT');
+                            }
+                        }
+                        
+                        if($rootScope.user!=null && $rootScope.user.id!=null){
+                            $http.get(settings.api.baseUrl + 'api/user_administrative/get_administrativeUnit_by_userid/'+$rootScope.user.id).success(function(response) {
+                        		 if(response){
+//                        			 debugger;
+                        			//  console.log(response);
+                        			 for (var i = 0; i < response.length; i++) {
+                        				 if(response[i].subAdministrativeUnitsDto)
+                        					 response[i].subAdministrativeUnitsDto=null;
+                        				 if(response[i].parentDto){
+                        					 let tempParent = response[i].parentDto;
+                            				 response[i].parentDto={};
+                            				 response[i].parentDto.id = tempParent.id;
+                            				 response[i].parentDto.name = tempParent.name;
+                            				 response[i].parentDto.code = tempParent.code;
+                        				 }                        				 
+                        			 }
+                        			$rootScope.adminUnitByUser = response;
+                                    $rootScope.$emit('$adminUnitByUser', response);
+                        			$cookies.putObject("adminUnitByUser", $rootScope.adminUnitByUser);
+                        		 }
+                        		 else{
+                        			 $cookies.putObject("adminUnitByUser", null);
+                        		 }
+                        	 });
+                        }
+                        
+                        if ($state.current.name == 'login') {
+                            $state.go('application.dashboard');
+                        }
+                    }
+                }).error(function(response, status, headers, config) {
+                    blockUI.stop();
+                    $cookies.remove(constants.oauth2_token);
+                    if(window.location.href.split('#').length > 1 && window.location.href.split('#')[1].split('?')[0] == '/change_password/path'){
+
+                    }else $state.go('login');
+                });
+            });
+        }
+    ]);
+
+})(window);

@@ -1,0 +1,27 @@
+<div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title"><i class="icon-question"></i> Chọn địa điểm </h4>
+        </div>
+        <div class="modal-body clearfix">
+            <div class="col-md-12">
+				<div class="form-group col-md-12 margin-top-10">
+                    <div class="input-group">
+                        <input autofocus="autofocus" ng-if="!vm.isfindByCode" type="text" ng-keydown="$event.keyCode === 13 && vm.searchRoom()" class="form-control" placeholder="Tìm kiếm theo tên" ng-model="vm.RoomSearch">
+
+                        <div class="input-group-addon" style="cursor: pointer;" ng-click="vm.searchRoom()"><i class="fa fa-search"></i></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 list-person">
+                    <div class="portlet-body">
+                        <table bs-table-control="vm.bsTableControlRoom"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">Đồng ý</button>
+        </div>
+    </div>

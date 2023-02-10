@@ -1,0 +1,33 @@
+(function() {
+    'use strict';
+    angular.module('Education.AdministrativeOrganization').service('AdministrativeOrganizationService', AdministrativeOrganizationService);
+
+    AdministrativeOrganizationService.$inject = [
+        '$http',
+        '$q',
+        'settings',
+        'Utilities',
+        '$translate'
+    ];
+
+    function AdministrativeOrganizationService($http, $q, settings, utils, $translate) {
+        var self = this;
+        var baseUrl = settings.api.baseUrl + settings.api.apiPrefix;
+        self.getChildrenByParentId = getChildrenByParentId;
+        self.getCurrentUser = getCurrentUser;
+
+        function getCurrentUser() {
+            var url = baseUrl + 'users/getCurrentUser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        
+        function getChildrenByParentId(id) {
+            if(!id) {
+                return $q.when(null);
+            }
+            var url = baseUrl + 'administrative/getChildrenByParentId/' + id;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        
+    }
+})();

@@ -1,0 +1,22 @@
+package com.globits.wl.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.domain.FmsAdministrativeUnit;
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+@Repository
+public interface AdministrativeOrganizationRepository extends JpaRepository<AdministrativeOrganization, Long>{
+	@Query("select u from AdministrativeOrganization u where u.abbreviations = ?1")
+	List<AdministrativeOrganization> findListByabbreviations(String abbreviations);
+	@Query("select au from AdministrativeOrganization au where  au.parent.id=?1")
+	List<AdministrativeOrganization> getListdministrativeUnitbyParent(Long parentId);
+@Query("select new com.globits.wl.dto.AdministrativeOrganizationDto(administrative,1) from  AdministrativeOrganization administrative  where administrative.id = ?1")
+	AdministrativeOrganizationDto getById(Long parentId);
+	
+
+}

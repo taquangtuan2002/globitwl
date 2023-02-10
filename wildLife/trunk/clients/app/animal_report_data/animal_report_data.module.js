@@ -1,0 +1,243 @@
+(function () {
+    'use strict';
+
+    Education.AnimalReportData = angular.module('Education.AnimalReportData', [
+        'ui.router',
+        'oc.lazyLoad',
+        'bsTable',
+        'toastr',
+        'Education.Common',
+        'ngFileSaver'
+    ]);
+
+    Education.AnimalReportData.config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+
+            .state('application.animal_report_data', {
+                url: '/data_animal_report',
+                templateUrl: 'animal_report_data/views/animal_report_data.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Farm size',
+                    pageSubTitle: ''
+                },
+                controller: 'AnimalReportDataController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/AnimalReportDataController.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })
+            .state('application.report_data_export_excel', {
+                url: '/report_data_export_excel',
+                templateUrl: 'animal_report_data/views/animal_report_data_export_excel.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Farm size',
+                    pageSubTitle: ''
+                },
+                controller: 'AnimalReportDataExportExcellController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/AnimalReportDataExportExcellController.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                            ]
+                        });
+                    }]
+                }
+            })
+            .state('application.report_number_animals_and_number_farms_according_to_the_red_book', {
+                url: '/report_number_animals_and_number_farms_according_to_the_red_book',
+                templateUrl: 'animal_report_data/views/report_number_animals_and_number_farms_according_to_the_red_book.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo 01',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportNumberAnimalsAndNumberFarmsAccordingToTheRedBookController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportNumberAnimalsAndNumberFarmsAccordingToTheRedBookController.js?v='+Education.version,
+								'fms_region/business/FmsRegionService.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version,
+                                'animal/business/AnimalService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })
+            .state('application.report_number_animals_and_number_farms_by_cites', {
+                url: '/report_number_animals_and_number_farms_by_cites',
+                templateUrl: 'animal_report_data/views/report_number_animals_and_number_farms_by_cites.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo 02',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportNumberAnimalsAndNumberFarmByCategoryCitesController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportNumberAnimalsAndNumberFarmByCategoryCitesController.js?v='+Education.version,
+								'fms_region/business/FmsRegionService.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+								'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })        
+            
+            // bao cao 1.3
+            .state('application.report_number_animals_and_number_farms_BC1_3', {
+                url: '/report_number_animals_and_number_farms_BC1_3',
+                templateUrl: 'animal_report_data/views/report_number_animals_and_number_farms_BC1_3.html?v=' + Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo chi tiết loài nuôi ĐVHD theo phụ lục CITES',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportNumberAnimalsAndNumberFarmsBC13Controller as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportNumberAnimalsAndNumberFarmsBC13Controller.js?v=' + Education.version,
+                                'fms_region/business/FmsRegionService.js?v=' + Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v=' +Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v=' + Education.version
+                            ]
+                        });
+                    }]
+                }
+            })   
+
+
+
+            .state('application.wild_animal_farming_report_by_classification', {
+                url: '/wild_animal_farming_report_by_classification',
+                templateUrl: 'animal_report_data/views/wild_animal_farming_report_by_classification.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo 05',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportWildAnimalFarmingReportByClassificationController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportWildAnimalFarmingReportByClassificationController.js?v='+Education.version,
+								'fms_region/business/FmsRegionService.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version,
+                                'animal/business/AnimalService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })
+            .state('application.wild_animal_farming_report_by_adminstrative_unit', {
+                url: '/wild_animal_farming_report_by_adminstrative_unit',
+                templateUrl: 'animal_report_data/views/wild_animal_farming_report_by_adminstrative_unit.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo 06',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportWildAnimalFarmingReportByAdminstrativeUnitController as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportWildAnimalFarmingReportByAdminstrativeUnitController.js?v='+Education.version,
+								'fms_region/business/FmsRegionService.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version,
+                                'animal/business/AnimalService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })
+            .state('application.wild_animal_farming_report_by_cites', {
+                url: '/wild_animal_farming_report_by_cites',
+                templateUrl: 'animal_report_data/views/wild_animal_farming_report_by_cites.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo 07',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportWildAnimalFarmingReportByCites as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportWildAnimalFarmingReportByCites.js?v='+Education.version,
+								'fms_region/business/FmsRegionService.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version,
+                                'animal/business/AnimalService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })
+            .state('application.wild_animal_farming_status_report', {
+                url: '/wild_animal_farming_status_report',
+                templateUrl: 'animal_report_data/views/wild_animal_farming_status_report.html?v='+Education.version,
+                data: {
+                    icon: 'fa fa-paw',
+                    pageTitle: 'Báo cáo 04',
+                    pageSubTitle: ''
+                },
+                controller: 'ReportWildAnimalFarmingStatusReport as vm',
+                resolve: {
+                    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load({
+                            name: 'Education.AnimalReportData',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                'animal_report_data/controllers/ReportWildAnimalFarmingStatusReport.js?v='+Education.version,
+								'fms_region/business/FmsRegionService.js?v='+Education.version,
+                                'animal_report_data/business/AnimalReportDataService.js?v='+Education.version,
+                                'fms_administrative_unit/business/FmsAdministrativeService.js?v='+Education.version,
+                                'animal/business/AnimalService.js?v='+Education.version
+                            ]
+                        });
+                    }]
+                }
+            })
+            ;
+    }]);
+
+})();

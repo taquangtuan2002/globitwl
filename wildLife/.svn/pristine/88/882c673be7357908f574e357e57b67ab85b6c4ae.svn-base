@@ -1,0 +1,219 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.injectionPlant.isNew" class="modal-title"><i class="icon-plus"></i> {{"importAnimal.create"|translate}}</h4>
+    <h4 ng-if="!vm.injectionPlant.isNew" class="modal-title"><i class="icon-pencil"></i> {{"importAnimal.update"|translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold"><strong
+                    style="color:red">*</strong>{{"importAnimal.animal.name"|translate}}</label>
+            <ui-select ng-model="vm.forestProductDetail.animal" sortable="true" close-on-select="true"
+                on-select="vm.onSelectedAnimal($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'animal.chooseAnimal'|translate}}...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="animal in vm.animals2 | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Nhóm loài</label>
+            <input data-ng-model="vm.forestProductDetail.groupAnimalType" disabled="true" ng-value="vm.forestProductDetail.animal.animalGroup" type="text" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Số hiệu nhãn đánh dấu(nếu có)</label>
+            <input data-ng-model="vm.forestProductDetail.code" type="text" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Đơn vị tính</label>
+            <input data-ng-model="vm.forestProductDetail.unit" type="text" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Tổng khối lượng (kg)</label>
+            <input data-ng-model="vm.forestProductDetail.amount" type="number" class="form-control" />
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Ghi chú</label>
+            <input data-ng-model="vm.forestProductDetail.note" type="text" class="form-control" />
+        </div>
+
+        <div class="col-md-12 margin-top-10" style="overflow: auto; min-height: 35vh;">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 148.8px;" colspan="4">Tổng số c&aacute;
+                            thể nu&ocirc;i</th>
+                        <th style="width: 56.8px;" colspan="3">Cá thể bố mẹ</th>
+                        <th style="width: 56.8px;" colspan="3">Đ&agrave;n giống
+                            hậu bị</th>
+                        <th style="width: 56.8px" colspan="3">Số lượng con dưới 1
+                            tuổi (chưa trưởng thành)</th>
+                        <th style="width: 108.8px;" colspan="3">Số lượng c&aacute;
+                            thể tr&ecirc;n 1 tuổi (đã trưởng thành)</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="4" style="width: 36px;">Tổng</th>
+                        <th rowspan="4" style="width: 28px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">Cái</th>
+                        <th rowspan="4" style="width: 45.6px;">Không xác định</th>
+
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">Cái</th>
+                        <th rowspan="4" style="width: 45.6px;">Không xác định</th>
+
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">Cái</th>
+                        <th rowspan="4" style="width: 45.6px;">Không xác định</th>
+
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 22.4px;">Cái</th>
+                        <th rowspan="4" style="width: 45.6px;">Không xác định</th>
+
+                        <th rowspan="4" style="width: 28.8px;">Đực</th>
+                        <th rowspan="4" style="width: 23.2px;">Cái</th>
+                        <th rowspan="4" style="width: 45.6px;">Không xác định</th>
+                    </tr>
+                </thead>
+                <tbody ng-if="vm.forestProductDetail.reportForm16Old">
+                    <tr>
+                        <td colspan="16">
+                            Số lượng động vật hiện có
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="vm.forestProductDetail.reportForm16Old">
+                    <tr>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.total" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.male" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.female" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.unGender" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.maleParent" ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.femaleParent"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.unGenderParent"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.maleGilts"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.femaleGilts"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.unGenderGilts"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.maleChildUnder1YearOld"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.femaleChildUnder1YearOld"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.childUnder1YearOld"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.maleChildOver1YearOld"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.femaleChildOver1YearOld"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.reportForm16Old.unGenderChildOver1YearOld"ng-disabled="true" ng-class="{'glb-disabled':true}" type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody ng-if="vm.forestProductDetail.reportForm16Old">
+                    <tr>
+                        <td colspan="16">
+                            Số lượng khai báo giảm
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody ng-if="vm.forestProductDetail.reportForm16Old">
+                    <tr>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.total" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.male" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.female" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.unGender" ng-disabled="true" ng-class="{'glb-disabled':true}"  type="text" class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.maleParent" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.femaleParent" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.unGenderParent" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.maleGilts" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.femaleGilts" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.unGenderGilts" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.maleChildUnder1YearOld" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.femaleChildUnder1YearOld" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.childUnder1YearOld" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.maleChildOver1YearOld" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.femaleChildOver1YearOld" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                        <td>
+                            <input data-ng-model="vm.forestProductDetail.unGenderChildOver1YearOld" ng-change="vm.updateTotalForm16(vm.forestProductDetail)"  type="text"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"  class="form-control" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       {{"exportAnimal.cancel" | translate}}</button>
+    <button type="button" ng-click="vm.saveForestProductListDetail()" class="btn btn-primary"><i class="icon-check"></i>{{'exportAnimal.save' | translate}}</button>
+
+</div>

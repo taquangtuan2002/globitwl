@@ -1,0 +1,1386 @@
+package com.globits.wl.service.impl;
+
+import com.globits.wl.dto.functiondto.*;
+
+import com.globits.core.utils.SecurityUtils;
+import com.globits.security.domain.User;
+import com.globits.wl.dto.DashboardVolatilityDto;
+import com.globits.wl.service.DashboardService;
+import com.globits.wl.service.UserAdministrativeUnitService;
+import com.globits.wl.utils.WLConstant;
+
+import com.globits.wl.utils.WLDateTimeUtil;
+import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+@Service
+public class DashboardServiceImpl implements DashboardService {
+    @Autowired
+    public EntityManager manager;
+	@Autowired
+	private UserAdministrativeUnitService userAdministrativeUnitService;
+
+    public Long totalSpeciesNumberPLI(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='I' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalSpeciesNumberPLII(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='II' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalSpeciesNumberPLIII(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='III' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalSpeciesNumberDVHD(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.animal.id) from ReportForm16 as entity where entity.cites ='' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberPLI(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='I' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberPLII(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='II' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberPLIII(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='III' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNumberDVHD(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(DISTINCT entity.farm.id) from ReportForm16 as entity where entity.cites ='' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberPLI(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='I' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberPLII(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='II' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberPLIII(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='III' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumberDVHD(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select sum( entity.total) from ReportForm16 as entity where entity.cites ='' ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)qCount.getSingleResult();
+        return count;
+    }
+    public Long totalAnimalsNumber(Integer year) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String countSql = "select count(Distinct entity.animal.id) from ReportForm16  as entity where (1=1) ";
+        String whereClause = "";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        countSql += whereClause;
+        Query qCount = manager.createQuery(countSql);
+        if (year != null) {
+            qCount.setParameter("year",year);
+        }
+        if(!isAdmin) {
+            qCount.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long) qCount.getSingleResult();
+        return count;
+    }
+
+    @Override
+    public DashboardCitesDto Cites(SearchDto searchDto){
+        DashboardCitesDto dashboardCitesDto = new DashboardCitesDto();
+        dashboardCitesDto.setSpeciesNumberPLI(totalSpeciesNumberPLI(searchDto.getYear()));
+        dashboardCitesDto.setSpeciesNumberPLII(totalSpeciesNumberPLII(searchDto.getYear()));
+        dashboardCitesDto.setSpeciesNumberPLIII(totalSpeciesNumberPLIII(searchDto.getYear()));
+        dashboardCitesDto.setSpeciesNumberDVHD(totalSpeciesNumberDVHD(searchDto.getYear()));
+        dashboardCitesDto.setFarmsNumberPLI(totalFarmsNumberPLI(searchDto.getYear()));
+        dashboardCitesDto.setFarmsNumberPLII(totalFarmsNumberPLII(searchDto.getYear()));
+        dashboardCitesDto.setFarmsNumberPLIII(totalFarmsNumberPLIII(searchDto.getYear()));
+        dashboardCitesDto.setFarmsNumberDVHD(totalFarmsNumberDVHD(searchDto.getYear()));
+        dashboardCitesDto.setAnimalsNumberPLI(totalAnimalsNumberPLI(searchDto.getYear()));
+        dashboardCitesDto.setAnimalsNumberPLII(totalAnimalsNumberPLII(searchDto.getYear()));
+        dashboardCitesDto.setAnimalsNumberPLIII(totalAnimalsNumberPLIII(searchDto.getYear()));
+        dashboardCitesDto.setAnimalsNumberDVHD(totalAnimalsNumberDVHD(searchDto.getYear()));
+        dashboardCitesDto.setAnimalNumber(totalAnimalsNumber(searchDto.getYear()));
+        return dashboardCitesDto;
+    }
+
+    public Long totalFarmsNumber(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String qCount = " select count(entity)from Farm entity where entity.name is not null and entity.isDuplicate is null ";
+        String whereClause = " ";
+        if (year != null){
+            whereClause += "AND entity.yearRegistration =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        qCount += whereClause;
+        Query query = manager.createQuery(qCount);
+        if (year != null) {
+            query.setParameter("year",Integer.toString(year));
+        }
+        if(!isAdmin) {
+            query.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)query.getSingleResult();
+        return count;
+    }
+    public Long totalFarmsNeedProvidedCodeNumber(Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String qCount = " select count(DISTINCT entity.farm.id)from ReportForm16 as entity where  entity.cites = 'II' or entity.vnlist06 = 'IIB' ";
+        String whereClause = " ";
+        if (year != null){
+            whereClause += "AND  year(entity.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        qCount += whereClause;
+        Query query = manager.createQuery(qCount);
+        if (year != null) {
+            query.setParameter("year", year);
+        }
+        if(!isAdmin) {
+            query.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)query.getSingleResult();
+        return count;
+    }
+    public Long totalFarmProvidedCodeNumber (Integer year){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String qCount = " select count(DISTINCT entity.id)from Farm as entity inner join ReportForm16 as f16 on f16.farm.id = entity.id  where f16.cites = 'II' or f16.vnlist06 = 'IIB' and entity.dateRegistration is not null and entity.name is not null and entity.isDuplicate is null  ";
+        String whereClause = " ";
+        if (year != null) {
+            whereClause += " AND year(f16.dateReport) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        qCount += whereClause;
+        Query query = manager.createQuery(qCount);
+        if (year != null) {
+            query.setParameter("year", year);
+        }
+        if(!isAdmin) {
+            query.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)query.getSingleResult();
+        return count;
+    }
+    @Override
+    public Long farmProvidedCodeInYearNumber (SearchDto searchDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = null;
+        if (authentication != null) {
+            currentUser = (User) authentication.getPrincipal();
+        }
+        boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+                || SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+        List<Long> listWardId = null;
+        if (!isAdmin) {
+            listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+            if (listWardId == null || listWardId.size() == 0) {
+                return null;
+            }
+        }
+        String qCount = " select count(entity)from Farm entity  where entity.dateRegistration is not null and entity.name is not null and entity.isDuplicate is null ";
+        String whereClause = " ";
+        if (searchDto.getYear() != null) {
+            whereClause += " AND year(entity.dateRegistration) =:year";
+        }else{
+            whereClause += " AND year(entity.dateRegistration) =:year";
+        }
+        if(!isAdmin) {
+            whereClause += " AND entity.administrativeUnit.id in :listWardId";
+        }
+        qCount += whereClause;
+        Query query = manager.createQuery(qCount);
+        if (searchDto.getYear() != null) {
+            query.setParameter("year", searchDto.getYear());
+        }else{
+            Date date = new Date();
+            Integer year = WLDateTimeUtil.getYear(date);
+            query.setParameter("year", year);
+        }
+        if(!isAdmin) {
+            query.setParameter("listWardId", listWardId);
+        }
+        Long count = (Long)query.getSingleResult();
+        return count;
+    }
+    @Override
+    public DashboardFarmDto getFarm(SearchDto searchDto){
+        DashboardFarmDto dashBoardFarmDto = new DashboardFarmDto();
+        dashBoardFarmDto.setFarmsNumber(totalFarmsNumber(searchDto.getYear()));
+        dashBoardFarmDto.setFarmProvidedCodeNumber(totalFarmProvidedCodeNumber(searchDto.getYear()));
+        dashBoardFarmDto.setFarmsNeedProvidedCodeNumber(totalFarmsNeedProvidedCodeNumber(searchDto.getYear()));
+        Float a = (float)totalFarmProvidedCodeNumber(searchDto.getYear());
+        Float b = (float)totalFarmsNeedProvidedCodeNumber(searchDto.getYear());
+        Float farmProvidedCodePercent = (a/b)*100;
+        dashBoardFarmDto.setFarmProvidedCodePercent((float)Math.ceil(farmProvidedCodePercent * 10) / 10);
+        return dashBoardFarmDto;
+    }
+    @Override
+    public DashboardVolatilityDto Volatility(SearchReportForm16Dto searchDto) {
+
+		DashboardVolatilityDto dashBoardVolatilityDto = new DashboardVolatilityDto();
+		if (searchDto.getYear() != null) {
+			dashBoardVolatilityDto.setTotalListOfForestProductsByYear(totalListOfForestProductsByYear(searchDto.getYear()));//bản ghi lâm sản;
+		}
+		dashBoardVolatilityDto.setIncreaseVolatilityOfTheBase(mostRecentTotalase(searchDto.getYear()) - farthestTotalBase(searchDto.getYear()));// tăng cơ sở
+		dashBoardVolatilityDto.setIncreasedVariationOfTheIndividual(currentNumberOfIndividuals(searchDto.getYear()) - numberOfIndividualsFirst(searchDto.getYear()));// tăng cá thể
+																													
+		dashBoardVolatilityDto.setDecreasedVolatilityOfTheBase(farthestTotalBase(searchDto.getYear()) - mostRecentTotalase(searchDto.getYear()));// giam cơ sở 
+		dashBoardVolatilityDto.setDecreasedIndividualVariability(numberOfIndividualsFirst(searchDto.getYear()) - currentNumberOfIndividuals(searchDto.getYear()));// giảm cá thể
+																													
+																													
+		dashBoardVolatilityDto.setChangesInTotalHouseholds(Math.abs(totalNumberOfCurrentRecords(searchDto.getYear()) - totalNumberOfPreviousRecords(searchDto.getYear()))); // biến động cơ sở upadte
+
+		return dashBoardVolatilityDto;
+	}
+
+	public Long totalListOfForestProductsByYear(Integer year) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String qCount = "select count(f)from ForestProductsList f ";
+		String where = "";
+
+		if (year != null) {
+			where = " where year(f.modifyDate) =:year ";
+		}
+		if (!isAdmin) {
+			where = " AND f.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+
+	public Long mostRecentTotalase(Integer year) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String qCount = "select count(DISTINCT rp.farm.id)from ReportForm16 rp ";
+		String where = "";
+		if (year != null) {
+			where = "  where year(rp.modifyDate) =:year ";
+		}
+		if (!isAdmin) {
+			where = " AND rp.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+
+	public Long farthestTotalBase(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String qCount = "select count(DISTINCT rp.farm.id)from ReportForm16 rp ";
+		String where = "";
+		if (year != null) {
+			where = " where year(rp.dateReport) =:year ";
+		}
+		if (!isAdmin) {
+			where = " AND rp.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+
+	public Long currentNumberOfIndividuals(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+
+		String qCount = "select count(rp.total)from ReportForm16 rp ";
+		String where = "";
+		if (year != null) {
+			where = "  where year(rp.modifyDate) =:year ";
+		}
+		if (!isAdmin) {
+			where = " AND rp.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+
+	public Long numberOfIndividualsFirst(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+
+		String qCount = "select count(rp.total)from ReportForm16 rp ";
+		String where = " ";
+		if (year != null) {
+			where = " where year(rp.dateReport) =:year ";
+		}
+		if (!isAdmin) {
+			where = " AND rp.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+
+	}
+
+	public Long totalNumberOfCurrentRecords(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String qCount = "select count(rp) from ReportForm16 rp";
+		String where = "";
+		if (year != null) {
+			where = "  where year(rp.modifyDate) =:year ";
+		}
+		if (!isAdmin) {
+			where = " AND rp.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+
+	}
+
+	public Long totalNumberOfPreviousRecords(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String qCount = "select count(rp) from ReportForm16 rp";
+		String where = "";
+		
+		if (year != null) {
+			where += " where year(rp.dateReport) =:year";
+		}
+		if (!isAdmin) {
+			where += " AND rp.administrativeUnit.id in :listWardId";
+		}
+		qCount += where;
+		Query q = manager.createQuery(qCount);
+		if (year != null) {
+			q.setParameter("year", year);
+		}
+		if (!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+
+	}
+	
+
+//	 Dashboard phân nhóm theo NĐCP start
+	public Long getNumberSpeciesIB(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.animal.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'IB' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberFarmIB(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.farm.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'IB' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberIndividualIB(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Sum(entity.total) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'IB' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberSpeciesIIB(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.animal.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'IIB' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberFarmIIB(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.farm.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'IIB' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberIndividualIIB(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Sum(entity.total) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'IIB' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberSpeciesDVRTT(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.animal.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'DVRTT' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberFarmDVRTT(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.farm.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'DVRTT' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberIndividualDVRTT(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Sum(entity.total) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = 'DVRTT' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberSpecies(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.animal.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = '' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberFarm(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Count(DISTINCT entity.farm.id) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = '' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	
+	public Long getNumberIndividual(Integer year) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User currentUser = null;
+		if (authentication != null) {
+			currentUser = (User) authentication.getPrincipal();
+		}
+		boolean isAdmin = SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_ADMIN)
+				|| SecurityUtils.isUserInRole(currentUser, WLConstant.ROLE_DLP);
+		List<Long> listWardId = null;
+		if (!isAdmin) {
+			listWardId = userAdministrativeUnitService.getListWardIdByLoginUser();
+			if (listWardId == null || listWardId.size() == 0) {
+				return null;
+			}
+		}
+		String sql = "Select Sum(entity.total) From ReportForm16 entity "
+				+ " Where entity.vnlist06 = '' ";
+		String whereClause = "";
+		if(year != null) {
+			whereClause += " AND Year(entity.dateReport) = :year";
+		}
+		if(!isAdmin) {
+			whereClause += " AND entity.administrativeUnit.id in :listWardId";
+		}
+		sql += whereClause;
+		Query q = manager.createQuery(sql);
+		if(year != null) {
+			q.setParameter("year", year);
+		}
+		if(!isAdmin) {
+			q.setParameter("listWardId", listWardId);
+		}
+		Long result = (Long) q.getSingleResult();
+		return result;
+	}
+	@Override
+	public DashboardGovermentDecreeDto getNumberGovermentDecree(SearchReportForm16Dto searchDto) {
+		DashboardGovermentDecreeDto dto = new DashboardGovermentDecreeDto();
+		dto.setNumberSpeciesIB(getNumberSpeciesIB(searchDto.getYear()));
+		dto.setNumberFarmIB(getNumberFarmIB(searchDto.getYear()));
+		dto.setNumberIndividualIB(getNumberIndividualIB(searchDto.getYear()));
+		
+		dto.setNumberSpeciesIIB(getNumberSpeciesIIB(searchDto.getYear()));
+		dto.setNumberFarmIIB(getNumberFarmIIB(searchDto.getYear()));
+		dto.setNumberIndividualIIB(getNumberIndividualIIB(searchDto.getYear()));
+		
+		dto.setNumberSpeciesDVRTT(getNumberSpeciesDVRTT(searchDto.getYear()));
+		dto.setNumberFarmDVRTT(getNumberFarmDVRTT(searchDto.getYear()));
+		dto.setNumberIndividualDVRTT(getNumberIndividualDVRTT(searchDto.getYear()));
+		
+		dto.setNumberSpecies(getNumberSpecies(searchDto.getYear()));
+		dto.setNumberFarm(getNumberFarm(searchDto.getYear()));
+		dto.setNumberIndividual(getNumberIndividual(searchDto.getYear()));
+		return dto;
+	}
+
+
+
+
+
+
+
+
+
+
+
+}

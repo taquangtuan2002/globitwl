@@ -1,0 +1,94 @@
+/**
+ * Created by bizic on 30/8/2016.
+ */
+(function () {
+    'use strict';
+    angular.module('Education.Dashboard').service('DashboardService', DashboardService);
+    DashboardService.$inject = [
+        '$http',
+        '$q',
+        'settings',
+        'Utilities',
+        '$translate'
+    ];
+
+    function DashboardService($http, $q, settings, utils, $translate) {
+        var self = this;
+        var baseUrl = settings.api.baseUrl + settings.api.apiPrefix;
+
+        self.getCites = getCites;
+        self.getFarm = getFarm;
+        self.getFarmProvidedCodeInYearNumber = getFarmProvidedCodeInYearNumber;
+        self.getNumberGovermentDecree = getNumberGovermentDecree;
+        self.getVolatility = getVolatility;
+        self.getCitesVN = getCitesVN;
+
+        function getCites(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getCites/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getFarm(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getFarm/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getFarmProvidedCodeInYearNumber(dto){
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getFarmProvidedCodeInYearNumber/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        // function getNumberGovermentDecree() {
+        //     var url = baseUrl + 'dashboard/getNumberGovermentDecree' ;
+        //     return utils.resolveAlt(url, 'POST', angular.noop, angular.noop)
+        // }
+
+        function getNumberGovermentDecree(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getNumberGovermentDecree/' ;
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getVolatility(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getVolatility/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        function getCitesVN(dto) {
+            if (dto != null) {
+                var url = baseUrl + 'dashboard/getCitesVN/';
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+
+        
+    }
+})();

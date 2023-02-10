@@ -1,0 +1,29 @@
+package com.globits.wl.service.impl;
+
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+import com.globits.wl.service.AdministrativeOrganizationService;
+
+public class AdministrativeOrganizationServiceImpl implements AdministrativeOrganizationService{
+
+	@Override
+	public AdministrativeOrganizationDto save(AdministrativeOrganizationDto dto) {
+		AdministrativeOrganization entity=null;
+		
+
+		return null;
+	}
+
+	@Override
+	public AdministrativeOrganizationDto update(AdministrativeOrganizationDto dto, Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AdministrativeOrganizationDto delete(AdministrativeOrganizationDto dto, Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

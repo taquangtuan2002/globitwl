@@ -1,0 +1,84 @@
+<!-- BEGIN MAIN JS-->
+<div>
+    <!-- <div class="modal-header">
+        <h4 class="modal-title" data-ng-if="vm.article.isNew == true"><i class="icon-plus"></i>Thêm mới bài báo</h4>
+        <h4 class="modal-title" data-ng-if="vm.article.isNew == false"><i class="fa fa-pencil-square-o"></i>Cập nhật bài
+            báo</h4>
+    </div> -->
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <label class="bold">{{'cmscategory.title' | translate}}:</label>
+                <input class="form-control" ng-model="vm.article.title" />
+            </div>
+            <div class="col-xs-12 col-md-12">
+                <label class="bold">{{'cmsArticle.synopsis' | translate}}:</label>
+                <textarea class="form-control" ng-model="vm.article.summary" ></textarea>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <label class="bold">{{'cmsArticle.publisDate' | translate}}:</label>
+                <div class="input-group col-xs-12" style="padding-bottom: 10px;">
+                    <p class="input-group" style="margin-bottom:10px; margin-top:0px">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}"
+                            ng-model="vm.article.publishDate" is-open="popupDate.opened"
+                            datepicker-options="dateOptions" datetime="dd/MM/yyyy HH:mm" enable-time="true"
+                            show-button-bar="false" close-text="Close" alt-input-formats="altInputFormats" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openDate()"><i
+                                    class="fa fa-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 margin-bottom-20">                
+                <div class="left-profile image-profile text-center" ng-model="vm.file"
+                    ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="100MB">                    
+                    <a class="bold" ng-if="!vm.article.titleImageUrl ||vm.article.titleImageUrl.length <= 0"><i class="fa fa-fw fa-file-image-o"></i>{{'cmsArticle.chooseImage' | translate}}</a>
+                    <div ng-if="vm.article.titleImageUrl">
+                        <img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{vm.article.titleImageUrl}}" ngf-accept="'image/*'"
+                            style="width: 300px; height:100%;">
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="col-xs-6 col-md-6">
+                <label class="bold">{{'cmsArticle.articleType' | translate}}:</label>
+                <ui-select ng-model="vm.article.articleType" sortable="true" close-on-select="true"
+                    style="width: 100% !important;">
+                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="so in vm.cmsArticleTypes  | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="so.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <label class="bold">{{'cmsArticle.theme' | translate}}:</label>
+                <ui-select multiple theme="bootstrap"  on-remove="onRemove($item)" on-select="onSelected($item)"
+                    data-ng-model="vm.article.listCategory" sortable="true" close-on-select="true"
+                    style="width: 100% !important;">
+                    <ui-select-match allow-clear="true" placeholder="Xin mời chọn...">{{$item.title}}</ui-select-match>
+                    <ui-select-choices repeat="category in vm.cmsCategories | propsFilter: {title: $select.search}">
+                        <div class="bold" ng-bind-html="category.title | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-xs-12 col-md-12">
+                <label class="bold">{{'cmsArticle.content' | translate}}:</label>
+                <!-- <input class="form-control" ng-model="vm.article.content"/> -->
+                <textarea ui-tinymce="vm.tinymceOptions" class="form-control" ng-model="vm.article.content"></textarea>
+            </div>
+            
+        </div>
+
+
+        <button type="button" ng-click="vm.goBack()" class="btn btn-default" data-dismiss="modal">{{'cmsArticle.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.save()" class="btn btn-primary" data-dismiss="modal">{{'cmsArticle.save' | translate}}</button>
+</div>
+
+
+<style>
+    #mce_fullscreen_container {
+        z-index: 999999 !important;
+    }
+</style>

@@ -1,0 +1,38 @@
+<style>
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map-pick {
+	height: 500px;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+</style>
+
+<div class="modal-header">
+	<script>
+	
+</script>
+	<button type="button" class="close" ng-click="$dismiss()"
+		aria-hidden="true"></button>
+	<h4>
+		<i class="fa  fa-flag"></i>
+	</h4>
+</div>
+<div class="modal-body" ng-init="initMap()">
+    <!-- <input id="pac-input" class="controls" type="text" placeholder="{{label.search | translate}}"> -->
+	<div id="map-pick"></div>
+</div>
+<div class="modal-footer">
+	<button type="button" ng-click="$dismiss()" class="btn btn-default"
+		data-dismiss="modal">
+		<i class="icon-close"></i> {{"exportAnimal.cancel" | translate}}
+	</button>
+	<button type="button" ng-click="vm.confirmCoordinate()"
+		class="btn btn-primary">
+		<i class="icon-check"></i> {{'administrativeUnit.choose' | translate}}
+	</button>
+</div>

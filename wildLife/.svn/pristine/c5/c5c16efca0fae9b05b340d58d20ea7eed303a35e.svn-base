@@ -1,0 +1,145 @@
+<!-- BEGIN MAIN CONTENT -->
+<div class="row">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        /* Optional: Makes the sample page fill the window. */
+        /* html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+} */
+
+        html,
+        body,
+        #map {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #map {
+            min-height: 500px;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10" ng-if="hasAnyRoles(currentUser, ['ROLE_FARMER'])">
+            <div class="dash-let">
+                <a href="#/detail_farm/">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Thông tin cơ sở nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 " ng-if="!hasAnyRoles(currentUser, ['ROLE_FARMER'])">
+            <div class="dash-let">
+                <a href="#/detail_farm/">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Đăng ký cơ sở gây nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 ">
+            <div class="dash-let">
+                <a href="#/farm">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Danh sách cơ sở nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 ">
+            <div class="dash-let">
+                <a href="#/farm_position_vgmap">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Bản đồ vị trí cơ sở nuôi</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12 margin-top-10 ">
+            <div class="dash-let">
+                <a href="#/report_period">
+                    <i class="icon-equalizer"></i>
+                    <i class="icon-equalizer"></i>
+                    <span>Sổ theo dõi ĐVHD</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="map"></div> -->
+    <!-- <div id="container" class="min-height-500 portlet light bordered"></div> -->
+    <script>
+      // function initMap() {
+      //   var map = new google.maps.Map(document.getElementById('map'), {
+      //     zoom: 4,
+      //     center: {lat: 21.017342, lng: 105.818178}
+      //   });
+
+      //   var bounds = {
+      //     north: 21.554774,
+      //     south: 20.842898,
+      //     east: 105.022025,
+      //     west: 106.331559
+      //   };
+
+      //   // Display the area between the location southWest and northEast.
+      //   map.fitBounds(bounds);
+
+      //   // Add 5 markers to map at random locations.
+      //   // For each of these markers, give them a title with their index, and when
+      //   // they are clicked they should open an infowindow with text from a secret
+      //   // message.
+      //   var secretMessages = ['This', 'is', 'the', 'secret', 'message'];
+      //   var lngSpan = bounds.east - bounds.west;
+      //   var latSpan = bounds.north - bounds.south;
+      //   var marker = new google.maps.Marker({
+      //       position: {
+      //         lat: 21.045542,
+      //         lng: 105.853902
+      //       },
+      //       map: map
+      //     });
+      //   attachSecretMessage(marker, "HÃ  Ná»™i");
+
+      //   marker = new google.maps.Marker({
+      //       position: {
+      //         lat: 21.201825,
+      //         lng: 105.112656
+      //       },
+      //       map: map
+      //     });
+      //    attachSecretMessage(marker, "Báº¯c Giang");
+
+      //    marker = new google.maps.Marker({
+      //        position: {
+      //          lat: 21.258149,
+      //          lng: 106.221779
+      //        },
+      //        map: map
+      //      });
+      //     attachSecretMessage(marker, "PhÃº Thá»�");
+      // }
+
+      // // Attaches an info window to a marker with the provided message. When the
+      // // marker is clicked, the info window will open with the secret message.
+      // function attachSecretMessage(marker, secretMessage) {
+      //   var infowindow = new google.maps.InfoWindow({
+      //     content: secretMessage
+      //   });
+
+      //   marker.addListener('click', function() {
+      //   	alert('OK');
+      //     infowindow.open(marker.get('map'), marker);
+      //   });
+      // }
+    </script>
+    <!-- Google API -->
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWoIxsP94pzMT5q7f07WPeyU9aLhkgcsc&callback=initMap"></script>
+     -->
+</div>
+<!-- END MAIN CONTENT -->

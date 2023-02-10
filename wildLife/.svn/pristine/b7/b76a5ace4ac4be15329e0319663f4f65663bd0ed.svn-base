@@ -1,0 +1,469 @@
+<div class="page-sidebar navbar-collapse collapse">
+    <div class="menu-toggler sidebar-toggler hide">
+        <i class="fa fa-reorder"></i>
+        <span>DANH MỤC</span>
+    </div>
+
+    <!-- BEGIN SIDEBAR MENU -->
+    <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+    <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+    <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+    <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"
+        ng-class="{'page-sidebar-menu-closed': settings.layout.pageSidebarClosed}">
+        <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+        <!-- <div class="sidebar-header"></div> -->
+        <!-- <li class="start nav-item margin-top-10">
+            <a href="#/dashboard">
+                <i class="icon-screen-desktop"></i>
+                <span class="title">Trang chá»§</span>
+            </a>
+        </li>       -->
+        <li class="nav-item"
+            ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_SDAH_VIEW'])">
+            <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span
+                    class="title">{{'farm.information' | translate}}</span> <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+
+                <li
+                    ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD'])">
+                    <a href="#/detail_farm/" > <i class="fa fa-fw fa-caret-right"></i> {{'farm.regiter'| translate}}
+
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="#/farm"> <i class="fa fa-fw fa-caret-right"></i> {{'MENU.manager.listFarm '| translate}}
+                    </a>
+                </li>
+                <!-- <li ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD'])">
+                    <a href="#/data_animal_report"> <i class="fa fa-fw fa-caret-right"></i>
+                        Dữ liệu khai báo động vật hoang dã
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#/farm_duplicate_doubts"> <i class="fa fa-area-chart"></i>
+                        Danh sách cơ sở nuôi động vật hoang dã dự đoán trùng lặp
+                    </a>
+                </li> -->
+                <!-- <li class="nav-item"
+                    ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_SDAH_VIEW','ROLE_USER'])">
+                    <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right"></i> <span
+                            class="title">Khai
+                            báo tăng giảm động vật</span> <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li
+                            ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD'])">
+                            <a href="#/detail/import_animal_seed/"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'importAnimalSeed.title' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/import_animal_seed"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'importAnimalSeed.titleTimes' | translate}}
+                            </a>
+                        </li>
+                        <li
+                            ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD'])">
+                            <a href="#/detail/exportanimal/"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'exportAnimal.information' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/exportanimal"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'exportAnimal.informationTimes' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
+                <!-- <li>
+                    <a href="#/forestproductlist"> <i class="fa fa-fw fa-caret-right"></i> Bảng kê lâm sản
+                    </a>
+                </li> -->
+            </ul>
+        </li>
+
+        <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_FAMER'])">
+            <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span
+                    class="title">{{'BaseBreed' | translate}}</span> <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+
+                <li>
+                    <a href="#/detail_farm/"> <i class="fa fa-fw fa-caret-right"></i>
+                        {{'famer.information'| translate}}
+                    </a>
+                </li>                
+            </ul>
+        </li>
+        <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_SDAH_VIEW'])">
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span class="title">Sổ theo dõi ĐVHD </span> <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                <a href="#/report_period"> <i class="fa fa-area-chart"></i>
+                    Sổ theo dõi nuôi ĐVHD - Mẫu 16
+                </a>
+            </li>
+            <!-- <li>
+                <a href="#/16B_report_period"> <i class="fa fa-area-chart"></i>
+                    Mẫu 16B
+                </a>
+            </li> -->
+            <li>
+                <a href="#/paper_template"> <i class="fa fa-area-chart"></i>
+                    Sổ theo dõi nuôi ĐVHD - Mẫu chi tiết
+                </a>
+            </li>
+			<li>
+                <a href="#/paper_template_16C"> <i class="fa fa-area-chart"></i>
+                    Sổ theo dõi sinh sản ĐVHD - Sổ 16C
+                </a>
+            </li>
+			<li>
+                <a href="#/paper_template_16D"> <i class="fa fa-area-chart"></i>
+                    Sổ theo dõi sinh sản ĐVHD - Sổ 16D
+                </a>
+            </li>
+            <li>
+                <a href="#/import_data_form16"> <i class="fa fa-area-chart"></i>
+                    Import dữ liệu báo cáo
+                </a>
+            </li>
+            
+        </ul>
+    </li>
+
+        <li class="nav-item"
+            ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_SDAH_VIEW'])">
+            <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span
+                    class="title">{{'MENU.manager.report' | translate}}</span> <span class="arrow"></span>
+            </a>
+            <ul class="sub-menu">
+                <li class="nav-item">
+                    <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right"></i> <span
+                            class="title">Báo cáo tổng hợp</span> <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="#/report_number_animals_and_number_farms_according_to_the_red_book"> <i
+                                    class="fa fa-area-chart"></i>
+                                {{'report.reportAnimalByCites' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/report_number_animals_and_number_farms_by_cites"> <i class="fa fa-area-chart"></i>
+                                {{'report.reportAnimalByCategoryCites' | translate}}
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#/sum_quantity_report_data"> <i class="fa fa-area-chart"></i>
+                                {{'report.provinceSumReport' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/wild_animal_farming_status_report"> <i class="fa fa-area-chart"></i>
+                                BC 04: Báo cáo tổng hợp gây nuôi ĐVHD được ưu tiên bảo vệ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/wild_animal_farming_report_by_classification"> <i class="fa fa-area-chart"></i>
+                                BC 05: Báo cáo tổng hợp nuôi động vật hoang dã THEO PHÂN LOẠI sinh học
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/wild_animal_farming_report_by_adminstrative_unit"> <i class="fa fa-area-chart"></i>
+                                BC 06: Báo cáo tổng hợp nuôi ĐVHD theo đơn vị hành chính
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/wild_animal_farming_report_by_cites"> <i class="fa fa-area-chart"></i>
+                                BC 07: Tổng hợp về các loài động vật hoang dã theo NĐ06/NĐ84
+                            </a>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right"></i> <span
+                            class="title">Báo cáo chi tiết</span> <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="#/report_animal_dangerous_cites"> <i class="fa fa-area-chart"></i>
+                                {{'report.report_animal_dangerous_cites' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/report_number_animals_and_number_farms_BC1_3"> <i class="fa fa-area-chart"></i>
+                                 BC2.2: Chi tiết nuôi ĐVHD theo phụ lục CITES
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/report_animal_current_by_family"> <i class="fa fa-area-chart"></i>
+                              <!-- {{'report.report_animal_current_by_family' | translate}}-->
+                              BC 2.3: Báo cáo chi tiết hiện trạng nuôi ĐVHD theo phân loại sinh học
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="#/report_forest_product_list"> <i class="fa fa-area-chart"></i>
+                               BC 2.4: Báo cáo chi tiết bảng kê lâm sản
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/report_import_animal"> <i class="fa fa-area-chart"></i>
+                               BC 08: Báo cáo chi tiết tăng đàn 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/report_export_animal"> <i class="fa fa-area-chart"></i>
+                               BC 09: Báo cáo chi tiết giảm đàn
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+                
+                <!-- <li>
+                    <a href="#/report_number_time_import_export"> <i class="fa fa-area-chart"></i>
+                        {{'report.report_number_time_import_export' | translate}}
+                    </a>
+                </li> -->
+                <li>
+                    <a href="#/report_import_export_form_16"> <i class="fa fa-area-chart"></i>
+                        {{'report.report_import_export_form_16' | translate}}
+                    </a>
+                </li>
+            </ul>
+        </li>
+    <!-- <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH'])">
+        <a href="#/eventnews"> <i class="fa fa-fw fa-newspaper-o"></i> {{'MENU.newEvent.name '| translate}}
+            </a>
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-fw fa-newspaper-o"></i><span class="title">
+                {{'MENU.newEvent.name '| translate}}</span> <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP'])">
+                <a href="#/cmscategory">
+                    <i class="fa fa-caret-right"></i>{{'cmscategory.category '| translate}}
+                </a>
+            </li>
+            <li ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP'])">
+                <a href="#/type/cmsArticleType">
+                    <i class="fa fa-caret-right"></i>{{'cmsArticleType.articleType '| translate}}
+                </a>
+            </li>
+            <li>
+                <a href="#/cmsArticle">
+                    <i class="fa fa-caret-right"></i>{{'cmsArticle.article '| translate}}
+                </a>
+            </li>
+        </ul>
+    </li> -->
+    <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_SDAH_VIEW'])">
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span
+                class="title">Bản đồ vị trí các cơ sở nuôi</span> <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                
+                <a href="#/farm_position_vgmap"> <i class="fa fa-fw fa-map-marker"></i>
+                    Vị trí cơ sở nuôi
+                </a>
+            </li>
+           <!--  <li>
+                tran huu dat them duong link cho atlas các cơ sở gây nuôi Linh trưởng
+                <a href="#/atlas_grow_priman"> <i class="fa fa-asterisk"></i>
+                    Atlas các cơ sở gây nuôi Linh trưởng
+                </a>
+            </li>-->
+        </ul>
+    </li>
+    <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])">
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span
+                class="title">{{'MENU.managerCategory.name '| translate}}</span> <span class="arrow"></span>
+        </a>
+
+        <ul class="sub-menu">
+            <li>
+                <a href="#/fms/region"> <i class="fa fa-fw fa-compass"></i> {{'region.information' | translate}}
+                </a>
+            </li>
+            <li>
+                <a href="#/fms/administrative"> <i class="fa fa-fw fa-compass"></i>
+                    {{'administrativeUnit.information' | translate}}
+                </a>
+            </li>
+            <!-- <li>
+                <a href="#/ownership"> <i class="fa fa-fw fa-compass"></i>
+                    {{'ownership.category' | translate}}
+                </a>
+            </li> -->
+            <li>
+                <a href="#/producttarget"> <i class="fa fa-black-tie"></i>{{'product.information' | translate}}
+                </a>
+            </li>
+            <li>
+                <a href="#/original"> <i class="fa fa-tripadvisor"></i> {{'original.information' | translate}}
+                </a>
+            </li>
+            <li>
+                <a href="#/husbandrymethod"> <i class=" fa fa-fw fa-caret-right"></i>
+                    {{'husbandryMethod.information' | translate}}
+                </a>
+            </li>
+            
+            <!-- <li>
+                <a href="#/listanimal"> <i class="fa fa-fw fa-caret-right"></i> {{'animal.ListAnimal' | translate}}
+                </a>
+            </li> -->
+        </ul>
+    </li>
+    
+    <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_SDAH_VIEW'])">
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i> <span
+                class="title">{{'MENU.taskManager.name' | translate}}</span> <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                <a href="#/user/accounts"> <i class="fa fa-fw fa-caret-right"></i>
+                    {{'MENU.taskManager.managerUser '| translate }}
+                </a>
+            </li>
+            <!--<li  ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])">
+                    <a href="#/error"> <i class="fa fa-fw fa-caret-right"></i>{{'MENU.taskManager.systemConfiguration '| translate}}
+                    </a>
+                </li>-->
+            <li>
+                <a href="#/administrativeuniteditable"> <i class="fa fa-fw fa-caret-right"></i>
+                    Quản lý cập nhật dữ liệu
+                </a>
+            </li>
+
+            <li>
+                <a href="#/_administrative_organization"> <i class="fa fa-fw fa-caret-right"></i>
+                    Quản lý tổ chức hành chính
+                </a>
+            </li>
+        </ul>
+
+    </li>
+    
+    <li class="nav-item" ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DISTRICT','ROLE_SDAH'])">        
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-fw fa-newspaper-o"></i>        
+        	<span class="title">Tính năng nâng cao</span> <span class="arrow"></span>
+        </a>
+        
+        <ul class="sub-menu">
+            <li>
+                <a href="#/forestproductlist"> <i class="fa fa fa-area-chart"></i> Bảng kê lâm sản
+                </a>
+            </li>
+            <li>
+                <a href="#/_animalcertificate"> <i class="fa fa-fw fa-caret-right"></i>
+                    Giấy chứng nhận cơ sở nuôi
+                </a>
+            </li>
+            <li class="nav-item">
+                    <!-- <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right"></i> <span
+                            class="title">Khai
+                            báo tăng giảm động vật</span> <span class="arrow"></span>
+                    </a> -->
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="#/detail/import_animal_seed/"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'importAnimalSeed.title' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/import_animal_seed"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'importAnimalSeed.titleTimes' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/detail/exportanimal/"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'exportAnimal.information' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/exportanimal"> <i class="fa fa-fw fa-caret-right"></i>
+                                {{'exportAnimal.informationTimes' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+			        <a href="#/look_up_the_signature" class="nav-link nav-toggle"> <i class="fa fa-search" aria-hidden="true"></i>
+			            <span class="title">{{'MENU.look_up_the_signature' | translate}}</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/user_file_upload" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right" aria-hidden="true"></i>
+			            <span class="title">Chia sẻ tệp tin</span>
+			        </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/link" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right" aria-hidden="true"></i>
+			            <span class="title">Chia sẻ liên kết</span>
+			        </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/technicalStaff" class="nav-link nav-toggle"> <i class="fa fa-fw fa-caret-right" aria-hidden="true"></i>
+                        <span class="title">
+                    </a>
+                </li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a href="javascript:;" class="nav-link nav-toggle"> <i class="fa fa-asterisk"></i>        
+        	<span class="title">Quản lý danh mục loài</span> <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item"
+                ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_FAMER','ROLE_SDAH_VIEW'])">
+                <a href="https://www.giamdinhloai.vn/" target="_blank" class="nav-link nav-toggle"> <i class="fa fa-asterisk" aria-hidden="true"></i> <span
+                        class="title">Hỗ trợ nhận dạng loài</span>
+                </a>
+            </li>
+            <li>
+                <a href="#/animal">
+                     <!-- <i class="fa fa-fw fa-caret-right"></i>Động vật --><i class="fa fa-asterisk"></i>{{'animal.ListAnimal' | translate}} 
+                </a>
+            </li>
+            <!-- <li>
+                <a href="#/listanimal"> <i class="fa fa-asterisk"></i> {{'animal.ListAnimal' | translate}}
+                </a>
+            </li> -->
+            <li>
+                <a href="#/animal_required/"> <i class="fa fa-asterisk"></i>
+                    {{'animalRequired.animalTitle' | translate}}
+                </a>
+            </li>
+            <li ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])">
+                <a href="#/typeofanimal"> <i class="fa fa-fw fa-caret-right"></i>
+                    {{'animalType.information' | translate}}
+                </a>
+            </li>
+            <li ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN'])">
+                <a href="#/biologicalClass"> <i class="fa fa-fw fa-caret-right"></i>
+                    Phân loại sinh học
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item"
+        ng-if="hasAnyRoles(currentUser, ['ROLE_ADMIN', 'ROLE_DLP','ROLE_SDAH','ROLE_DISTRICT','ROLE_WARD','ROLE_FAMER','ROLE_SDAH_VIEW'])">
+        <a href="#/wlabouts" class="nav-link nav-toggle"> <i class="fa fa-asterisk" aria-hidden="true"></i> <span
+                class="title">Giới thiệu chung về dự án</span>
+        </a>
+    </li>
+    </ul>
+    <!-- END SIDEBAR MENU -->
+</div>

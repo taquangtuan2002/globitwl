@@ -1,0 +1,749 @@
+<div class="portlet light bordered">
+  <div class="portlet-body">
+    <div class="row margin-top-10 margin-bottom-10">
+      <div class="portlet-header">
+        <div class="row margin-bottom-10 margin-left-5">
+          <label class="bold">Import dữ liệu báo cáo</label>
+        </div>
+
+        <div ng-if="vm.disabledByTime()" class="col-md-4">
+          <button class="btn btn-default" ng-click="vm.importAnimal()">
+            <i class="fa fa-cloud-upload"></i>Import mẫu rút gọn
+          </button>
+          <button class="btn btn-default" ng-click="vm.importAnimalNew()">
+            <i class="fa fa-cloud-upload"></i>Import mẫu đầy đủ
+          </button>
+        </div>
+
+        <div class="col-md-12 margin-top-10">
+          <button
+            class="btn btn-info"
+            ng-click="vm.getFileIHuongDanImportDuLieuBaoCao()"
+            file-download="myBlobObjectFileHuongDanImportDuLieuBaoCao"
+            file-name="'HuongDanImportDuLieuBaoCao.doc'"
+          >
+            <i class="fa fa-cloud-download"></i>Tải file hướng dẫn import dữ
+            liệu
+          </button>
+          <button
+            class="btn btn-info"
+            ng-click="getFileImportExcelForm16A()"
+            file-download="myBlobObjectFileImportExcel"
+            file-name="'FileMauImport.xlsx'"
+          >
+            <i class="fa fa-cloud-download"></i>Tải mẫu import rút gọn
+          </button>
+          <button
+            class="btn btn-info"
+            ng-click="getFileImportExcelForm16ANew()"
+            file-download="myBlobObjectFileImportExcel"
+            file-name="'FileMauImport.xlsx'"
+          >
+            <i class="fa fa-cloud-download"></i>Tải mẫu import đầy đủ
+          </button>
+          <button
+            class="btn btn-info"
+            ng-click="vm.downloadListAnimal()"
+            file-download="myBlobObjectDownloadAnimal"
+            file-name="'DuLieuCacLoaiDongVatHoangDa.xls'"
+          >
+            <i class="fa fa-cloud-download"></i>Tải dữ liệu ĐVHD
+          </button>
+          <button
+            class="btn btn-info"
+            ng-click="vm.downloadListAdminstrativeUnit()"
+            file-download="myBlobObjectDownloadAdminstrativeUnit"
+            file-name="'DuLieuDonViHanhChinh.xls'"
+          >
+            <i class="fa fa-cloud-download"></i>Tải dữ liệu đơn vị hành chính
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row margin-bottom-10">
+      <div class="col-md-3" ng-if="vm.isRole==true">
+        <label class="bold">Tỉnh</label>
+        <ui-select
+          ng-model="vm.province"
+          sortable="true"
+          close-on-select="true"
+          on-select="vm.onFmsadminstrativeUnitCitySelected($item)"
+        >
+          <ui-select-match
+            allow-clear="true"
+            placeholder="{{'farm.chooseCity' | translate}}..."
+          >
+            {{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="adminstrativeUnit.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <div class="col-md-3" ng-if="vm.isRole==false">
+        <label class="bold">Tỉnh</label>
+        <ui-select
+          ng-model="vm.province"
+          sortable="true"
+          close-on-select="true"
+        >
+          <ui-select-match
+            allow-clear="false"
+            placeholder="{{'farm.chooseCity' | translate}}..."
+          >
+            {{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="adminstrativeUnit.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <div class="col-md-3" ng-if="vm.isRole==true||vm.isSdah ==true">
+        <label class="bold">Huyện</label>
+        <ui-select
+          ng-model="vm.district"
+          sortable="true"
+          close-on-select="true"
+          on-select="vm.onFmsadminstrativeUnitDistSelected($item)"
+        >
+          <ui-select-match
+            allow-clear="true"
+            placeholder="{{'farm.chooseDistrict' | translate}}..."
+          >
+            {{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="adminstrativeUnit.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <div
+        class="col-md-3"
+        ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true || vm.isFamer == true)"
+      >
+        <label class="bold">Huyện</label>
+        <ui-select
+          ng-model="vm.district"
+          on-select="vm.onFmsadminstrativeUnitDistSelected($item)"
+          sortable="true"
+          close-on-select="true"
+        >
+          <ui-select-match
+            allow-clear="false"
+            placeholder="{{'farm.chooseDistrict' | translate}}..."
+          >
+            {{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="adminstrativeUnit.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <div
+        class="col-md-3"
+        ng-if="vm.isRole==true||vm.isSdah ==true || vm.isDistrict == true"
+      >
+        <label class="bold">Xã</label>
+        <ui-select
+          ng-model="vm.ward"
+          sortable="true"
+          close-on-select="true"
+          on-select="vm.onFmsadminstrativeUnitWardsSelected($item)"
+        >
+          <ui-select-match
+            allow-clear="true"
+            placeholder="{{'farm.chooseWard' | translate}}..."
+          >
+            {{$select.selected.code}}--{{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="adminstrativeUnit.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <div
+        class="col-md-3"
+        ng-if="vm.isRole==false && (vm.isWard == true || vm.isFamer == true)"
+      >
+        <label class="bold">Xã</label>
+        <ui-select
+          ng-disabled="true"
+          ng-model="vm.ward"
+          sortable="true"
+          close-on-select="true"
+        >
+          <ui-select-match
+            allow-clear="false"
+            placeholder="{{'farm.chooseWard' | translate}}..."
+          >
+            {{$select.selected.code}}--{{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="adminstrativeUnit.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="bold">Năm</label>
+        <ui-select
+          ng-model="vm.year"
+          sortable="true"
+          close-on-select="true"
+          style="width: 100%"
+          aria-multiselectable="true"
+          on-select="vm.onSelectYear()"
+          on-remove="vm.onRemovedYear()"
+        >
+          <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+            {{$select.selected.name}}
+          </ui-select-match>
+          <ui-select-choices
+            repeat="year.value as year  in vm.years | propsFilter: {name: $select.search}"
+          >
+            <div
+              class="bold"
+              ng-bind-html="year.name | highlight: $select.search"
+            ></div>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="import_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Import</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="dash-box display-block link" ngf-select="uploadFiles($file, $invalidFiles)"
+                               accept="/*" ngf-max-size="{{MAX_FILE_SIZE}}"><i class="fa fa-cloud-upload"></i>{{'upload.chooseFile' | translate}}</a>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f != null">
+                            {{'upload.downloadFile' | translate}}: {{f.name}}
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="errFile != null && errFile.$error != ''">
+                            {{'upload.error' | translate}}: <span ng-if="errFile.$error == 'maxSize'"> {{'upload.sizeFile' | translate}} {{errFile.$errorParam}}</span>
+                            <span ng-if="errFile.$error != null && errFile.$error != 'maxSize'"> {{'upload.file' | translate}} {{errFile.name}} {{'upload.error' | translate}}. {{'upload.chooseFileOther' | translate}}.</span>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f.progress >= 0">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="f.progress + '%'" style="width:{{f.progress}}%">
+                                    {{f.progress}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'upload.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'upload.download' | translate}}</button>
+        </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="listDataImportErr.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Danh sách dòng import bị lỗi</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12" style="overflow-x: auto;">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5px;">STT</th>
+                                        <th style="width: 18px;">Tỉnh/Thành phố</th>
+                                        <th style="width: 18px;">Quận/Huyện</th>
+                                        <th style="width: 18px;">Xã/Phường</th>
+                                        <th style="width: 18px;">Thôn/Ấp</th>
+                                        <th style="width: 10px;">Mã cơ sở</th>
+                                        <th style="width: 18px;">Tên cơ sở</th>
+                                        <th style="width: 18px;">Ngày import</th>
+                                        <th style="width: 18px;">Tên Việt Nam</th>
+                                        <th style="width: 18px;">Tên khoa học</th>
+                                        <th style="width: 18px;">Mã loài</th>
+                                        <th style="width: 10px;">Bố mẹ đực</th>
+                                        <th style="width: 10px;">Bố mẹ cái</th>
+                                        <th style="width: 10px;">Hậu bị đực</th>
+                                        <th style="width: 10px;">Hậu bị cái</th>
+                                        <th style="width: 10px;">Con non chưa trưởng thành</th>
+                                        <th style="width: 10px;">Còn lại đực</th>
+                                        <th style="width: 10px;">Còn lại cái</th>
+                                        <th style="width: 10px;">Còn lại không xác định</th>
+                                        <th style="width: 10px;">Mã xã</th>
+                                        <th style="width: 10px;">Nội dung lỗi</th>
+                                    </tr>
+                                </thead>
+                                <tbody ng-if="vm.listErrs != null && vm.listErrs.length > 0"
+                                    ng-repeat="err in vm.listErrs track by $index">
+                                    <tr>
+                                        <td class="form-control">{{$index + 1}}</td>
+                                        <td>
+                                            <input data-ng-model="err.pronvinceName" type="text" class="form-control"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.districtName" type="text" class="form-control"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.wardName" type="text" class="form-control"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.village"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.farmCode"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.farmName"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.dateUpdate | date:'dd/MM/yyyy' "
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.animalName"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.animalScienceName"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.animalCode"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.maleParent"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.femaleParent"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.maleGilts"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.femaleGilts"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.childUnder1YearOld"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.maleChildOver1YearOld"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.femaleChildOver1YearOld"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.unGenderChildOver1YearOld"
+                                             number-input type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.wardCode"
+                                             type="text" class="form-control" />
+                                        </td>
+                                        <td>
+                                            <input data-ng-model="err.errContent" title={{err.errContent}}
+                                             type="text" class="form-control" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+  </script>
+  <script type="text/ng-template" id="import_modal_new.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Import</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="dash-box display-block link" ngf-select="uploadFiles($file, $invalidFiles)"
+                               accept="/*" ngf-max-size="{{MAX_FILE_SIZE}}"><i class="fa fa-cloud-upload"></i>{{'upload.chooseFile' | translate}}</a>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f != null">
+                            {{'upload.downloadFile' | translate}}: {{f.name}}
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="errFile != null && errFile.$error != ''">
+                            {{'upload.error' | translate}}: <span ng-if="errFile.$error == 'maxSize'"> {{'upload.sizeFile' | translate}} {{errFile.$errorParam}}</span>
+                            <span ng-if="errFile.$error != null && errFile.$error != 'maxSize'"> {{'upload.file' | translate}} {{errFile.name}} {{'upload.error' | translate}}. {{'upload.chooseFileOther' | translate}}.</span>
+                        </div>
+
+                        <div class="col-md-12 margin-top-20" ng-if="f.progress >= 0">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" ng-bind="f.progress + '%'" style="width:{{f.progress}}%">
+                                    {{f.progress}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{'upload.cancel' | translate}}</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-primary" data-dismiss="modal">{{'upload.download' | translate}}</button>
+        </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="listDataImportErrNew.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 class="modal-title bold font-yellow-gold"><i class="fa fa-cloud-upload"></i> Danh sách dòng import bị lỗi</h4>
+        </div>
+        <div class="modal-body">
+            <div class="box-body box-profile">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12" style="overflow-x: auto;">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5px;">STT</th>
+                                        <th style="width: 25px;">Nguyên nhân lỗi</th>
+                                        <th style="width: 18px;">Tỉnh/Thành phố</th>
+                                        <th style="width: 18px;">Quận/Huyện</th>
+                                        <th style="width: 18px;">Xã/Phường</th>
+                                        <th style="width: 18px;">Thôn/Ấp</th>
+                                        <th style="width: 18px;">Số nhà</th>
+                                        <th style="width: 15px;">Mã xã (Theo danh mục ĐVHC của Quyết định 124/2004/QĐ-TTg)</th>
+                                        <th style="width: 10px;">Mã số hệ thống</th>
+                                        <th style="width: 18px;">Tên cơ sở</th>
+                                        <th style="width: 18px;">Ngày</th>
+                                        <th style="width: 18px;">Tên Việt Nam</th>
+                                        <th style="width: 18px;">Tên khoa học</th>
+                                        <th style="width: 18px;">Mã loài</th>
+                                        <th style="width: 18px;">Tổng số cá thể</th>
+                                        <th style="width: 10px;">Bố mẹ đực</th>
+                                        <th style="width: 10px;">Bố mẹ cái</th>
+                                        <th style="width: 10px;">Hậu bị đực</th>
+                                        <th style="width: 10px;">Hậu bị cái</th>
+                                        <th style="width: 18px;">Số lượng con non (dưới 1 tuổi hoặc chưa trưởng thành)</th>
+                                        <th style="width: 10px;">Cá thể trên 1 tuổi đực</th>
+                                        <th style="width: 10px;">Cá thể trên 1 tuổi cái</th>
+                                        <th style="width: 10px;">Cá thể trên 1 tuổi không xác định</th>
+                                        <th style="width: 10px;">Tăng đàn Bố mẹ đực</th>
+                                        <th style="width: 10px;">Tăng đàn Bố mẹ cái</th>
+                                        <th style="width: 10px;">Tăng đàn Hậu bị đực</th>
+                                        <th style="width: 10px;">Tăng đàn Hậu bị cái</th>
+                                        <th style="width: 10px;">Tăng đàn cá thể dưới 1 tuổi</th>
+                                        <th style="width: 10px;">Tăng đàn trên 1 tuổi đực</th>
+                                        <th style="width: 10px;">Tăng đàn trên 1 tuổi cái</th>
+                                        <th style="width: 10px;">Tăng đàn trên 1 tuổi không xác định</th>
+                                        <th style="width: 10px;">Lí do tăng đàn</th>
+                                        <th style="width: 10px;">Giảm đàn Bố mẹ đực</th>
+                                        <th style="width: 10px;">Giảm đàn Bố mẹ cái</th>
+                                        <th style="width: 10px;">Giảm đàn Hậu bị đực</th>
+                                        <th style="width: 10px;">Giảm đàn Hậu bị cái</th>
+                                        <th style="width: 10px;">Giảm đàn cá thể dưới 1 tuổi</th>
+                                        <th style="width: 10px;">Giảm đàn trên 1 tuổi đực</th>
+                                        <th style="width: 10px;">Giảm đàn trên 1 tuổi cái</th>
+                                        <th style="width: 10px;">Giảm đàn trên 1 tuổi không xác định</th>
+                                        <th style="width: 10px;">Lí do giảm đàn</th>
+                                        <th style="width: 10px;">Tình trạng đăng kí</th>
+                                        <th style="width: 10px;">Mã theo cơ sở</th>
+                                        <th style="width: 10px;">Số giấy CN đăng kí</th>
+                                        <th style="width: 10px;">Năm đăng kí</th>
+                                        <th style="width: 10px;">Mục đích gây nuôi</th>
+                                        <th style="width: 10px;">Nguồn gốc</th>
+                                        <th style="width: 10px;">Số điện thoại cơ sở</th>
+                                        <th style="width: 15px;">Kinh độ</th>
+                                        <th style="width: 15px;">Vĩ độ</th>
+                                        <th style="width: 10px;">Diện tích truồng trại</th>
+                                        <th style="width: 10px;">Ngày bắt đầu nuôi</th>
+                                        <th style="width: 10px;">Tên chủ cơ sở</th>
+                                        <th style="width: 10px;">Năm sinh</th>
+                                        <th style="width: 10px;">CMND/Căn cước</th>
+                                        <th style="width: 10px;">Ngày cấp</th>
+                                        <th style="width: 10px;">Nơi cấp</th>
+                                        <th style="width: 10px;">Điện thoại</th>
+                                        <th style="width: 10px;">TT BVMT</th>
+                                        <th style="width: 10px;">Ngày cấp</th>
+                                        <th style="width: 10px;">Số GCN ĐK KD</th>
+                                        <th style="width: 10px;">Chú thích</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody ng-if="vm.listErrs != null && vm.listErrs.length > 0"
+                                    ng-repeat="err in vm.listErrs track by $index">
+                                    <tr>
+                                        <td class="form-control">{{$index + 1}}</td>
+                                        <td>
+                                          <span>{{err.errContent}}</span>
+                                      </td>
+                                        <td>
+                                            <span>{{err.pronvinceName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.districtName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.wardName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.village}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.apartmentNumber}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.wardCode}}</span>
+                                        </td>
+
+                                        <td>
+                                          <span>{{err.farmCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.farmName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.dateUpdate | date:'dd/MM/yyyy'}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.animalName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.animalScienceName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.animalCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.total}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.maleParent}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.femaleParent}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.maleGilts}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.femaleGilts}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.childUnder1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.maleChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.femaleChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.unGenderChildOver1YearOld}}</span>
+                                        </td>
+                                        <!--nhap-->
+                                        <td>
+                                          <span>{{err.importMaleParent}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importFemaleParent}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importMaleGilts}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importFemaleGilts}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importChildUnder1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importMaleChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importFemaleChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importUnGenderChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.importReason}}</span>
+                                        </td>
+                                        <!--xuat-->
+                                        <td>
+                                          <span>{{err.exportMaleParent}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportFemaleParent}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportMaleGilts}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportFemaleGilts}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportChildUnder1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportMaleChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportFemaleChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportUnGenderChildOver1YearOld}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.exportReason}}</span>
+                                        </td>
+                                        <!--xuat-->
+                                        <td>
+                                          <span>{{err.registerStatus}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.registerCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.oldRegistrationCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.registerYear}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.productTargetCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.originalCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.phoneNumber}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.longitude}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.latitude}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.lodgingAcreage}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.startDate | date :'dd/MM/yyyy'}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ownerName}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ownerYearOfBirth}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ownerCitizenCode}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ownerCitizenDate | date : 'dd/MM/yyyy'}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ownerCitizenLocation}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ownerPhoneNumber}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ttbvmt}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.ttbvmtDate | date:'dd/MM/yyyy'}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.businessRegistrationNumber}}</span>
+                                        </td>
+                                        <td>
+                                          <span>{{err.note}}</span>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+  </script>
+</div>

@@ -1,0 +1,133 @@
+<div class="portlet light bordered">
+    <div class="portlet-header">
+        <h3>
+            <strong> Thông tin các động vật nuôi động vật cảnh tại cơ sở</strong>
+        </h3>
+        <div class="row margin-top-10 margin-bottom-10" ng-show="vm.isNew">
+            <div class="col-md-3" >
+                <label for="">Tháng báo cáo</label>
+                <select ng-model="vm.monthAnimalReportType3" class="form-control" ng-options="t.value as t.value for t in vm.months">
+                    <option value="t.value" selected="t.value == vm.monthAnimalReportType3"></option>
+                </select>                
+            </div>
+            <div class="col-md-3">                
+                <label for="">Năm báo cáo</label>
+                <div style="width:150px;">
+                    <select ng-model="vm.yearAnimalReportType3" class="form-control" ng-options="t.value as t.value for t in vm.years">
+                        <option value="t.value" selected="t.value == vm.yearAnimalReportType3"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">TT</th>
+                    <th class="text-center glb-w-type3">Loài nuôi</th>
+                    <th class="text-center">Tổng số lượng</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            
+            <tr ng-if="!vm.isNew" ng-repeat="rawTableType3 in vm.farmPeriod.listAnimalReportDataFormDto track by $index">
+                <td class="text-center">{{$index + 1}}</td>
+                <td class="text-center glb-w-type3">{{rawTableType3.animal.name}}</td>
+                <td class="text-center">{{rawTableType3.totalNormal}}</td>
+
+                <td class="text-center"></td>
+            </tr>
+            <tr ng-repeat="rawTableType3 in vm.listNormalAnimal track by $index">
+                <td class="text-center">{{$index + 1 + vm.farmPeriod.listAnimalReportDataFormDto.length}}</td>
+                <td class="text-center glb-w-type3">{{rawTableType3.animal.name}}</td>
+                <td class="text-center">{{rawTableType3.totalNormal}}</td>
+
+                <td class="text-center"><button ng-click="vm.removeListNormalSelected($index)"><i
+                            class="fa fa-times text-danger"></i></button></td>
+                <td class="text-center"></td>
+            </tr>
+            <tr class="remove-arrow">
+                <td class="text-center">-</td>
+                <td class="text-center glb-w-type3">
+                    <ui-select ng-model="vm.rawTableType3.animal" sortable="true" close-on-select="true" class="glb-w-type3"
+                        on-select="">
+                        <ui-select-match allow-clear="true" placeholder="{{'animal.chooseType' | translate}}">{{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="animal in vm.animals | propsFilter: {name: $select.search, code: $select.search}">
+                            <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </td>
+                <td class="text-center">
+                    <input type="text" number-input min=0 class="form-control"
+                            ng-model="vm.rawTableType3.totalNormal" />
+                </td>
+                <td class="text-center"><button ng-click="vm.addNormalAnimalReport()"><i class="icon-plus"></i></button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="portlet-fotter margin-top-10" class="pull-right">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default margin-right-10" data-dismiss="modal"><i class="icon-close text-danger"> Huỷ</i>
+        <button type="button" ng-click="vm.saveListNormalReport()" class="btn btn-primary"><i class="icon-plus"></i>Lưu</button>
+    </div>
+</div>
+
+<script type="text/ng-template" id="modalPopupInputChipCode.html">
+    <div class="modal-header">
+        Nhập mã cố chip
+    </div>
+    <!-- <div class="col-md-6 margin-bottom-10 margin-right-10 margin-top-10">
+        <div class="input-group" style="width:300px;">
+            <input type="text" data-ng-model="vm.textSearch" class="form-control" placeholder="Tìm kiếm theo tên tiếng việt" name="search">
+        </div>
+    </div> -->
+    <div class="modal-body">
+        <div class="row" >
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>TT</th>
+                        <th>Mã chíp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.listChipCodes track by $index">
+                        <td class="text-center">{{$index+1}}</td>
+                        <td class="text-center"><input type="text" class="form-control" ng-model="item.code"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+            {{'farm.store.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.saveListChipCode(vm.listChipCodes)" class="btn btn-primary"><i class="icon-check"></i> {{'farm.store.save' | translate}}</button>
+    </div>
+</script>
+
+<style>
+    .dropdown-icon {
+        position: relative;
+        display: inline-block;
+    }
+
+    .styled-select select {
+        -moz-appearance: none;
+        /* Firefox */
+        -webkit-appearance: none;
+        /* Safari and Chrome */
+        appearance: none;
+    }
+
+    .dropdown-icon::before {
+        position: absolute;
+        content: "\25bc";
+        top: 20%;
+        right: 0px;
+        height: 20px;
+        width: 20px;
+    }
+</style>

@@ -1,0 +1,274 @@
+package com.globits.wl.dto.functiondto;
+
+import java.math.BigInteger;
+
+public class AnimalReportDataReportDto {
+	private Integer numberOfFam;//Số hộ
+	
+	private BigInteger animalId;
+	private String animalName;
+	private String animalCode;
+	private String scienceName;
+	private String cites;//Cấp độ nguy cấp (CITES list là IB, IIB và IIIB)
+	private String vnlist;//DVHD nguy cap, quy, hiem (nghị định 64-2019)
+	private String vnlist06;
+	
+	private String animalClass;//Lớp động vật
+	private String ordo; // Bộ động vật (có vảy,cá sấu...)
+	private String family; // Họ động vật
+	
+	private Integer year;//Năm của kỳ báo cáo
+	private Integer total;//Tổng số con
+	private Integer male;//Số con con cái
+	private Integer female;//Số con đực
+	private Integer unGender;//Số con không xác định giới tính
+	
+	private BigInteger provinceId;
+	private String provinceName;
+	private BigInteger districtId;
+	private String districtName;
+	private BigInteger wardId;
+	private String wardName;
+	private String animalGroup;
+	private Integer numberOfAnimal;
+	private Integer numberOfFarmStatus;
+	private String cites07;
+	
+	
+	public Integer getNumberOfFarmStatus() {
+		return numberOfFarmStatus;
+	}
+	public void setNumberOfFarmStatus(Integer numberOfFarmStatus) {
+		this.numberOfFarmStatus = numberOfFarmStatus;
+	}
+	public String getCites07() {
+		if(cites07==null) {
+			cites07 = "Động vật rừng thông thường";
+		}else {
+			cites07 = "Động vật rừng thuộc Phụ lục CITES";
+		}
+		return cites07;
+	}
+	public void setCites07(String cites07) {
+		this.cites07 = cites07;
+	}
+	public Integer getNumberOfFam() {
+		return numberOfFam;
+	}
+	public void setNumberOfFam(Integer numberOfFam) {
+		this.numberOfFam = numberOfFam;
+	}
+	public BigInteger getAnimalId() {
+		return animalId;
+	}
+	public void setAnimalId(BigInteger animalId) {
+		this.animalId = animalId;
+	}
+	public String getAnimalName() {
+		return animalName;
+	}
+	public void setAnimalName(String animalName) {
+		this.animalName = animalName;
+	}
+	public String getAnimalCode() {
+		return animalCode;
+	}
+	public void setAnimalCode(String animalCode) {
+		this.animalCode = animalCode;
+	}
+	public String getScienceName() {
+		return scienceName;
+	}
+	public void setScienceName(String scienceName) {
+		this.scienceName = scienceName;
+	}
+	public String getCites() {
+		return cites;
+	}
+	public void setCites(String cites) {
+		this.cites = cites;
+	}
+	public String getVnlist() {
+		return vnlist;
+	}
+	public void setVnlist(String vnlist) {
+		this.vnlist = vnlist;
+	}
+	
+	public String getVnlist06() {
+		return vnlist06;
+	}
+	public void setVnlist06(String vnlist06) {
+		this.vnlist06 = vnlist06;
+	}
+	public String getAnimalClass() {
+		return animalClass;
+	}
+	public void setAnimalClass(String animalClass) {
+		this.animalClass = animalClass;
+	}
+	public String getOrdo() {
+		return ordo;
+	}
+	public void setOrdo(String ordo) {
+		this.ordo = ordo;
+	}
+	public String getFamily() {
+		return family;
+	}
+	public void setFamily(String family) {
+		this.family = family;
+	}
+	public Integer getYear() {
+		return year;
+	}
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+	public Integer getMale() {
+		return male;
+	}
+	public void setMale(Integer male) {
+		this.male = male;
+	}
+	public Integer getFemale() {
+		return female;
+	}
+	public void setFemale(Integer female) {
+		this.female = female;
+	}
+	public Integer getUnGender() {
+		return unGender;
+	}
+	public void setUnGender(Integer unGender) {
+		this.unGender = unGender;
+	}
+	public BigInteger getProvinceId() {
+		return provinceId;
+	}
+	public void setProvinceId(BigInteger provinceId) {
+		this.provinceId = provinceId;
+	}
+	public String getProvinceName() {
+		return provinceName;
+	}
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+	public BigInteger getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(BigInteger districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public BigInteger getWardId() {
+		return wardId;
+	}
+	public void setWardId(BigInteger wardId) {
+		this.wardId = wardId;
+	}
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
+	}
+	public String getAnimalGroup() {
+		if(animalGroup==null) {
+			animalGroup="Không xác định";
+		}
+		return animalGroup;
+	}
+	public void setAnimalGroup(String animalGroup) {
+		this.animalGroup = animalGroup;
+	}
+	public Integer getNumberOfAnimal() {
+		return numberOfAnimal;
+	}
+	public void setNumberOfAnimal(Integer numberOfAnimal) {
+		this.numberOfAnimal = numberOfAnimal;
+	}
+	public AnimalReportDataReportDto() {
+		
+	}
+	public AnimalReportDataReportDto(Integer numberOfFam, BigInteger animalId, String animalName, String animalCode,
+			String scienceName, String cites, String vnlist, String vnlist06, String animalClass, String ordo, String family,
+			Integer year, Integer total, Integer male, Integer female, Integer unGender, BigInteger provinceId,
+			String provinceName, BigInteger districtId, String districtName, BigInteger wardId, String wardName,String animalGroup,Integer numberOfAnimal) {
+		super();
+		this.numberOfFam = numberOfFam;
+		this.animalId = animalId;
+		this.animalName = animalName;
+		this.animalCode = animalCode;
+		this.scienceName = scienceName;
+		this.cites = cites;
+		this.vnlist = vnlist;
+		this.vnlist06 = vnlist06;
+		this.animalClass = animalClass;
+		this.ordo = ordo;
+		this.family = family;
+		this.year = year;
+		this.total = total;
+		this.male = male;
+		this.female = female;
+		this.unGender = unGender;
+		this.provinceId = provinceId;
+		this.provinceName = provinceName;
+		this.districtId = districtId;
+		this.districtName = districtName;
+		this.wardId = wardId;
+		this.wardName = wardName;
+		this.animalGroup = animalGroup;
+		this.numberOfAnimal = numberOfAnimal;
+	}
+	public AnimalReportDataReportDto(Integer numberOfFam, BigInteger animalId, String animalName, String animalCode,
+			String scienceName, String cites, String vnlist, String vnlist06, String animalClass, String ordo, String family,
+			Integer year, BigInteger total, BigInteger male, BigInteger female, BigInteger unGender, BigInteger provinceId,
+			String provinceName, BigInteger districtId, String districtName, BigInteger wardId, String wardName,String animalGroup,Integer numberOfAnimal) {
+		super();
+		this.numberOfFam = numberOfFam;
+		this.animalId = animalId;
+		this.animalName = animalName;
+		this.animalCode = animalCode;
+		this.scienceName = scienceName;
+		this.cites = cites;
+		this.vnlist = vnlist;
+		this.vnlist06 = vnlist06;
+		this.animalClass = animalClass;
+		this.ordo = ordo;
+		this.family = family;
+		this.year = year;
+		if(total!=null) {
+			this.total = total.intValue();
+		}
+		if(male!=null) {
+			this.male = male.intValue();
+		}
+		if(female!=null) {
+			this.female = female.intValue();
+		}
+		if(unGender!=null) {
+			this.unGender = unGender.intValue();
+		}		
+		this.provinceId = provinceId;
+		this.provinceName = provinceName;
+		this.districtId = districtId;
+		this.districtName = districtName;
+		this.wardId = wardId;
+		this.wardName = wardName;
+		this.animalGroup = animalGroup;
+		this.numberOfAnimal = numberOfAnimal;
+	}
+}

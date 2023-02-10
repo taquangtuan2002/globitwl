@@ -1,0 +1,743 @@
+/**
+ * Created by bizic on 28/8/2016.
+ */
+(function () {
+  "use strict";
+
+  angular
+    .module("Education.Report")
+    .controller(
+      "ReportWildAnimalFarmingStatusReport",
+      ReportWildAnimalFarmingStatusReport
+    );
+
+  ReportWildAnimalFarmingStatusReport.$inject = [
+    "$rootScope",
+    "$scope",
+    "$http",
+    "$timeout",
+    "settings",
+    "AnimalReportDataService",
+    "FmsRegionService",
+    "$uibModal",
+    "toastr",
+    "$state",
+    "blockUI",
+    "$stateParams",
+    "Utilities",
+    "$translate",
+    "FmsAdministrativeService",
+    "AnimalService",
+  ];
+
+  function ReportWildAnimalFarmingStatusReport(
+    $rootScope,
+    $scope,
+    $http,
+    $timeout,
+    settings,
+    service,
+    regionService,
+    modal,
+    toastr,
+    $state,
+    blockUI,
+    $stateParams,
+    utils,
+    $translate,
+    auService,
+    animalService
+  ) {
+    $scope.$on("$viewContentLoaded", function () {
+      // initialize core components
+      App.initAjax();
+    });
+
+    $rootScope.settings.layout.pageContentWhite = true;
+    $rootScope.settings.layout.pageBodySolid = false;
+    $rootScope.settings.layout.pageSidebarClosed = false;
+
+    /** declare */
+    var vm = this;
+    var today = new Date();
+    vm.currentYear = today.getFullYear();
+
+    // blockUI.stop();
+    // blockUI.start();
+    vm.recordId = null;
+    vm.pageIndex = 1;
+    vm.pageSize = 25;
+    vm.farmSizes = [];
+    vm.modalFarmSize = {};
+    vm.farmSize = { isNew: false };
+    vm.modalConfirmDelete = {};
+    vm.selectedFarmSize = [];
+    vm.count = 0;
+    vm.searchDto = {};
+    vm.viewCheckDuplicateCode = {};
+    vm.tempCode = "";
+    vm.results = [];
+
+    vm.selectedCity = {};
+    $scope.labels = ["Toàn tỉnh"];
+    $scope.series = [];
+    $scope.data = [];
+    vm.viewType = "table";
+    $scope.years = [];
+    vm.regionName = null;
+    vm.provinceName = null;
+    vm.districtName = null;
+    vm.wardsName = null;
+    vm.title = null;
+    vm.isShow = true;
+    for (var i = vm.currentYear; i > 2000; i--) {
+      $scope.years.push({ value: i, name: i + "" });
+    }
+    vm.months = [
+      {
+        name: "Tháng 1",
+        value: 1,
+      },
+      {
+        name: "Tháng 2",
+        value: 2,
+      },
+      {
+        name: "Tháng 3",
+        value: 3,
+      },
+      {
+        name: "Tháng 4",
+        value: 4,
+      },
+      {
+        name: "Tháng 5",
+        value: 5,
+      },
+      {
+        name: "Tháng 6",
+        value: 6,
+      },
+      {
+        name: "Tháng 7",
+        value: 7,
+      },
+      {
+        name: "Tháng 8",
+        value: 8,
+      },
+      {
+        name: "Tháng 9",
+        value: 9,
+      },
+      {
+        name: "Tháng 10",
+        value: 10,
+      },
+      {
+        name: "Tháng 11",
+        value: 11,
+      },
+      {
+        name: "Tháng 12",
+        value: 12,
+      },
+    ];
+
+    /** generate */
+
+    vm.paramDto = {};
+    //vm.paramDto.year = today.getFullYear();
+    vm.isRole = false;
+    vm.isFamer = false;
+    vm.isSdah = false;
+    vm.isDistrict = false;
+    vm.isWard = false;
+    vm.isSearchExtend = false;
+    vm.isSdahView = false; //cấp tỉnh nhưng chỉ được xem
+
+    vm.isSelectProvince = false;
+    vm.isSelectDistrict = false;
+    vm.isSelectWard = false;
+    vm.province = null;
+    vm.district = null;
+    vm.ward = null;
+
+    $scope.years = [];
+    var today = new Date();
+    vm.currentYear = today.getFullYear();
+    for (var i = vm.currentYear; i >= 2000; i--) {
+      $scope.years.push({ value: i, name: i + "" });
+    }
+
+    //------Start--Phân quyền theo user đăng nhập-----------
+    blockUI.start();
+    service.getCurrentUser().then(function (data) {
+      vm.user = data;
+      var roles = data.roles;
+      if (roles != null && roles.length > 0) {
+        for (var i = 0; i < roles.length; i++) {
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            (roles[i].authority.toLowerCase() == "role_admin" ||
+              roles[i].authority.toLowerCase() == "role_dlp")
+          ) {
+            vm.isRole = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_sdah"
+          ) {
+            vm.isSdah = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_district"
+          ) {
+            vm.isDistrict = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_ward"
+          ) {
+            vm.isWard = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_famer"
+          ) {
+            vm.isFamer = true;
+          }
+          if (
+            roles[i] != null &&
+            roles[i].authority &&
+            roles[i].authority.toLowerCase() == "role_sdah_view"
+          ) {
+            vm.isSdahView = true;
+            vm.isSdah = true;
+          }
+        }
+      } else {
+        vm.isRole = false;
+        vm.isFamer = false;
+        vm.isSdah = false;
+        vm.isDistrict = false;
+        vm.isWard = false;
+        vm.isSdahView = false;
+      }
+      if (vm.isRole) {
+        //trường hợp admin và dlp thì được xem tất cả các cơ sở
+        vm.getAllProvince();
+      } else {
+        // trường hợp này thì phân quyền theo user
+        if (vm.isRole == false) {
+          getAdministrativeUnitDtoByLoginUser();
+        }
+      }
+      blockUI.stop();
+    });
+
+    //load user administrativeunit
+    function getAdministrativeUnitDtoByLoginUser() {
+      service.getAdministrativeUnitDtoByLoginUser().then(function (data) {
+        vm.adminstrativeUnits = data;
+        if (vm.adminstrativeUnits != null && vm.adminstrativeUnits.length > 0) {
+          getDataByCombobox(vm.adminstrativeUnits[0]);
+        }
+      });
+    }
+    function getDataByCombobox(administrativeUnit) {
+      if (administrativeUnit.parentDto == null) {
+        vm.paramDto.provinceId = administrativeUnit.id;
+        if (vm.adminstrativeUnits_City == null) vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_City.push(administrativeUnit);
+        service.getAllByParentId(vm.paramDto.provinceId).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_Dist = data;
+          }
+        });
+      } else if (
+        administrativeUnit.parentDto != null &&
+        administrativeUnit.parentDto.parentDto == null
+      ) {
+        vm.paramDto.districtId = administrativeUnit.id;
+        vm.paramDto.provinceId = administrativeUnit.parentDto.id;
+        vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_City.push(administrativeUnit.parentDto);
+        vm.adminstrativeUnits_Dist = [];
+        if (vm.adminstrativeUnits_Dist == null) vm.adminstrativeUnits_Dist = [];
+        vm.adminstrativeUnits_Dist.push(administrativeUnit);
+        service.getAllByParentId(vm.paramDto.provinceId).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_Dist = data;
+          }
+        });
+        service.getAllByParentId(vm.paramDto.districtId).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_Wards = data;
+          }
+        });
+      } else if (
+        administrativeUnit.parentDto != null &&
+        administrativeUnit.parentDto.parentDto != null
+      ) {
+        vm.paramDto.wardId = administrativeUnit.id;
+        vm.paramDto.districtId = administrativeUnit.parentDto.id;
+        vm.paramDto.provinceId = administrativeUnit.parentDto.parentDto.id;
+
+        if (vm.adminstrativeUnits_City == null) vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_City.push(administrativeUnit.parentDto.parentDto);
+        if (vm.adminstrativeUnits_Dist == null) vm.adminstrativeUnits_Dist = [];
+        vm.adminstrativeUnits_Dist.push(administrativeUnit.parentDto);
+        if (vm.adminstrativeUnits_Wards == null)
+          vm.adminstrativeUnits_Wards = [];
+        vm.adminstrativeUnits_Wards.push(administrativeUnit);
+      }
+    }
+
+    //--------End ----Phân quyền-------------
+
+    vm.searchDto = {};
+    vm.getAnimalGroup = function () {
+      service.getListAnimalGroup().then(function (data) {
+        vm.listAnimalGroup = [];
+        vm.listAnimalGroup.push({ name: "Tổng" });
+        vm.listAnimalGroup.push({ name: "Khác" });
+        data.forEach((item) => {
+          var animalGroup;
+          if (item && item.trim().length > 0) {
+            animalGroup = item;
+            vm.listAnimalGroup.push({ name: animalGroup });
+          }
+        });
+      });
+    };
+    vm.getAnimalGroup();
+    vm.listAnimalGroups = [
+      {
+        id: 1,
+        name: "Nhóm 1: I hoặc IB"
+      },
+      {
+        id: 2,
+        name: "Nhóm 2: I hoặc II hoặc IIB"
+      },
+      {
+        id: 3,
+        name: "Nhóm 3: DVRTT"
+      },
+      {
+        id: 4,
+        name: "Nhóm 4(khác): Không quản lý"
+      },
+    ];
+
+    // vm.getAnimalGroup = function(){
+    //     // vm.listAnimalGroup = [];
+    //     // vm.listAnimalGroup.push({ name: "Tổng" });
+    //     // vm.listAnimalGroup.push({ name: "Khác" });
+    //     vm.paramDto.listProtectionLevel.forEach((item) => {
+    //       var animalGroup;
+    //       if (item && item.trim().length > 0) {
+    //         animalGroup = item;
+    //         console.log(animalGroup)
+    //         vm.listAnimalGroup.push({ name: animalGroup });
+          
+    //     };
+    //   });
+    // }
+    
+
+    vm.searchByCode = function () {
+      if (vm.searchDto == null) {
+        vm.searchDto = {};
+      }
+      animalService
+        .getPageSearchAnimal(vm.searchDto, 1, 100000)
+        .then(function (data) {
+          vm.animals = data.content;
+        });
+    };
+    // vm.paramDto.groupByItems = [];
+    vm.getAllProvince = function () {
+      service.getAdminstrativeUnitsCity().then(function (data) {
+        vm.adminstrativeUnits_City = data;
+      });
+    };
+
+    
+    vm.isShowWardData = false;
+    vm.getReportNumberAnimalsAndNumberFarmsAccordingToTheRedBook = function () {
+      // vm.paramDto.listProtectionLevel.forEach((item) => {
+      //   let animalGroup;
+      //   if (item > 0) {
+      //     animalGroup = item;
+      //     console.log(animalGroup)
+      //   }
+      // });
+      vm.paramDto.groupByItems = [
+        "animalGroup",
+        "provinceId",
+        "provinceName",
+        "year",
+      ];
+      vm.paramDto.year = 2022;
+      vm.title = $translate.instant("report.wild_animal_farming_status_report") + " ";
+      if (vm.wardsName != null) {
+        vm.title = vm.title + vm.wardsName + ", ";
+      } if (vm.districtName != null) {
+        vm.title = vm.title + vm.districtName + ", ";
+      } if (vm.provinceName != null) {
+        vm.title = vm.title + vm.provinceName + " ";
+      } if (vm.regionName != null) {
+        vm.title = vm.title + vm.regionName + " ";
+      }
+      vm.rows = [];
+      var sortStr = "";
+
+      vm.rowsPivot = [
+        {
+          uniqueName: "year",
+          sort: "asc",
+          caption: $translate.instant("report.year"),
+        },
+      ];
+      vm.rows.push("year");
+      service.getAnimalReportDataReport04s(vm.paramDto).then(function (data) {
+          
+          vm.results = data;
+          if (data == null || data == [] || data.length == 0) {
+            vm.isShow = false;
+          } else {
+            vm.isShow = true;
+          }
+          vm.rows = [
+            {
+              caption: "Năm",
+              uniqueName: "year",
+            },
+          ];
+
+          vm.columns = [
+            {
+              uniqueName: "protectionLevelName",
+              sort: "asb",
+              caption: "Nhóm động vật",
+            },
+          ];
+
+          vm.grid = {
+            //title: "BC 04: Tổng hợp gây nuôi ĐVHD được ưu tiên bảo vệ",
+            title : vm.title,
+            type: "compact",
+            showTotals: "off",
+            showGrandTotals: "off",
+          };
+
+          if (vm.paramDto.provinceId != null) {
+            vm.rows = [
+              {
+                caption: "Năm",
+                uniqueName: "year",
+              },
+            ];
+          }
+          if (vm.paramDto.districtId != null) {
+            vm.rows = [
+              {
+                caption: "Năm",
+                uniqueName: "year",
+              },
+            ];
+          }
+          if (vm.isShowWardData && vm.isShowWardData == true) {
+            vm.rows = [
+              {
+                caption: "Năm",
+                uniqueName: "year",
+              },
+            ];
+            vm.columns = [
+              {
+                uniqueName: "protectionLevelName",
+                sort: "asc",
+                caption: "Nhóm động vật",
+              },
+            ];
+            vm.grid = {
+              // type: "classic",
+              // title: "BC 04: Tổng hợp gây nuôi ĐVHD được ưu tiên bảo vệ",
+              title : vm.title,
+              type: "compact",
+              showTotals: "off",
+              showGrandTotals: "off",
+            };
+            vm.expands = {
+              expandAll: true,
+            };
+          }
+          //Pivot here
+          var pivot = new WebDataRocks({
+            container: "#wdr-component",
+            toolbar: true,
+            height: 530,
+            report: {
+              dataSource: {
+                data: vm.results,
+              },
+              slice: {
+                rows: vm.rows,
+                columns: [
+                  {
+                    uniqueName: "protectionLevelName",
+                    sort: "asc",
+                    caption: "Nhóm động vật",
+                  },
+                ],
+                measures: [
+                  {
+                    uniqueName: "numberOfAnimal",
+                    //"aggregation": "sum",
+                    caption: "Số lượng loài", //$translate.instant('report.quantity')
+                  },
+                  {
+                    uniqueName: "total",
+                    //"aggregation": "sum",
+                    caption: "Số lượng cá thể", //$translate.instant('report.quantity')
+                  },
+                  {
+                    uniqueName: "numberOfFam",
+                    //"aggregation": "sum",
+                    caption: "Số cơ sở", //$translate.instant('report.quantity')
+                  },
+                ],
+              },
+              options: {
+                grid: vm.grid,
+              },
+              localization: "assets/scripts/pivot/vi.json",
+            },
+            reportcomplete: function () {
+              pivot.off("reportcomplete");
+              createChart();
+            },
+            global: {
+              // replace this path with the path to your own translated file
+              localization: "assets/scripts/pivot/vi.json",
+            },
+          });
+          // "BC 04: Tổng hợp gây nuôi ĐVHD được ưu tiên bảo vệ"
+          function createChart() {
+            pivot.highcharts.getData({}, function (data) {
+							console.log(data);
+							// debugger
+              let animalGroup = "";
+
+              if (vm.animalGroup) {
+                animalGroup = vm.animalGroup;
+              } else {
+                animalGroup = "Tổng";
+              }
+
+              let totalNumberOfCamps = data.series.filter(
+                (e) => e.name == `Số lượng loài - ${animalGroup}`
+              );
+              let totalNumberOfChildren = data.series.filter(
+                (e) => e.name == `Số lượng cá thể - ${animalGroup}`
+              );
+
+              Highcharts.chart("highchartsContainer", {
+                chart: {
+                  zoomType: "xy",
+                },
+                title: {
+                  text:"BC 04: Tổng hợp gây nuôi ĐVHD được ưu tiên bảo vệ ",
+                },
+                subtitle: {
+                  text: "",
+                },
+                xAxis: [
+                  {
+                    categories: data.xAxis.categories,
+                    crosshair: true,
+                  },
+                ],
+                yAxis: [
+                  {
+                    // Primary yAxis
+                    labels: {
+                      format: "{value}",
+                      style: {
+                        color: Highcharts.getOptions().colors[1],
+                      },
+                    },
+                    title: {
+                      text: "Số lượng cá thể",
+                      style: {
+                        color: Highcharts.getOptions().colors[1],
+                      },
+                    },
+                  },
+                  {
+                    // Secondary yAxis
+                    title: {
+                      text: "Số lượng loài",
+                      style: {
+                        color: Highcharts.getOptions().colors[0],
+                      },
+                    },
+                    labels: {
+                      format: "{value}",
+                      style: {
+                        color: Highcharts.getOptions().colors[0],
+                      },
+                    },
+                    opposite: true,
+                  },
+                ],
+                tooltip: {
+                  shared: true,
+                },
+                legend: {
+                  layout: "vertical",
+                  align: "left",
+                  x: 120,
+                  verticalAlign: "top",
+                  y: 100,
+                  floating: true,
+                  backgroundColor:
+                    Highcharts.defaultOptions.legend.backgroundColor || // theme
+                    "rgba(255,255,255,0.25)",
+                },
+                series: [
+                  {
+                    name: `Số lượng loài - ${animalGroup}`,
+                    type: "column",
+                    yAxis: 1,
+                    data: totalNumberOfCamps[0].data,
+                    tooltip: {
+                      valueSuffix: " ",
+                    },
+                  },
+                  {
+                    name: `Số lượng cá thể - ${animalGroup}`,
+                    type: "spline",
+                    data: totalNumberOfChildren[0].data,
+                    tooltip: {
+                      valueSuffix: " ",
+                    },
+                  },
+                ],
+              });
+            });
+          }
+        });
+    };
+
+    vm.onFmsRegionSelected = function (region) {
+      if (region != null && region.id != null) {
+        vm.regionName = region.name;
+        auService.getAllCityByRegion(region.id).then(function (data) {
+          if (data != null && data.length > 0) {
+            vm.adminstrativeUnits_City = data;
+            vm.selectedCity = null;
+            vm.selectedDist = null;
+            vm.selectWards = null;
+            vm.paramDto.provinceId = null;
+            vm.paramDto.districtId = null;
+            vm.paramDto.wardId = null;
+            vm.provinceName = null;
+            vm.districtName = null;
+            vm.wardsName = null;
+          } else {
+            vm.paramDto.provinceId = null;
+            vm.paramDto.districtId = null;
+            vm.paramDto.wardId = null;
+            vm.selectedCity = null;
+            vm.selectedDist = null;
+            vm.selectWards = null;
+            vm.adminstrativeUnits_City = [];
+            vm.adminstrativeUnits_Dist = [];
+            vm.adminstrativeUnits_Wards = [];
+            vm.provinceName = null;
+            vm.districtName = null;
+            vm.wardsName = null;
+          }
+        });
+      } else {
+        vm.paramDto.provinceId = null;
+        vm.paramDto.districtId = null;
+        vm.paramDto.wardId = null;
+        vm.selectedCity = null;
+        vm.selectedDist = null;
+        vm.selectWards = null;
+        vm.adminstrativeUnits_City = [];
+        vm.adminstrativeUnits_Dist = [];
+        vm.adminstrativeUnits_Wards = [];
+        vm.regionName = null;
+        vm.provinceName = null;
+        vm.districtName = null;
+        vm.wardsName = null;
+      }
+    };
+
+    vm.onFmsadminstrativeUnitCitySelected = function (city) {
+      vm.selectedCity = city;
+      //clear data combobox
+      vm.paramDto.districtId = null;
+      vm.paramDto.wardId = null;
+      vm.selectedDist = null;
+      vm.selectWards = null;
+      vm.adminstrativeUnits_Dist = [];
+      vm.adminstrativeUnits_Wards = [];
+      vm.districtName = null;
+      vm.wardsName = null;
+      vm.provinceName = null;
+      if (city != null && city.id != null) {
+        vm.provinceName = city.name;
+        auService
+          .getChildrenByParentId(vm.paramDto.provinceId)
+          .then(function (data) {
+            if (data != null && data.length > 0) {
+              vm.adminstrativeUnits_Dist = data;
+            }
+          });
+      } else {
+        vm.paramDto.groupByItems = [];
+      }
+    };
+
+    vm.onFmsadminstrativeUnitDistSelected = function (dist) {
+      vm.paramDto.wardId = null;
+      vm.paramDto.wardId = null;
+      vm.selectWards = null;
+      vm.adminstrativeUnits_Wards = [];
+      vm.wardsName = null;
+      vm.districtName = null;
+      if (dist != null && dist.id != null) {
+        vm.districtName = dist.name;
+        auService
+          .getChildrenByParentId(vm.paramDto.districtId)
+          .then(function (data) {
+            if (data != null && data.length > 0) {
+              vm.adminstrativeUnits_Wards = data;
+            }
+          });
+      } else {
+      }
+    };
+
+    vm.onFmsadminstrativeUnitWardsSelected = function (item) {
+      if (item != null) {
+        vm.wardsName = item.name;
+      } else {
+        vm.wardsName = null;
+      }
+    };
+  }
+})();

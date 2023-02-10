@@ -1,0 +1,94 @@
+package com.globits.wl.rest;
+
+
+import java.util.List;
+
+import com.globits.wl.dto.functiondto.OrganizationSearchDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+import com.globits.wl.dto.FmsAdministrativeUnitDto;
+import com.globits.wl.dto.FmsOrganizationAdministrativeDto;
+import com.globits.wl.dto.functiondto.SearchReportPeriodDto;
+import com.globits.wl.service.AdministrativeOrganizationService;
+import com.globits.wl.utils.WLConstant;
+
+@RestController
+@RequestMapping("api/administrativeOrganization")
+public class RestAdministrativeOrganizationController {
+
+	@Autowired
+	private AdministrativeOrganizationService administrativeOrganizationService;
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public AdministrativeOrganizationDto createAdministrativeOrganization(@RequestBody AdministrativeOrganizationDto dto) {
+		Long id = null;
+		return this.administrativeOrganizationService.saveOrUpdate(dto, id);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getById/{id}", method = RequestMethod.GET)
+	public AdministrativeOrganizationDto getById(@PathVariable("id") Long id) {
+		return this.administrativeOrganizationService.getById(id);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	public AdministrativeOrganizationDto updateAdministrativeOrganization(@PathVariable("id") Long id, @RequestBody AdministrativeOrganizationDto dto) {
+		return this.administrativeOrganizationService.saveOrUpdate(dto, id);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public AdministrativeOrganizationDto deleteById(@PathVariable("id") Long id) {
+		AdministrativeOrganizationDto dto = new AdministrativeOrganizationDto();
+		try {
+			dto = this.administrativeOrganizationService.deleteAdministrativeOrganization(id);			 
+			return dto;
+		} catch (Exception e) {			
+			return dto;
+			// TODO: handle exception
+		}
+	}
+	// Nut gốc 
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getParent", method = RequestMethod.POST)
+	public List<FmsOrganizationAdministrativeDto> getParent(@RequestBody SearchReportPeriodDto dto) {
+		return this.administrativeOrganizationService.getParent(dto);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getListTree", method = RequestMethod.POST)
+	public ResponseEntity<Page<AdministrativeOrganizationDto>> getListTree(@RequestBody SearchReportPeriodDto dto) {
+		Page<AdministrativeOrganizationDto> page = administrativeOrganizationService.getListTree(dto);
+		return new ResponseEntity<Page<AdministrativeOrganizationDto>>(page, HttpStatus.OK);
+	}
+	// Nut lá
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getChildrenByParentId/{id}", method = RequestMethod.GET)
+	public List<AdministrativeOrganizationDto> getChildrenByParentId(@PathVariable("id") Long id) {
+		return this.administrativeOrganizationService.getChildrenByParentId(id);
+	}
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH","ROLE_DISTRICT","ROLE_WARD","ROLE_FAMER","ROLE_USER", WLConstant.ROLE_SDAH_VIEW})
+	@RequestMapping(value = "/getAdministrativeOrganizationByUser", method = RequestMethod.GET)
+	public List<AdministrativeOrganizationDto> get() {
+		return this.administrativeOrganizationService.getAdministrativeOrganizationByUser();
+	}
+
+	@Secured({"ROLE_ADMIN","ROLE_DLP","ROLE_SDAH"})
+	@RequestMapping(value = "/get-administrative-organization", method = RequestMethod.POST)
+	public ResponseEntity<List<AdministrativeOrganizationDto>> getOrganization(@RequestBody OrganizationSearchDto search ) {
+		return ResponseEntity.ok(this.administrativeOrganizationService.getOrganization(search)) ;
+	}
+}

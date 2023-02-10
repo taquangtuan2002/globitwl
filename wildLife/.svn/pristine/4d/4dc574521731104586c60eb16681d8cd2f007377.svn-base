@@ -1,0 +1,719 @@
+<div class="row margin-top-20 portlet-farm-detail">
+    <div class="col-md-12" style="padding-bottom: 0px;">
+        <div class="portlet light bordered" style="padding-bottom: 0 !important;">
+            <div class="portlet-title" style="margin: 0;">
+                <div class="row">
+                    <div class="modal-header">
+                        <div class="col-md-6">
+                            <h4 ng-if="vm.animalCertificate.isNew">{{"importAnimal.status" | translate}}:
+                                <strong>Tạo mới giấy chứng nhận</strong>
+                            </h4>
+                            <h4 ng-if="!vm.animalCertificate.isNew">{{"importAnimal.status" | translate}}:
+                                <strong>Cập nhật giấy chứng nhận</strong>
+                            </h4>
+                        </div>
+                        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+                        <h4 ng-if="vm.certificate.isNew == true" class="modal-title"><i
+                                class="icon-plus"></i>{{'certificate.create' | translate}}</h4>
+                        <h4 ng-if="vm.certificate.isNew == false" class="modal-title"><i
+                                class="icon-pencil"></i>{{'certificate.edit' | translate}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="">
+                    <div class="box-header" style="padding: 0;">
+                        <h2 class="text-center bold" style="margin: 0;">Giấy chứng nhận mã số cơ sở nuôi</h2>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <!-- Dong 1-->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Thông
+                                    tin cơ sở nuôi:</label>
+                                <div class="col-sm-4 " style=" margin-top: 10px;">
+                                    <div class="row">
+                                        <div class="col-sm-9" id="tooltip-text">
+                                            <input readonly data-ng-model="vm.animalCertificate.farm.name"
+                                                placeholder="Tên cơ sở" type="text" class="form-control w-75"
+                                                style="width: 100%;" />
+                                            <span class="tooltip-hover" ng-if="vm.animalCertificate.farm.name">
+                                                Họ và tên chủ cơ sở
+                                            </span>
+
+                                        </div>
+                                        <div class="col-sm-3" id="tooltip-text">
+                                            <button style="width: 100%;" ng-click="vm.showPopupFarm()"
+                                                class="btn btn-default" type="submit"><i
+                                                    class="glyphicon glyphicon-plus"></i>{{"exportAnimal.choose" |
+                                                translate}}</button>
+                                            <span class="tooltip-hover">
+                                                Chọn tên cơ sở
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- <input readonly ng-if="!vm.animalCertificate.isNew"
+                                        data-ng-model="vm.animalCertificate.farm.name" placeholder="Tên cơ sở"
+                                        type="text" class="form-control" style="width: 100%;" /> -->
+
+                                </div>
+                                <!-- <label style="font-size: smaller;" class="col-sm-2 control-label">Nguồn gốc mẫu vật:</label>
+                                <div class="col-sm-4">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Nguồn gốc mẫu vật"
+                                        class="form-control margin-top-5" ng-model="vm.animalCertificate.animalCertificateDetailDto.original">
+                                </div> -->
+
+                                <label style="font-size: smaller;" class="col-sm-2 control-label"> Cấp giấy chứng nhận
+                                    tại
+                                    : </label>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input type="text" placeholder="Nơi xác nhận" class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.provinceName">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.provinceName">
+                                        Nơi xác nhận
+                                    </span>
+                                </div>
+                                <!-- <div class="col-sm-2">
+                                    <input type="text" placeholder="Ngày cấp chứng chỉ" my-date-picker
+                                        class="form-control margin-top-5" ng-model="vm.animalCertificate.dateIssue">
+                                </div> -->
+
+                                <div class="col-sm-2 margin-top-5" id="tooltip-text">
+                                    <ui-select ng-disabled="vm.isViewDetail"
+                                        ng-model="vm.animalCertificate.contentProvided" sortable="true"
+                                        on-select="vm.onselectedContentProvided($item)" close-on-select="true">
+                                        <ui-select-match allow-clear="true" placeholder="Chọn nội dung cấp...">
+                                            {{$select.selected}} </ui-select-match>
+                                        <ui-select-choices repeat="contentProvided in vm.listContentProvided ">
+                                            <div class="bold"
+                                                ng-bind-html="contentProvided | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.contentProvided">
+                                        Chọn nội dung cấp...
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <!--Dong 2-->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">
+                                </label>
+                                <div class="col-sm-2 margin-top-5" id="tooltip-text">
+                                    <ui-select ng-model="vm.selectedCity" sortable="true" close-on-select="true"
+                                        on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseCity' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="tooltip-hover" ng-If="vm.selectedCity">
+                                        {{'farm.chooseCity' | translate}}...
+                                    </span>
+                                </div>
+                                <div class="col-sm-2 margin-top-5" id="tooltip-text">
+                                    <!-- <ui-select ng-disabled="vm.isViewDetail" ng-model="vm.administrativeUnit"
+                                        sortable="true" on-select="vm.onFmsadminstrativeUnitDistSelectedFrom($item)"
+                                        close-on-select="true">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select> -->
+                                    <ui-select ng-model="vm.selectedDist" sortable="true" close-on-select="true"
+                                        on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="tooltip-hover" ng-If="vm.selectedDist">
+                                        {{'farm.chooseDistrict' | translate}}...
+                                    </span>
+                                </div>
+
+                                <!-- <label style="font-size: smaller;" class="col-sm-2 control-label">Quy cách đánh dấu
+                                    : </label>
+                                <div class="col-sm-4">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Quy cách đánh dấu"
+                                        class="form-control margin-top-5" ng-model="vm.animalCertificate.animalCertificateDetailDto.markSpecification">
+                                </div> -->
+
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Người ký :</label>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Họ và tên"
+                                        class="form-control margin-top-5" ng-model="vm.animalCertificate.signerName">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.signerName">
+                                        Họ và tên người ký
+                                    </span>
+                                </div>
+                                <!-- <div class="col-sm-2">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Chi cục phó"
+                                        class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.signerNameDeputy">
+                                </div> -->
+                                <div class="col-sm-2 margin-top-5" id="tooltip-text">
+                                    <ui-select ng-disabled="vm.isViewDetail" ng-model="vm.animalCertificate.typeSigner"
+                                        sortable="true" on-select="vm.onSelectedSigner($item)" close-on-select="true">
+                                        <ui-select-match allow-clear="true" placeholder="Chọn chức danh...">
+                                            {{$select.selected}} </ui-select-match>
+                                        <ui-select-choices repeat="typeSigner in vm.listSigner ">
+                                            <div class="bold" ng-bind-html="typeSigner | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.typeSigner">
+                                        Chọn chức danh...
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <!--Dong 3-->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-2 margin-top-5" id="tooltip-text">
+                                    <!-- <ui-select ng-disabled="vm.isViewDetail" ng-model="vm.commune " sortable="true"
+                                        close-on-select="true">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseWard' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select> -->
+                                    <ui-select ng-model="vm.selectedWard" sortable="true" close-on-select="true"
+                                        on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+                                        <ui-select-match allow-clear="true"
+                                            placeholder="{{'farm.chooseWard' | translate}}...">
+                                            {{$select.selected.name}} </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                                            <div class="bold"
+                                                ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="tooltip-hover" ng-If="vm.selectedWard">
+                                        {{'farm.chooseWard' | translate}}...
+                                    </span>
+                                </div>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text"
+                                        placeholder="Thôn/làng/bản/ấp/tổ/xóm" class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.farm.village">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.farm.village">
+                                        Nhập thôn/làng/bản/ấp/tổ/xóm
+                                    </span>
+                                </div>
+
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Nơi nhận : </label>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Chủ cơ sở..."
+                                        class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.recipientFirst">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.recipientFirst">
+                                        Họ tên chủ cơ sở..
+                                    </span>
+
+                                </div>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Cơ quan CITES-MA"
+                                        class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.recipientSecond">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.recipientSecond">
+                                        Cơ quan CITES-MA
+                                    </span>
+                                </div>
+
+
+                                <!-- <label style="font-size: smaller;" class="col-sm-2 control-label"> Tên loài:
+                                </label>
+                                <div class="col-sm-2 margin-top-5">
+                                    <ui-select ng-model="vm.animalSelected" sortable="true" close-on-select="true" style="width:100%;"
+                                        aria-multiselectable="true" on-select="vm.onSelectedAnimalFormEdit(vm.animalSelected)" on-remove="vm.onRemovedAnimal()">
+                                        <ui-select-match allow-clear="true" placeholder="Tên tiếng việt...">
+                                            {{$select.selected.name}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="animal in vm.animals | propsFilter: {name: $select.search}">
+                                            <div class="bold" ng-bind-html="animal.name | highlight: $select.search"> </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <div class="col-sm-2 margin-top-5">
+                                    <ui-select ng-model="vm.animalSelected" sortable="true" close-on-select="false" style="width:100%;"
+                                        aria-multiselectable="true" on-select="vm.onSelectedAnimalFormEdit(vm.animalSelected)" on-remove="vm.onRemovedAnimal()">
+                                        <ui-select-match allow-clear="true" placeholder="Tên tiếng anh...">
+                                            {{$select.selected.scienceName}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                            repeat="animal in vm.animals | propsFilter: {name: $select.search}">
+                                            <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div> -->
+                            </div>
+
+                            <div class="form-group">
+                                <!--Dong 4-->
+
+                                <!-- <label style="font-size: smaller;" class="col-sm-2 control-label">Tổng số cá thể:</label>
+                                
+                                <div class="col-sm-1">
+                                    <input class="form-control margin-top-5 ng-pristine ng-valid ng-empty ng-touched" 
+                                    data-ng-model="vm.animalCertificate.animalCertificateDetailDto.male" placeholder="Con đực"
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertificate.animalCertificateDetailDto)"  
+                                    type="number"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"/>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input class="form-control margin-top-5 ng-pristine ng-valid ng-empty ng-touched" 
+                                    data-ng-model="vm.animalCertificate.animalCertificateDetailDto.female" placeholder="Con cái"
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertificate.animalCertificateDetailDto)"  
+                                    type="number"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"/>
+                                </div>
+                                <div class="col-sm-1">
+                                    <input class="form-control margin-top-5 ng-pristine ng-valid ng-empty ng-touched" 
+                                    data-ng-model="vm.animalCertificate.animalCertificateDetailDto.unGender" placeholder="Không xác định"
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertificate.animalCertificateDetailDto)"  
+                                    type="number"  oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"/>
+                                </div>
+                            
+                                <div class="col-sm-1">
+                                    <input class="form-control margin-top-5 ng-pristine ng-valid ng-empty ng-touched" 
+                                    data-ng-model="vm.animalCertificate.animalCertificateDetailDto.total" 
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertificate.animalCertificateDetailDto)"  
+                                    type="text"  ng-disabled="true" ng-class="{'glb-disabled':true}"/>
+                                </div> -->
+                            </div>
+
+                            <div class="form-group">
+                                <!-- Dong 5-->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Ngày thành lập :
+                                </label>
+                                <div class="col-sm-4">
+                                    <div class="row">
+                                        <div class="col-sm-4" id="tooltip-text">
+                                            <input ng-readonly="vm.isViewDetail" type="text"
+                                                placeholder="Ngày thành lập" my-date-picker
+                                                class="form-control margin-top-5"
+                                                ng-model="vm.animalCertificate.farm.foundingDate">
+                                            <span class="tooltip-hover" ng-If="vm.animalCertificate.farm.foundingDate">
+                                                Ngày thành lập
+                                            </span>
+                                        </div>
+
+                                        <label style="font-size: smaller;" class="col-sm-4 control-label">Ngày cấp mã số
+                                            : </label>
+                                        <div class="col-sm-4" id="tooltip-text">
+                                            <input ng-readonly="vm.isViewDetail" type="text"
+                                                placeholder="Ngày cấp mã số" my-date-picker
+                                                class="form-control margin-top-5"
+                                                ng-model="vm.animalCertificate.farm.dateRegistration">
+                                            <span class="tooltip-hover"
+                                                ng-If="vm.animalCertificate.farm.dateRegistration">
+                                                Ngày Cấp mã số
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <label style="font-size: smaller;" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Hạt kiểm lâm"
+                                        class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.recipientThird">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.recipientThird">
+                                        <!-- Hạt kiểm lâm phụ trách địa bàn -->
+                                        {{vm.animalCertificate.recipientThird}}
+                                    </span>
+                                </div>
+                                <div class="col-sm-2" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Lưu BTTN,TTPC"
+                                        class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.recipientFourth">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.recipientFourth">
+                                        Các phòng, ban bộ phận lưu hồ sơ
+                                    </span>
+                                </div>
+
+
+                                <!-- <label style="font-size: smaller;" class="col-sm-2 control-label">Khối lượng:</label>
+                                <div class="col-sm-2">
+                                    <input class="form-control margin-top-5 ng-pristine ng-valid ng-empty ng-touched" 
+                                    data-ng-model="vm.animalCertificate.animalCertificateDetailDto.amount" 
+                                    type="number"/>
+                                </div>
+                                <div class="col-sm-2">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Đơn vị tính"
+                                        class="form-control margin-top-5" ng-model="vm.animalCertificate.animalCertificateDetailDto.unit">
+                                </div> -->
+                            </div>
+
+                            <div class="form-group">
+                                <!-- Dong 6-->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Mã số cơ sở
+                                    :</label>
+                                <div class="col-sm-4" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.code" placeholder="Nhập mã số cơ sở">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.code">
+                                        Nhập mã số cơ sở
+                                    </span>
+                                </div>
+
+                                <!-- <label style="font-size: smaller;" class="col-sm-2 control-label">Nội dung cấp : </label>
+                                <div class="col-sm-2 margin-top-5">
+                                    <ui-select ng-disabled="vm.isViewDetail"
+                                        ng-model="vm.animalCertificate.contentProvided" sortable="true"
+                                        on-select="vm.onselectedContentProvided($item)" close-on-select="true">
+                                        <ui-select-match allow-clear="true" placeholder="Chọn nội dung cấp...">
+                                            {{$select.selected}} </ui-select-match>
+                                        <ui-select-choices repeat="contentProvided in vm.listContentProvided ">
+                                            <div class="bold"
+                                                ng-bind-html="contentProvided | highlight: $select.search">
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div> -->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">Tên đơn vị cấp giấy
+                                    chứng nhận : </label>
+                                <div class="col-sm-4" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text" placeholder="Chi cục kiểm lâm"
+                                        class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.organizationName">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.organizationName">
+                                        Chi cục kiểm lâm
+                                    </span>
+                                </div>
+
+
+                            </div>
+                            <div class="form-group">
+                                <!-- Dong 7-->
+                                <label style=" margin: 0;font-size: smaller;" class="col-sm-2 control-label"></label>
+                                <label style='font-size: small;' class="col-sm-4 bold">
+                                    <input type="checkbox" ng-model="vm.animalCertificate.isCheckFarm"
+                                        ng-click="vm.onCheckChangeFarm()">
+                                    Cập nhật thông tin cơ sở theo giấy chứng nhận.</label>
+
+                                <label style="font-size: smaller;" class="col-sm-2 control-label">
+                                </label>
+                                <div class="col-sm-4" id="tooltip-text">
+                                    <input ng-readonly="vm.isViewDetail" type="text"
+                                        placeholder="Sở nông nghiệp và PTNT Tỉnh X" class="form-control margin-top-5"
+                                        ng-model="vm.animalCertificate.organizationProvinceName">
+                                    <span class="tooltip-hover" ng-If="vm.animalCertificate.organizationProvinceName">
+                                        Nhập sở nông nghiệp và PTNT
+                                    </span>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <!-- Dong 8-->
+                                <label style="font-size: smaller;" class="col-sm-2 control-label"></label>
+                                <div class="col-sm-4">
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--TABLE-->
+    <div class="row margin-top-5">
+        <!--<button ng-click="vm.addForestProductDetail()"
+                class="btn btn-primary mb-3">{{"importAnimal.create" | translate}}
+            </button> -->
+        <!-- </div> -->
+        <div class="row">
+            <div class="col-md-12" style="padding : 0;margin-top: 1%;">
+                <table class="table table-bordered " style="width: 97%;margin: auto;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width:3%">STT</th>
+                            <th style="width:30%" colspan="2">Tên loài </th>
+                            <th style="width:25%" colspan="4">Tổng số cá thể nuôi </th>
+                            <!-- <th rowspan="2" style="width:15px">Tổng khối lượng (kg) </th> -->
+                            <!-- <th rowspan="2" style="width:15px">Đơn vị tính (con)</th> -->
+                            <th rowspan="2" style="width:27%">Nguồn gốc mẫu vật</th>
+                            <th rowspan="2" style="width:10%">Ghi chú</th>
+                            <th rowspan="2" style="width:5%">Thao tác</th>
+                        </tr>
+                        <tr>
+                            <th style="width:10px">Tên phổ thông</th>
+                            <th style="width:10px">Tên khoa học</th>
+                            <th style="width:10px">Tổng</th>
+                            <th style="width:10px">Đực</th>
+                            <th style="width:10px">Cái</th>
+                            <th style="width:10px">Không xác định</th>
+                        </tr>
+
+                    </thead>
+                    <tbody ng-if="vm.animalCertificate.details.length > 0">
+                        <tr ng-repeat="animalCertificateDetail in vm.animalCertificate.details track by $index">
+                            <td class="text-center">{{$index+1}}</td>
+                            <td style="max-width: 100px;min-width: 100px;">
+                                <ui-select ng-model="animalCertificateDetail.animal" sortable="true"
+                                    close-on-select="true" style="width:100%;" aria-multiselectable="true"
+                                    on-select="vm.onSelectedAnimalFormEdit(animalCertificateDetail.animal, null)"
+                                    on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal in vm.animals | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td style="max-width: 100px;min-width: 100px;">
+                                <ui-select ng-model="animalCertificateDetail.animal" sortable="true"
+                                    close-on-select="false" style="width:100%;" aria-multiselectable="true"
+                                    on-select="vm.onSelectedAnimalFormEdit(animalCertificateDetail.animal, null)"
+                                    on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.scienceName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal in vm.animals | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+
+                            <td>
+                                <input data-ng-model="animalCertificateDetail.total" ng-disabled="true"
+                                    ng-class="{'glb-disabled':true}" type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="animalCertificateDetail.male"
+                                    ng-change="vm.updateTotalAnimal(animalCertificateDetail)" type="number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"
+                                    class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="animalCertificateDetail.female"
+                                    ng-change="vm.updateTotalAnimal(animalCertificateDetail)" type="number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"
+                                    class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="animalCertificateDetail.unGender"
+                                    ng-change="vm.updateTotalAnimal(animalCertificateDetail)" type="number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"
+                                    class="form-control" />
+                            </td>
+
+                            <!-- <td>
+                                <input data-ng-model="animalCertificateDetail.amount"type="number" class="form-control" />
+                            </td> -->
+
+                            <!-- <td>
+                                <input data-ng-model="animalCertificateDetail.unit" type="text" class="form-control" />
+                            </td> -->
+                            <td>
+                                <input data-ng-model="animalCertificateDetail.original" type="text"
+                                    class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="animalCertificateDetail.note" type="text" class="form-control" />
+                            </td>
+                            <td class="text-center">
+                                <a ng-click="vm.removeAnimalCertificateDetails($index)"><i
+                                        class="icon-trash text-danger"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td style="max-width: 100px;min-width: 100px;">
+                                <ui-select ng-model="vm.animalCertDetailTemp.animal" sortable="true"
+                                    close-on-select="true" style="width:100%;" aria-multiselectable="true"
+                                    on-select="vm.onSelectedAnimalFormEdit(vm.animalCertDetailTemp.animal, null)"
+                                    on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal in vm.animals | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td style="max-width: 100px;min-width: 100px;">
+                                <ui-select ng-model="vm.animalCertDetailTemp.animal" sortable="true"
+                                    close-on-select="false" style="width:100%;" aria-multiselectable="true"
+                                    on-select="vm.onSelectedAnimalFormEdit(vm.animalCertDetailTemp.animal, null)"
+                                    on-remove="vm.onRemovedAnimal()">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                                        {{$select.selected.scienceName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="animal in vm.animals | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="animal.scienceName | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+
+                            <td>
+                                <input data-ng-model="vm.animalCertDetailTemp.total" ng-disabled="true"
+                                    ng-class="{'glb-disabled':true}" type="text" class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.animalCertDetailTemp.male"
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertDetailTemp)" type="number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"
+                                    class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.animalCertDetailTemp.female"
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertDetailTemp)" type="number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"
+                                    class="form-control" />
+                            </td>
+                            <td>
+                                <input data-ng-model="vm.animalCertDetailTemp.unGender"
+                                    ng-change="vm.updateTotalAnimal(vm.animalCertDetailTemp)" type="number"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');"
+                                    class="form-control" />
+                            </td>
+                            <!-- <td><input type="number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');" class="form-control" data-ng-model="vm.animalCertDetailTemp.amount"></td> -->
+                            <!-- <td><input type="text" class="form-control" data-ng-model="vm.animalCertDetailTemp.unit"></td> -->
+                            <td><input type="text" class="form-control"
+                                    data-ng-model="vm.animalCertDetailTemp.original"></td>
+                            <td><input type="text" class="form-control" data-ng-model="vm.animalCertDetailTemp.note">
+                            </td>
+                            <td class="text-center">
+                                <button ng-click="vm.addAnimalCertDetailTemp()"><i class="icon-plus"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal-footer" style="padding:10px;">
+    <!-- <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'certificate.cancel' | translate}}</button>
+    <button ng-if="vm.certificate.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'certificate.save' | translate}}</button>
+    <button ng-if="vm.certificate.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'injectionTime.save' | translate}}</button> -->
+    <div class="row">
+
+
+        <div style="display: flex; width: 50%;" class="col-lg-6">
+
+        </div>
+
+
+        <div style="display: flex; width: 50%; justify-content: flex-end;" clases="col-lg-6">
+            <!-- <div>Các bước cần thực hiện tiếp theo</div> -->
+            <button type="button" class="btn btn-default btn-primary" margin-left: 10px ng-click="$dismiss()"
+                data-dismiss="modal">
+                <i class="fa fa-mail-reply-all"></i>Trở về danh mục
+            </button>
+            <button style='margin-left : 20px' type="button" ng-click="vm.printWord()"
+                class="btn btn-primary">
+                <i class="icon-check"></i>In giấy chứng nhận
+            </button>
+            <button
+                ng-if="vm.animalCertificate.id && (!vm.animalCertificate.canceled ||vm.animalCertificate.canceled==0)"
+                style='margin-left : 20px' type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary">
+                <i class="icon-check"></i> Lưu
+            </button>
+            <button ng-if="!vm.animalCertificate.id || (vm.animalCertificate.id && vm.animalCertificate.canceled==2)"
+                style='margin-left : 20px' type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary">
+                <i class="icon-check"></i> {{'importAnimal.save' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+<style>
+    #tooltip-text {
+        position: relative;
+        display: inline-block;
+        /* If you want dots under the hoverable text */
+    }
+
+    /* Tooltip text */
+    #tooltip-text .tooltip-hover {
+        visibility: hidden;
+        width: 94%;
+        background-color: #50d37e;
+        color: rgb(255, 250, 250);
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 2px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        top: 125%;
+        left: 50%;
+        margin-left: -47%;
+        font-weight: 500;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0, 2s;
+
+    }
+
+    /* Tooltip arrow */
+    #tooltip-text .tooltip-hover::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #50d37e transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    #tooltip-text:hover .tooltip-hover {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>

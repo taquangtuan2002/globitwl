@@ -1,0 +1,39 @@
+<div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        <h4 ng-if="vm.injectionTime.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'injectionTime.create' | translate}}</h4>
+        <h4 ng-if="vm.injectionTime.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'injectionTime.edit' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-10 margin-top-10">
+                <label class="bold">{{'injectionTime.code' | translate}}</label>
+                <input ng-if="vm.injectionTime.isNew == true" data-ng-model="vm.injectionTime.code" type="text" autofocus="autofocus" class="form-control" />
+				<input ng-if="vm.injectionTime.isNew == false" data-ng-model="vm.tempCode" type="text" autofocus="autofocus" class="form-control" />
+            </div>
+			<!-- <div class="col-md-1 margin-top-10">
+				<button ng-if="vm.injectionTime.isNew == true" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(1,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+				<button ng-if="vm.injectionTime.isNew == false" style="margin-left: 12px;margin-top: 23px;margin-right: 10px;" ng-click="vm.checkDuplicateCode(2,1)" type="button" class="btn btn-primary btn-circle"><i class="fa fa-history"></i></button>
+			</div> -->
+            <div class="col-md-12 margin-top-10">
+                <label class="bold">{{'injectionTime.name' | translate}}</label>
+                <input data-ng-model="vm.injectionTime.name" type="text" class="form-control" />
+            </div>
+            
+            <div class="col-md-6 margin-top-10">
+                <label class="bold">{{'injectionTime.type' | translate}}</label>
+                <ui-select data-ng-model="vm.injectionTime.type" sortable="true" close-on-select="true" style="width: 100% !important;">
+                    <ui-select-match allow-clear="true" placeholder="{{'injectionTime.type' | translate}}...">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="type.value as type in vm.type | propsFilter: {name: $select.search}">
+                        <div class="bold" ng-bind-html="type.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+          
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'injectionTime.cancel' | translate}}</button>
+		<button ng-if="vm.injectionTime.isNew == true" type="button" ng-click="vm.checkDuplicateCode(1,2)" class="btn btn-primary" data-dismiss="modal">{{'injectionTime.save' | translate}}</button>
+		<button ng-if="vm.injectionTime.isNew == false" type="button" ng-click="vm.checkDuplicateCode(2,2)" class="btn btn-primary" data-dismiss="modal">{{'injectionTime.save' | translate}}</button>
+    </div>

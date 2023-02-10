@@ -1,0 +1,563 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css" />
+
+    <link rel="stylesheet" href="./vgmap.css">
+
+    <style>
+        html,
+        body,
+        #map {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            font-family: 'Mulish', Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 13px !important;
+        }
+
+        .table tr td {
+            font-size: 13px;
+        }
+
+        .table th {
+            font-size: 13px;
+        }
+
+        #form-container {
+            top: 10;
+            right: 10;
+            position: fixed;
+            width: 250px;
+            z-index: 999;
+        }
+
+        .table-legend {
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .legend-icon {
+            width: 24px;
+            margin-right: 10px;
+        }
+
+        .leaflet-popup-content {
+            min-width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card card-body bg-light" id="form-container">
+        <form action="/" id="filter-form">
+            <div class="form-group">
+                <label for="province_id">Tỉnh/Thành phố</label>
+                <select class="form-control" name="province_id" id="province_id"></select>
+            </div>
+            <div class="form-group">
+                <label for="district_id">Quận/Huyện</label>
+                <select class="form-control" name="district_id" id="district_id"></select>
+            </div>
+            <div class="form-group">
+                <label for="commune_id">Phường/Xã</label>
+                <select class="form-control" name="commune_id" id="commune_id"></select>
+            </div>
+            <hr />
+            <button type="button" id="filter" class="btn btn-primary">Lọc trại</button>
+            <button type="button" id="reset" class="btn btn-danger">Làm mới bản đồ</button>
+        </form>
+    </div>
+    <div id="map"></div>
+    <div class="modal" tabindex="-1" role="dialog" id="iconSize-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập nhật tọa độ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/" id="iconSize-form">
+                        <div class="form-group">
+                            <label for="iconSize0"> Kích cỡ mặc định </label>
+                            <input type="number" class="form-control" name="iconSize0" />
+                        </div>
+                        <div class="form-group">
+                            <label for="iconSize1"> Kích cỡ >= 51 && <= 200 </label>
+                                    <input type="number" class="form-control" name="iconSize1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="iconSize2"> Kích cỡ >= 201 & <= 500 </label>
+                                    <input type="number" class="form-control" name="iconSize2" />
+                        </div>
+                        <div class="form-group">
+                            <label for="iconSize3"> Kích cỡ > 500 </label>
+                            <input type="number" class="form-control" name="iconSize3" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnUpdateIconSize">Cập nhật</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="http://vdn.gisgo.vn/static/vmap.bundle.js"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js" integrity="sha512-RtZU3AyMVArmHLiW0suEZ9McadTdegwbgtiQl5Qqo9kunkVg1ofwueXD8/8wv3Af8jkME3DDe3yLfR8HSJfT2g==" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="./vgmap.js"></script>
+
+    <script type="text/html" id="primate-popup-template">
+        <table class="table table-bordered table-hovered table-striped">
+            <thead>
+                <tr>
+                    <th>Mã đơn vị</th>
+                    <th>Tên đơn vị</th>
+                    <th>Tên loài</th>
+                    <th>Tên khoa học</th>
+                    <th>Tổng cá thể</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#array}}
+                    {{#first}}
+                    <tr>
+                        <td rowspan="{{array.length}}">{{farm_id}}</td>
+                        <td rowspan="{{array.length}}">{{farm_name}}</td>
+                        <td>{{name}}</td>
+                        <td>{{name_science}}</td>
+                        <td>{{total}}</td>
+                    </tr>
+                    {{/first}}
+                    {{^first}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{name_science}}</td>
+                        <td>{{total}}</td>
+                    </tr>
+                    {{/first}}
+                {{/array}}
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/html" id="legend-template">
+        <table class="table-legend">
+            <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/mix.svg" alt="">
+                </td>
+                <td>Gộp</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/aves.svg" alt="">
+                </td>
+                <td>Lớp chim</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/Arachnida.png" alt="">
+                </td>
+                <td>Lớp hình nhện</td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/Amphibians.png" alt="">
+                </td>
+                <td>Lớp lưỡng cư</td>
+            </tr>
+             <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/reptile.svg" alt="">
+                </td>
+                <td>Lớp bò sát</td>
+            </tr>
+             <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/mammalia.svg" alt="">
+                </td>
+                <td>Lớp thú</td>
+            </tr>
+                        <tr>
+                <td>
+                    <img class="legend-icon" src="https://fao.gisgo.vn/samples/images/Primate.svg" alt="">
+                </td>
+                <td>Linh trưởng</td>
+            </tr>
+        </table>
+        <hr />
+        <center>
+            <a data-toggle="modal" data-target="#iconSize-modal" style="text-decoration: underline;">Thiết lập kích cỡ</a>
+        </center>
+    </script>
+
+    <script>
+        var _iconSizes = [18, 24, 30, 36];
+
+        $('#iconSize-modal').on('shown.bs.modal', function () {
+            $.each(_iconSizes, function (idx, s) {
+                $('#iconSize-form').find('[name=iconSize' + idx + "]").val(s);
+            });
+        });
+
+        $('#btnUpdateIconSize').on('click', function () {
+            $.each(_iconSizes, function (idx, s) {
+                _iconSizes[idx] = $('#iconSize-form').find('[name=iconSize' + idx + "]").val();
+            });
+            //
+            if ($('#commune_id').val()) {
+                getFarms($('#commune_id').val());
+            } else if ($('#district_id').val()) {
+                getFarms($('#district_id').val());
+            } else if ($('#province_id').val()) {
+                getFarms($('#province_id').val());
+            } else {
+                getFarms();
+            }
+            //
+            $('#iconSize-modal').modal('hide');
+        });
+
+        $.ajaxSetup({
+            beforeSend: function () {
+                mapCore.showProgress();
+            },
+            complete: function () {
+                mapCore.hideProgress();
+            }
+        });
+
+        var getFarmHandler;
+
+        var features = [];
+
+        var loaded = false;
+
+        var mapCore = new VGMap.VGMapCore('map', {
+            center: new VGMap.VGLatLng(15.92028539097923, 106.18286132812501),
+            zoom: 5,
+            minZoom: 5,
+            maxZoom: 17,
+            draggable: true,
+            zoomControl: true,
+            allowEdit: true,
+            contextMenuEnabled: true,
+            contextMenus: [{
+                title: 'Lấy tọa độ',
+                onClick: function (e) {
+                    alert(e.lat + " - " + e.lng);
+                }
+            }]
+        });
+
+        new VGMap.VGMapLegends(mapCore, {
+            html: function () {
+                return $('#legend-template').html();
+            }
+        });
+
+        var onDropDownChange = function () {
+            if ($('#province_id').val() || $('#district_id').val() || $('#commune_id').val()) {
+                filterByArea(false);
+            } else {
+                getFarms();
+            }
+        };
+
+        mapCore.on('features:edit', function (e) {
+            console.log(e);
+        });
+
+        // mapCore.on('click', function (e) {
+        //     var feature = new VGMap.VGFeature({
+        //         geometry: new VGMap.VGPoint(new VGMap.VGLatLng(e.latlng.lat, e.latlng.lng)),
+        //         style: new VGMap.VGPointStyle({
+        //             imageUrl: 'https://fao.gisgo.vn/samples/images/mix.png',
+        //             size: [36, 36]
+        //         })
+        //     });
+        //     feature.addTo(mapCore);
+        // });
+
+        // $.get('https://fao.gisgo.vn/region/listProvinces').done(function (xhr) {
+        //     $('#province_id').append('<option disabled selected>Vui lòng chọn tỉnh/thành phố</option>');
+        //     //
+        //     $.each(xhr.data, function (idx, item) {
+        //         $('#province_id').append('<option value="' + item.area_id + '">' + item.name_vn + '</option>')
+        //     });
+        // });
+
+        $('#province_id').select2({
+            placeholder: 'Chọn tỉnh',
+            theme: 'bootstrap4',
+            ajax: {
+                url: 'https://fao.gisgo.vn/region/listProvinces',
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                    }
+
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    var items = data.data;
+                    $.each(items, function (idx, item) {
+                        item.id = item.area_id;
+                        item.text = item.name_vn;
+                    });
+                    return {
+                        results: $.merge([{
+                            id: -1,
+                            text: 'Tất cả'
+                        }], items)
+                    };
+                }
+            },
+        }).on('select2:select', function (e) {
+            var p = e.params.data;
+            $("#district_id").trigger("change");
+            $("#commune_id").trigger("change");
+        });
+
+        $('#district_id').select2({
+            placeholder: 'Chọn quận/huyện',
+            theme: 'bootstrap4',
+            ajax: {
+                url: 'https://fao.gisgo.vn/region/listDistricts',
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        parent_id: $('#province_id').val()
+                    }
+
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    var items = data.data;
+                    $.each(items, function (idx, item) {
+                        item.id = item.area_id;
+                        item.text = item.name_vn;
+                    });
+                    return {
+                        results: items
+                    };
+                }
+            },
+        }).on('select2:select', function (e) {
+            var d = e.params.data;
+            $("#commune_id").trigger("change");
+        });
+
+        $('#commune_id').select2({
+            placeholder: 'Chọn xã/phường',
+            theme: 'bootstrap4',
+            ajax: {
+                url: 'https://fao.gisgo.vn/region/listCommunes',
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        parent_id: $('#district_id').val()
+                    }
+
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    var items = data.data;
+                    $.each(items, function (idx, item) {
+                        item.id = item.area_id;
+                        item.text = item.name_vn;
+                    });
+                    return {
+                        results: items
+                    };
+                }
+            },
+        }).on('select2:select', function (e) {
+            var d = e.params.data;
+        });
+
+        $('#year').on('change', onDropDownChange);
+
+        $('#ani_group').on('change', onDropDownChange);
+
+        // $('#province_id').on('change', function () {
+        //     $.get('https://fao.gisgo.vn/region/listDistricts', {
+        //         parent_id: $(this).val()
+        //     }).done(function (xhr) {
+        //         if (xhr.status === 'OK') {
+        //             $('#district_id').empty();
+        //             $('#commune_id').empty();
+        //             $('#district_id').append('<option value="" disabled selected>Vui lòng chọn quận/huyện</option>');
+        //             //
+        //             $.each(xhr.data, function (idx, item) {
+        //                 $('#district_id').append('<option value="' + item.area_id + '">' + item.name_vn + '</option>')
+        //             });
+        //         }
+        //     });
+        // });
+
+        // $('#district_id').on('change', function () {
+        //     $.get('https://fao.gisgo.vn/region/listCommunes', {
+        //         parent_id: $(this).val()
+        //     }).done(function (xhr) {
+        //         if (xhr.status === 'OK') {
+        //             $('#commune_id').empty();
+        //             $('#commune_id').append('<option disabled selected>Vui lòng chọn phường/xã</option>');
+        //             //
+        //             $.each(xhr.data, function (idx, item) {
+        //                 $('#commune_id').append('<option value="' + item.area_id + '">' + item.name_vn + '</option>')
+        //             });
+        //         }
+        //     });
+        // });
+
+        $('#filter').on('click', function () {
+            mapCore.clearPermanentFeatures();
+            filterByArea(true);
+        });
+
+        $('#reset').on('click', function () {
+            $('#province_id').val($("#province_id option:first").val());
+            $('#district_id').empty();
+            $('#commune_id').empty();
+            $('#ani_group').val($("#ani_group option:first").val());
+            //
+            mapCore.clearFeatures();
+            mapCore.clearClusterFeatures();
+            mapCore.clearPermanentFeatures();
+            mapCore.fullExtent();
+            mapCore.clearHighlight();
+            //
+            getFarms();
+        });
+
+        $('#is_cluster').on('change', function () {
+            if ($('#province_id').val() || $('#district_id').val() || $('#commune_id').val()) {
+                filterByArea(false);
+            } else {
+                getFarms();
+            }
+        });
+
+        function filterByArea(loadBounds) {
+            if ($('#commune_id').val()) {
+                getFarms($('#commune_id').val(), loadBounds);
+            } else if ($('#district_id').val()) {
+                getFarms($('#district_id').val(), loadBounds);
+            } else if ($('#province_id').val()) {
+                getFarms($('#province_id').val(), loadBounds);
+            } else {
+                getFarms(undefined, loadBounds);
+            }
+        }
+
+        function getFarms(area_id, loadBounds) {
+            var maxFeature = 500;
+            //
+            if (getFarmHandler) {
+                getFarmHandler.abort();
+            }
+            //
+            var is_cluster = $('#is_cluster').is(':checked');
+            //
+            mapCore.clearFeatures();
+            mapCore.clearClusterFeatures();
+            //
+            if (area_id && loadBounds) {
+                $.get('https://fao.gisgo.vn/region/shape', {
+                    area_id: area_id,
+                }).done(function (xhr) {
+                    if (xhr.status === 'OK' && xhr.data) {
+                        mapCore.addGeoJSON(xhr.data, {
+                            permanent: true
+                        });
+                        mapCore.fitGeoJSON(xhr.data);
+                    }
+                });
+            }
+            //
+            getFarmHandler = $.get('https://fao.gisgo.vn/map/primates', {
+                area_id: area_id,
+            }).done(function (xhr) {
+                if (xhr.status === 'OK') {
+                    mapCore.addGeoJSON(xhr.data.data, {
+                        cluster: true,
+                        editable: true,
+                        style: function (feature) {
+                            var data = feature;
+                            var size = 36;
+                            var delta = 0;
+                            data.totalArray = feature.total.split(',');
+                            var sum = 0;
+                            data.totalArray.forEach(function(i){ sum += parseInt(i); });
+                            var level = 1;
+                            if (sum >= 5 && sum < 20) {
+                                delta = 8;
+                                level = 2;
+                            } else if (sum >= 20 && sum <= 100) {
+                                delta = 16;
+                                level = 3;
+                            } else if (sum > 100) {
+                                delta = 20;
+                                level = 4;
+                            }
+                            return new VGMap.VGPointStyle({
+                                imageUrl: 'https://fao.gisgo.vn/samples/images/P_' + level.toString() +'.png',
+                                size: [36 + delta, 42 + delta]
+                            });
+                        },
+                        onMarkerClick: function (e) {
+                            var latlng = new VGMap.VGLatLng(e.feature.geometry.coordinates[1], e.feature.geometry.coordinates[0]);
+                            var data = e.feature.properties;
+                            data.animalArray = e.feature.properties.animals.split(',');
+                            data.scienceArray = e.feature.properties.science.split(',');
+                            data.totalArray = e.feature.properties.total.split(',');
+                            data.array = [];
+                            $.each(data.animalArray, function(idx, a){
+                                data.array.push({
+                                    name: a,
+                                    total: data.totalArray[idx],
+                                    name_science: data.scienceArray[idx],
+                                    first: idx === 0
+                                });
+                            });
+                            mapCore.showPopup(latlng, Mustache.render($('#primate-popup-template').html(), data), {
+                                offset: [0, -18]
+                            });
+                        },
+                        onMarkerEdit: function (e) {
+                            $('#latlng-modal').modal('show');
+                            $('#latlng-form').find('[name=lng]').val(e.latlng.lng);
+                            $('#latlng-form').find('[name=lat]').val(e.latlng.lat);
+                        }
+                    });
+                }
+            });
+        }
+
+        getFarms();
+    </script>
+
+</body>
+
+</html>

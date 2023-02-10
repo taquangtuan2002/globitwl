@@ -1,0 +1,138 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-show="vm.isNew == true" class="modal-title"><i class="icon-plus"></i>{{'UserFileUpload.createTitle' | translate}}
+    </h4>
+    <h4 ng-show="vm.isNew == false" class="modal-title"><i class="icon-pencil"></i>{{'UserFileUpload.editTitle' | translate}}
+    </h4>
+    <h4 ng-show="vm.isDisabledField == true" class="modal-title"><i class="icon-eye"></i>{{'UserFileUpload.viewTitle' | translate}}
+    </h4>
+    
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+                <label class="bold">{{'UserFileUpload.title' | translate}}</label>
+                <input data-ng-model="vm.UserFileUpload.title" type="text" autofocus="autofocus"
+                    class="form-control" ng-disabled = "vm.isDisabledField" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'UserFileUpload.organizationName' | translate}}</label>
+            <input data-ng-model="vm.UserFileUpload.organizationName" type="text" class="form-control" ng-disabled = "vm.isDisabledField" />
+        </div>
+
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'UserFileUpload.description' | translate}}</label>
+            <textarea rows="4" data-ng-model="vm.UserFileUpload.description" type="text" class="form-control" ng-disabled = "vm.isDisabledField" />
+        </div>
+    </div>
+    <div class="row margin-top-10">
+        <div class="col-md-4" ng-if="vm.isRole==true">
+            <label class="bold">{{'UserFileUpload.province' | translate}}</label>
+            <ui-select ng-model="vm.UserFileUpload.province" sortable="true" close-on-select="true" ng-disabled = "vm.isDisabledField"
+                on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-4" ng-if="vm.isRole==false">
+            <label class="bold">{{'UserFileUpload.province' | translate}}</label>
+            <ui-select ng-model="vm.UserFileUpload.province" sortable="true" close-on-select="true"  ng-disabled = "vm.isDisabledField">
+                <ui-select-match allow-clear="false" placeholder="{{'farm.chooseCity' | translate}}...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-4" ng-if="vm.isRole==true||vm.isSdah ==true">
+            <label class="bold">{{'UserFileUpload.district' | translate}}</label>
+            <ui-select ng-model="vm.UserFileUpload.district" sortable="true" close-on-select="true" ng-disabled = "vm.isDisabledField"
+                on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+                <ui-select-match allow-clear="true"
+                    placeholder="{{'farm.chooseDistrict' | translate}}...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="col-md-4"
+            ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true || vm.isFamer == true)">
+            <label class="bold">{{'UserFileUpload.district' | translate}}</label>
+            <ui-select ng-model="vm.UserFileUpload.district" on-select="vm.onFmsadminstrativeUnitDistSelected($item)" ng-disabled = "vm.isDisabledField"
+                sortable="true" close-on-select="true">
+                <ui-select-match allow-clear="false"
+                    placeholder="{{'farm.chooseDistrict' | translate}}...">
+                    {{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-4" ng-if="vm.isRole==true||vm.isSdah ==true || vm.isDistrict == true">
+            <label class="bold">{{'UserFileUpload.ward' | translate}}</label>
+            <ui-select ng-model="vm.UserFileUpload.ward" sortable="true" close-on-select="true" ng-disabled = "vm.isDisabledField"
+                on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+                    {{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="col-md-4" ng-if="vm.isRole==false && (vm.isWard == true || vm.isFamer == true)">
+            <label class="bold">{{'UserFileUpload.ward' | translate}}</label>
+            <ui-select ng-disabled="true" ng-model="vm.UserFileUpload.ward" sortable="true" close-on-select="true" ng-disabled = "vm.isDisabledField">
+                <ui-select-match allow-clear="false" placeholder="{{'farm.chooseWard' | translate}}...">
+                    {{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+                <ui-select-choices
+                    repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="row margin-top-20">
+        <div class="col-md-12" ng-show="!vm.isDisabledField" >
+            <a class="no-content1 display-block link" style="padding: 8px 0 !important; font-weight: 600 !important;" ngf-select="vm.uploadAttachmentFiles($file, $invalidFiles)" accept="*/*" ngf-max-size="10MB">
+                <i class="fa fa-cloud-upload"></i> Chọn tệp tin đính kèm
+            </a>
+        </div>
+        <div ng-show="!vm.isDisabledField" class="col-md-12" style="color: red;font-size: 15px;padding-top: 5px;">
+            Cho phép các file có định dạng: (.jpg,.jpeg,.png,.bmp,.gif,.doc,.docx,.xls,.xlsx,.pdf,.rar và .zip, Tối đa :10MB)
+        </div>
+        <div class="col-md-12 margin-top-20" ng-if="vm.errorFile != null && vm.errorFile.$error != ''">
+            Có lỗi: <span class="bold" ng-if="vm.errorFile.$error == 'maxSize'">Kích thước tệp tin không được lớn hơn {{vm.errorFile.$errorParam}}</span>
+            <span class="bold" ng-if="vm.errorFile.$error != null && vm.errorFile.$error != 'maxSize'">Tệp tin {{vm.errorFile.name}} không hợp lệ.</span>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="bsTableControlAttachmentFiles" bs-table-control="vm.bsTableControlAttachmentFiles">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+        {{'UserFileUpload.cancel' | translate}}</button>
+    <button type="button" ng-click="vm.saveUserFileUpload()" class="btn btn-primary"
+        data-dismiss="modal">{{'UserFileUpload.save' | translate}}</button>
+</div>

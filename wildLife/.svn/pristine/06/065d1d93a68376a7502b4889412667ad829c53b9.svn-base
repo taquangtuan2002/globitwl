@@ -1,0 +1,35 @@
+package com.globits.wl.dto;
+
+public class FmsOrganizationAdministrativeDto {
+	private AdministrativeOrganizationDto administrativeOrganization;
+	private FmsAdministrativeUnitDto fmsAdministrativeUnit;
+
+	public FmsOrganizationAdministrativeDto() {
+
+	}
+
+	public AdministrativeOrganizationDto getAdministrativeOrganization() {
+		return administrativeOrganization;
+	}
+
+	public void setAdministrativeOrganization(AdministrativeOrganizationDto administrativeOrganization) {
+		this.administrativeOrganization = administrativeOrganization;
+	}
+
+	public FmsAdministrativeUnitDto getFmsAdministrativeUnit() {
+		return fmsAdministrativeUnit;
+	}
+
+	public void setFmsAdministrativeUnit(FmsAdministrativeUnitDto fmsAdministrativeUnit) {
+		this.fmsAdministrativeUnit = fmsAdministrativeUnit;
+	}
+
+	public FmsOrganizationAdministrativeDto(AdministrativeOrganizationDto administrativeOrganization,
+			FmsAdministrativeUnitDto fmsAdministrativeUnit) {
+		super();
+		this.administrativeOrganization = administrativeOrganization;
+		this.fmsAdministrativeUnit = fmsAdministrativeUnit;
+	}
+
+	
+}

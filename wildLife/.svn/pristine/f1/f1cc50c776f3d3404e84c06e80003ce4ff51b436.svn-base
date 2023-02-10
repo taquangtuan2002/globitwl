@@ -1,0 +1,47 @@
+package com.globits.wl.service;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
+import com.globits.core.service.GenericService;
+import com.globits.wl.domain.FmsAdministrativeUnit;
+import com.globits.wl.dto.FmsAdministrativeUnitDto;
+import com.globits.wl.dto.functiondto.FarmAdministrativeUnitDto;
+import com.globits.wl.dto.functiondto.SearchDto;
+
+public interface FmsAdministrativeUnitService extends GenericService<FmsAdministrativeUnit, Long> {
+
+	Page<FmsAdministrativeUnitDto> getListAdministrative(Long fmsAdministrativeId,int pageIndex, int pageSize);
+
+	FmsAdministrativeUnitDto getAdministrativeUnitById(Long id);
+
+	FmsAdministrativeUnitDto saveAdministrative(FmsAdministrativeUnitDto fmsAdministrativeUnitDto,Long id);
+
+	FmsAdministrativeUnitDto removeAdministrative(Long id);
+
+	List<FmsAdministrativeUnitDto> getAll();
+
+	List<FmsAdministrativeUnitDto> getAllCity();
+	List<FmsAdministrativeUnitDto> getListWard(Long Id);
+	List<FmsAdministrativeUnitDto> getAllCityByRegion(Long regionId);
+
+	List<FmsAdministrativeUnitDto> getAllByParentId(Long parentId);
+	
+	Page<FmsAdministrativeUnitDto> searchDto(SearchDto searchDto, int pageIndex, int pageSize);
+	
+	List<FmsAdministrativeUnitDto> saveOrUpdateList(List<FmsAdministrativeUnitDto> listFmsAdministrativeUnit);
+	FmsAdministrativeUnitDto checkDuplicateCode(String code);
+	Page<FmsAdministrativeUnitDto> getListTree(Integer pageIndex, Integer pageSize);
+	List<FmsAdministrativeUnitDto> getChildrenByParentId(Long parentId);
+	public FmsAdministrativeUnitDto deleteAdministrativeUnit(Long id);
+	Page<FmsAdministrativeUnitDto> getListAdministrativeByCodeOrName(Long Id,String code,int pageIndex, int pageSize);
+	List<FmsAdministrativeUnitDto> getAllByLevel(Integer level);
+	public double sumTotalAcreageByRegion(Long regionId);
+	List<FarmAdministrativeUnitDto> getListProvinceByRegion(Long regionId);
+	List<Long> getAllAdministrativeUnitIdByParentId(Long parentId);
+
+	FmsAdministrativeUnit findByCode(String code);
+	
+}
+	

@@ -1,0 +1,82 @@
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="page-bar">-->
+<!--<h3 class="page-title pull-left"><i class="icon-layers"></i> Quản lý người dùng</h3>-->
+<!--<ul class="page-breadcrumb pull-right hidden-xs">-->
+<!--<li>-->
+<!--<a href="#">Hệ thống</a>-->
+<!--<i class="fa fa-circle"></i>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="#/dashboard">Tài khoản người dùng</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>Quản lý đơn vị hành chính</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-3 margin-left-5">
+                        <button ng-show="!vm.isSdah"  class="btn btn-default margin-right-10" ng-click="vm.newAdministrativeUnitEditable()"><i class="icon-plus"></i>
+                            Tạo mới</button>
+
+                        <!-- <a href="#" class="btn btn-default" file-name="'DanhDonViHanhChinh.xls'"  ng-click="getFile()" file-download="myBlobObject"><i class="fa fa-file-excel-o"> Export</i></a> -->
+                    </div>
+                </div>
+                
+                <div class="col-md-3 margin-bottom-10">
+                    <div class="input-group">
+                        <input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)"
+                            class="form-control" placeholder="Tìm kiếm..." name="search">
+                        <div class="input-group-btn">
+                            <button ng-click="vm.searchByCode()" class="btn btn-default" type="submit"><i
+                                    class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="portlet-body">
+                    <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MAIN CONTENT -->
+    <!-- BEGIN MAIN JS-->
+    <script type="text/ng-template" id="edit_modal.html">
+        <div modal-movable>
+            <div ng-include="'administrative_unit_editable/views/modal/edit_modal.html'"></div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="confirm_delete.html">
+        <div modal-movable>
+            <div ng-include="'administrative_unit_editable/views/modal/confirm_delete.html'"></div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="confirm_delete_record.html">
+        <div class="modal-header alert alert-danger">
+                <h4 class="pull-left">{{'toastr.warning' | translate}}</h4>
+                <a type="button" class="pull-right" ng-click="$dismiss()" aria-hidden="false"><i class="fa fa-fw fa-times-circle"></i></a>         
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                    <h2>
+                        <p style="padding-left:15px;" class="text-danger"><i class="fa fa-fw fa-warning"></i>{{'original.confirmDelete' | translate}}</p>
+                    </h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+                <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>{{'original.cancel' | translate}}</button>
+                <button type="button" ng-click="vm.confirmDeleteRecord()" class="btn btn-danger"><i class="icon-check"></i> {{'original.accept' | translate}}</button>
+        </div>
+    </script>
+
+
+    <!-- BEGIN MAIN JS -->

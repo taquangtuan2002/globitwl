@@ -1,0 +1,137 @@
+
+<div class="modal-header">
+	<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+	<h4 ng-if="vm.user.isNew == true" class="modal-title"><i class="icon-plus"></i> {{'user.create' | translate}}</h4>
+	<h4 ng-if="vm.user.isNew == false" class="modal-title"><i class="icon-pencil"></i> {{'user.edit' | translate}}</h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-6 margin-top-10">
+			<label class="bold">{{'user.name' | translate}}</label>
+			<input data-ng-model="vm.user.person.displayName" type="text" autofocus="autofocus" class="form-control" />
+		</div>
+		<div class="col-md-6 margin-top-10">
+			<label class="bold">{{'user.sex' | translate}}</label>
+			<select data-ng-model="vm.user.person.gender"class="form-control">
+				<option value="M">Nam</option>
+				<option value="F">Nữ</option>
+				<option value="U">Không rõ</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 margin-top-10">
+			<label class="bold">{{'user.username' | translate}}</label>
+			<input ng-disabled="vm.user.id && vm.user.isNew == false" data-ng-model="vm.user.username" type="text" class="form-control" />
+		</div>
+		<div class="col-md-6 margin-top-10">
+			<label class="bold">Email</label>
+			<input data-ng-model="vm.user.email" class="form-control" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 margin-top-10">
+			<input ng-show="vm.user.isNew == false" data-ng-model="vm.changePass" type="checkbox"/><label class="bold">{{'user.changePassword' | translate}}</label>
+		</div>
+		<div class="col-md-6 margin-top-10" ng-if="vm.changePass || vm.user.isNew">
+			<label class="bold">{{'user.password' | translate}}</label>
+			<!-- ng-disabled="vm.user.id && vm.user.isNew == false" -->
+			<input  data-ng-model="vm.user.password" type="password" class="form-control" />
+		</div>
+		<div class="col-md-6 margin-top-10"  ng-if="vm.changePass || vm.user.isNew">
+			<label class="bold">{{'user.rePassword' | translate}}</label>
+			<!--  ng-disabled="vm.user.id && vm.user.isNew == false"  -->
+			<input data-ng-model="vm.user.confirmPassword" type="password" class="form-control" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 margin-top-10">
+			<label class="bold">{{'user.active' | translate}}</label>
+			<input data-ng-model="vm.user.active" type="checkbox"/>
+		</div>  
+		<div class="col-md-6 margin-top-10" >
+			<label class="bold">{{'user.role' | translate}}</label>
+			<ui-select multiple theme="bootstrap" on-select="vm.selectRoles()" data-ng-model="vm.user.roles" sortable="true" close-on-select="true" style="width: 100% !important;">
+				<ui-select-match allow-clear="true" placeholder="{{'user.choose' | translate}}...">{{$item.name}}</ui-select-match>
+				<ui-select-choices repeat="role in vm.roles | propsFilter: {name: $select.search}">
+					<div class="bold" ng-bind-html="role.name | highlight: $select.search"></div>
+				</ui-select-choices>
+			</ui-select>
+		</div>         		
+	</div>
+	
+	<div class="row">
+		
+		<!--<div class="col-md-6 margin-top-10" ng-if="vm.isRole==false">
+			<label class="bold">{{'user.role' | translate}}</label>
+			<ui-select multiple theme="bootstrap" data-ng-model="vm.user.roles" sortable="true" close-on-select="true" style="width: 100% !important;">
+				<ui-select-match allow-clear="true" placeholder="{{'user.choose' | translate}}...">{{$item.name}}</ui-select-match>
+				<ui-select-choices repeat="role in vm.roleSdahs | propsFilter: {name: $select.search}">
+					<div class="bold" ng-bind-html="role.name | highlight: $select.search"></div>
+				</ui-select-choices>
+			</ui-select>
+		</div>-->
+		<!-- <div class="col-md-6 margin-top-10">
+			<label class="bold">{{'user.groupUser' | translate}}</label>
+			<ui-select multiple theme="bootstrap" data-ng-model="vm.user.groups" sortable="true" close-on-select="true" style="width: 100% !important;">
+				<ui-select-match allow-clear="true" placeholder="{{'user.choose' | translate}}...">{{$item.name}}</ui-select-match>
+				<ui-select-choices repeat="group in vm.groups | propsFilter: {name: $select.search}">
+					<div class="bold" ng-bind-html="group.name | highlight: $select.search"></div>
+				</ui-select-choices>
+			</ui-select>
+		</div> -->
+	</div>
+	<div class="row">
+		<div class="col-md-6 margin-top-10" ng-if="vm.isRole==true">
+			<label class="bold">{{'farm.city' | translate}}</label>
+			<ui-select multiple ng-model="vm.selectedCity" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+				<ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+					{{$item.name}} </ui-select-match>
+				<ui-select-choices repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+					<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+					</div>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div class="col-md-6 margin-top-10" ng-if="vm.isRole==false">
+			<label class="bold">{{'farm.city' | translate}}</label>
+			<ui-select multiple ng-model="vm.selectedCity" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+				<ui-select-match  placeholder="{{'farm.chooseCity' | translate}}...">
+					{{$item.name}} </ui-select-match>
+				<ui-select-choices repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+					<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+					</div>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+
+		<div class="col-md-6 margin-top-10">
+			<label class="bold">{{'farm.district' | translate}}</label>
+			<ui-select multiple ng-model="vm.selectedDist" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+				<ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+					{{$item.name}}
+				</ui-select-match>
+				<ui-select-choices repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+					<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+					</div>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+
+		<!-- <div class="col-md-6 margin-top-10">
+			<label class="bold">{{'farm.ward' | translate}}</label>
+			<ui-select multiple ng-model="vm.selectedWard" sortable="true" close-on-select="true" on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+				<ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+					{{$item.name}} </ui-select-match>
+				<ui-select-choices repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+					<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+					</div>
+				</ui-select-choices>
+			</ui-select>
+		</div> -->
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i> {{'user.cancel' | translate}}</button>
+	<button type="button" ng-click="vm.saveUser()" class="btn btn-primary"><i class="icon-check"></i> {{'user.save' | translate}}</button>
+</div>

@@ -1,0 +1,74 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{'report.report_current_status_by_animal'| translate}}</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="portlet-title">
+                    <div class="row margin-top-10 margin-bottom-10">
+                        <div class="col-md-3">
+                            <ui-select ng-model="vm.animal" sortable="true" close-on-select="true">
+                                <ui-select-match allow-clear="true" placeholder="{{'animal.chooseAnimal' | translate}}">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal in vm.animals | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="col-md-12">
+                                <button ng-click="vm.reportByAnimalsCurrent()" class="btn btn-primary" type="submit">
+                                    {{'report.viewReport' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="portlet-body table-customer">
+                    <div class="row">
+                        <div class="portlet-body  margin-top-20 margin-bottom-10">
+                            <div class="bootstrap-table table-responsive">
+                                <table class="table table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Năm</th>
+                                            <th scope="col">Tên loài(Tên phổ thông)</th>
+                                            <th scope="col">Tên khác</th>
+                                            <th scope="col">Tên khoa học</th>
+                                            <th scope="col">Số cá thể</th>
+                                            <th scope="col">Số cơ sở nuôi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in vm.results">
+                                            <td style="text-align: center;">
+                                                {{item.year}}
+                                            </td>
+                                            <td style="text-align: left;">
+                                                {{item.animal.name}}
+                                            </td>
+                                            <td style="text-align: left;">
+                                                {{item.animal.otherName}}
+                                            </td>
+                                            <td style="text-align: left;">
+                                                {{item.animal.scienceName}}
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {{item.total | numberStand: 0}}
+                                            </td>
+                                            <td style="text-align: right;">
+                                                {{item.totalFarm | numberStand: 0}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

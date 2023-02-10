@@ -1,0 +1,92 @@
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="page-bar">-->
+<!--<h3 class="page-title pull-left"><i class="icon-layers"></i> Quản lý người dùng</h3>-->
+<!--<ul class="page-breadcrumb pull-right hidden-xs">-->
+<!--<li>-->
+<!--<a href="#">Hệ thống</a>-->
+<!--<i class="fa fa-circle"></i>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="#/dashboard">Tài khoản người dùng</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!-- END PAGE HEADER-->
+<!-- BEGIN MAIN CONTENT -->
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>{{'husbandryType.information' | translate}}</strong></h3>
+            </div>
+            <div class="portlet-body">
+                <div class="btn-group margin-bottom-20 margin-right-10">
+                    <button class="btn btn-default" ng-click="vm.newHusbandryType()"><i class="icon-plus"></i>{{'husbandryType.create' | translate}}</button>
+                    <!--<button class="btn btn-default"><i class="fa fa-search"></i> Tìm kiếm</button>-->
+                    <!-- <button class="btn btn-danger margin-left-10" data-ng-disabled="vm.selectedWaterSources.length <= 0"><i class="icon-trash"></i> Xóa</button> -->
+
+                </div>
+            </div>
+            <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table>
+        </div>
+    </div>
+</div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script type="text/ng-template" id="edit_modal.html">
+    <div modal-movable>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+            <h4 ng-if="vm.user.isNew == true" class="modal-title"><i class="icon-plus"></i> Thêm mới</h4>
+            <h4 ng-if="vm.user.isNew == false" class="modal-title"><i class="icon-pencil"></i> Cập nhật</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12 margin-top-10">
+                    <label class="bold">{{'husbandryType.code' | translate}}</label>
+                    <input data-ng-model="vm.husbandryType.code" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+                <div class="col-md-12 margin-top-10">
+                    <label class="bold">{{'husbandryType.name' | translate}}</label>
+                    <input data-ng-model="vm.husbandryType.name" type="text" autofocus="autofocus" class="form-control" />
+                </div>
+
+               
+
+                <!-- <div class="col-md-12 margin-top-10">
+                    <label class="bold">Mô tả</label>
+                    <input data-ng-model="vm.fmsRegion.description" type="text" autofocus="autofocus" class="form-control" />
+                </div> -->
+
+                <!-- <div class="col-md-12 margin-top-10">
+                    <label class="bold">Diện tích</label>
+                    <input data-ng-model="vm.fmsRegion.acreage" type="text" autofocus="autofocus" class="form-control" />
+                </div> -->
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+                 {{'husbandryType.cancel' | translate}}</button>
+            <button type="button" ng-click="vm.saveHusbandryType()" class="btn btn-primary"><i class="icon-check"></i> Lưu</button>
+
+        </div>
+    </div>
+</script>
+<!-- BEGIN MAIN JS -->
+<script type="text/ng-template" id="delete_modal.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <p style="padding-left:15px;" class="text-primary">{{'husbandryType.confirmDelete' | translate}} </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+            {{'husbandryType.cancel' | translate}}</button>
+        <button type="button" ng-click="vm.confirmDelete()" class="btn btn-primary"><i class="icon-check"></i>{{'husbandryType.accept' | translate}}</button>
+    </div>
+</script>

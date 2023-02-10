@@ -1,0 +1,380 @@
+<!-- BEGIN MAIN CONTENT -->
+<style>
+	/* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+	/* #map {
+    height:500px;
+  } */
+	/* Optional: Makes the sample page fill the window. */
+	html,
+	body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+</style>
+
+<div class="row ">
+	<div class="col-md-6 ">
+		<div id="map" class="min-height-500 portlet light bordered"></div>
+	</div>
+	<div class="col-md-6">
+		<div class="min-height-500 portlet light bordered">
+			<div class="row margin-top-10 margin-bottom-10">
+				<!-- <div class="col-md-6">
+                        <label class="bold">{{'region.name' | translate}}</label>
+						<ui-select ng-model="vm.searchDto.region" sortable="true" close-on-select="true" on-select="vm.onFmsRegionSelected($item)">
+							<ui-select-match allow-clear="true" placeholder="{{'region.chooseRegion' | translate}}...">{{$select.selected.name}}
+							</ui-select-match>
+							<ui-select-choices repeat="region.id as region in vm.regions | propsFilter: {name: $select.search, code: $select.search}">
+								<div class="bold" ng-bind-html="region.name | highlight: $select.search"></div>
+							</ui-select-choices>
+						</ui-select>
+                    </div>	 -->
+				<div class="col-md-6" ng-if="vm.isRole==true">
+					<!--<label class="bold">{{'region.name' | translate}}</label>-->
+					<ui-select ng-model="vm.searchDto.province" sortable="true" close-on-select="true"
+						on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+						<ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+							{{$select.selected.name}} </ui-select-match>
+						<ui-select-choices
+							repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<div class="col-md-6" ng-if="vm.isRole==false">
+					<!--<label class="bold">{{'region.name' | translate}}</label>-->
+					<ui-select ng-model="vm.searchDto.province" sortable="true" close-on-select="true">
+						<ui-select-match allow-clear="false" placeholder="{{'farm.chooseCity' | translate}}...">
+							{{$select.selected.name}} </ui-select-match>
+						<ui-select-choices
+							repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<div class="col-md-6" ng-if="vm.isRole==true||vm.isSdah ==true">
+					<!--<label class="bold">{{'region.name' | translate}}</label>-->
+					<ui-select ng-model="vm.searchDto.district" sortable="true" close-on-select="true"
+						on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+						<ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+							{{$select.selected.name}} </ui-select-match>
+						<ui-select-choices
+							repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<div class="col-md-6"
+					ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true|| vm.isFamer == true)">
+					<!--<label class="bold">{{'region.name' | translate}}</label>-->
+					<ui-select ng-model="vm.searchDto.district" sortable="true" close-on-select="true">
+						<ui-select-match allow-clear="false" placeholder="{{'farm.chooseDistrict' | translate}}...">
+							{{$select.selected.name}} </ui-select-match>
+						<ui-select-choices
+							repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+
+			</div>
+			<div class="row margin-top-10 margin-bottom-10">
+
+				<div class="col-md-6" ng-if="vm.isRole==true||vm.isSdah ==true || vm.isDistrict == true">
+					<!--<label class="bold">{{'region.name' | translate}}</label>-->
+					<ui-select ng-model="vm.searchDto.ward" sortable="true" close-on-select="true"
+						on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+						<ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+							{{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+						<ui-select-choices
+							repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<div class="col-md-6" ng-if="vm.isRole==false && (vm.isWard == true || vm.isFamer == true)">
+					<!--<label class="bold">{{'region.name' | translate}}</label>-->
+					<ui-select ng-model="vm.searchDto.ward" sortable="true" close-on-select="true">
+						<ui-select-match allow-clear="false" placeholder="{{'farm.chooseWard' | translate}}...">
+							{{$select.selected.code}}--{{$select.selected.name}} </ui-select-match>
+						<ui-select-choices
+							repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+							<div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+							</div>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+
+			</div>
+			<div class="row margin-top-10 margin-bottom-10">
+				<!-- <div class="col-md-12">
+            			<input type="text" data-ng-model="vm.searchDto.nameOrCode" ng-keyup="vm.enterSearch(e)" class="form-control" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+            		</div>  -->
+				<div class="input-group" style="padding-left: 5px;">
+					<input type="text" data-ng-model="vm.textSearch" ng-keyup="vm.enterSearch(e)" class="form-control"
+						placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+					<div class="input-group-btn">
+						<button ng-click="vm.search()" class="btn btn-primary" type="submit"><i
+								class="glyphicon glyphicon-search"></i></button>
+					</div>
+				</div>
+			</div>
+			<!-- <div class="row margin-top-10 margin-bottom-10">
+            		<div class="col-md-12">
+            			
+            		</div> Select box activate
+            	</div> -->
+
+
+			<div class="row margin-top-10 margin-bottom-10">
+
+				<!-- <ui-select ng-model="vm.farm" sortable="true" close-on-select="true">
+					<ui-select-match allow-clear="true" placeholder="{{'importAnimal.CSCN' | translate}}...">
+						{{$select.selected.name}}
+					</ui-select-match>
+					<ui-select-choices
+						repeat="farm in vm.farms | propsFilter: {name: $select.search, code: $select.search}">
+						<div class="bold" ng-bind-html="farm.name | highlight: $select.search">
+						</div>
+					</ui-select-choices>
+				</ui-select> -->
+				<!-- <table id="bsTableControl" bs-table-control="vm.bsTableControl"></table> -->
+			</div>
+			<div ng-if="vm.positionSelected" class="row margin-top-10 margin-bottom-10">
+				<div class="row">
+					<div class="col-md-6 ">
+						<span class="bold ">{{'report.nameFarm' | translate}}:</span>
+						</br>
+						<label id="farm_name" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.farm_name" class="invisible" class="bold"> x</label>
+
+					</div>
+					<div class="col-md-6 ">
+						<span class="bold ">{{'farm.farmCode' | translate}}:</span>
+						</br>
+						<label id="farm_code" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.farm_code" class="invisible" class="bold"> x</label>
+
+					</div>
+				</div>
+				<div class="row ">
+					<div class="col-md-6 ">
+						<span class="bold ">{{'farm.ownerName' | translate}}:</span>
+						</br>
+						<label id="farm_ownerName" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.farm_ownerName" class="invisible" class="bold"> x</label>
+
+					</div>
+					<div class="col-md-6">
+						<span class="bold ">{{'report.numberPhone' | translate}}:</span>
+						</br>
+						<label id="farm_ownerPhoneNumber" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.farm_ownerPhoneNumber" class="invisible" class="bold"> x</label>
+
+					</div>
+				</div>
+				<div class="row">
+					<div class=" col-md-12 ">
+						<span class="bold ">{{'report.address' | translate}}:</span>
+						</br>
+						<label id="farm_adressDetail" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.farm_adressDetail" class="invisible" class="bold"> x</label>
+
+					</div>
+				</div>
+				<div class="row" style="padding-left: 10px;margin-bottom: 10px;">
+					<div id="farm_id"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" ng-show="vm.animalReportDatas && vm.animalReportDatas.length > 0">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>TT</th>
+									<!-- <th>Tên trang cơ sở</th> -->
+									<!-- <th>Tên tỉnh</th> -->
+									<th>{{'animalReportData.animalName'|translate}}</th>
+									<th>{{'animalReportData.yearReport'|translate}}</th>
+									<th>Tháng</th>
+									<!-- <th>Tên khoa học</th> -->
+									<th>{{'animalReportData.total'|translate}}</th>
+									<th>{{'animalReportData.totalMale'| translate}}</th>
+									<th>{{'animalReportData.totalFemale'|translate}}</th>
+									<th>{{'animalReportData.totalUnGender'|translate}}</th>
+									<th>Thuộc loại </th>
+								</tr>
+							</thead>
+							<tr ng-repeat="e in vm.animalReportDatas track by $index ">
+								<th class="text-center">{{ ($index + 1) }}</th>
+								<!-- <th style="text-align: center;">
+									<a ng-show="!$parent.vm.isSdahView" class="green-dark margin-right-5"
+										ng-click="vm.editAnimalReportData($index)" target="_blank"><i
+											class="icon-pencil margin-right-5"></i> {{"animal.edit" | translate}}</a>
+									<a ng-show="!$parent.vm.isSdahView" class="green-dark margin-right-5 text-danger"
+										ng-click="vm.deleteAnimalReportData($index)" target="_blank"><i
+											class="icon-trash margin-right-5"></i> {{"animal.delete" | translate}}</a>
+								</th> -->
+								<!-- <th style="text-align: center;">{{e.farm.name}}</th> -->
+								<!-- <th style="text-align: center;">{{e.farm.provinceName}}</th> -->
+								<th style="text-align: center;">{{e.animal.name}}</th>
+								<th style="text-align: center;">{{e.year}}</th>
+								<th>{{e.month}}</th>
+								<!-- <th style="text-align: center;">{{e.animal.scienceName}}</th> -->
+								<th style="text-align: center;">{{e.total}}</th>
+								<th style="text-align: center;">{{e.male}}</th>
+								<th style="text-align: center;">{{e.female}}</th>
+								<th style="text-align: center;">{{e.unGender}}</th>
+								<th style="text-align: center;">{{vm.getAnimalReportDataType(e.type)}}</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<!-- <div class="row ">
+					<div class="col-md-6 ">
+						<span class="bold ">{{'farm.maxNumberOfAnimal1' | translate}}:</span>
+						<label id="maxNumberOfAnimal" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.maxNumberOfAnimal" class="invisible" class="bold"> x</label>
+
+					</div>
+					<div class="col-md-6 ">
+						<span class="bold ">{{'farm.totalAcreage1' | translate}}:</span>
+						<label id="totalAcreage" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.totalAcreage" class="invisible" class="bold"> x</label>
+
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-6 ">
+						<span class="bold">{{'farm.balanceNumber1' | translate}}:</span>
+						<label id="balanceNumber" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.balanceNumber" class="invisible" class="bold"> x</label>
+
+					</div>
+					<div class="col-md-6 ">
+						<span class="bold ">{{'farm.lodgingAcreage1' | translate}}:</span>
+						<label id="lodgingAcreage" class="bold">
+							{{vm.positionSelected.name}}
+						</label>
+						<label ng-if="!vm.farm.lodgingAcreage" class="invisible" class="bold"> x</label>
+					</div>
+
+
+				</div>
+				<div class="row">
+					<div class="col-md-10">
+						<span class="bold">{{'report.includes'|translate}}:</span></br>
+						<div id="viewAnimalProductTargetExist">
+							{{x.animal.name}} -
+							{{x.productTarget.name}} - {{x.quantity|number}} </div>
+					</div>
+				</div>
+				<div class="col-md-6 ">
+					</br>
+					<label id="farm_id" class="bold">
+						{{vm.positionSelected.id}}
+					</label>
+					<label ng-if="!vm.farm.farm_id" class="invisible" class="bold"> x</label>
+				</div> -->
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+</div>
+<script type="text/ng-template" id="detail_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"> Thông tin cơ sở nuôi động vật - {{vm.farm.name}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+				<div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.name' | translate}}</label>
+                        <input data-ng-model="vm.farm.name" type="text" class="form-control" />
+                    </div>
+					<div ng-if="$state.params.id"  class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.farmCode' | translate}}</label>
+                        <input readonly data-ng-model="vm.farm.code" type="text" class="form-control" />
+                    </div>
+					<div ng-if="!$state.params.id"  class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.farmCode' | translate}}</label>
+                        <input data-ng-model="vm.farm.code" type="text" class="form-control" />
+                    </div>
+					
+                    
+					<div class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.businessRegNumber' | translate}}</label>
+                        <input data-ng-model="vm.farm.businessRegistrationNumber" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold">{{'farm.businessRegDate' | translate}}</label>
+                        <input ng-model="vm.farm.businessRegistrationDate" type="text" class="form-control" my-date-picker/>
+                    </div>	
+
+					<div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.phoneNumber' | translate}}</label>
+                        <input data-ng-model="vm.farm.phoneNumber" type="text" class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold">Fax</label>
+                        <input ng-model="vm.farm.fax" type="text" class="form-control"/>
+                    </div>	
+					
+				</div>
+				
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			
+		</div>
+	</div>
+</script>
+<!-- END MAIN CONTENT -->
+
+<style>
+	#viewAnimalProductTargetExist > ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	#viewAnimalProductTargetExist > ul > li{
+		padding-left: 16px;
+	}
+	#viewAnimalProductTargetExist > ul > li::before{
+		content: "+";
+		padding-right: 8px;
+		color: blue;
+	}
+	
+</style>

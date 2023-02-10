@@ -1,0 +1,20 @@
+<div class="row">
+	<div class=" col-md-6">
+		<div class="copyright" style="border: none !important;padding: 0">
+			<b>2019 {{"application.page_footer.labelFooter" | translate}}</b> - {{"application.page_footer.hotline" | translate}}
+			<br/>
+			<a href="http://tongcuclamnghiep.gov.vn/" class="bold" target="_blank">{{"application.page_footer.labelFooterConti" | translate}}</a> 
+			<div class="page-footer-inner pull-right">
+				<!-- <img src="assets/images/fao_logo.png" /> 
+				<img src="assets/images/usaid_logo.png" />  -->
+			</div>
+		</div>
+	</div>
+	<!-- <div class=" col-md-6">
+		<b>Động vật hoang dã bao gồm:</b><br/> Động vật rừng nguy cấp quí hiếm; Động vật rừng thông thường; Động vật thuộc các phụ lục CITES
+	</div> -->
+</div>
+
+<div class="scroll-to-top">
+    <i class="icon-arrow-up"></i>
+</div>

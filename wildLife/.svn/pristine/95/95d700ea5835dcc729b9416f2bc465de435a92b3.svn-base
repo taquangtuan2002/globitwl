@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 ng-if="vm.individual.isNew" class="modal-title"><i class="icon-plus"></i> {{"importAnimal.create"|translate}}</h4>
+    <h4 ng-if="!vm.individual.isNew" class="modal-title"><i class="icon-pencil"></i> {{"importAnimal.update"|translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <!-- <div class="col-md-12 margin-top-10">
+            <label class="bold"> {{'importAnimal.individualName'|translate}}:</label>
+            <input data-ng-model="vm.individual.name" type="text" class="form-control" />
+        </div> -->
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.individualCode'|translate}}:</label>
+            <input data-ng-model="vm.individual.code" type="text" class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.individualStatus'|translate}}:</label>
+            <input data-ng-model="vm.individual.individualAnimalStatus" type="text" class="form-control" />                        
+            <!-- <ui-select ng-model="vm.individual.status" sortable="true" close-on-select="true" aria-multiselectable="false">
+                <ui-select-match allow-clear="true" placeholder="Chọn trạng thái...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices repeat="status.value as status in vm.animalStatuses | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="status.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select> -->
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.individualGender'|translate}}:</label>                        
+            <ui-select ng-model="vm.individual.gender" sortable="true" close-on-select="true" aria-multiselectable="false">
+                <ui-select-match allow-clear="true" placeholder="Chọn giới tính...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices repeat="gender.value as gender in vm.animalGenders | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="gender.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-12">
+            <label class="bold">{{"original.information"|translate}}:</label>
+            <ui-select ng-model="vm.individual.original" sortable="true" close-on-select="true"
+                aria-multiselectable="true" on-select=""
+                on-remove="">
+                <ui-select-match allow-clear="true"
+                    placeholder="{{'original.chooseOriginal'|translate}}...">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="ori  in vm.originals | propsFilter: {name: $select.search, code: $select.search}">
+                    <div class="bold" ng-bind-html="ori.name | highlight: $select.search">
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'importAnimal.birthDate'|translate}}:</label>                        
+            <input data-ng-model="vm.individual.birthDate" type="text" class="form-control" my-date-picker />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'individualAnimal.yearOld'|translate}}:</label>                        
+            <input data-ng-model="vm.individual.dayOld" type="text" number-input class="form-control" />
+        </div>
+        <div class="col-md-12 margin-top-10">
+            <label class="bold">{{'individualAnimal.additionalInformation'|translate}}:</label>                        
+            <input data-ng-model="vm.individual.additionalInformation" type="text" class="form-control" />
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">  
+    <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+       {{"exportAnimal.cancel" | translate}}</button>
+    <button type="button" ng-click="vm.saveIndividual()" class="btn btn-primary"><i class="icon-check"></i>{{'exportAnimal.save' | translate}}</button>
+
+</div>

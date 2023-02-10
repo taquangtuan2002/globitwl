@@ -1,0 +1,435 @@
+package com.globits.wl.domain;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.globits.core.domain.BaseObject;
+import com.globits.security.domain.User;
+
+@Entity
+@Table(name = "tbl_animal_required")
+@XmlRootElement
+/** List animal required to add new list animal
+ * Danh sách những loài vật người dùng yêu cầu admin thêm vào danh sách loài.
+ * */
+public class AnimalRequired extends BaseObject{
+	
+	
+	@Column(name = "name")
+	private String name;
+	@Column(name = "code")
+	private String code;
+	@Column(name = "old_code")
+	private String oldCode;
+	@Column(name = "description")
+	private String description;
+
+	@ManyToOne
+	@JoinColumn(name = "type_id")
+	private AnimalType type;
+
+	@ManyToOne
+	@JoinColumn(name = "original_id")
+	private Original original;
+
+	@ManyToOne
+	@JoinColumn(name = "parent_id")
+	private Animal parent;
+
+	@OneToMany(mappedBy = "animalRequired", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<AnimalRequiredProductTarget> animalProductTargets = new HashSet<AnimalRequiredProductTarget>();// Hướng sản phẩm
+	@Column(name = "order_code")
+	private Integer orderCode;
+	@Column(name = "number")
+	private Integer number;// stt
+//	@ManyToOne
+//	@JoinColumn(name="product_target_id")
+//	private ProductTarget productTarget;
+
+	// Sử dụng khi làm báo cáo, nếu cần nhóm 1 số loại vật nuôi lại làm 1 nhóm, mặc
+	// định = code
+	@Column(name = "report_code")
+	private String reportCode;
+
+	@Column(name = "report_name") // Sử dụng khi làm báo cáo, nếu cần nhóm 1 số loại vật nuôi lại làm 1 nhóm, mặc
+									// định = name
+	private String reportName;
+
+	/*
+	 * Sử dụng cho báo cáo tổng hợp 1 2 3
+	 */
+	@Column(name = "report_type")
+	private Integer reportType;
+
+	@Column(name = "farming_time")
+	private Double farmingTime;// thời gian nuôi (ngày)
+	@Column(name = "weight_gain")
+	private Double weightGain;// tăng trọng (kg)
+	@Column(name = "loss")
+	private Double loss;// hao hụt(% )
+	@Column(name = "egg_yield")
+	private Integer eggYield;// năng suất trứng quả/năm
+
+	// Phương thức chăn nuôi
+	// 0. Nuôi phi công nghiệp
+	// 1. Nuôi công nghiệp
+	// Const: FMSConstant.AnimalLiveStockMethod
+	@Column(name = "live_stock_method")
+	private Integer liveStockMethod;
+
+	@Column(name = "science_name")
+	private String scienceName;// Tên Khoa học
+
+	@Column(name = "en_name")
+	private String enName;// Tên tiếng Anh
+
+	@Column(name = "cites") // Cấp độ nguy cấp (CITES list là IB, IIB và IIIB)
+	private String cites;
+
+	@Column(name = "ani_group") // Nhóm động vật - bộ
+	private String aniGroup;
+
+	@Column(name = "vnlist")
+	private String vnlist;// DVHD nguy cap, quy, hiem (nghị định 64-2019)
+
+	@Column(name = "vnlist06")
+	private String vnlist06;
+
+	@Column(name = "animal_class") // Lớp động vật (Bò sát, có vú...)
+	private String animalClass;
+
+	@Column(name = "animal_class_sci") // Lớp động vật-tên khoa học
+	private String animalClassSci;
+
+	@Column(name = "ordo") // Bộ động vật (có vảy,...)
+	private String ordo;
+
+	@Column(name = "ordo_sci") // Bộ động vật (có vảy,...) - tên khoa học
+	private String ordoSci;
+
+	@Column(name = "sub_ordo") // Phân bộ bộ động vật (rắn,...)
+	private String subOrdo;
+
+	@Column(name = "family") // Họ động vật
+	private String family;
+	
+	@Column(name = "family_sci") // Họ động vật
+	private String familySci;
+	
+	@Column(name="reproduction_form") // Hằng số dùng tròn WLConst : ReproductionForm
+	private Integer reproductionForm;// hình thức sinh sản: if is null or 1 is default to give birth; if is null or 2 to give eggs
+
+	@Column(name="animal_required_status")
+	private Integer animalRequiredStatus; /**Trạng thái required tạo mới 1 animal của người dùng tới admin giá trị trong WLConstant.AnimalRequiredStatus*/
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;// user create required update animal to list
+	
+	@Column(name="animal_group")
+	private String animalGroup;
+	
+	@Column(name="feed_back")
+	private String feedBack;
+	
+	
+	public String getFeedBack() {
+		return feedBack;
+	}
+
+	public void setFeedBack(String feedBack) {
+		this.feedBack = feedBack;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getOldCode() {
+		return oldCode;
+	}
+
+	public void setOldCode(String oldCode) {
+		this.oldCode = oldCode;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public AnimalType getType() {
+		return type;
+	}
+
+	public void setType(AnimalType type) {
+		this.type = type;
+	}
+
+	public Original getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(Original original) {
+		this.original = original;
+	}
+
+	public Animal getParent() {
+		return parent;
+	}
+
+	public void setParent(Animal parent) {
+		this.parent = parent;
+	}
+
+	public Set<AnimalRequiredProductTarget> getAnimalProductTargets() {
+		return animalProductTargets;
+	}
+
+	public void setAnimalProductTargets(Set<AnimalRequiredProductTarget> animalProductTargets) {
+		this.animalProductTargets = animalProductTargets;
+	}
+
+	public Integer getOrderCode() {
+		return orderCode;
+	}
+
+	public void setOrderCode(Integer orderCode) {
+		this.orderCode = orderCode;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public String getReportCode() {
+		return reportCode;
+	}
+
+	public void setReportCode(String reportCode) {
+		this.reportCode = reportCode;
+	}
+
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+
+	public Integer getReportType() {
+		return reportType;
+	}
+
+	public void setReportType(Integer reportType) {
+		this.reportType = reportType;
+	}
+
+	public Double getFarmingTime() {
+		return farmingTime;
+	}
+
+	public void setFarmingTime(Double farmingTime) {
+		this.farmingTime = farmingTime;
+	}
+
+	public Double getWeightGain() {
+		return weightGain;
+	}
+
+	public void setWeightGain(Double weightGain) {
+		this.weightGain = weightGain;
+	}
+
+	public Double getLoss() {
+		return loss;
+	}
+
+	public void setLoss(Double loss) {
+		this.loss = loss;
+	}
+
+	public Integer getEggYield() {
+		return eggYield;
+	}
+
+	public void setEggYield(Integer eggYield) {
+		this.eggYield = eggYield;
+	}
+
+	public Integer getLiveStockMethod() {
+		return liveStockMethod;
+	}
+
+	public void setLiveStockMethod(Integer liveStockMethod) {
+		this.liveStockMethod = liveStockMethod;
+	}
+
+	public String getScienceName() {
+		return scienceName;
+	}
+
+	public void setScienceName(String scienceName) {
+		this.scienceName = scienceName;
+	}
+
+	public String getEnName() {
+		return enName;
+	}
+
+	public void setEnName(String enName) {
+		this.enName = enName;
+	}
+
+	public String getCites() {
+		return cites;
+	}
+
+	public void setCites(String cites) {
+		this.cites = cites;
+	}
+
+	public String getAniGroup() {
+		return aniGroup;
+	}
+
+	public void setAniGroup(String aniGroup) {
+		this.aniGroup = aniGroup;
+	}
+
+	public String getVnlist() {
+		return vnlist;
+	}
+
+	public void setVnlist(String vnlist) {
+		this.vnlist = vnlist;
+	}
+
+	public String getVnlist06() {
+		return vnlist06;
+	}
+
+	public void setVnlist06(String vnlist06) {
+		this.vnlist06 = vnlist06;
+	}
+
+	public String getAnimalClass() {
+		return animalClass;
+	}
+
+	public void setAnimalClass(String animalClass) {
+		this.animalClass = animalClass;
+	}
+
+	public String getAnimalClassSci() {
+		return animalClassSci;
+	}
+
+	public void setAnimalClassSci(String animalClassSci) {
+		this.animalClassSci = animalClassSci;
+	}
+
+	public String getOrdo() {
+		return ordo;
+	}
+
+	public void setOrdo(String ordo) {
+		this.ordo = ordo;
+	}
+
+	public String getOrdoSci() {
+		return ordoSci;
+	}
+
+	public void setOrdoSci(String ordoSci) {
+		this.ordoSci = ordoSci;
+	}
+
+	public String getSubOrdo() {
+		return subOrdo;
+	}
+
+	public void setSubOrdo(String subOrdo) {
+		this.subOrdo = subOrdo;
+	}
+
+	public String getFamily() {
+		return family;
+	}
+
+	public void setFamily(String family) {
+		this.family = family;
+	}
+
+	public Integer getReproductionForm() {
+		return reproductionForm;
+	}
+
+	public void setReproductionForm(Integer reproductionForm) {
+		this.reproductionForm = reproductionForm;
+	}
+
+	public Integer getAnimalRequiredStatus() {
+		return animalRequiredStatus;
+	}
+
+	public void setAnimalRequiredStatus(Integer animalRequiredStatus) {
+		this.animalRequiredStatus = animalRequiredStatus;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getAnimalGroup() {
+		return animalGroup;
+	}
+
+	public void setAnimalGroup(String animalGroup) {
+		this.animalGroup = animalGroup;
+	}
+
+	public String getFamilySci() {
+		return familySci;
+	}
+
+	public void setFamilySci(String familySci) {
+		this.familySci = familySci;
+	}
+	
+	
+}

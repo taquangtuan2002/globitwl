@@ -1,0 +1,234 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+    <h4 class="modal-title"><i class="icon-plus"></i> Chi tiết thông báo</h4>
+</div>
+<div class="modal-body" ng-if="tableName=='ForestProductsList' ">
+    <div class="row">
+
+        <div class="portlet-body">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="bold">{{"importAnimal.CSCN" | translate}}:</label>
+                    <label ng-bind-html="detailsMessage.farm.name" type="text" class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Số hiệu bản kê</label>
+                    <label ng-bind-html="detailsMessage.code" type="text" class="form-control"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="bold">Tên chủ lâm sản</label>
+                    <label ng-bind-html="detailsMessage.farm.ownerName" type="text"
+                        class="form-control glb-disabled"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Mã đăng ký doanh nghiệp</label>
+                    <label ng-bind-html="detailsMessage.farm.newRegistrationCode" type="text"
+                        class="form-control glb-disabled"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Địa chỉ</label>
+                    <label ng-bind-html="detailsMessage.farm.adressDetail" type="text"
+                        class="form-control glb-disabled"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Số điện thoại</label>
+                    <label ng-bind-html="detailsMessage.farm.ownerPhoneNumber" type="text"
+                        class="form-control glb-disabled"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Ngày khai báo</label>
+                    <label ng-bind-html="detailsMessage.dateIssue" type="text" my-date-picker readonly
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Xác nhận của chủ sở hữu</label>
+                    <label ng-bind-html="detailsMessage.ownerConfirm" type="text" class="form-control"></label>
+                </div>
+                <div class="col-md-12">
+                    <label class="bold">Nguồn gốc lâm sản</label>
+                    <label ng-bind-html="detailsMessage.original" type="text" class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Số hóa đơn kèm theo</label>
+                    <label ng-bind-html="detailsMessage.invoiceCode" type="text" class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Ngày hóa đơn kèm theo</label>
+                    <label ng-bind-html="detailsMessage.invoiceDate | date :'dd/MM/yyyy'" type="text"
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Phương tiện vận chuyển</label>
+                    <label ng-bind-html="detailsMessage.vehicle" type="text" class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Biển số/Số hiệu phương tiện</label>
+                    <label ng-bind-html="detailsMessage.vehicleRegistrationPlate" type="text"
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Vận chuyển từ</label>
+                    <label ng-bind-html="detailsMessage.administrativeUnitFrom.name" type="text"
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Vận chuyển đến</label>
+                    <label ng-bind-html="detailsMessage.administrativeUnitTo.name" type="text"
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Vận chuyển từ ngày</label>
+                    <label ng-bind-html="detailsMessage.transportStart | date :'dd/MM/yyyy'" type="date"
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Vận chuyển đến ngày</label>
+                    <label type="date" ng-bind-html="detailsMessage.transportEnd | date :'dd/MM/yyyy'"
+                        class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Thời gian vận chuyển</label>
+                    <label ng-bind-html="detailsMessage.transportDuration" type="text" class="form-control"></label>
+                </div>
+                <div class="col-md-6">
+                    <label class="bold">Hình ảnh</label>
+                    <div class="open-img" ng-if="detailsMessage.file.id">
+                        <img ng-src="{{settings.api.baseUrl}}public/publicAPI/downloadArticleImg/{{detailsMessage.file.id}}"
+                             ngf-accept="'image/*'" style="width: 150px; height:75px;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+            <div class="row margin-top-10">
+                <div class="portlet-header">
+                    <h3>Danh sách chi tiết lâm sản</h3>
+                </div>
+                <div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered" margin-left-10>
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên loài nuôi </th>
+                                    <th>Số lượng </th>
+                                    <th>Khối lượng </th>
+                                    <th>Đơn vị tính</th>
+                                    <th>Ghi chú</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-if="!(detailsMessage.details.length > 0)">
+                                    <td colspan="5">
+                                        <p class="text-primary text-center font-weight-bold bg-secondary">
+                                            {{"importAnimal.noData" | translate}}</p>
+                                    </td>
+                                </tr>
+                                <tr ng-if="detailsMessage.details.length > 0"
+                                    ng-repeat="forestProductDetail in detailsMessage.details track by $index">
+                                    <td class="text-center">{{$index+1}}</td>
+                                    <td>{{forestProductDetail.animal.name}}</td>
+                                    <td>{{forestProductDetail.quantity}}</td>
+                                    <td>{{forestProductDetail.amount}}</td>
+                                    <td>{{forestProductDetail.unit}}</td>
+                                    <td>{{forestProductDetail.note}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-body" ng-if="tableName=='AnimalRequired' ">
+    <div class="row">
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.vnName' | translate}}</label>
+            <label ng-bind-html="detailsMessage.name" type="text" class="form-control"  ></label>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.enName' | translate}}</label>
+            <label ng-bind-html="detailsMessage.enName" type="text" class="form-control"  ></label>
+            
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold"><strong style="color:red">*</strong>{{'animal.scienceName' | translate}}</label>
+           
+            <label ng-bind-html="detailsMessage.scienceName" type="text" class="form-control"  ></label>
+        </div>
+        
+
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.animalClass' | translate}}</label>
+            <label ng-bind-html="detailsMessage.animalClass" type="text" class="form-control"  ></label>
+            
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.ordo' | translate}}</label>
+            <!-- <input data-ng-model="detailsMessage.ordo" type="text" class="form-control" /> -->
+            <label ng-bind-html="detailsMessage.ordo" type="text" class="form-control"  ></label>
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.family' | translate}}</label>
+            <label ng-bind-html="detailsMessage.family" type="text" class="form-control"  ></label>
+            
+        </div>
+        
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">Hình thức sinh sản</label>
+            <label ng-bind-html="detailsMessage.reproductionForm" type="text" class="form-control"  ></label>
+            
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.description' | translate}}</label>
+            <label ng-bind-html="detailsMessage.description" type="text" class="form-control"  ></label>
+            <!-- <input data-ng-model="vm.animal.description" class="form-control" /> -->
+        </div>
+        <div class="col-md-6 margin-top-10">
+            <label class="bold">{{'animal.aniGroup' | translate}}</label>
+            <label ng-bind-html="detailsMessage.aniGroup" type="text" class="form-control"  ></label>
+            <!-- <input data-ng-model="vm.animal.aniGroup" type="text" class="form-control" /> -->
+           
+            
+        </div>
+        <div class="col-md-6 margin-top-10" ng-if="detailsMessage.aniGroup=='Động vật rừng Nguy cấp quý hiếm'">
+            <label class="bold">{{'animal.cites' | translate}}</label>
+            <label ng-bind-html="detailsMessage.cites" type="text" class="form-control"  ></label>
+            
+        </div>
+        <!-- <div class="col-md-6 margin-top-10" ng-if="vm.aniGroup2==true">
+            <label class="bold">{{'animal.vnList' | translate}}</label>
+            <ui-select ng-model="vm.animal.vnlist" sortable="true" close-on-select="true" on-select="">
+                <ui-select-match allow-clear="true" placeholder="Chọn phân nhóm theo nghị định 64">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="vnlist.name as vnlist in vm.vnLists | propsFilter: {name: $select.search}">
+                    <div class="bold" ng-bind-html="vnlist.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div> -->
+        <div class="col-md-6 margin-top-10" ng-if="detailsMessage.aniGroup=='Động vật rừng Nguy cấp quý hiếm'">
+            <label class="bold">{{'animal.vnList06' | translate}}</label>
+            <label ng-bind-html="detailsMessage.vnlist06" type="text" class="form-control"  ></label>
+            
+        </div>
+        <div class="col-md-6 margin-top-10" ng-if="detailsMessage.aniGroup=='Động vật rừng Nguy cấp quý hiếm'">
+            <label class="bold">Nhóm ưu tiên bảo vệ</label>
+            <label ng-bind-html="detailsMessage.animalGroup" type="text" class="form-control"  ></label>
+            
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" ng-click="$dismiss()" class="btn btn-primary"><i class="icon-check"></i>Xác nhận</button>
+    <button ng-if="tableName=='AnimalRequired'" type="button" ng-click="goDetails()" class="btn btn-primary"><i class="icon-check"></i>Chi tiết</button>
+</div>

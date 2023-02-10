@@ -1,0 +1,630 @@
+(function () {
+    'use strict';
+
+    angular.module('Education.AnimalReportData').service('AnimalReportDataService', AnimalReportDataService);
+
+    AnimalReportDataService.$inject = [
+        '$http',
+        '$q',
+        '$filter',
+        'settings',
+        'Utilities',
+        '$translate'
+    ];
+
+    function AnimalReportDataService($http, $q, $filter, settings, utils,$translate) {
+        var self = this;
+        var Url = settings.api.baseUrl + settings.api.apiPrefix;
+        var baseUrl = Url + 'animal_report/';
+        var reportUrl = Url + 'report/';
+        var baseUrlAnimal = settings.api.baseUrl + settings.api.apiPrefix + 'animal/';
+
+        self.getTableDefinition = getTableDefinition;
+        self.getAllFarmSize = getAllFarmSize;
+        self.getFarmSizeById = getFarmSizeById;
+        self.createFarmSize = createFarmSize;
+        self.updateFarmSize = updateFarmSize;
+        self.deleteFarmSize = deleteFarmSize;
+        self.deleteFarmSizes = deleteFarmSizes;
+        self.getAllFarmSizeDto = getAllFarmSizeDto;
+		self.getPageSearchFarmSize=getPageSearchFarmSize;
+		self.checkDuplicateCode=checkDuplicateCode;
+		self.getByQuantity=getByQuantity;
+		self.getTableDefinitionFarm=getTableDefinitionFarm;
+        self.getListAnimalReportData=getListAnimalReportData;
+        self.getPageSearchFarm=getPageSearchFarm;
+        self.getAllAnimal=getAllAnimal;
+        self.getAllOgirinal=getAllOgirinal;
+        self.getAllProductTarget=getAllProductTarget;
+        self.createAnimalReportData=createAnimalReportData;
+        self.saveAnimalReportData=saveAnimalReportData;
+        self.getAnimalById=getAnimalById;
+        self.deleteById=deleteById;
+        self.getStream=getStream;
+        self.getStreamTemplate=getStreamTemplate;
+        self.getPageBySearch=getPageBySearch;
+        self.getViewExcelExportAnimalReportData=getViewExcelExportAnimalReportData;
+
+
+        self.getAllByParentId=getAllByParentId;
+        self.getAdminstrativeUnitsCity=getAdminstrativeUnitsCity;
+        self.getAdministrativeUnitDtoByLoginUser=getAdministrativeUnitDtoByLoginUser;
+        self.saveListAnimalReport=saveListAnimalReport;
+		self.getCurrentUser=getCurrentUser;
+		self.getReportNumberAnimalsAndNumberFarmsAccordingToTheRedBook=getReportNumberAnimalsAndNumberFarmsAccordingToTheRedBook;
+		self.reportNumberAnimalsAndNumberFarmsCategoryCites=reportNumberAnimalsAndNumberFarmsCategoryCites;
+		self.wildAnimalFarmingReportByClassification = wildAnimalFarmingReportByClassification;
+        self.wildAnimalFarmingReportByClassification1 = wildAnimalFarmingReportByClassification1;
+        self.wildAnimalFarmingReportByClassification2 = wildAnimalFarmingReportByClassification2;
+		self.wildAnimalFarmingReportByClassification07 = wildAnimalFarmingReportByClassification07;
+        self.getVnList06s = getVnList06s;
+		self.getListCites = getListCites;
+		self.getListAnimalGroup = getListAnimalGroup;
+        
+        self.exportForm16Service = exportForm16Service;
+        self.getDataAnimalForExcel = getDataAnimalForExcel;
+
+        function getListAnimalGroup(){
+
+
+            var url = baseUrlAnimal + 'listAnimalGroup';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getListCites(){
+            var url = baseUrlAnimal + 'listCites';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+		
+        function getVnList06s(){
+            var url = baseUrlAnimal + 'vnList06' ;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function wildAnimalFarmingReportByClassification2(dto) {
+            var url = reportUrl + 'getAnimalReportDataReport';
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function wildAnimalFarmingReportByClassification07(dto) {
+            var url = reportUrl + 'getAnimalReportDataReport07';
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+		function wildAnimalFarmingReportByClassification(dto) {
+            var url = reportUrl + 'getAnimalReportDataReport04';
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function wildAnimalFarmingReportByClassification1(dto) {
+            var url = reportUrl + 'getAnimalReportDataReport05';
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+		
+        function getReportNumberAnimalsAndNumberFarmsAccordingToTheRedBook(dto, successCallback, errorCallback) {
+            var url = reportUrl + 'reportNumberAnimalsAndNumberFarmsAccordingToTheRedBook';
+
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function reportNumberAnimalsAndNumberFarmsCategoryCites(dto) {
+            var url = reportUrl + 'reportNumberAnimalsAndNumberFarmsCategoryCites';
+
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+		function getCurrentUser() {
+            var url = Url + 'users/getCurrentUser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        function getAdminstrativeUnitsCity(){
+            var url = settings.api.baseUrl + settings.api.apiPrefix + 'administrative/getall/city';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        function getAdministrativeUnitDtoByLoginUser() {
+            var url = settings.api.baseUrl + settings.api.apiPrefix + 'user_administrative/get_administrativeUnit_dto_by_loginuser';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getAllByParentId(parentId){
+            var url = settings.api.baseUrl + settings.api.apiPrefix + 'administrative/getAllByParentId/' + parentId ;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getStream(searchDto) {
+            console.log("RUNNING");
+            var deferred = $q.defer();
+
+            $http({
+                url: settings.api.baseUrl + settings.api.apiPrefix + 'file/exportAnimalReportData',
+                method: "POST",//you can use also GET or POST
+                data: searchDto||{},
+                headers: { 'Content-type': 'application/json' },
+                responseType: 'arraybuffer',//THIS IS IMPORTANT
+            })
+                .success(function (data) {
+                    console.debug("SUCCESS");
+                    deferred.resolve(data);
+                }).error(function (data) {
+                    console.error("ERROR");
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+        function getStreamTemplate(searchDto) {
+            console.log("RUNNING");
+            var deferred = $q.defer();
+
+            $http({
+                url: settings.api.baseUrl + settings.api.apiPrefix + 'file/exportAnimalReportDataTemplate',
+                method: "POST",//you can use also GET or POST
+                data: searchDto||{},
+                headers: { 'Content-type': 'application/json' },
+                responseType: 'arraybuffer',//THIS IS IMPORTANT
+            })
+                .success(function (data) {
+                    console.debug("SUCCESS");
+                    deferred.resolve(data);
+                }).error(function (data) {
+                    console.error("ERROR");
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        };
+        
+        function getPageBySearch(searchFarmDto, pageIndex, pageSize) {
+            if (searchFarmDto != null) {
+
+                var url = settings.api.baseUrl + settings.api.apiPrefix + 'animal_report/' + 'getPageBySearch/' + pageIndex + '/' + pageSize;
+                return utils.resolveAlt(url, 'POST', null, searchFarmDto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+        function getPageSearchFarm(searchFarmDto, pageIndex, pageSize, successCallback, errorCallback) {
+            if (searchFarmDto != null) {
+
+                var url = settings.api.baseUrl + settings.api.apiPrefix + 'farm/' + 'searchDto/' + pageIndex + '/' + pageSize;
+                return utils.resolveAlt(url, 'POST', null, searchFarmDto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, successCallback, errorCallback);
+
+            }
+        }
+		function saveListAnimalReport(dto) {
+            var url = settings.api.baseUrl + settings.api.apiPrefix +'animal_report/saveListAnimalReport';
+
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+		function getAnimalById(id){
+			var url = baseUrl + id;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+		}
+		function getAllProductTarget(){
+			var url = settings.api.baseUrl + settings.api.apiPrefix + 'producttarget/getall' ;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+		}
+		function getAllOgirinal(){
+			var url = settings.api.baseUrl + settings.api.apiPrefix + 'original/getalldtos' ;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+		}
+		function getAllAnimal(){
+			var url = settings.api.baseUrl + settings.api.apiPrefix + 'animal/getall' ;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+		}
+		function getListAnimalReportData(pageIndex, pageSize){
+			var url = baseUrl + pageIndex + '/' + pageSize;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+		}
+
+		function checkDuplicateCode(code) {
+            var url = baseUrl + 'checkCode/' + code;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        function getAllFarmSizeDto(){
+            var url = baseUrl + 'getalldtos';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+
+        function createAnimalReportData(dto) {
+            var url = settings.api.baseUrl + settings.api.apiPrefix + 'animal_report';
+
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+        function deleteById(id) {
+            var url = baseUrl + id;
+
+            return utils.resolveAlt(url, 'DELETE', null, null, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function saveAnimalReportData(id, dto) {
+            var url = baseUrl+ '/'+ id;
+
+            return utils.resolveAlt(url, 'PUT', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function deleteFarmSizes(ids, successCallback, errorCallback) {
+            var url = baseUrl + 'delete';
+
+            return utils.resolveAlt(url, 'DELETE', null, ids, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function deleteFarmSize(id, successCallback, errorCallback) {
+            var url = baseUrl + 'delete/' + id;
+
+            return utils.resolveAlt(url, 'DELETE', null, id, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function updateFarmSize(id, dto, successCallback, errorCallback) {
+            var url = baseUrl + 'update/' + id;
+
+            return utils.resolveAlt(url, 'PUT', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function createFarmSize(dto, successCallback, errorCallback) {
+            var url = baseUrl + 'create';
+
+            return utils.resolveAlt(url, 'POST', null, dto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, successCallback, errorCallback);
+        }
+
+        function getFarmSizeById(id) {
+            var url = baseUrl + id;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+		
+		function getByQuantity(quantity) {
+            var url = baseUrl + 'getByQuantity/'+quantity;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+
+        function getAllFarmSize(pageIndex, pageSize) {
+            var url = baseUrl + 'getall/' + pageIndex + '/' + pageSize;
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+		function getPageSearchFarmSize(dto,pageIndex, pageSize, successCallback, errorCallback) {
+            if(dto != null){
+
+                var url = baseUrl + 'searchDto/'+ pageIndex +'/'+pageSize;
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, successCallback, errorCallback);
+
+            }
+        }
+		function getViewExcelExportAnimalReportData(dto,pageIndex, pageSize) {
+            if(dto != null){
+
+                var url = Url + 'animal_report/getViewExcelExportAnimalReportData/'+ pageIndex +'/'+pageSize;
+                return utils.resolveAlt(url, 'POST', null, dto, {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, angular.noop, angular.noop);
+
+            }
+        }
+
+        // function exportForm16Service(dto, successCallback, errorCallback)
+        function exportForm16Service(searchDto) {
+            var deferred = $q.defer();
+            $http({
+                url: Url + 'reportForm16/export-report',
+                method: "POST",//you can use also GET or POST
+                data: searchDto,
+                headers: { 'Content-type': 'application/json' },
+                responseType: 'arraybuffer',//THIS IS IMPORTANT
+            })
+                .success(function (data) {
+                    deferred.resolve(data);
+                }).error(function (data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
+
+        function getDataAnimalForExcel(searchDto){
+
+            var url = Url + 'reportForm16/getDataByExcel';
+            return utils.resolveAlt(url, 'POST', null, searchDto, {
+                'Content-Type': 'application/json; charset=utf-8'
+            }, angular.noop, angular.noop);
+        }
+
+        function getSpeciality() {
+            var url = baseUrl + 'speciality/1/1000';
+            return utils.resolve(url, 'GET', angular.noop, angular.noop);
+        }
+        function getTableDefinition() {
+
+            var _tableOperation = function (value, row, index) {
+                let res = '';
+                // '<a class="green-dark margin-right-5" href="#" data-ng-click="$parent.editAnimalReportData(' + "'" + row.id + "'" + ')"><i class="icon-pencil margin-right-5"></i> {{"farmSize.edit" | translate}}</a>'
+                   res += '<a class="green-dark margin-right-10" href="#" data-ng-click="$parent.previewAnimalReportData(' + "'" + row.id + "'" + ')"><i class="fa fa-eye"></i></a>'
+                    // + '<a class="green-dark margin-right-5" href="#" data-ng-click="$parent.deleteAnimalReportData(' + "'" + row.id + "'" + ')"><i class="fa fa-trash"></i> {{"farmSize.delete" | translate}}</a>';
+
+                    return res;
+            };
+            var _tableInput = function (value, row, index, field) {
+                return '<input  type="text"  value="' + value + '" data-field="row.mark"/>';
+
+            };
+
+            var _cellNowrap = function (value, row, index, field) {
+                return {
+                    classes: 'text-left',
+                    css: { 'white-space': 'nowrap' }
+                };
+            };
+
+            var _cellNowrap2 = function (value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '120px' }
+                };
+            };
+
+            var _dateFormatter = function (value, row, index) {
+                if (!value) {
+                    return '';
+                }
+                return moment(value).format('DD/MM/YYYY');
+            };
+            var _operationColStyle = function (value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'width': '90px', 'text-align': 'center' }
+                };
+            };
+
+             var _farmFormatter = function (value, row, index) {
+                 if (!value) {
+                     return '';
+                 }
+                 if(value!= null || value.length > 0){
+                 }
+                 return value.name;
+             };
+             var _animalFormatter = function (value, row, index) {
+                 if (!value) {
+                     return '';
+                 }
+                 if(value!= null || value.length > 0){
+                 }
+                 return value.name;
+             };
+             var _adminisFormatter = function (value, row, index) {
+                 if (!value) {
+                     return '';
+                 }
+                 if(value!= null || value.length > 0){
+                 }
+                 return value.provinceName;
+             };
+             var _tableIndex = function (value, row, index, field) {
+                return index + 1;
+            };
+            var _tableTextCenter = function (value, row, index, field) {
+                return {
+                    classes:'text-center',
+                    css: { 'white-space': 'nowrap' }
+                };
+            };
+            var _tableTextRight = function (value, row, index, field) {
+                return {
+                    classes:'text-right',
+                    css: { 'white-space': 'nowrap' }
+                };
+            };
+            var _tableTextLeft = function (value, row, index, field) {
+                return {
+                    classes:'text-left',
+                    css: { 'white-space': 'nowrap' }
+                };
+            };
+             
+            return [
+                {
+                    field: '',
+                    title: 'TT',
+                    switchable: true,
+                    visible: true,
+                    formatter: _tableIndex,
+                    cellStyle: _tableTextCenter
+                },
+                {
+                    field: '',
+                    title:'Thao tác',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap,
+                    formatter: _tableOperation,
+                }
+                ,
+                {
+                    field: 'farm',
+                    title:'Tên cơ sở',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _tableTextLeft,
+                    formatter: _farmFormatter,
+                }
+                ,
+                {
+                    field: 'farm',
+                    title:'Tỉnh',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _tableTextLeft,
+                    formatter: _adminisFormatter,
+                }
+                ,
+                {
+                    field: 'animal',
+                    title:'Loài nuôi',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap,
+                    formatter: _animalFormatter,
+                }
+                ,{
+                    field: 'year',
+                    title: 'Kỳ báo cáo' ,
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _tableTextRight
+                },{
+                    field: 'month',
+                    title: 'Tháng báo cáo' ,
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _tableTextRight
+                }, {
+                    field: 'total',
+                    title:'Tổng số',
+                    sortable: true,
+                    // formatter: _tableInput,
+                    cellStyle: _tableTextRight,
+                    switchable: true,
+
+                }, {
+                    field: 'male',
+                    title:'Đực',
+                    sortable: true,
+                    // formatter: _tableInput,
+                    cellStyle: _tableTextRight,
+                    switchable: true,
+
+                }, {
+                    field: 'female',
+                    title:'Cái',
+                    sortable: true,
+                    // formatter: _tableInput,
+                    cellStyle: _tableTextRight,
+                    switchable: true,
+
+                }, {
+                    field: 'unGender',
+                    title:'Không xác định giới tính',
+                    sortable: true,
+                    // formatter: _tableInput,
+                    cellStyle: _tableTextRight,
+                    switchable: true,
+
+                }
+            ];
+        }
+
+        function getTableDefinitionFarm() {//cái này là view danh sách cơ sở chăn nuôi
+
+            var _tableOperation = function (value, row, index) {
+                return '<a class="green-dark margin-right-5" href="#" data-ng-click="$parent.editAnimalReportData(' + "'" + row.id + "'" + ')"><i class="icon-pencil margin-right-5">{{"importAnimal.edit" | translate}}</i></a>'
+                    // + '<a class="green-dark margin-right-10" href="#" data-ng-click="$parent.previewOriginal(' + "'" + row.id + "'" + ')"><i class="fa fa-eye"></i></a>'
+                    + '<a class="green-dark margin-right-5" href="#" data-ng-click="$parent.deleteImportAnimal(' + "'" + row.id + "'" + ')"><i class="fa fa-trash"></i>{{"importAnimal.delete" | translate}}</a>';
+            };
+            var _tableInput = function (value, row, index, field) {
+                return '<input  type="text"  value="' + value + '" data-field="row.mark"/>';
+
+            };
+
+            var _cellNowrap = function (value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap' }
+                };
+            };
+
+            var _cellNowrap2 = function (value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap' }
+                };
+            };
+            var _formatterName = function (value, row, index, field) {
+                if (value && value.name) {
+                    return value.name;
+                }
+                return '';
+            }
+            var _dateFormatter = function (value, row, index) {
+                if (!value) {
+                    return '';
+                }
+                return moment(value).format('DD/MM/YYYY');
+            };
+            var _operationColStyle = function (value, row, index, field) {
+                return {
+                    classes: '',
+                    css: { 'white-space': 'nowrap', 'text-align': 'center' }
+                };
+            };
+           
+            return [
+                {
+                    field: 'state',
+                    checkbox: true,
+                }
+                ,
+                {
+                    field: 'code',
+                    title: '{{"farm.farmCode" | translate}}',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap,
+                }
+                , {
+                    field: 'name',
+                    title: '{{"farm.name" | translate}}',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap
+                },
+                {
+                    field: 'ownerName',
+                    title: '{{"farm.ownerName" | translate}}',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap
+                },
+                {
+                    field: 'provinceName',
+                    title: '{{"administrativeUnit.province" | translate}}',
+                    sortable: true,
+                    switchable: false,
+                    cellStyle: _cellNowrap
+                }
+
+
+            ];
+        }
+    }
+})();

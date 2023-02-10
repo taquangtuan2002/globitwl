@@ -1,0 +1,402 @@
+<div class="row margin-top-10">
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3><strong>Báo cáo chi tiết tăng đàn biến động theo mẫu sổ chi tiết</strong></h3>
+            </div>
+            <div class="portlet-title">
+                <div class="portlet-title">
+                    <div class="row">
+                        <div class="col-md-4 margin-top-10">
+                            <input ng-model="vm.fromDate" type="text" placeholder="{{'importAnimal.fromDate' | translate}}.............." class="form-control" my-date-picker/>
+                        </div>
+                        <div class="col-md-4 margin-top-10">
+                            <input ng-model="vm.toDate" type="text"   placeholder="{{'importAnimal.toDate' | translate}}................" class="form-control" my-date-picker/>
+                        </div>
+                        <div class="col-md-4 margin-top-10">
+                            <ui-select 
+                            multiple
+                            ng-model="vm.animal" sortable="true" close-on-select="true" on-select="vm.selecteAnimal($item)">
+                                <ui-select-match allow-clear="true" placeholder="Tìm kiếm theo tên loài">
+                                    {{$item.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="animal.id as animal in vm.animals | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="animal.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <!-- <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.selectYear" sortable="true" close-on-select="true"
+                                style="width:100%;" aria-multiselectable="true" on-select="vm.onSelectYear()">
+                                <ui-select-match allow-clear="false" placeholder="Chọn năm...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="year.value as year  in years | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div> -->
+                        <!-- <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.animalClass" sortable="true" close-on-select="true"
+                                on-select="vm.animalClassSelected()">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalClass' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listAnimalClass | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                        <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.ordo" sortable="true" close-on-select="true"
+                                on-select="vm.animalOrdoSelected()">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalOrdo' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listAnimalOrdo | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.family" sortable="true" close-on-select="true"
+                                on-select="vm.familySelected(true)">
+                                <ui-select-match allow-clear="true"
+                                    placeholder="{{'animal.chooseAnimalFamily' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="item.name as item in vm.listAnimalFamily | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div> -->
+                        <!-- <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.cites" sortable="true" close-on-select="true" on-select="">
+                                <ui-select-match allow-clear="true" placeholder="{{'animal.cites' | translate}}">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="cites.name as cites in vm.listcites | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="cites.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.vnlist06" sortable="true" close-on-select="true" on-select="">
+                                <ui-select-match allow-clear="true" placeholder="Tìm kiếm theo nghị định 06-2019">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="vnlist06.name as vnlist06 in vm.vnList06s | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="vnlist06.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.vnlist" sortable="true" close-on-select="true" on-select="">
+                                <ui-select-match allow-clear="true" placeholder="Tìm kiếm theo theo nghị định 64-2019">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="vnlist.name as vnlist in vm.vnLists | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="vnlist.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-3 margin-top-10">
+                            <ui-select ng-model="vm.animalGroup" sortable="true" close-on-select="true">
+                                <ui-select-match allow-clear="true"
+                                        placeholder="Chọn nhóm ưu tiên bảo vệ...">
+                                        {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                        repeat="item.name as item in vm.listAnimalGroup | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="item.name | highlight: $select.search">
+                                        </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div> -->
+                        
+                    </div>
+                    <div class="row">
+                        <div class="margin-top-10 margin-bottom-10">
+                            
+                            <div class="col-md-4" ng-if="vm.isRole==true">
+                                <ui-select ng-model="vm.paramDto.provinceId" sortable="true" close-on-select="true"
+                                    on-select="vm.onFmsadminstrativeUnitCitySelected($item)">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'farm.chooseCity' | translate}}...">
+                                        {{$select.selected.name}} </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-md-4" ng-if="vm.isRole==false">
+                                <ui-select ng-model="vm.paramDto.provinceId" sortable="true" close-on-select="true">
+                                    <ui-select-match allow-clear="false"
+                                        placeholder="{{'farm.chooseCity' | translate}}...">
+                                        {{$select.selected.name}} </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-md-4" ng-if="vm.isRole==true||vm.isSdah ==true">
+                                <ui-select ng-model="vm.paramDto.districtId" sortable="true" close-on-select="true"
+                                    on-select="vm.onFmsadminstrativeUnitDistSelected($item)">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'farm.chooseDistrictAll' | translate}}...">
+                                        {{$select.selected.name}} </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-md-4"
+                                ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true || vm.isFamer == true)">
+                                <ui-select ng-model="vm.paramDto.districtId" sortable="true" close-on-select="true">
+                                    <ui-select-match allow-clear="false"
+                                        placeholder="{{'farm.chooseDistrictAll' | translate}}...">
+                                        {{$select.selected.name}} </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-md-4" ng-if="vm.isFamer == false">
+                                <!--<label class="bold">{{'region.name' | translate}}</label>-->
+                                <ui-select ng-model="vm.paramDto.wardId" sortable="true" close-on-select="true"
+                                    on-select="vm.onFmsadminstrativeUnitWardsSelected($item)">
+                                    <ui-select-match allow-clear="true"
+                                        placeholder="{{'farm.chooseWardAll' | translate}}...">
+                                        {{$select.selected.name}} </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="adminstrativeUnit.id as adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                                        <div class="bold"
+                                            ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row margin-top-10">
+                        <div class="col-md-12">
+                            <button ng-click="vm.reportCurrentStatusByFamily()" class="btn btn-primary" type="submit">
+                                {{'report.viewReport' | translate}}</button>
+                            <!-- <button class="btn btn-info margin-left-10"
+                                file-name="'DuLieuBaoCaoHoatDongNuoiDVHDTheoHo.xls'"
+                                ng-click="vm.exportDataReportToExcel()" file-download="vm.myBlobObject"><i
+                                    class="fa fa-file-excel-o"> </i> Xuất Excel</button> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body table-customer">
+                    <h3 class="bold text-center">{{vm.titleHeader}}</h3>
+                    <div class="row">
+                        <div class="portlet-body  margin-top-20 margin-bottom-10">
+                            <div class="bootstrap-table table-responsive">
+                                <table class="table table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5px;" rowspan="3">STT</th>
+                                            <th rowspan="3">Ngày</th>
+                                            <th rowspan="3">Họ tên cơ sở - chủ trại nhập</th>
+                                            <th rowspan="2" colspan="3">Địa chỉ</th>
+                                            <th rowspan="3">Lí do tăng đàn</th>
+                                            <th rowspan="3">Tên loài</th>
+                                            <th rowspan="3">Phân loại</th>
+                                            <th style="width: 20.8px;" colspan="13">&nbsp;&nbsp;&nbsp;Diễn biến tăng đàn</th>
+                                            <th rowspan="3">Nhập từ</th>
+                                            <th rowspan="3">Nguồn gốc</th>
+                                            <th rowspan="3">Biên bản</th>
+                                            <th rowspan="3">Ghi chú</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 56.8px;" rowspan="2">Tổng tăng</th>
+                                            <th style="width: 56.8px;" colspan="3">Bố mẹ</th>
+                                            <th style="width: 56.8px;" colspan="3">Hậu Bị</th>
+                                            <th style="width: 20.8px;" colspan="3" >&nbsp;C&aacute; Thể dưới 1 tuổi</th>
+                                            <th style="width: 20.8px;" colspan="3" >&nbsp;C&aacute; Thể trên 1 tuổi</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Tỉnh</th>
+                                            <th>Huyện</th>
+                                            <th>Xã</th>
+                                            <th style="width: 20.8px;"> Đực</th>
+                                            <th style="width: 20.8px;"> Cái</th>
+                                            <th style="width: 45.6px;">Không xác định</th>
+                                            
+                                            <th style="width: 20.8px;"> Đực</th>
+                                            <th style="width: 20.8px;"> Cái</th>
+                                            <th style="width: 45.6px;">Không xác định</th>
+                    
+                                            <th style="width: 20.8px;"> Đực</th>
+                                            <th style="width: 20.8px;"> Cái</th>
+                                            <th style="width: 45.6px;">Không xác định</th>
+                    
+                                            <th style="width: 20.8px;"> Đực</th>
+                                            <th style="width: 20.8px;"> Cái</th>
+                                            <th style="width: 20.8px;"> Không xác định</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-if="!vm.results || vm.results.length == 0">
+                                        <tr>
+                                            <td class="text-center" colspan="23">Chưa có dữ liệu</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody ng-if="vm.results && vm.results.length > 0">
+                                        <tr ng-repeat="item in vm.results | orderBy:'farm.name'" ng-click="vm.showDetail16(item)">
+                                            <td>
+                                                {{$index + 1}}
+                                            </td>
+                                            <td style="text-align: center; white-space: break-spaces; width: 250px">
+                                                {{item.dateReport | date : "dd/MM/yyyy"}}
+                                            </td>
+                                            <td style="text-align: center; white-space: break-spaces; width: 250px">
+                                                {{item.farmName}}
+                                            </td>
+                                            <td>{{item.provName}}</td>
+                                            <td>{{item.disName}}</td>
+                                            <td>{{item.wardName}}</td>
+                                            <td>
+                                                {{item.importReason}}
+                                            </td>
+                                            <td>
+                                                <span>{{item.animalName}}</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="item.vnlist06 == 'DVRTT'">Thông thường</span>
+                                                <span ng-if="item.cites || item.vnlist06 != 'DVRTT' ">QH</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if="!item.totalImport || item.totalImport==0">{{item.total}}</span>
+                                                <span ng-if="item.totalImport && item.totalImport!=0">{{item.totalImport}}</span>
+                                            </td>
+                                            <td>
+                                                {{item.importMaleParent}}
+                                            </td>
+                                            <td>
+                                                {{item.importFemaleParent}}
+                                            </td>
+                                            <td>
+                                                {{item.importUnGenderParent}}
+                                            </td>
+                                            <td>
+                                                {{item.importMaleGilts}}
+                                            </td>
+
+                                            <td>
+                                                {{item.importFemaleGilts}}
+                                            </td>
+                                            <td>
+                                                {{item.importUnGenderGilts}}
+                                            </td>
+                                            <td>
+                                                {{item.importMaleChildUnder1YearOld}}
+                                            </td>
+                                            <td>
+                                                {{item.importFemaleChildUnder1YearOld}}
+                                            </td>
+                                            <td>
+                                                {{item.importChildUnder1YearOld}}
+                                            </td>
+                                            <td>
+                                                {{item.importMaleChildOver1YearOld}}
+                                            </td>
+                                            <td>
+                                                {{item.importFemaleChildOver1YearOld}}
+                                            </td>
+                                            <td>
+                                                {{item.importUnGenderChildOver1YearOld}}
+                                            </td>
+                                            <td>
+                                                {{}}
+                                            </td>
+                                            <td>
+                                                {{item.original}}
+                                            </td>
+                                            <td>
+                                                {{}}
+                                            </td>
+                                            <td>
+                                                {{item.note}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/ng-template" id="choose_farm_modal.html">
+	<div modal-movable>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+			<h4 class="modal-title bold font-yellow-gold"><i class="icon-question"></i> {{"exportAnimal.chooseFarm" | translate}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body box-profile">
+				<div class="portlet-title">
+
+					<div class="row margin-top-10 margin-bottom-10">
+						<div class="col-md-6">
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text" data-ng-model="vm.farmCode" class="form-control" ng-keyup="vm.enterSearchFarm(e)" placeholder="{{'farm.searchNameCode' | translate}}" name="search">
+								
+								<div class="input-group-btn">
+									<button ng-click="vm.searchByFarm()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<button class="btn btn-danger margin-left-10" data-ng-click="vm.deleteLabs()" data-ng-disabled="vm.selectedSpecialties.length <= 0"><i class="fa fa-trash"></i> Xóa bản ghi đã chọn</button>-->
+					<!--</div>-->
+				</div>
+				<div class="box-body">
+					<table id="bsTableControlFarm" bs-table-control="vm.bsTableControlFarm"></table>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal">{{"exportAnimal.close" | translate}}</button>
+			<button type="button" ng-click="vm.agreeFarm()" class="btn btn-primary" data-dismiss="modal">{{"exportAnimal.yes" | translate}}</button>
+		</div>
+	</div>
+</script>
+<script type="text/ng-template" id="detail_export_animal.html">
+    <div modal-movable>
+     <div ng-include="'report/views/detail_export_animal.html'"></div>
+ </div>
+</script>

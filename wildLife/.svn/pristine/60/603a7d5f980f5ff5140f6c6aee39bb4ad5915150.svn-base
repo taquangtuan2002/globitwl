@@ -1,0 +1,255 @@
+package com.globits.wl.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
+import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import com.globits.core.service.impl.GenericServiceImpl;
+import com.globits.security.domain.User;
+
+import com.globits.wl.repository.AdministrativeOrganizationRepository;
+import com.globits.wl.domain.AdministrativeOrganization;
+import com.globits.wl.dto.AdministrativeOrganizationDto;
+
+import com.globits.wl.repository.FmsAdministrativeUnitRepository;
+import com.globits.wl.repository.FmsOrganizationAdministrativeRepository;
+
+import com.globits.wl.service.AdministrativeOrganizationService;
+import com.globits.wl.service.UserAdministrativeUnitService;
+
+@Service
+public class AdministrativeOrganizationServiceImpl extends GenericServiceImpl<AdministrativeOrganization, Long>
+		implements AdministrativeOrganizationService {
+	@Autowired
+	AdministrativeOrganizationRepository adminisOrganizationRepository;
+	@Autowired
+	FmsAdministrativeUnitRepository fmsaAdministrativeUnitRepository;
+	@Autowired
+	FmsOrganizationAdministrativeRepository fmsOrganizationAdministrativeRepository;
+	@Autowired
+	private UserAdministrativeUnitService userAdministrativeUnitService;
+
+	@Autowired
+	AdministrativeOrganizationRepository administrativeOrganizationRepository;
+
+	@Override
+	public AdministrativeOrganizationDto save(AdministrativeOrganizationDto dto) {
+
+		AdministrativeOrganization entity = null;
+		Boolean isEdit = false;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User modifiedUser = null;
+		LocalDateTime currentDate = LocalDateTime.now();
+		String currentUserName = "Unknown User";
+		if (authentication != null) {
+			modifiedUser = (User) authentication.getPrincipal();
+			currentUserName = modifiedUser.getUsername();
+		}
+		if (entity == null) {
+			entity = new AdministrativeOrganization();
+			entity.setCreateDate(currentDate);
+			entity.setCreatedBy(currentUserName);
+		}
+		if (dto.getOrganizationLevel() != null) {
+			entity.setOrganizationLevel(dto.getOrganizationLevel());
+		}
+		if (dto.getName() != null) {
+			entity.setName(dto.getName());
+		}
+		if (dto.getAbbreviations() != null) {
+			entity.setAbbreviations(dto.getAbbreviations());
+		}
+		if (dto.getAddress() != null) {
+			entity.setAddress(dto.getAddress());
+		}
+		if (dto.getGovernmentLevel() != null) {
+			entity.setGovernmentLevel(dto.getGovernmentLevel());
+		}
+		if (dto.getOrganizationalForm() != null) {
+			entity.setOrganizationalForm(dto.getOrganizationalForm());
+		}
+		if (dto.getEmail() != null) {
+			entity.setEmail(dto.getEmail());
+		}
+		if (dto.getPhoneNumber() != null) {
+			entity.setPhoneNumber(dto.getPhoneNumber());
+		}
+		if (dto.getFax() != null) {
+			entity.setFax(dto.getFax());
+		}
+		if (dto.getWebsite() != null) {
+			entity.setWebsite(dto.getWebsite());
+		}
+		if (dto.getNumericalOrder() != null) {
+			entity.setNumericalOrder(dto.getNumericalOrder());
+		}
+		if (dto.getParent() != null) {
+			AdministrativeOrganization parent = null;
+			if (dto.getParent().getId() != null) {
+				parent = this.adminisOrganizationRepository.findOne(dto.getParent().getId());
+			} else if (dto.getParent().getEmail() != null) {
+				List<AdministrativeOrganization> aus = this.adminisOrganizationRepository
+						.findListByabbreviations(dto.getParent().getAbbreviations());
+				if (aus != null && aus.size() == 1) {
+					parent = aus.get(0);
+				} else if (aus != null && aus.size() > 1) {
+					for (AdministrativeOrganization x : aus) {
+						if (x.getName().equals(dto.getParent().getName()))
+							;
+						parent = x;
+						break;
+					}
+				}
+
+			}
+
+			if (parent != null) {
+				entity.setParent(parent);
+
+				if (parent.getOrganizationLevel() != null && parent.getOrganizationLevel() > 0) {
+					entity.setOrganizationLevel(parent.getOrganizationLevel());
+				}
+			}
+		} else {
+			entity.setOrganizationLevel(1);
+			entity.setParent(null);
+		}
+		this.adminisOrganizationRepository.save(entity);
+		dto.setId(entity.getId());
+		return dto;
+
+	}
+
+	@Override
+	public AdministrativeOrganizationDto update(AdministrativeOrganizationDto dto, Long id) {
+		AdministrativeOrganization administrativeOrganization = null;
+		Boolean isEdit = false;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User modifiedUser = null;
+		LocalDateTime currentDate = LocalDateTime.now();
+		String currentUserName = "Unknown User";
+		if (authentication != null) {
+			modifiedUser = (User) authentication.getPrincipal();
+			currentUserName = modifiedUser.getUsername();
+
+		}
+		if (id != null) {
+			isEdit = true;
+			administrativeOrganization = this.administrativeOrganizationRepository.findOne(id);
+		} else if (dto.getId() != null) {
+			administrativeOrganization = this.administrativeOrganizationRepository.findOne(dto.getId());
+
+		}
+		if (administrativeOrganization == null) {
+			administrativeOrganization = new AdministrativeOrganization();
+			isEdit= true;
+			administrativeOrganization.setCreateDate(currentDate);
+			administrativeOrganization.setCreatedBy(currentUserName);			
+		}
+		if (dto.getId() != null) {
+			administrativeOrganization = this.administrativeOrganizationRepository.findOne(dto.getId());
+		}
+		if (dto.getOrganizationLevel() != null) {
+			administrativeOrganization.setOrganizationLevel(dto.getOrganizationLevel());
+		}
+		if (dto.getName() != null) {
+			administrativeOrganization.setName(dto.getName());
+
+		}
+		if (dto.getAbbreviations() != null) {
+			administrativeOrganization.setAbbreviations(dto.getAbbreviations());
+		}
+		if (dto.getAddress() != null) {
+			administrativeOrganization.setAddress(dto.getAddress());
+		}
+		if (dto.getGovernmentLevel() != null) {
+			administrativeOrganization.setGovernmentLevel(dto.getGovernmentLevel());
+
+		}
+		if (dto.getOrganizationalForm() != null) {
+			administrativeOrganization.setOrganizationalForm(dto.getOrganizationalForm());
+
+		}
+		if (dto.getEmail() != null) {
+			administrativeOrganization.setEmail(dto.getEmail());
+		}
+		if (dto.getPhoneNumber() != null) {
+			administrativeOrganization.setPhoneNumber(dto.getPhoneNumber());
+		}
+		if (dto.getFax() != null) {
+			administrativeOrganization.setFax(dto.getFax());
+		}
+		if (dto.getWebsite() != null) {
+			administrativeOrganization.setWebsite(dto.getWebsite());
+		}
+		if (dto.getNumericalOrder() != null) {
+			administrativeOrganization.setNumericalOrder(dto.getNumericalOrder());
+		}
+		if (dto.getParent() != null) {
+
+			AdministrativeOrganization parent = null;
+			if (dto.getParent().getId() != null) {
+				parent = this.administrativeOrganizationRepository.findOne(dto.getParent().getId());
+
+			} else if (dto.getParent().getAbbreviations() != null) {
+				List<AdministrativeOrganization> aus = this.administrativeOrganizationRepository
+						.findListByabbreviations(dto.getAbbreviations());
+				if (aus != null && aus.size() == 1) {
+					parent = aus.get(0);
+
+				} else if (aus != null & aus.size() > 1) {
+					for (AdministrativeOrganization item : aus) {
+						if (item.getName().equals(administrativeOrganization.getName())) {
+							parent = item;
+							break;
+						}
+
+					}
+				}
+			}
+			if (parent != null) {
+				administrativeOrganization.setParent(parent);
+				if (parent.getOrganizationLevel() != null && parent.getOrganizationLevel() > 0) {
+					administrativeOrganization.setOrganizationLevel(parent.getOrganizationLevel());
+
+				}
+
+			}
+
+		} else {
+			administrativeOrganization.setOrganizationLevel(1);
+			administrativeOrganization.setParent(null);
+
+		}
+		this.administrativeOrganizationRepository.save(administrativeOrganization);
+		dto.setId(administrativeOrganization.getId());
+
+		return dto;
+	}
+
+	@Override
+	public AdministrativeOrganizationDto delete(AdministrativeOrganizationDto dto, Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AdministrativeOrganizationDto> getAllByParentId(Long parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AdministrativeOrganizationDto> getChildrenByParentId(Long parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,1509 @@
+<!-- <a href="#vm.farm.farmAnimalTypes">test</a> -->
+<div class="portlet-farm-detail portlet-header">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-10">
+        <h2 ng-if="!$state.params.id">
+            <strong>{{'farm.regiter' | translate}}</strong>
+        </h2>
+        <h3 ng-if="vm.isFamer == false && $state.params.id">
+            <strong>{{'farm.edit' | translate}}</strong>
+        </h3>
+        <button type="button" ng-if="vm.isFamer == false" class="btn btn-default btn-primary margin-top-10"
+            ng-click="vm.goBack()" class="btn btn-default">
+            <i class="fa fa-mail-reply-all"></i>{{'farm.back' | translate}}
+        </button>
+        <button ng-if="vm.isFamer == false && vm.isSdahView==false" type="button"
+            class="btn btn-default btn-primary margin-top-10" ng-click="vm.saveFarm()">
+            {{'farm.save' | translate}}
+        </button>
+    </div>
+</div>
+
+<div style="clear:both">
+</div>
+<div class="row margin-top-10">
+    <!--1. Thông tin chủ cơ sở chăn nuôi/Người đại diện -->
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3>
+                    <strong>1. Thông tin chính của cơ sở nuôi</strong>
+                </h3>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-6 margin-top-10" id="vm.farm.name">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.farmName' | translate}}</label>
+                        <!-- <label class="bold"><strong style="color:red">*</strong>{{'farm.ownerInfo' | translate}}</label> -->
+                        <input data-ng-model="vm.farm.name" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                            ng-change="vm.farmNameChange()" id="name" />
+                    </div>
+                    <div ng-if="$state.params.id" class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>{{'farm.farmCode' | translate}}</label>
+                        <input readonly data-ng-model="vm.farm.code" type="text" class="form-control glb-disabled" />
+                    </div>
+                    <div class="col-md-6 margin-top-10" ng-if="vm.isRole==true">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.city' | translate}}</label>
+                        <ui-select ng-model="vm.selectedCity" sortable="true" close-on-select="true"
+                            on-select="vm.onFmsadminstrativeUnitCitySelected($item)" ng-class="{'glb-disabled':vm.isFamer == true}"> 
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-6 margin-top-10" ng-if="vm.isRole==false">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.city' | translate}}</label>
+                        <ui-select ng-model="vm.selectedCity" sortable="true" close-on-select="true" 
+                        on-select="vm.onFmsadminstrativeUnitCitySelected($item)" ng-class="{'glb-disabled':vm.isFamer == true}">
+                            <ui-select-match allow-clear="false" placeholder="{{'farm.chooseCity' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="col-md-6 margin-top-10" ng-if="vm.isRole==true||vm.isSdah ==true">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.district' | translate}}</label>
+                        <ui-select ng-model="vm.selectedDist" sortable="true" close-on-select="true"
+                            on-select="vm.onFmsadminstrativeUnitDistSelected($item)" ng-class="{'glb-disabled':vm.isFamer == true}">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-6 margin-top-10"
+                        ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true|| vm.isFamer == true)">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.district' | translate}}</label>
+                        <ui-select ng-model="vm.selectedDist" on-select="vm.onFmsadminstrativeUnitWardsSelected($item)"
+                            sortable="true" close-on-select="true" ng-class="{'glb-disabled':vm.isFamer == true}">
+                            <ui-select-match allow-clear="false" placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit in vm.adminstrativeUnits_Dist | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="col-md-6 margin-top-10"
+                        ng-if="vm.isRole==true||vm.isSdah ==true || vm.isDistrict == true"
+                        id="vm.farm.administrativeUnit">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.ward' | translate}}</label>
+                        <ui-select ng-model="vm.farm.administrativeUnit" sortable="true" close-on-select="true"
+                            on-select="vm.onFmsadminstrativeUnitWardsSelected($item)"
+                            on-remove="vm.onFmsadminstrativeUnitWardsSelected($item)" ng-class="{'glb-disabled':vm.isFamer == true}">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-6 margin-top-10"
+                        ng-if="vm.isRole==false && (vm.isWard == true || vm.isFamer == true)">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.ward' | translate}}</label>
+                        <ui-select ng-model="vm.farm.administrativeUnit" sortable="true" close-on-select="true" ng-class="{'glb-disabled':vm.isFamer == true}">
+                            <ui-select-match allow-clear="false" placeholder="{{'farm.chooseWard' | translate}}...">
+                                {{$select.selected.name}} </ui-select-match>
+                            <ui-select-choices
+                                repeat="adminstrativeUnit in vm.adminstrativeUnits_Wards | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Thôn/Ấp/Xóm</label>
+                        <input data-ng-model="vm.farm.village" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Số nhà</label>
+                        <input data-ng-model="vm.farm.adressDetail" type="text"
+                            class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}" />
+                    </div>
+                    <div  class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>Số điện thoại cơ sở</label>
+                        <input ng-model="vm.farm.phoneNumber" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');" type="text"
+                            class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                            data-toggle="tooltip" title=" Số điện thoại của cơ sở !" ng-change = " vm.farmPhoneNumberChange()"/>
+                    </div>
+                    <div ng-show="false" ng-if="$state.params.id" class="col-md-12 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Địa chỉ của cơ sở nuôi</label>
+                        <input data-ng-model="vm.farm.adressDetail" placeholder="{{vm.farm.ownerAdress}}" type="text"
+                            class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}" />
+                    </div>
+                    <!--tran huu dat them các trường còn thiếu của farm so với file import start-->
+                    <!-- <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Số nhà</label>
+                        <input data-ng-model="vm.farm.apartmentNumber" placeholder="Nhập số nhà (nếu có)..." number-input type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Ngày bắt đầu nuôi</label>
+                        <input data-ng-model="vm.farm.startDate" placeholder="Chọn ngày bắt đầu nuôi...." my-date-picker class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div> -->
+                    <!--tran huu dat them các trường còn thiếu của farm so với file import end-->
+
+                    <div class="col-md-12 margin-top-10">
+                        <button type="button" class="btn btn-primary" ng-click="vm.showMap()" ng-class="{'glb-disabled':vm.isFamer == true}"><strong
+                                style="color:red">*</strong>{{'farm.chooseCoordinates' | translate}}</button>
+                        <a ng-if="vm.currentId" style="margin-left: 20px;" name="" id="" target="_blank" class="btn btn-primary" ng-click="vm.showPositionFarmVgmap(vm.farm)" role="button">Xem tọa độ trên map</a>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.latitude' | translate}} (Hệ thập phân)</label>
+                        <input data-ng-model="vm.farm.latitude" ng-disabled="vm.dmcCoor" type="text" class="form-control" id="latitude" ng-class="{'glb-disabled':(vm.isFamer == true || vm.dmcCoor)}" number_input  ng-change="vm.checkMapLatitude()" />
+                        <label ng-if="vm.checkMapLatitudeOut == true" class="bold" style="color:red ;font-size: 12px" >
+                            <strong style="color:red"></strong>Vĩ độ không hợp lệ</label>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.longitude' | translate}} (Hệ thập phân)</label>
+                        <input  data-ng-model="vm.farm.longitude" ng-disabled="vm.dmcCoor" type="text" class="form-control" id="longitude" ng-class="{'glb-disabled':(vm.isFamer == true || vm.dmcCoor)}" number_input  ng-change="vm.checkMapLongitude()"/>
+                        <label ng-if="vm.checkMapLongitudeOut == true" class="bold" style="color:red ;font-size: 12px">
+                            <strong style="color:red"></strong>Kinh độ không hợp lệ</label>
+                    </div>
+                    <!-- thành start -->
+                    <!-- <div class="col-md-6 " ng-if="vm.checkMapLatitude == true">
+                        <label class="bold" style="color:red ;font-size: 12px" >
+                            <strong style="color:red"></strong>Vĩ độ không hợp lệ</label>
+
+                    </div>
+                    <div class="col-md-6 fa-pull-right" ng-if="vm.checkMapLongitude == true">
+                        <label class="bold" style="color:red ;font-size: 12px">
+                            <strong style="color:red"></strong>Kinh độ không hợp lệ</label>
+                    </div> -->
+                    <!-- thành end-->
+                    <div class="col-md-12 margin-top-10">
+                    	<label class="bold"><input type="checkbox" ng-model="vm.dmcCoor">Nhập hệ độ - phút - giây</label>
+                    </div>
+					<div ng-if="vm.dmcCoor" class="col-md-6 margin-top-10">
+						<div class="row"><label class="bold"><strong style="color:red">*</strong>{{'farm.latitude' | translate}}</label></div>						
+						<div class="col-md-4">
+							<label class="bold"><strong style="color:red"></strong>độ</label>
+                        	<input ng-change="vm.convertLat()" data-ng-model="vm.latDeg" type="number" class="form-control" id="latitude" ng-class="{'glb-disabled':vm.isFamer == true}"/>                        	
+						</div>
+						<div class="col-md-4">
+							<label class="bold"><strong style="color:red"></strong>phút</label>
+                        	<input ng-change="vm.convertLat()" ng-disabled="vm.latDeg==null" data-ng-model="vm.latMin" type="number" class="form-control" id="latitude" ng-class="{'glb-disabled':(vm.isFamer == true || vm.latDeg==null)}"/>                        	
+						</div>
+						<div class="col-md-4">			
+							<label class="bold"><strong style="color:red"></strong>giây</label>				
+                        	<input ng-change="vm.convertLat()" ng-disabled="vm.latMin==null" data-ng-model="vm.latSec" type="number" class="form-control" id="latitude" ng-class="{'glb-disabled':(vm.isFamer == true || vm.latMin==null)}"/>                        	
+						</div>                        
+                    </div>
+                    <div ng-if="vm.dmcCoor" class="col-md-6 margin-top-10">
+						<div class="row"><label class="bold"><strong style="color:red">*</strong>{{'farm.longitude' | translate}}</label></div>						
+						<div class="col-md-4">
+							<label class="bold"><strong style="color:red"></strong>độ</label>
+                        	<input ng-change="vm.convertLng()" data-ng-model="vm.lngDeg" type="number" class="form-control" id="latitude" ng-class="{'glb-disabled':vm.isFamer == true}"/>                        	
+						</div>
+						<div class="col-md-4">
+							<label class="bold"><strong style="color:red"></strong>phút</label>
+                        	<input ng-change="vm.convertLng()" ng-disabled="vm.lngDeg==null" ng-disabled="vm.lngDeg==null" data-ng-model="vm.lngMin" type="number" class="form-control" id="latitude" ng-class="{'glb-disabled':(vm.isFamer == true || vm.lngDeg==null)}"/>                        	
+						</div>
+						<div class="col-md-4">			
+							<label class="bold"><strong style="color:red"></strong>giây</label>				
+                        	<input ng-change="vm.convertLng()" ng-disabled="vm.lngMin==null" data-ng-model="vm.lngSec" type="number" class="form-control" id="latitude" ng-class="{'glb-disabled':(vm.isFamer == true || vm.lngMin==null)}"/>                        	
+						</div>                        
+                    </div>
+                    <!-- <div class="col-md-12 margin-top-10" id="vm.farm.farmAnimalTypes">
+                        <label class="bold"><strong
+                                style="color:red"></strong>Động vật hoang dã nuôi</label>
+                        <ui-select multiple ng-model="vm.farm.farmAnimalTypes" sortable="true" close-on-select="true" aria-multiselectable="true" on-select="vm.onSelectedAnimalType($item)" on-remove="vm.onRemovedAnimalType($item)">
+                            <ui-select-match allow-clear="true" placeholder="{{'animalType.chooseAnimalType' | translate}}...">
+                                {{$item.name}} 
+                            </ui-select-match>
+                            <ui-select-choices repeat="animal  in vm.animalTypes | propsFilter: {name: $select.search, code: $select.search}">
+                                <div class="bold" ng-bind-html="animal.name | highlight: $select.search">
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <div class="row">
+                            <div class="col-md-4" ng-repeat="animal  in vm.animalTypes | orderBy : '-id'">
+                                <label for="animalRaisingType{{animal.id}}"
+                                    style="color:#444;font-size: 14px;font-weight: initial!important;margin-top:-5px!important;" >
+                                <input type="checkbox" id="animalRaisingType{{animal.id}}"
+                                    ng-click="vm.onSelectAnimalType()" data-ng-model="animal.checked"
+                                    ng-checked="animal.checked">  {{animal.name}}</label>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- Mục đích nuôi -->
+                    <div class="col-md-12 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.raisingPupose' | translate}}</label>
+                        <!-- <ui-select multiple ng-model="vm.farm.farmProductTargets" sortable="true" close-on-select="true" aria-multiselectable="true" on-select="vm.onHusbandryTypeSelected($item)" on-remove="vm.onRemovedHusbandry()">
+                                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseProduction' | translate}}...">
+                                    {{$item.name}} 
+                                </ui-select-match>
+                                <ui-select-choices repeat="productTarget  in vm.productTargets | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="productTarget.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select> -->
+                        <div class="row">
+                            <div class="col-md-6" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                ng-repeat="productTarget in vm.productTargetsNullParent | orderBy : 'id'">
+                                <!-- <div class="row"> -->
+                                    <input type="checkbox" id="productTarget{{productTarget.id}}" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                        ng-click="vm.onSelectProductTarget(productTarget)"
+                                        data-ng-model="productTarget.checked" ng-checked="productTarget.checked">
+                                        <label
+                                        for="productTarget{{productTarget.id}}"
+                                        style="color:#444;font-size: 14px;font-weight: initial!important;">{{productTarget.name}}
+                                    </label>
+                                <!-- </div> -->
+                                <!-- Mục đích nuôi cùng với thương mại -->
+                                <div ng-if="productTarget && productTarget.checked && vm.getListProductTargetChild(productTarget).length > 0" class="col-md-12 margin-top-10">
+                                    <!-- <label class="bold">{{'farm.withTradingPupopose' | translate}}</label> -->
+                                    <!-- <div class="row"> -->
+                                        <div class="col-md-4" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                            ng-repeat="forTrading in vm.getListProductTargetChild(productTarget) | orderBy : 'id'">
+                                            <input type="checkbox" ng-click="vm.onSelectProductTarget(forTrading)" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                                id="forTrading{{forTrading.id}}"
+                                                data-ng-model="forTrading.checked"><label
+                                                for="forTrading{{forTrading.id}}"
+                                                style="color:#444;font-size: 14px;font-weight: initial!important;">{{forTrading.name}}</label>
+                                        </div>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 margin-top-10" >
+                        <!-- <div class="col-md-6"> -->
+                            <label class="bold"><strong style="color:red">*</strong>Hình thức nuôi</label>
+                            <!-- thanh -->
+                            <!-- <div class="row">
+                                <div class="col-md-4" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                    ng-repeat="husbandryMethod in vm.husbandryMethods | orderBy : 'id'">
+                                    <input type="checkbox" ng-click="vm.onSelectHusbandryTarget(husbandryMethod)"
+                                     ng-class="{'glb-disabled':vm.isFamer == true}"
+                                        id="husbandryMethod{{husbandryMethod.id}}"
+                                        data-ng-model="husbandryMethod.checked" ng-value="husbandryMethod.value">
+                                        <label
+                                        for="husbandryMethod{{husbandryMethod.id}}"
+                                        style="color:#444;font-size: 12px;font-weight: initial!important;">{{husbandryMethod.name}}</label>
+                                </div>
+                            </div> -->
+
+                            <div class="row">
+                                <div class="col-md-4" ng-class="{'glb-disabled':vm.isFamer == true}" 
+                                ng-repeat="husbandryMethod in vm.husbandryMethods | orderBy : 'id'"   >
+                                    <input type="checkbox" 
+                                    ng-click="vm.checkMySelectChoice(vm.husbandryMethods)" ng-model= "husbandryMethod.checked"
+                                    ng-checked= "husbandryMethod.checked"
+                                    ng-class="{'glb-disabled':vm.isFamer == true}"  id="husbandryMethod{{husbandryMethod.id}}"
+                                         ng-value="husbandryMethod.value"
+                                        >
+                                    <label
+                                    for="husbandryMethod{{husbandryMethod.id}}"
+                                    style="color:#444;font-size: 14px;font-weight: initial!important;">{{husbandryMethod.name}}
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- thanh -->
+
+                            <!-- <ui-select ng-model="vm.husbandryMethodSelectList" multiple="true" sortable="true" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                close-on-select="true" style="width:100%;" aria-multiselectable="true"
+                                on-select="vm.onHusbandryMethodSelect($item)"
+                                on-remove="vm.onHusbandryMethodSelect($item)">
+                                <ui-select-match allow-clear="true" placeholder="Chọn hình thức nuôi...">
+                                    {{$item.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="husbandryMethod.id as husbandryMethod  in vm.husbandryMethods | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="husbandryMethod.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select> -->
+                        <!-- </div> -->
+                    </div>
+                    <div class="col-md-12 margin-top-10" >
+                        <label class="bold"><strong
+                                style="color:red">*</strong>{{'farm.registerFarmRaising' | translate}}</label>
+                        <!-- <ui-select data-ng-model="vm.farm.status" sortable="true" close-on-select="true" style="width: 100% !important;">
+                            <ui-select-match allow-clear="true" placeholder="{{'farm.chooseStatus' | translate}}...">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="status.value as status in vm.statuses | propsFilter: {name: $select.search}">
+                                <div class="bold" ng-bind-html="status.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select> -->
+                        <div class="row">
+                            <div class="col-md-4" ng-repeat="status  in vm.statuses | orderBy : '-id'" ng-class="{'glb-disabled':vm.isFamer == true}">
+                                <input type="radio" name="statusRaisingses" id="statusRaising{{status.value}}" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                    data-ng-model="vm.farm.status" ng-value="status.value" ><label
+                                    for="statusRaising{{status.value}}"
+                                    style="color:#444;font-size: 14px;font-weight: initial!important;">{{status.name}}</label>
+                            </div>
+                            <!-- <div ng-if="vm.farm.status == 3" class="col-md-6 "> -->
+                                <!-- <div class="row"> -->
+                                    <!-- <div class="col-md-6"> -->
+                                        <!-- <label class="bold">{{'farm.leastDateRegister' | translate}}</label>
+                                        <input ng-model="vm.farm.businessRegistrationDate" type="text" class="form-control"
+                                            my-date-picker  ng-class="{'glb-disabled':vm.isFamer == true}"/> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                            <!-- ngày cấp mã số -->
+                            <div class="col-md-6 margin-top-10">
+                                <label class="bold"><strong
+                                        style="color:red"></strong>{{'farm.newRegistrationCode' | translate}}</label>
+                                <input data-ng-model="vm.farm.newRegistrationCode" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                            </div>
+                            <div ng-if="vm.farm.status == 3" class="col-md-6 margin-top-10">
+                                <label class="bold"><strong
+                                        style="color:red"></strong>Ngày cấp mã số (theo nghị định 06)</label>
+                                <input data-ng-model="vm.farm.dateRegistration" my-date-picker type="text"
+                                    class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                    data-ng-click="vm.test" data-toggle="tooltip" title=" Ngày cấp mã số đăng ký theo 06!" />
+                                    
+                            </div>
+                           
+                            <div class="col-md-6 margin-top-10">
+                                <label class="bold"><strong
+                                        style="color:red"></strong>{{'farm.otherRegistrationCode' | translate}}</label>
+                                <input data-ng-model="vm.farm.oldRegistrationCode" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"  
+                                 data-toggle="tooltip" title="Mã số đăng kí khác !"/>
+                            </div>
+                            <div ng-if="vm.farm.status == 3" class="col-md-6 margin-top-10">
+                                <label class="bold"><strong
+                                        style="color:red"></strong>Ngày cấp</label>
+                                <input data-ng-model="vm.farm.dateOtherRegistration" my-date-picker type="text"
+                                    class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                    data-ng-click="vm.test" data-toggle="tooltip" title=" Ngày cấp mã số CN đăng ký!" />  
+                            </div>
+                            <div class="col-md-6 margin-top-10">
+                                <label class="bold"><strong
+                                        style="color:red"></strong>Giấy đăng ký kinh doanh(nếu có)</label>
+                                <input data-ng-model="vm.farm.businessRegistrationNumber" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"  
+                                 data-toggle="tooltip" title=""/>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.status' | translate}}</label>
+
+                        <div class="row">
+                            <div class="col-md-4" ng-repeat="status  in vm.statusFarms | orderBy : '-id'" ng-class="{'glb-disabled':vm.isFamer == true}">
+                                <input type="radio" name="statusFarmRaisingses" id="statusFarmRaising{{status.value}}" ng-class="{'glb-disabled':vm.isFamer == true}"
+                                    data-ng-model="vm.farm.statusFarm" ng-value="status.value"><label
+                                    for="statusFarmRaising{{status.value}}"
+                                    style="color:#444;font-size: 14px;font-weight: initial!important;">{{status.name}}</label>
+                            </div>
+                            <div ng-if="vm.farm.statusFarm == 1" class="">
+                                
+                                        <label class="bold">{{'farm.stopDate' | translate}}</label>
+                                        <input ng-model="vm.farm.stopDate" type="text" my-date-picker class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- //thanh -->
+                    <!-- <div ng-if="vm.farm.status == 2" class="col-md-12 margin-top-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="bold">{{'farm.reasonNotYetRegister' | translate}}</label>
+                                <input ng-model="vm.farm.reasonNotYetRegister" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}" />
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- <div ng-if="vm.farm.status == 3" class="col-md-3 margin-top-10">
+                        <div class="row"> -->
+                            <!-- <div class="col-md-6"> -->
+                                <!-- <label class="bold">{{'farm.leastDateRegister' | translate}}</label>
+                                <input ng-model="vm.farm.businessRegistrationDate" type="text" class="form-control"
+                                    my-date-picker  ng-class="{'glb-disabled':vm.isFamer == true}"/> -->
+                            <!-- </div> -->
+                        <!-- </div>
+                    </div> -->
+                    <!-- ngày cấp mã số -->
+                    <!-- <div ng-if="vm.farm.status == 3" class="col-md-3 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>{{'farm.issuingCodeDate' | translate}}</label>
+                        <input data-ng-model="vm.farm.dateRegistration" my-date-picker type="text"
+                            class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                            data-ng-click="vm.test" data-toggle="tooltip" title=" Ngày cấp mã số !" />
+                            
+                    </div> -->
+                    <!-- thành -->
+
+                    <!-- <div ng-if="vm.farm.statusFarm == 1" class="col-md-6 margin-top-10">
+                        <div class="row"> -->
+                            <!-- <div class="col-md-6"> -->
+                                <!-- <label class="bold">{{'farm.stopDate' | translate}}</label>
+                                <input ng-model="vm.farm.stopDate" type="text" my-date-picker class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/> -->
+                            <!-- </div> -->
+                        <!-- </div>
+                    </div> -->
+                </div>
+                <div class="row">
+                   
+                    <div  class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>Diện tích chuồng trại( m<sup>2</sup>)</label>
+                        <input data-ng-model="vm.farm.lodgingAcreage" number-input class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"  
+                         data-toggle="tooltip" title="Diện tích chuồng trại !"/>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>{{'farm.foundingDate' | translate}}</label>
+                        <input data-ng-model="vm.farm.startDate" my-date-picker type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}" />
+                    </div>
+                    
+                    <!-- giấy chứng nhận đăng kí -->
+                    <!-- <div ng-if="vm.farm.status == 3" class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>{{'farm.registrationCertificateNumber' | translate}}</label>
+                        <input data-ng-model="vm.farm.oldRegistrationCode" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"  
+                        data-ng-click="vm.test" data-toggle="tooltip" title="Số giấy chứng nhận đăng kí (nếu có) !"/>
+                        
+                    </div> -->
+                    
+                    <!-- thanh -->
+                    <!--Tran huu dat them biến ttbvmt start-->
+                    <!-- <div  class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>TT bảo vệ môi trường</label>
+                        <input data-ng-model="vm.farm.ttbvmt" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"  
+                        data-ng-click="vm.test" data-toggle="tooltip" title="Thông tư bảo vệ môi trường !"/>
+                    </div> -->
+                    
+                    <!-- <div  class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>Ngày cấp</label>
+                        <input data-ng-model="vm.farm.ttbvmtDate" my-date-picker type="text"
+                            class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                             data-toggle="tooltip" title=" Ngày cấp Thông tư !" />
+                    </div> -->
+
+                    <!-- <div  class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>Số giấy chứng nhận đăng ký kinh doanh</label>
+                        <input data-ng-model="vm.farm.businessRegistrationNumber" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"  
+                        data-toggle="tooltip" title="Thông tư bảo vệ môi trường !"/>
+                    </div> -->
+                    <!-- <div  class="col-md-6 margin-top-10">
+                        <label class="bold"><strong
+                                style="color:red"></strong>Số điện thoại của cơ sở</label>
+                        <input data-ng-model="vm.farm.phoneNumber" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\.*)\./g, '$1');" type="text"
+                            class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"
+                            data-toggle="tooltip" title=" Số điện thoại của cơ sở !" />
+                    </div> -->
+                    
+                    <!--Tran huu dat them biến ttbvmt end-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--2. Thông tin cơ sở nuôi -->
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3>
+                    <strong>2. Thông tin chủ cơ sở nuôi/Người đại diện</strong>
+                </h3>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-6 margin-top-10" id="vm.farm.ownerName">
+                        <label class="bold"><strong style="color:red">*</strong>{{'farm.ownerInfo' | translate}}</label>
+                        <input data-ng-model="vm.farm.ownerName" type="text" id="ownerName" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                        <!--ng-change="vm.farmNameChange()" />-->
+                    </div>
+                    <!-- <div class="col-md-6 margin-top-10" id="vm.farm.ownerPositionName">
+                        <label class="bold"><strong style="color:red"></strong>{{'farm.ownerPositionName' | translate}}</label>
+                        <input data-ng-model="vm.farm.ownerPositionName" type="text" id="ownerPositionName" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/> -->
+                            <!--ng-change="vm.farmNameChange()" />-->
+                    <!-- </div> -->
+                    
+                   
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>{{'register.email' | translate}}</label>
+                        <input data-ng-model="vm.farm.ownerEmail" ng-change="vm.addressChange()" type="text" ng-class="{'glb-disabled':vm.isFamer == true}"
+                            class="form-control" />
+                    </div>
+                    <!-- <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>{{'farm.ownerDob' | translate}}</label>
+                        <input data-ng-model="vm.farm.ownerDob" type="text" my-date-picker class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div> -->
+                    <!-- thành  -->
+                    <div class="col-md-6 margin-top-10" id="vm.farm.ownerDob">
+                        <label class="bold"><strong style="color:red"></strong>{{'farm.ownerDob' | translate}}</label>
+                        <!-- đây là code chọn ngày sinh tháng cũ -->
+                        <!-- <input data-ng-model="vm.farm.ownerDob" my-date-picker type="text" id="ownerDob" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}" ng-change = "vm.checkFormTime()"/> -->
+                        <!-- đây là code nhập năm sinh -->
+                        <input data-ng-model="vm.farm.ownerDobYear" type="number" class="form-control" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(1, this.maxLength+1);" maxlength="4"/>
+                    </div>
+                        <!-- <div class="col-md-2">
+                            <ui-select ng-model="vm.farm.formYearNew" sortable="true" close-on-select="true" style="width:100%;"
+                            aria-multiselectable="true" on-select="" on-remove="vm.onRemovedYear()" id = "formYearNew">
+                                <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="year.value as year  in vm.years | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-2">
+                                <ui-select ng-model="vm.farm.formMonthNew" sortable="true" close-on-select="true" style="width:100%;"
+                                aria-multiselectable="true" on-select="" on-remove="vm.onRemovedMonth()" id = "formMonthNew">
+                                    <ui-select-match allow-clear="true" placeholder="Chọn tháng...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="month.value as month  in vm.months | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="month.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                        </div>
+                        <div class="col-md-2">
+                            <ui-select data-ng-model="vm.formDateNew" sortable="true" close-on-select="true" style="width:100%;"
+                             on-select="vm.onSelectDateForm16()" on-remove="vm.onRemovedDate()">
+                                <ui-select-match allow-clear="true" placeholder="Chọn ngày...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="date.value as date  in vm.days | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="date.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                       </div> -->
+                       <!-- --------------------------- -->
+                        <!-- <div class="col-md-2">
+                            <ui-select ng-model="vm.form16Year" sortable="true" close-on-select="true" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectYearForm16(vm.reportFormAnimalEgg)" on-remove="vm.onRemovedYear()">
+                                <ui-select-match allow-clear="true" placeholder="Chọn năm...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="year.value as year  in vm.years | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="year.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-2">
+                            <ui-select ng-model="vm.form16Month" sortable="true" close-on-select="true" style="width:100%;"
+                            aria-multiselectable="true" on-select="vm.onSelectMonthForm16()" on-remove="vm.onRemovedMonth()">
+                                <ui-select-match allow-clear="true" placeholder="Chọn tháng...">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                    repeat="month.value as month  in vm.months | propsFilter: {name: $select.search}">
+                                    <div class="bold" ng-bind-html="month.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-2">
+                                <ui-select data-ng-model="vm.form16Date" sortable="true" close-on-select="true" style="width:100%;"
+                                on-select="vm.onSelectDateForm16()" on-remove="vm.onRemovedDate()">
+                                    <ui-select-match allow-clear="true" placeholder="Chọn ngày...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                        repeat="date.value as date  in vm.days | propsFilter: {name: $select.search}">
+                                        <div class="bold" ng-bind-html="date.name | highlight: $select.search">
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                        </div> -->
+                     <!-- thành -->
+                    <div class="col-md-6 margin-top-10" id="vm.farm.ownerPhoneNumber">
+                        <label class="bold"><strong style="color:red"></strong>{{'farm.farmer.telephone' | translate}}</label>
+                        <input onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46"
+                            data-ng-model="vm.farm.ownerPhoneNumber" id="ownerPhoneNumber" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Số CMND/Căn cước CD/ Hộ chiếu</label>
+                        <input data-ng-model="vm.farm.ownerCitizenCode" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div>
+                    <!--tran huu dat thêm các thông tin còn thiếu so với file import start-->
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Ngày cấp số CMND/Căn cước CD/ Hộ chiếu</label>
+                        <input data-ng-model="vm.farm.ownerCitizenDate" my-date-picker class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div>
+                    <div class="col-md-6 margin-top-10">
+                        <label class="bold"><strong style="color:red"></strong>Nơi cấp số CMND/Căn cước CD/ Hộ chiếu</label>
+                        <input data-ng-model="vm.farm.ownerCitizenLocation" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                    </div>
+                    <!--tran huu dat thêm các thông tin còn thiếu so với file import end-->
+                    <div class="col-md-12 margin-top-10">
+                    	<label class="bold"><input type="checkbox"  ng-model="vm.ownerDifferentBaseAddress" />Địa chỉ chủ lâm sản (khác địa chỉ cơ sở nuôi)</label>
+                    </div>
+                    <div ng-if="vm.ownerDifferentBaseAddress" class="col-md-12 margin-top-10" style="left: -5px;">
+						<!-- <div class="row"><label class="bold"><strong style="color:red"></strong></label></div>				 -->
+                        <div class="col-md-6 margin-top-10" ng-if="vm.isRole==true">
+                            <label class="bold"><strong style="color:red"></strong>{{'farm.city' | translate}}</label>
+                            <ui-select ng-model="vm.ownerSelectedCity" sortable="true" close-on-select="true"
+                                on-select="vm.onFmsadminstrativeUnitCitySelectedOwner($item)" ng-class="{'glb-disabled':vm.isFamer == true}"> 
+                                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-6 margin-top-10" ng-if="vm.isRole==false">
+                            <label class="bold"><strong style="color:red"></strong>{{'farm.city' | translate}}</label>
+                            <ui-select ng-model="vm.ownerSelectedCity" sortable="true" close-on-select="true"
+                                on-select="vm.onFmsadminstrativeUnitCitySelectedOwner($item)" ng-class="{'glb-disabled':vm.isFamer == true}"> 
+                                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseCity' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="adminstrativeUnit in vm.adminstrativeUnits_City | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+    
+                        <div class="col-md-6 margin-top-10" ng-if="vm.isRole==true||vm.isSdah ==true">
+                            <label class="bold"><strong style="color:red"></strong>{{'farm.district' | translate}}</label>
+                            <ui-select ng-model="vm.ownerSelectedDist" sortable="true" close-on-select="true"
+                                on-select="vm.onFmsadminstrativeUnitDistSelectedOwner($item)" ng-class="{'glb-disabled':vm.isFamer == true}">
+                                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="adminstrativeUnit in vm.adminstrativeUnits_DistOwner | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-6 margin-top-10"
+                            ng-if="vm.isRole==false && (vm.isDistrict == true||vm.isWard == true|| vm.isFamer == true)">
+                            <label class="bold"><strong style="color:red"></strong>{{'farm.district' | translate}}</label>
+                            <ui-select ng-model="vm.ownerSelectedDist" on-select="vm.onFmsadminstrativeUnitWardsSelectedOwner($item)"
+                                sortable="true" close-on-select="true" ng-class="{'glb-disabled':vm.isFamer == true}">
+                                <ui-select-match allow-clear="false" placeholder="{{'farm.chooseDistrict' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="adminstrativeUnit in vm.adminstrativeUnits_DistOwner | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-6 margin-top-10"
+                            ng-if="vm.isRole==true||vm.isSdah ==true || vm.isDistrict == true"
+                            id="vm.farm.administrativeUnit">
+                            <label class="bold"><strong style="color:red"></strong>{{'farm.ward' | translate}}</label>
+                            <ui-select ng-model="vm.farm.ownerAdministrativeUnit" sortable="true" close-on-select="true"
+                                on-select="vm.onFmsadminstrativeUnitWardsSelectedOwner($item)"
+                                on-remove="vm.onFmsadminstrativeUnitWardsSelectedOwner()" ng-class="{'glb-disabled':vm.isFamer == true}">
+                                <ui-select-match allow-clear="true" placeholder="{{'farm.chooseWard' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="adminstrativeUnit in vm.adminstrativeUnits_WardsOwner | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-6 margin-top-10"
+                            ng-if="vm.isRole==false && (vm.isWard == true || vm.isFamer == true)">
+                            <label class="bold"><strong style="color:red"></strong>{{'farm.ward' | translate}}</label>
+                            <ui-select ng-model="vm.farm.ownerAdministrativeUnit" sortable="true" close-on-select="true" ng-class="{'glb-disabled':vm.isFamer == true}">
+                                <ui-select-match allow-clear="false" placeholder="{{'farm.chooseWard' | translate}}...">
+                                    {{$select.selected.name}} </ui-select-match>
+                                <ui-select-choices
+                                    repeat="adminstrativeUnit in vm.adminstrativeUnits_WardsOwner | propsFilter: {name: $select.search, code: $select.search}">
+                                    <div class="bold" ng-bind-html="adminstrativeUnit.name | highlight: $select.search">
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-6 margin-top-10">
+                            <label class="bold"><strong style="color:red"></strong>Thôn/Ấp/Xóm</label>
+                            <input data-ng-model="vm.farm.ownerVillage" type="text" class="form-control" ng-class="{'glb-disabled':vm.isFamer == true}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" ng-if="$state.params.id && !hasAnyRoles(currentUser, ['ROLE_ADMIN'])">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3>
+                    <strong>3. Thông tin đàn</strong>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" ng-if="$state.params.id && hasAnyRoles(currentUser, ['ROLE_ADMIN'])">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <h3>
+                    <strong>3. Thông tin đàn</strong>
+                </h3>
+                <!-- <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10">
+                            <button type="button" ng-click="vm.createAnimalReportData()" class="btn btn-default"><i
+                                    class="icon-plus"></i>{{'farmSize.create' | translate}}</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                        </div>
+                    </div>
+                </div> -->
+                
+            </div>
+            <div class="portlet-body"  ng-show="false">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>TT</th>
+                                    <th>{{'application.buttons.action' | translate}}</th>
+                                    <th>{{'animalReportData.animalName'|translate}}</th>
+                                    <th>{{'animalReportData.yearReport'|translate}}</th>
+                                    <th>Tháng</th>
+                                    <th>Ngày</th>
+                                    <th>{{'animalReportData.total'|translate}}</th>
+                                    <th>{{'animalReportData.totalMale'| translate}}</th>
+                                    <th>{{'animalReportData.totalFemale'|translate}}</th>
+                                    <th>{{'animalReportData.totalUnGender'|translate}}</th>
+                                    <th>Thuộc loại </th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="e in vm.animalReportDatas track by $index ">
+                                <th class="text-center">{{$index + 1}}</th>
+                                <th style="text-align: center;">
+                                    <a ng-show="!$parent.vm.isSdahView" class="green-dark margin-right-5"
+                                        ng-click="vm.editAnimalReportData($index)" target="_blank"><i
+                                            class="icon-pencil margin-right-5"></i> {{"animal.edit" | translate}}</a>
+                                    <a ng-show="!$parent.vm.isSdahView" class="green-dark margin-right-5 text-danger"
+                                        ng-click="vm.deleteAnimalReportData($index)" target="_blank"><i
+                                            class="icon-trash margin-right-5"></i> {{"animal.delete" | translate}}</a>
+                                </th>
+                                <th style="text-align: center;">{{e.animal.name}}</th>
+                                <th style="text-align: center;">{{e.year}}</th>
+                                <th>{{e.month}}</th>
+                                <th>{{e.day}}</th>
+                                <th style="text-align: center;">{{e.total}}</th>
+                                <th style="text-align: center;">{{e.male}}</th>
+                                <th style="text-align: center;">{{e.female}}</th>
+                                <th style="text-align: center;">{{e.unGender}}</th>
+                                <th style="text-align: center;">{{vm.getAnimalReportDataType(e.type)}}</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12 text-center">
+                            <ul uib-pagination total-items="vm.totalElementsAnimalReportDatas"
+                                ng-model="vm.pageIndexAnimalReportData" ng-change="vm.getPageAnimalReportDataByFarmId()" max-size="7"
+                                items-per-page="vm.reportFormAnimalEggPageSize" class="pagination-sm" boundary-links="true"></ul>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="col-md-12" ng-if="$state.params.id">
+        <div class="portlet light bordered">
+            <div ng-if="vm.report16Type==0" class="portlet-header">
+                Biểu mẫu 16A
+            </div>
+            <div ng-if="vm.report16Type==1" class="portlet-header">
+                Biểu mẫu 16B
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <ui-select ng-model="vm.selectAnimalForm" sortable="true" close-on-select="true" style="width:100%;"
+                                        aria-multiselectable="true" on-select="vm.onSelectedAnimalName($item)" on-remove="vm.onRemovedAnimal()">
+                        <ui-select-match allow-clear="true" placeholder="{{'importAnimal.selectAnimal'|translate}}...">
+                            {{$select.selected.animalName}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="animal  in vm.animalForms | propsFilter: {animalName: $select.search}">
+                            <div class="bold" ng-bind-html="animal.animalName | highlight: $select.search">
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12" style="overflow: auto;">                    	
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th style="width: 36px;" rowspan="2">Ng&agrave;y</th>
+									<th style="width: 72px;" colspan="2">Lo&agrave;i
+										nu&ocirc;i</th>
+									<th style="width: 148.8px;" colspan="4">Tổng số c&aacute;
+										thể nu&ocirc;i</th>
+									<th ng-if="vm.report16Type==0" style="width: 56.8px;" colspan="2">Đàn bố mẹ</th>
+									<th ng-if="vm.report16Type==0" style="width: 56.8px;" colspan="2">Đàn giống hậu bị</th>
+									<th style="width: 40px;" rowspan="2">Số lượng đàn dưới 1
+										tuổi</th>
+									<th style="width: 108.8px;" colspan="3">Số lượng cá	thể trên 1 tuổi</th>
+									<th style="width: 20.8px;" colspan="3">&nbsp;&nbsp;&nbsp;Nhập cơ sở (mua, sinh sản ..vv)</th>
+									<th style="width: 20.8px;" colspan="3">&nbsp;&nbsp;&nbsp;Xuất
+										cơ sở (bán, cho tặng, chết...)</th>
+								</tr>
+								<tr>
+									<th>Tên VN</th>
+									<th>Tên khoa học</th>
+									<th style="width: 36px;">Tổng</th>
+									<th style="width: 28px;">Đực</th>
+									<th style="width: 22.4px;">C&aacute;i</th>
+									<th style="width: 45.6px;">Kh&ocirc;ng x&aacute;c định</th>
+									<th ng-if="vm.report16Type==0" style="width: 28.8px;">Đực</th>
+									<th ng-if="vm.report16Type==0" style="width: 22.4px;">C&aacute;i</th>
+									<th ng-if="vm.report16Type==0" style="width: 28.8px;">Đực</th>
+									<th ng-if="vm.report16Type==0" style="width: 22.4px;">C&aacute;i</th>
+									<th style="width: 28.8px;">Đực</th>
+									<th style="width: 23.2px;">C&aacute;i</th>
+									<th style="width: 45.6px;">Kh&ocirc;ng x&aacute;c định</th>
+									<th style="width: 20.8px;">&nbsp;Đực</th>
+									<th style="width: 20.8px;">&nbsp;C&aacute;i</th>
+									<th style="width: 20.8px;">&nbsp;Kh&ocirc;ng x&aacute;c	định</th>
+									<th style="width: 20.8px;">&nbsp;Đực</th>
+									<th style="width: 20.8px;">&nbsp;C&aacute;i</th>
+									<th style="width: 20.8px;">&nbsp;Kh&ocirc;ng x&aacute;c	định</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="e in vm.listReport16FormDtoFilter" >
+									
+                            		<td class="text-right">{{e.dateReport | date:'dd/MM/yyyy'}}</td>
+                            		<th>{{e.animalName}}</th>
+                            		<th>{{e.scienceName}}</th>
+                            		<td class="text-right">{{e.total}}</td>
+                            		<td class="text-right">{{e.totalMale}}</td>
+									<td class="text-right">{{e.totalFeMale}}</td>
+									<td class="text-right">{{e.totalUnGen}}</td>
+									
+									
+									<td class="text-right" ng-if="vm.report16Type==0">{{e.parentMale}}</td>
+									<td class="text-right" ng-if="vm.report16Type==0">{{e.parentFeMale}}</td>
+									<td class="text-right" ng-if="vm.report16Type==0">{{e.giltsMale}} </td>
+									<td class="text-right" ng-if="vm.report16Type==0">{{e.giltsFeMale}}</td>	
+										
+									<td class="text-right">{{e.totalUnder1YO}}</td>							
+									<td class="text-right">{{e.over1YOMale}}</td>
+									<td class="text-right">{{e.over1YOFeMale}}</td>
+									<td class="text-right">{{e.over1YOUnGen}}</td>
+									
+									<td class="text-right">{{e.importMale}}</td>
+									<td class="text-right">{{e.importFeMale}}</td>
+									<td class="text-right">{{e.importUnGen}}</td>
+									
+									<td class="text-right">{{e.exportMale}}</td>
+									<td class="text-right">{{e.exportFeMale}}</td>
+									<td class="text-right">{{e.exportUnGen}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+                </div>
+            </div>
+         </div>
+    </div> -->
+
+    <!--START KHAI BÁO MẪU 16A -->
+    <div class="col-md-12" id="testScroll" ng-if="$state.params.id">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <p align="right">Mẫu số 16</p>
+                <p align="center">SỔ THEO DÕI HOẠT ĐỘNG NUÔI ĐỘNG VẬT HOANG DÃ</p>
+                <!-- <p align="center">(Áp dụng cho các loài động vật)</p> -->
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10" >
+                            <button  ng-if="vm.isSdahView==false" type="button" ng-click="vm.addReportForm16A()" class="btn btn-info"><i
+                                    class="icon-plus"></i>Khai báo thông tin vật nuôi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12" style="overflow-x: auto;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>TT</th>
+                                    <th>Năm</th>
+                                    <th>Tháng</th>
+                                    <th>Ngày</th>
+                                    <th>Tên Cơ sở</th>
+                                    <th ng-if="vm.isSdahView==false">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="e in vm.reportPeriods">
+                                    <td class="text-center">{{$index + 1}}</td>
+                                    <td class="text-right">{{e.year}}</td>
+                                    <th class="text-right">{{e.month}}</th>
+                                    <th class="text-right">{{e.date}}</th>
+                                    <td class="text-left">{{e.farm.name}}</td>
+                                    <td ng-if="vm.isSdahView==false">
+                                        <a class="green-dark margin-right-5" href="#"
+                                            data-ng-click="vm.addEditForm16Popup(e.id, 1)"><i
+                                                class="icon-pencil margin-right-5"></i> Cập nhật</a>
+                                        <!-- <a class="green-dark margin-right-5" href="#"
+                                            data-ng-click="vm.copyForm16Popup(e.id, 1)"><i
+                                                class="fa fa-copy margin-right-5"></i> Sao chép báo cáo</a> -->
+                                        <a class="green-dark margin-right-5" href="#" data-ng-click="vm.deleteById(e.id)"><i
+                                                class="fa fa-trash margin-right-5"></i> Xóa dữ liệu</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-3 margin-top-10">
+                        <select data-ng-value="vm.pageSize" ng-model="vm.pageSize" ng-change="vm.searchByPage()">
+                            <option ng-repeat="s in vm.sizes" ng-select="s==vm.pageSize">{{s}}</option>
+                        </select>
+                        <span>/ {{vm.totalItems}} Bản ghi</span>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <ul uib-pagination total-items="vm.totalItems" items-per-page="vm.pageSize"
+                            ng-model="vm.pageIndex" ng-change="vm.searchByPage()" class="pagination-sm"
+                            boundary-links="true"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--END KHAI BÁO MẪU 16A -->
+
+    <div class="col-md-12" ng-if="$state.params.id">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <p align="right">Mẫu số 16C</p>
+                <p align="center">SỔ THEO DÕI SINH SẢN CỦA ĐỘNG VẬT HOANG DÃ ĐẺ TRỨNG</p>
+                <p align="center">(Áp dụng cho các loài động vật đẻ trứng)</p>
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10">
+                            <button ng-if="vm.isSdahView==false" type="button" ng-click="vm.addReportFormAnimalEgg()" class="btn btn-default"><i
+                                    class="icon-plus"></i>Thêm mới</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 36px;" rowspan="2">Ngày(Lấy trứng khỏi tổ/ấp trứng/con non nở,
+                                        chết...)</th>
+                                    <th style="width: 50px;" colspan="2">Tên loài</th>
+                                    <th style="width: 36px;" colspan="2">Số đàn bố mẹ</th>
+                                    <th style="width: 36px;" rowspan="2">Số lượng trứng</th>
+                                    <th style="width: 36px;" rowspan="2">Số lượng trứng được đưa vào ấp</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non nở</th>
+                                    <th style="width: 36px;" rowspan="2">Số con con bị chết</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non còn sống</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non cộng dồn theo thời gian</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non tách khỏi khu nuôi nhốt(tách đàn)
+                                    </th>
+                                    <th style="width: 36px;" rowspan="2">Số con non còn lại</th>
+                                    <th style="width: 36px;" rowspan="2">Ghi chú</th>
+                                    <th ng-if="vm.isSdahView==false" style="width: 36px;" rowspan="2">Thao tác</th>
+                                    <!-- <th style="width: 36px;" rowspan="2">Xác nhận của cơ quan kiểm lâm/thủy sản</th> -->
+                                </tr>
+                                <tr>
+                                    <th style="width: 25px;">Tên tiếng việt</th>
+                                    <th style="width: 25px;">Tên khoa học</th>
+                                    <th style="width: 28.8px;">Đực</th>
+                                    <th style="width: 28.8px;">Cái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.reportFormAnimalEggs track by $index">
+                                    <td class="text-right">
+                                        {{item.dateReport | date: 'dd/MM/yyyy'}}
+                                    </td>
+                                    <td class="text-left">
+                                        {{item.animal.name}}
+                                    </td>
+                                    <td class="text-left">
+                                        {{item.animal.scienceName}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.parentMale}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.parentFemale}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityEgg}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityEggWarm}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityChildHatch}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityChildDie}}
+                                    </td>
+                                    <td class="text-right">{{(item.quantityChildHatch - item.quantityChildDie)}}</td>
+                                    <td class="text-right">
+                                        {{item.quantityChildIncrement}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityChildSeparateCaptivity}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{(item.quantityChildIncrement - item.quantityChildSeparateCaptivity)}}</td>
+                                    <td class="text-left">
+                                        {{item.note}}
+                                    </td>
+                                    <td ng-if="vm.isSdahView==false" class="text-center" style="width: 100px;">
+                                        <button type="button" ng-click="vm.addReportFormAnimalEgg(item.id)"
+                                            class="btn btn-default"><i class="icon-pencil"></i>Sửa</button>
+                                        <button type="button" ng-click="vm.confirmDeleteReportFormAnimalEgg(item.id)"
+                                            class="btn btn-danger"><i class="icon-trash"></i>Xóa</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12 text-center">
+                            <ul uib-pagination total-items="vm.reportFormAnimalEggTotalItems"
+                                ng-model="vm.reportFormAnimalEggPageIndex" ng-change="pageFormImportAnimalEggChange()"
+                                max-size="7" items-per-page="vm.reportFormAnimalEggPageSize" class="pagination-sm"
+                                boundary-links="true"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" ng-if="$state.params.id">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                <p align="right">Mẫu số 16D</p>
+                <p align="center">SỔ THEO DÕI SINH SẢN CỦA ĐỘNG VẬT HOANG DÃ ĐẺ CON</p>
+                <p align="center">(Áp dụng cho các loài động vật đẻ con)</p>
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <div class="btn-group margin-bottom-20 margin-right-10">
+                            <button ng-if="vm.isSdahView==false" type="button" ng-click="vm.addReportFormAnimalGiveBirth()"
+                                class="btn btn-default"><i class="icon-plus"></i>Thêm mới</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <!-- <thead>
+								<tr>									
+									<th style="width: 36px;">Năm</th>
+									<th style="width: 50px;">Tháng</th>
+									<th style="width: 36px;">Ngày</th>
+									<th style="width: 36px;">Thao tác</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in vm.reportFormAnimalGiveBirths" >
+									
+									<td class="text-center">{{item.year}}</td>
+									<td class="text-center">{{item.month}}</td>
+									<td class="text-center">{{item.date}}</td>
+									<td class="text-center"><button type="button" ng-click="vm.addReportFormAnimalGiveBirth(item.id)" class="btn btn-default"><i
+                                        class="icon-pencil"></i>Sửa</button>
+                                        <button type="button" ng-click="vm.confirmDeleteReportFormAnimalGiveBirth(item.id)" class="btn btn-danger"><i
+                                            class="icon-trash"></i>Xóa</button>
+                                    </td>
+								</tr>
+                            </tbody> -->
+                            <thead>
+                                <tr>
+                                    <th style="width: 36px;" rowspan="2">Ngày(đẻ, chết...)</th>
+                                    <th style="width: 50px;" colspan="2">Loài nuôi</th>
+                                    <th style="width: 36px;" colspan="2">Số đàn bố mẹ</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non</th>
+                                    <th style="width: 36px;" rowspan="2">Số con con bị chết</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non còn sống</th>
+                                    <th style="width: 36px;" rowspan="2">Số con con cộng đồn theo thời gian</th>
+                                    <th style="width: 36px;" rowspan="2">Số con non tách khỏi khu nuôi nhốt(tách đàn)
+                                    </th>
+                                    <th style="width: 36px;" rowspan="2">Số con non còn lại</th>
+                                    <th style="width: 36px;" rowspan="2">Ghi chú</th>
+                                    <th ng-if="vm.isSdahView==false"style="width: 36px;" rowspan="2">Thao tác</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 25px;">Tên tiếng việt</th>
+                                    <th style="width: 25px;">Tên khoa học</th>
+                                    <th style="width: 28.8px;">Đực</th>
+                                    <th style="width: 28.8px;">Cái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <tr ng-repeat="item in vm.reportFormAnimalGiveBirths track by $index"> -->
+                                <tr ng-repeat="item in vm.reportFormAnimalGiveBirths track by $index">
+                                    <td class="text-right">
+                                        {{item.dateReport| date:'dd/MM/yyyy'}}
+                                    </td>
+                                    <td class="text-left">
+                                        {{item.animal.name}}
+                                    </td>
+                                    <td class="text-left">
+                                        {{item.animal.scienceName}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.parentMale}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.parentFemale}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityChildHatch}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityChildDie}}
+                                    </td>
+                                    <td class="text-right">{{(item.quantityChildHatch - item.quantityChildDie)}}</td>
+                                    <td class="text-right">
+                                        {{item.quantityChildIncrement}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{item.quantityChildSeparateCaptivity}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{(item.quantityChildIncrement - item.quantityChildSeparateCaptivity)}}
+                                    </td>
+                                    <td class="text-left">
+                                        {{item.note}}
+                                    </td>
+                                    <td ng-if="vm.isSdahView==false" class="text-center" style="width: 100px;">
+                                        <button type="button" ng-click="vm.addReportFormAnimalGiveBirth(item.id)"
+                                            class="btn btn-default"><i class="icon-pencil"></i>Sửa</button>
+                                        <button type="button"
+                                            ng-click="vm.confirmDeleteReportFormAnimalGiveBirth(item.id)"
+                                            class="btn btn-danger"><i class="icon-trash"></i>Xóa</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-md-12 text-center">
+                            <ul uib-pagination total-items="vm.reportFormAnimalEggTotalItems"
+                                ng-model="vm.reportFormAnimalGiveBirthPageIndex"
+                                ng-change="pageFormImportAnimalEggChange()" max-size="7"
+                                items-per-page="vm.reportFormAnimalEggPageSize" class="pagination-sm"
+                                boundary-links="true"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row margin-top-12" ng-if="$state.params.id">
+        <div class="col-md-12">
+            <div class="portlet light bordered">
+                <div class="portlet-header">
+                    <h3><strong>Bảng kê lâm sản</strong></h3>
+                </div>
+                <div class="portlet-title">
+                    <div class="row margin-top-10 margin-bottom-10">
+                        <div class="col-md-6">
+                            <button ng-if="!vm.isSdahView" type="button" ng-click="vm.addForestProductList()"
+                                class="btn btn-default margin-left-10"><i
+                                    class="icon-plus"></i>{{"importAnimal.create" | translate}}</button>
+                        </div>
+                    </div>
+                    <div class="row margin-top-10 margin-bottom-10">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 margin-top-10 margin-bottom-10">
+                                    <!-- <label for="">Từ ngày</label> -->
+                                    <input ng-model="vm.fromDateForestProductList" type="text"
+                                        ng-change="vm.onChangFromDateToDate()"
+                                        placeholder="{{'importAnimal.fromDate' | translate}}" class="form form-control"
+                                        my-date-picker />
+                                </div>
+                                <div class="col-md-4 margin-top-10 margin-bottom-10">
+                                    <!-- <label for="">Đến ngày</label> -->
+                                    <input ng-model="vm.toDateForestProductList" type="text"
+                                        ng-change="vm.onChangFromDateToDate()"
+                                        placeholder="{{'importAnimal.toDate' | translate}}" class="form form-control"
+                                        my-date-picker />
+                                </div>
+                                <div class="col-md-4 margin-top-10 margin-bottom-10">
+                                    <div class="input-group">
+                                        <input ng-model="vm.nameOrCodeForestProductList" type="text"
+                                            ng-keypress="vm.enterSearchForestProductList($event)"
+                                            placeholder='Tài khoản người tạo, tên người tạo, mã kê lâm sản'
+                                            class="form form-control" />
+                                        <div class="input-group-btn">
+                                            <button ng-click="vm.searchByCodeForestProductList()"
+                                                class="btn btn-default" type="submit"><i
+                                                    class="glyphicon glyphicon-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table id="bsTableControlForestProductList" bs-table-control="vm.bsTableControlForestProductList">
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- <div ng-if="$state.params.id" ng-include="'farm/views/child/import_export_template.html?v={{version}}'"></div> -->
+        <!-- <h3 ng-if="$state.params.id">
+        <strong>Các mẫu báo cáo cũ</strong>
+    </h3> -->
+        <!-- <div ng-if="$state.params.id" class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-12">
+                        <h3>
+                            <strong>Nhập thông tin các quần thể nuôi trừ gấu</strong>
+                        </h3>
+                        <button type="button" ng-click="vm.showPopupTableType1()" class="btn btn-default">
+                          	<i class="icon-plus"></i>Thêm mới
+                        </button>
+                    </div>                    
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>TT</th>
+                                    <th>Năm báo cáo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.listFarmPeriodType1">
+                                    <td class='text-center'>{{$index + 1}}</td>
+                                    <td class='text-center'>{{item.title}}</td>
+                                    <td class='text-center'>
+                                        <button type="button" class="btn btn-default" ng-click="vm.showPopupTableType1(item.id)">Cập nhật</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+        <!---->
+        <!-- <div ng-if="$state.params.id" class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <h3>
+                            <strong>Thông tin hiện trạng về quần thể gấu</strong>
+                        </h3>
+                        <button type="button" ng-click="vm.showPopupTableType2()" class="btn btn-default"><i
+                                    class="icon-plus"></i>Thêm mới</button>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>TT</th>
+                                    <th>Năm báo cáo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.listFarmPeriodType2">
+                                    <td class='text-center'>{{$index + 1}}</td>
+                                    <td class='text-center'>{{item.title}}</td>
+                                    <td class='text-center'>
+                                        <button type="button" class="btn btn-default" ng-click="vm.showPopupTableType2(item.id)">Cập nhật</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     -->
+        <!-- Gấu -->
+        <!-- <div ng-if="$state.params.id" class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-header">
+                
+            </div>
+            <div class="portlet-body">
+                <div class="row margin-top-10 margin-bottom-10">
+                    <div class="col-md-6">
+                        <h3>
+                            <strong>Thông tin về các loài động vật nuôi, động vật cảnh tại cơ sở</strong>
+                        </h3>
+                        <button type="button" ng-click="vm.showPopupTableType3()" class="btn btn-default"><i
+                                    class="icon-plus"></i>Thêm mới</button>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>TT</th>
+                                    <th>Năm báo cáo</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.listFarmPeriodType3">
+                                    <td class='text-center'>{{$index + 1}}</td>
+                                    <td class='text-center'>{{item.title}}</td>
+                                    <td class='text-center'>
+                                        <button type="button" class="btn btn-default" ng-click="vm.showPopupTableType3(item.id)">Cập nhật</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     -->
+        <!-- Normal animal -->
+    </div>
+    <div class="portlet-fotter margin-top-10">
+        <button ng-if="vm.isFamer == false" type="button" class="btn btn-default btn-primary" ng-click="vm.goBack()"
+            class="btn btn-default" style="left: 5px;">
+            <i class="fa fa-mail-reply-all"></i>{{"farm.back" | translate}}
+        </button>
+        <button ng-if="vm.isFamer == false&& vm.isSdahView==false" type="button" ng-click="vm.saveFarm()"
+            class="btn btn-primary"  style="left: 5px;">
+
+            <i class="icon-check"></i> {{'farm.save' | translate}}
+        </button>
+    </div>
+
+    <style>
+        .margin-left-15 {
+            margin-left: 15px;
+        }
+
+        .ui-select-match span.ui-select-match-item {
+            color: #444;
+        }
+    </style>
+    <!-- <div ng-show="false">
+ng-init="initMap()"
+	<div ng-init="initMap()" id="map-pick"></div>
+</div> -->
+    <!-- main js -->
+    <script type="text/ng-template" id="detail.html">
+    <div modal-movable>
+		<!-- <div ng-include="'farm/views/child/detail_forest_product_list.html'"></div> -->
+		<div ng-include="'forest_product_list/views/child/add_forest_product_list.html'"></div>
+	</div>
+</script>
+    <script type="text/ng-template" id="confirm_delete.html">
+    <div modal-movable>
+		<div ng-include="'farm/views/child/confirm_delete.html'"></div>
+	</div>
+</script>
+    <script type="text/ng-template" id="confirm_raw_data.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_raw_data.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="report_form_animal_give_birth.html">
+    <div modal-movable ng-include="'farm/views/child/report_form_animal_give_birth.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="report_form_animal_give_birth_table.html">
+    <div modal-movable ng-include="'farm/views/child/report_form_animal_give_birth_table.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="store_detail.html">
+    <div modal-movable ng-include="'farm/views/child/store_detail.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="animal_report_data_info.html">
+    <div modal-movable ng-include="'farm/views/child/animal_report_data_info.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="confirm_delete_animal_report.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_delete_animal_report.html?v={{version}}'"></div>
+</script>
+
+    <script type="text/ng-template" id="confirm_delete_store.html">
+    <div modal-movable ng-include="'farm/views/child/confirm_delete_store.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="map_modal.html">
+    <div modal-movable ng-include="'farm/views/child/maps.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="modalPopupTableType1.html">
+    <div modal-movable ng-include="'farm/views/child/table_animal.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="modalPopupTableType2.html">
+    <div modal-movable ng-include="'farm/views/child/table_bear_info.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="modalPopupTableType3.html">
+    <div modal-movable ng-include="'farm/views/child/table_normal_animal.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="report_form_animal_egg.html">
+    <div modal-movable ng-include="'farm/views/child/report_form_animal_egg.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="report_form_animal_egg_table.html">
+    <div modal-movable ng-include="'farm/views/child/report_form_animal_egg_table.html?v={{version}}'"></div>
+</script>
+    <script type="text/ng-template" id="vgmap.html">
+    <div modal-movable ng-include="'farm/views/child/vgmap.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="report_form_16A.html">
+    <div modal-movable ng-include="'farm/views/child/report_form_16A.html?v={{version}}'"></div>
+</script>
+<script type="text/ng-template" id="confirm_delete.html">
+    <div modal-movable>
+		<div class="modal-header">
+            <h4>Xoá dữ liệu</h4>
+            <button type="button" class="close" ng-click="$dismiss()" aria-hidden="true"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <p style="padding-left:15px;" class="text-danger">Bạn có chắc muốn xóa bản ghi?</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="$dismiss()" class="btn btn-default" data-dismiss="modal"><i class="icon-close"></i>
+                Hủy</button>
+            <button type="button" ng-click="$close('yes')" class="btn btn-danger"><i class="icon-check"></i> Chấp Nhận</button>
+        </div>
+	</div>
+</script>
